@@ -1,1 +1,4 @@
-Record=TopLevelDocument|FileName=MCU.SchDoc|SheetNumber=1
+Record=TopLevelDocument|FileName=PCB_1.SchDoc|SheetNumber=1
+Record=SheetSymbol|SourceDocument=PCB_1.SchDoc|Designator=Designator|SchDesignator=Designator|FileName=Power_supply.SchDoc|SheetNumber=3|SymbolType=Normal|RawFileName=Power_supply.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=SheetSymbol|SourceDocument=PCB_1.SchDoc|Designator=Designator|SchDesignator=Designator|FileName=ADC_low_pass_filter.SchDoc|SheetNumber=4|SymbolType=Normal|RawFileName=ADC_low_pass_filter.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=SheetSymbol|SourceDocument=PCB_1.SchDoc|Designator=Designator|SchDesignator=Designator|FileName=MCU.SchDoc|SheetNumber=2|SymbolType=Normal|RawFileName=MCU.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
