@@ -160,7 +160,7 @@ GenerateClassCluster=0
 DocumentUniqueId=NIBDFQAL
 
 [Document8]
-DocumentPath=BTB_Main_connector..SchDoc
+DocumentPath=BTB_Main_connector.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -194,7 +194,7 @@ GenerateClassCluster=0
 DocumentUniqueId=KDTXWUIE
 
 [Document10]
-DocumentPath=BTB_Main_connector..Harness
+DocumentPath=BTB_Main_connector.Harness
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
