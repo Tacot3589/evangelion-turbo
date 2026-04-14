@@ -1,0 +1,16 @@
+Removed Pin From Net: NetName=Vcc Pin=C23-1
+Removed Pin From Net: NetName=GND Pin=C23-2
+Removed Pin From Net: NetName=5v Pin=C24-1
+Removed Pin From Net: NetName=GND Pin=C24-2
+Removed Pin From Net: NetName=3.3v Pin=C25-1
+Removed Pin From Net: NetName=GND Pin=C25-2
+Removed Member From Class: ClassName=U_OledAndLed Member=C23
+Removed Member From Class: ClassName=U_OledAndLed Member=C24
+Removed Member From Class: ClassName=U_OledAndLed Member=C25
+Added Member To Class: ClassName=U_Start_mod Member=Component J3 CLP-102-02-LM-D-BE-TR
+Added Room: Name=U_Connectors
+Added Room: Name=U_Interface
+Added Room: Name=U_OledAndLed
+Added Room: Name=U_PWRButton
+Added Room: Name=U_Sensor_connectors
+Added Room: Name=U_Start_mod

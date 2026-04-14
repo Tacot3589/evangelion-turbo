@@ -1,0 +1,30 @@
+Removed Pin From Net: NetName=GND Pin=C22-2
+Removed Pin From Net: NetName=Vin Pin=J1-34
+Removed Pin From Net: NetName=Vcc Pin=J1-36
+Removed Pin From Net: NetName=Vin Pin=Q1-2
+Removed Pin From Net: NetName=Power_enable_buttor_output Pin=Q1-3
+Removed Pin From Net: NetName=GND Pin=Q2-2
+Removed Pin From Net: NetName=GND Pin=Q3-2
+Removed Pin From Net: NetName=Vin Pin=R21-1
+Removed Pin From Net: NetName=Vin Pin=R22-1
+Removed Pin From Net: NetName=Power_enable_buttor_output Pin=R23-1
+Removed Pin From Net: NetName=Power_enable_buttor_output Pin=R24-1
+Removed Member From Class: ClassName=U_PWRButton Member=C22
+Removed Member From Class: ClassName=U_Sensor_connectors Member=D5
+Removed Member From Class: ClassName=U_PWRButton Member=Q1
+Removed Member From Class: ClassName=U_PWRButton Member=Q2
+Removed Member From Class: ClassName=U_PWRButton Member=Q3
+Removed Member From Class: ClassName=U_PWRButton Member=R21
+Removed Member From Class: ClassName=U_PWRButton Member=R22
+Removed Member From Class: ClassName=U_PWRButton Member=R23
+Removed Member From Class: ClassName=U_PWRButton Member=R24
+Removed Member From Class: ClassName=U_PWRButton Member=S2
+Added Pin To Net: NetName=Vcc Pin=J1-34
+Added Pin To Net: NetName=GND Pin=J1-36
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component D1 4 PIN
+Added Room: Name=U_Connectors
+Added Room: Name=U_Interface
+Added Room: Name=U_OledAndLed
+Added Room: Name=U_PWRButton
+Added Room: Name=U_Sensor_connectors
+Added Room: Name=U_Start_mod
