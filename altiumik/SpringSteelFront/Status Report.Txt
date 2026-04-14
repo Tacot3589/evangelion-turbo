@@ -2,13 +2,12 @@ Output: Gerber Files
 Type  : Gerber
 From  : Variant [[No Variations]] of Project [Free Documents]
    Generated File[SpringSteelFront.GTP]
-   Generated File[SpringSteelFront.GM1]
    Generated File[SpringSteelFront.RUL]
    Generated File[SpringSteelFront.EXTREP]
    Generated File[SpringSteelFront.REP]
 
 
-Files Generated   : 5
+Files Generated   : 4
 Documents Printed : 0
 
-Finished Output Generation At 11:47:30 On 11.04.2026
+Finished Output Generation At 18:23:16 On 14.04.2026
