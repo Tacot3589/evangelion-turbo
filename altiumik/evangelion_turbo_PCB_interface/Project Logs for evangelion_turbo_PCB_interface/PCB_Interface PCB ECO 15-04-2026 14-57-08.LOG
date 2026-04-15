@@ -1,0 +1,86 @@
+Change Component Footprint: Designator=D1 Old Footprint=SM04B-SRSS-TB New Footprint=SM04B-XSRS-ETB_2
+Change Component Footprint: Designator=D2 Old Footprint=SM04B-SRSS-TB New Footprint=SM04B-XSRS-ETB_2
+Change Component Footprint: Designator=D3 Old Footprint=SM04B-SRSS-TB New Footprint=SM04B-XSRS-ETB_2
+Change Component Footprint: Designator=D4 Old Footprint=SM04B-SRSS-TB New Footprint=SM04B-XSRS-ETB_2
+Change Component Footprint: Designator=L1 Old Footprint=SM04B-SRSS-TB New Footprint=SM04B-XSRS-ETB_2
+Change Component Footprint: Designator=L2 Old Footprint=SM04B-SRSS-TB New Footprint=SM04B-XSRS-ETB_2
+Change Component Footprint: Designator=L3 Old Footprint=SM04B-SRSS-TB New Footprint=SM04B-XSRS-ETB_2
+Change Component Footprint: Designator=L4 Old Footprint=SM04B-SRSS-TB New Footprint=SM04B-XSRS-ETB_2
+Change Component Comment : Designator=D1 Old Comment=4 PIN New Comment=SM04B-XSRS-ETB_LF__SN_
+Change Component Comment : Designator=D2 Old Comment=4 PIN New Comment=SM04B-XSRS-ETB_LF__SN_
+Change Component Comment : Designator=D3 Old Comment=4 PIN New Comment=SM04B-XSRS-ETB_LF__SN_
+Change Component Comment : Designator=D4 Old Comment=4 PIN New Comment=SM04B-XSRS-ETB_LF__SN_
+Change Component Comment : Designator=L1 Old Comment=4 PIN New Comment=SM04B-XSRS-ETB_LF__SN_
+Change Component Comment : Designator=L2 Old Comment=4 PIN New Comment=SM04B-XSRS-ETB_LF__SN_
+Change Component Comment : Designator=L3 Old Comment=4 PIN New Comment=SM04B-XSRS-ETB_LF__SN_
+Change Component Comment : Designator=L4 Old Comment=4 PIN New Comment=SM04B-XSRS-ETB_LF__SN_
+Change component parameters: Designator = "D1" ("D1"); Footprint = "SM04B-SRSS-TB"; UniqueID = "\OOQHBFWS\JFMDOYMI" ("\OOQHBFWS\JFMDOYMI")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "https://pt.mouser.com/datasheet/3/1070/1/eXSR.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "JST (JAPAN SOLDERLESS TERMINALS)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "SM04B-XSRS-ETB(LF)(SN)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = "306-SM04BXSRSETBLFSN"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/JST-Commercial/SM04B-XSRS-ETBLFSN?qs=QpmGXVUTftEeZ2Uizbg35Q%3D%3D"; VariantName = "[No Variations]"
+Change component parameters: Designator = "D2" ("D2"); Footprint = "SM04B-SRSS-TB"; UniqueID = "\OOQHBFWS\XIRRXJXP" ("\OOQHBFWS\XIRRXJXP")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "https://pt.mouser.com/datasheet/3/1070/1/eXSR.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "JST (JAPAN SOLDERLESS TERMINALS)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "SM04B-XSRS-ETB(LF)(SN)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = "306-SM04BXSRSETBLFSN"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/JST-Commercial/SM04B-XSRS-ETBLFSN?qs=QpmGXVUTftEeZ2Uizbg35Q%3D%3D"; VariantName = "[No Variations]"
+Change component parameters: Designator = "D3" ("D3"); Footprint = "SM04B-SRSS-TB"; UniqueID = "\OOQHBFWS\GEZKIBDZ" ("\OOQHBFWS\GEZKIBDZ")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "https://pt.mouser.com/datasheet/3/1070/1/eXSR.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "JST (JAPAN SOLDERLESS TERMINALS)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "SM04B-XSRS-ETB(LF)(SN)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = "306-SM04BXSRSETBLFSN"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/JST-Commercial/SM04B-XSRS-ETBLFSN?qs=QpmGXVUTftEeZ2Uizbg35Q%3D%3D"; VariantName = "[No Variations]"
+Change component parameters: Designator = "D4" ("D4"); Footprint = "SM04B-SRSS-TB"; UniqueID = "\OOQHBFWS\UHOMYTRL" ("\OOQHBFWS\UHOMYTRL")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "https://pt.mouser.com/datasheet/3/1070/1/eXSR.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "JST (JAPAN SOLDERLESS TERMINALS)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "SM04B-XSRS-ETB(LF)(SN)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = "306-SM04BXSRSETBLFSN"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/JST-Commercial/SM04B-XSRS-ETBLFSN?qs=QpmGXVUTftEeZ2Uizbg35Q%3D%3D"; VariantName = "[No Variations]"
+Change component parameters: Designator = "L1" ("L1"); Footprint = "SM04B-SRSS-TB"; UniqueID = "\OOQHBFWS\OWMHGTUO" ("\OOQHBFWS\OWMHGTUO")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "https://pt.mouser.com/datasheet/3/1070/1/eXSR.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "JST (JAPAN SOLDERLESS TERMINALS)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "SM04B-XSRS-ETB(LF)(SN)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = "306-SM04BXSRSETBLFSN"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/JST-Commercial/SM04B-XSRS-ETBLFSN?qs=QpmGXVUTftEeZ2Uizbg35Q%3D%3D"; VariantName = "[No Variations]"
+Change component parameters: Designator = "L2" ("L2"); Footprint = "SM04B-SRSS-TB"; UniqueID = "\OOQHBFWS\BUUVDPLV" ("\OOQHBFWS\BUUVDPLV")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "https://pt.mouser.com/datasheet/3/1070/1/eXSR.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "JST (JAPAN SOLDERLESS TERMINALS)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "SM04B-XSRS-ETB(LF)(SN)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = "306-SM04BXSRSETBLFSN"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/JST-Commercial/SM04B-XSRS-ETBLFSN?qs=QpmGXVUTftEeZ2Uizbg35Q%3D%3D"; VariantName = "[No Variations]"
+Change component parameters: Designator = "L3" ("L3"); Footprint = "SM04B-SRSS-TB"; UniqueID = "\OOQHBFWS\SIEHIFTK" ("\OOQHBFWS\SIEHIFTK")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "https://pt.mouser.com/datasheet/3/1070/1/eXSR.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "JST (JAPAN SOLDERLESS TERMINALS)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "SM04B-XSRS-ETB(LF)(SN)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = "306-SM04BXSRSETBLFSN"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/JST-Commercial/SM04B-XSRS-ETBLFSN?qs=QpmGXVUTftEeZ2Uizbg35Q%3D%3D"; VariantName = "[No Variations]"
+Change component parameters: Designator = "L4" ("L4"); Footprint = "SM04B-SRSS-TB"; UniqueID = "\OOQHBFWS\XRQMLFFR" ("\OOQHBFWS\XRQMLFFR")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "https://pt.mouser.com/datasheet/3/1070/1/eXSR.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "JST (JAPAN SOLDERLESS TERMINALS)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "SM04B-XSRS-ETB(LF)(SN)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = "306-SM04BXSRSETBLFSN"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/JST-Commercial/SM04B-XSRS-ETBLFSN?qs=QpmGXVUTftEeZ2Uizbg35Q%3D%3D"; VariantName = "[No Variations]"
+Added Room: Name=U_Connectors
+Added Room: Name=U_Interface
+Added Room: Name=U_OledAndLed
+Added Room: Name=U_PWRButton
+Added Room: Name=U_Sensor_connectors
+Added Room: Name=U_Start_mod

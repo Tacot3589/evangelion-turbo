@@ -2,6 +2,16 @@
 FileName = SpringSteelFront.GBR
 AutoAperture = True
 *************************************************************
+Generating : Mechanical 1
+      File : SpringSteelFront.GM1
+
+    Adding Layer      : Mechanical 1
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
 Generating : Top Paste
       File : SpringSteelFront.GTP
 

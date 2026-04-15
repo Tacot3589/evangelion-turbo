@@ -1344,7 +1344,7 @@ PartTypes=0
 
 [NetInfos]
 Net1=NetName=3.3v|NetColor=$006666E0
-Net2=NetName=5v|NetColor=$000000CC
+Net2=NetName=5v|NetColor=$006666E0
 Net3=NetName=GND|NetColor=$00323232
 Net4=NetName=NetIC?_2|NetColor=clBlack
 Net5=NetName=NetIC?_53|NetColor=clBlack

@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------------------------
-Gerber File Extension Report For: SpringSteelFront.GBR   14.04.2026  18:23:16
+Gerber File Extension Report For: SpringSteelFront.GBR   15/04/2026  14:15:25
 ------------------------------------------------------------------------------------------
 
 
@@ -7,4 +7,5 @@ Gerber File Extension Report For: SpringSteelFront.GBR   14.04.2026  18:23:16
 Layer Extension     Layer Description                      
 ------------------------------------------------------------------------------------------
 .GTP                Top Paste                               
+.GM1                Mechanical 1                            
 ------------------------------------------------------------------------------------------
