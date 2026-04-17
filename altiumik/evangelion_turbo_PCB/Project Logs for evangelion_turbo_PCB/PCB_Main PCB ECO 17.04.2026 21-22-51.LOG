@@ -1,0 +1,90 @@
+Added Component: Designator=J1(40PSJMDSSG1TFLFSN)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://www.jst-mfg.com/product/pdf/eng/eJMD.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "4.8mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "JST (JAPAN SOLDERLESS TERMINALS)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "40PS-JMDSS-G-1-TFLFSN"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=J?(10132797033100LF)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://cdn.amphenol-cs.com/media/wysiwyg/files/drawing/10132797.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "3.45mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "Amphenol Communications Solutions"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "10132797-033100LF"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=LINE1A Pin=J1-1
+Added Pin To Net: NetName=START_MOD_LED_1 Pin=J1-2
+Added Pin To Net: NetName=LINE1B Pin=J1-3
+Added Pin To Net: NetName=START_MOD_LED_3 Pin=J1-4
+Added Pin To Net: NetName=LINE2A Pin=J1-5
+Added Pin To Net: NetName=START_MOD_LED_2 Pin=J1-6
+Added Pin To Net: NetName=LINE2B Pin=J1-7
+Added Pin To Net: NetName=JOYSTICK_1 Pin=J1-8
+Added Pin To Net: NetName=LINE3A Pin=J1-9
+Added Pin To Net: NetName=JOYSTICK_2 Pin=J1-10
+Added Pin To Net: NetName=LINE3B Pin=J1-11
+Added Pin To Net: NetName=JOYSTICK_3 Pin=J1-12
+Added Pin To Net: NetName=LINE4A Pin=J1-13
+Added Pin To Net: NetName=JOYSTICK_4 Pin=J1-14
+Added Pin To Net: NetName=LINE4B Pin=J1-15
+Added Pin To Net: NetName=JOYSTICK_5 Pin=J1-16
+Added Pin To Net: NetName=UART1_TX Pin=J1-17
+Added Pin To Net: NetName=I2C_OLED_SCL Pin=J1-18
+Added Pin To Net: NetName=UART1_RX Pin=J1-19
+Added Pin To Net: NetName=I2C_OLED_SDA Pin=J1-20
+Added Pin To Net: NetName=UART2_TX Pin=J1-21
+Added Pin To Net: NetName=START_MOD_IR_1 Pin=J1-22
+Added Pin To Net: NetName=UART2_RX Pin=J1-23
+Added Pin To Net: NetName=START_MOD_IR_2 Pin=J1-24
+Added Pin To Net: NetName=UART3_TX Pin=J1-25
+Added Pin To Net: NetName=Vin Pin=J1-26
+Added Pin To Net: NetName=UART3_RX Pin=J1-27
+Added Pin To Net: NetName=NRST Pin=J1-28
+Added Pin To Net: NetName=UART4_TX Pin=J1-29
+Added Pin To Net: NetName=SWCLK Pin=J1-30
+Added Pin To Net: NetName=UART4_RX Pin=J1-31
+Added Pin To Net: NetName=SWDIO Pin=J1-32
+Added Pin To Net: NetName=3.3v Pin=J1-33
+Added Pin To Net: NetName=Vcc Pin=J1-34
+Added Pin To Net: NetName=3.3v Pin=J1-35
+Added Pin To Net: NetName=GND Pin=J1-36
+Added Pin To Net: NetName=5v Pin=J1-37
+Added Pin To Net: NetName=GND Pin=J1-38
+Added Pin To Net: NetName=5v Pin=J1-39
+Added Pin To Net: NetName=GND Pin=J1-40
+Added Pin To Net: NetName=5v Pin=J?-1
+Added Pin To Net: NetName=5v Pin=J?-2
+Added Pin To Net: NetName=5v Pin=J?-3
+Added Pin To Net: NetName=5v Pin=J?-4
+Added Pin To Net: NetName=5v Pin=J?-5
+Added Pin To Net: NetName=5v Pin=J?-6
+Added Pin To Net: NetName=5v Pin=J?-7
+Added Pin To Net: NetName=5v Pin=J?-8
+Added Pin To Net: NetName=5v Pin=J?-9
+Added Pin To Net: NetName=GND Pin=J?-10
+Added Pin To Net: NetName=GND Pin=J?-11
+Added Pin To Net: NetName=GND Pin=J?-12
+Added Pin To Net: NetName=GND Pin=J?-13
+Added Pin To Net: NetName=GND Pin=J?-14
+Added Pin To Net: NetName=GND Pin=J?-15
+Added Pin To Net: NetName=GND Pin=J?-16
+Added Pin To Net: NetName=GND Pin=J?-17
+Added Pin To Net: NetName=GND Pin=J?-18
+Added Pin To Net: NetName=Vcc Pin=J?-19
+Added Pin To Net: NetName=Vin Pin=J?-20
+Added Pin To Net: NetName=Vin Pin=J?-21
+Added Pin To Net: NetName=Vin Pin=J?-22
+Added Pin To Net: NetName=Vin Pin=J?-23
+Added Pin To Net: NetName=Vin Pin=J?-24
+Added Pin To Net: NetName=Vin Pin=J?-25
+Added Pin To Net: NetName=Vin Pin=J?-26
+Added Pin To Net: NetName=Vin Pin=J?-27
+Added Pin To Net: NetName=Vin Pin=J?-28
+Added Pin To Net: NetName=Vin Pin=J?-29
+Added Pin To Net: NetName=Vin Pin=J?-30
+Added Member To Class: ClassName=U_BTB_Top_connector Member=Component J1 (INTERFACE) 40PS-JMDSS-G-1-TFLFSN
+Added Member To Class: ClassName=U_BTB_Main_connector. Member=Component J? (DRIVER) 10132797-033100LF

@@ -1,0 +1,678 @@
+Added Component: Designator=C1(C 0402)
+Added Component: Designator=C2(C 0402)
+Added Component: Designator=C3(C 0402)
+Added Component: Designator=C4(C 0402)
+Added Component: Designator=C5(C 0402)
+Added Component: Designator=C6(C 0402)
+Added Component: Designator=C7(C 0402)
+Added Component: Designator=C8(C 0402)
+Added Component: Designator=C9(C 0402)
+Added Component: Designator=C10(C 0402)
+Added Component: Designator=C11(C 0402)
+Added Component: Designator=C12(C 0402)
+Added Component: Designator=C13(C 0402)
+Added Component: Designator=C14(C 0402)
+Added Component: Designator=C15(C 0402)
+Added Component: Designator=C16(C 0402)
+Added Component: Designator=C17(C 0402)
+Added Component: Designator=C18(C 0402)
+Added Component: Designator=C19(C 0402)
+Added Component: Designator=C20(C 0402)
+Added Component: Designator=C21(C 0402)
+Added Component: Designator=C22(C 0402)
+Added Component: Designator=C23(C 0402)
+Added Component: Designator=C24(C 0402)
+Added Component: Designator=C25(C 0805)
+Added Component: Designator=C26(C 0402)
+Added Component: Designator=C27(C 0402)
+Added Component: Designator=C28(C 0603)
+Added Component: Designator=C29(C 0402)
+Added Component: Designator=C30(C 0402)
+Added Component: Designator=C31(C 0603)
+Added Component: Designator=C32(C 0402)
+Added Component: Designator=C33(C 0805)
+Added Component: Designator=C35A(C 0402)
+Added Component: Designator=C35B(C 0402)
+Added Component: Designator=C35C(C 0402)
+Added Component: Designator=C35D(C 0402)
+Added Component: Designator=C35E(C 0402)
+Added Component: Designator=C35F(C 0402)
+Added Component: Designator=C35G(C 0402)
+Added Component: Designator=C35H(C 0402)
+Added Component: Designator=C35I(C 0402)
+Added Component: Designator=C35J(C 0402)
+Added Component: Designator=C35K(C 0402)
+Added Component: Designator=C35L(C 0402)
+Added Component: Designator=C35M(C 0402)
+Added Component: Designator=C36(C 0402)
+Added Component: Designator=C37(C 0402)
+Added Component: Designator=C38(C 0402)
+Added Component: Designator=C39(C 0402)
+Added Component: Designator=C40(C 0402)
+Added Component: Designator=C41(C 0603)
+Added Component: Designator=C42(C 0402)
+Added Component: Designator=C43(C 0603)
+Added Component: Designator=C44(C 0402)
+Added Component: Designator=C45(C 0402)
+Added Component: Designator=C46(C 0603)
+Added Component: Designator=C47(C 0402)
+Added Component: Designator=C48(C 0402)
+Added Component: Designator=C49(C 0402)
+Added Component: Designator=C61A(C 0402)
+Added Component: Designator=C61B(C 0402)
+Added Component: Designator=C62A(C 0402)
+Added Component: Designator=C62B(C 0402)
+Added Component: Designator=D1(1N4148WT7)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = "1N4148WT-7"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = "https://www.arrow.com/en/products/1n4148wt-7/diodes-incorporated?region=nac"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets-305/73268.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "0mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "Diodes Inc."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "1N4148WT-7"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = "621-1N4148WT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/Diodes-Incorporated/1N4148WT-7?qs=FITO%2F%2FQgYDlMYETivVNccQ%3D%3D"; VariantName = "[No Variations]"
+Added Component: Designator=FAN(SM04B-XSRS-ETB_2)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://pt.mouser.com/datasheet/3/1070/1/eXSR.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "JST (JAPAN SOLDERLESS TERMINALS)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "SM04B-XSRS-ETB(LF)(SN)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = "306-SM04BXSRSETBLFSN"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/JST-Commercial/SM04B-XSRS-ETBLFSN?qs=QpmGXVUTftEeZ2Uizbg35Q%3D%3D"; VariantName = "[No Variations]"
+Added Component: Designator=IC1A(QFN50P300X300X100-17N-D)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://www.monolithicpower.com/en/documentview/productdocument/index/version/2/document_type/Datasheet/lang/en/sku/MA730GQ-Z/document_id/3563/"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "1mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "Monolithic Power Systems (MPS)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "MA730GQ-P"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = "946-MA730GQ-P"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/Monolithic-Power-Systems-MPS/MA730GQ-P?qs=YCa%2FAAYMW03olhL8jPL5vA%3D%3D"; VariantName = "[No Variations]"
+Added Component: Designator=IC1B(QFN50P300X300X100-17N-D)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://www.monolithicpower.com/en/documentview/productdocument/index/version/2/document_type/Datasheet/lang/en/sku/MA730GQ-Z/document_id/3563/"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "1mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "Monolithic Power Systems (MPS)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "MA730GQ-P"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = "946-MA730GQ-P"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/Monolithic-Power-Systems-MPS/MA730GQ-P?qs=YCa%2FAAYMW03olhL8jPL5vA%3D%3D"; VariantName = "[No Variations]"
+Added Component: Designator=IC2(SOT229P700X180-4N)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets-28/DSA-550594.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "1.8mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "Advanced"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "AMS1117-3.3"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=IC3(SON50P300X200X60-9N)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = "AT24C02D-MAHM-E"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = "https://www.arrow.com/en/products/at24c02d-mahm-e/microchip-technology?utm_currency=USD&region=nac"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://componentsearchengine.com/Datasheets/1/AT24C02D-MAHM-E.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "0.6mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "Microchip"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "AT24C02D-MAHM-E"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = "579-AT24C02D-MAHM-E"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/Microchip-Technology/AT24C02D-MAHM-E?qs=CM3LqkkxGd7QnJRv2iJ8hQ%3D%3D"; VariantName = "[No Variations]"
+Added Component: Designator=IC4(LSM6DSV16BXTR)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = "LSM6DSV320XTR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = "https://www.arrow.com/en/products/lsm6dsv320xtr/stmicroelectronics?utm_currency=USD&region=nac"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://www.st.com/resource/en/datasheet/lsm6dsv320x.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "0.74mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "STMicroelectronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "LSM6DSV320XTR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = "511-LSM6DSV320XTR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/STMicroelectronics/LSM6DSV320XTR?qs=ZcfC38r4PovtVvaAitDAYA%3D%3D"; VariantName = "[No Variations]"
+Added Component: Designator=IC5(QFN40P800X800X100-69N-D)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://www.st.com/resource/en/datasheet/stm32h562ag.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "1mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "STMicroelectronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "STM32H562RIV6"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = "511-STM32H562RIV6"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/STMicroelectronics/STM32H562RIV6?qs=amGC7iS6iy8R%2FTU6LJUskw%3D%3D"; VariantName = "[No Variations]"
+Added Component: Designator=J1(40PSJMDSSG1TFLFSN)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://www.jst-mfg.com/product/pdf/eng/eJMD.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "4.8mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "JST (JAPAN SOLDERLESS TERMINALS)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "40PS-JMDSS-G-1-TFLFSN"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=J?(10132797033100LF)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://cdn.amphenol-cs.com/media/wysiwyg/files/drawing/10132797.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "3.45mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "Amphenol Communications Solutions"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "10132797-033100LF"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=Q1(SOT323)
+Added Component: Designator=R1(R 0402)
+Added Component: Designator=R2(R 0402)
+Added Component: Designator=R3(R 0402)
+Added Component: Designator=R4(R 0402)
+Added Component: Designator=R5(R 0402)
+Added Component: Designator=R6(R 0402)
+Added Component: Designator=R7(R 0402)
+Added Component: Designator=R8A(R 0402)
+Added Component: Designator=R8B(R 0402)
+Added Component: Designator=R8C(R 0402)
+Added Component: Designator=R8D(R 0402)
+Added Component: Designator=R8E(R 0402)
+Added Component: Designator=R8F(R 0402)
+Added Component: Designator=R8G(R 0402)
+Added Component: Designator=R8H(R 0402)
+Added Component: Designator=R8I(R 0402)
+Added Component: Designator=R8J(R 0402)
+Added Component: Designator=R8K(R 0402)
+Added Component: Designator=R8L(R 0402)
+Added Component: Designator=R8M(R 0402)
+Added Component: Designator=R9(R 0402)
+Added Component: Designator=R10(R 0402)
+Added Component: Designator=R11(R 0402)
+Added Component: Designator=R12(R 0402)
+Added Component: Designator=R13(R 0402)
+Added Component: Designator=R14(R 0402)
+Added Component: Designator=R15(R 0402)
+Added Component: Designator=R16(R 0402)
+Added Component: Designator=R17(R 0402)
+Added Component: Designator=Y1(MCSJK7U1600101080B10)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://componentsearchengine.com/Datasheets/2/MCSJK-7U-16.00-10-10-80-B-10.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "0.8mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "Multicomp Pro"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "MCSJK-7U-16.00-10-10-80-B-10"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=CLK2 Pin=C1-1
+Added Pin To Net: NetName=GND Pin=C1-2
+Added Pin To Net: NetName=Vcap1 Pin=C2-1
+Added Pin To Net: NetName=GND Pin=C2-2
+Added Pin To Net: NetName=Vcap1 Pin=C3-1
+Added Pin To Net: NetName=GND Pin=C3-2
+Added Pin To Net: NetName=Vcap1 Pin=C4-1
+Added Pin To Net: NetName=GND Pin=C4-2
+Added Pin To Net: NetName=Vcap1 Pin=C5-1
+Added Pin To Net: NetName=GND Pin=C5-2
+Added Pin To Net: NetName=CLK1 Pin=C6-1
+Added Pin To Net: NetName=GND Pin=C6-2
+Added Pin To Net: NetName=Vcap2 Pin=C7-1
+Added Pin To Net: NetName=GND Pin=C7-2
+Added Pin To Net: NetName=Vcap2 Pin=C8-1
+Added Pin To Net: NetName=GND Pin=C8-2
+Added Pin To Net: NetName=Vcap2 Pin=C9-1
+Added Pin To Net: NetName=GND Pin=C9-2
+Added Pin To Net: NetName=Vcap2 Pin=C10-1
+Added Pin To Net: NetName=GND Pin=C10-2
+Added Pin To Net: NetName=Vbat_IN_ADC Pin=C11-1
+Added Pin To Net: NetName=GND Pin=C11-2
+Added Pin To Net: NetName=Vbat_IN_ADC Pin=C12-1
+Added Pin To Net: NetName=GND Pin=C12-2
+Added Pin To Net: NetName=3.3v Pin=C13-1
+Added Pin To Net: NetName=GND Pin=C13-2
+Added Pin To Net: NetName=3.3v Pin=C14-1
+Added Pin To Net: NetName=GND Pin=C14-2
+Added Pin To Net: NetName=3.3v Pin=C15-1
+Added Pin To Net: NetName=GND Pin=C15-2
+Added Pin To Net: NetName=3.3v Pin=C16-1
+Added Pin To Net: NetName=GND Pin=C16-2
+Added Pin To Net: NetName=3.3v Pin=C17-1
+Added Pin To Net: NetName=GND Pin=C17-2
+Added Pin To Net: NetName=3.3v Pin=C18-1
+Added Pin To Net: NetName=GND Pin=C18-2
+Added Pin To Net: NetName=3.3v Pin=C19-1
+Added Pin To Net: NetName=GND Pin=C19-2
+Added Pin To Net: NetName=3.3v Pin=C20-1
+Added Pin To Net: NetName=GND Pin=C20-2
+Added Pin To Net: NetName=3.3v Pin=C21-1
+Added Pin To Net: NetName=GND Pin=C21-2
+Added Pin To Net: NetName=3.3v Pin=C22-1
+Added Pin To Net: NetName=GND Pin=C22-2
+Added Pin To Net: NetName=3.3v Pin=C23-1
+Added Pin To Net: NetName=GND Pin=C23-2
+Added Pin To Net: NetName=3.3v Pin=C24-1
+Added Pin To Net: NetName=GND Pin=C24-2
+Added Pin To Net: NetName=3.3v Pin=C25-1
+Added Pin To Net: NetName=GND Pin=C25-2
+Added Pin To Net: NetName=5v Pin=C26-1
+Added Pin To Net: NetName=GND Pin=C26-2
+Added Pin To Net: NetName=5v Pin=C27-1
+Added Pin To Net: NetName=GND Pin=C27-2
+Added Pin To Net: NetName=Vcc Pin=C28-1
+Added Pin To Net: NetName=GND Pin=C28-2
+Added Pin To Net: NetName=Vcc Pin=C29-1
+Added Pin To Net: NetName=GND Pin=C29-2
+Added Pin To Net: NetName=Vcc Pin=C30-1
+Added Pin To Net: NetName=GND Pin=C30-2
+Added Pin To Net: NetName=5v Pin=C31-1
+Added Pin To Net: NetName=GND Pin=C31-2
+Added Pin To Net: NetName=5v Pin=C32-1
+Added Pin To Net: NetName=GND Pin=C32-2
+Added Pin To Net: NetName=3.3v Pin=C33-1
+Added Pin To Net: NetName=GND Pin=C33-2
+Added Pin To Net: NetName=LINE_BACK_LEFT_B Pin=C35A-1
+Added Pin To Net: NetName=GND Pin=C35A-2
+Added Pin To Net: NetName=LINE_BACK_LEFT_A Pin=C35B-1
+Added Pin To Net: NetName=GND Pin=C35B-2
+Added Pin To Net: NetName=LINE_BACK_RIGHT_B Pin=C35C-1
+Added Pin To Net: NetName=GND Pin=C35C-2
+Added Pin To Net: NetName=LINE_BACK_RIGHT_A Pin=C35D-1
+Added Pin To Net: NetName=GND Pin=C35D-2
+Added Pin To Net: NetName=LINE_FRONT_LEFT_B Pin=C35E-1
+Added Pin To Net: NetName=GND Pin=C35E-2
+Added Pin To Net: NetName=LINE_FRONT_LEFT_A Pin=C35F-1
+Added Pin To Net: NetName=GND Pin=C35F-2
+Added Pin To Net: NetName=LINE_FRONT_RIGHT_B Pin=C35G-1
+Added Pin To Net: NetName=GND Pin=C35G-2
+Added Pin To Net: NetName=JOY_UP Pin=C35H-1
+Added Pin To Net: NetName=GND Pin=C35H-2
+Added Pin To Net: NetName=LINE_FRONT_RIGHT_A Pin=C35I-1
+Added Pin To Net: NetName=GND Pin=C35I-2
+Added Pin To Net: NetName=JOY_CENTER Pin=C35J-1
+Added Pin To Net: NetName=GND Pin=C35J-2
+Added Pin To Net: NetName=JOY_RIGHT Pin=C35K-1
+Added Pin To Net: NetName=GND Pin=C35K-2
+Added Pin To Net: NetName=JOY_LEFT Pin=C35L-1
+Added Pin To Net: NetName=GND Pin=C35L-2
+Added Pin To Net: NetName=JOY_DOWN Pin=C35M-1
+Added Pin To Net: NetName=GND Pin=C35M-2
+Added Pin To Net: NetName=5v Pin=C36-1
+Added Pin To Net: NetName=GND Pin=C36-2
+Added Pin To Net: NetName=3.3v Pin=C37-1
+Added Pin To Net: NetName=GND Pin=C37-2
+Added Pin To Net: NetName=3.3v Pin=C38-1
+Added Pin To Net: NetName=GND Pin=C38-2
+Added Pin To Net: NetName=3.3v Pin=C39-1
+Added Pin To Net: NetName=GND Pin=C39-2
+Added Pin To Net: NetName=3.3v Pin=C40-1
+Added Pin To Net: NetName=GND Pin=C40-2
+Added Pin To Net: NetName=Vin Pin=C41-1
+Added Pin To Net: NetName=GND Pin=C41-2
+Added Pin To Net: NetName=Vin Pin=C42-1
+Added Pin To Net: NetName=GND Pin=C42-2
+Added Pin To Net: NetName=5v Pin=C43-1
+Added Pin To Net: NetName=GND Pin=C43-2
+Added Pin To Net: NetName=5v Pin=C44-1
+Added Pin To Net: NetName=GND Pin=C44-2
+Added Pin To Net: NetName=5v Pin=C45-1
+Added Pin To Net: NetName=GND Pin=C45-2
+Added Pin To Net: NetName=3.3v Pin=C46-1
+Added Pin To Net: NetName=GND Pin=C46-2
+Added Pin To Net: NetName=Vin Pin=C47-1
+Added Pin To Net: NetName=GND Pin=C47-2
+Added Pin To Net: NetName=3.3v Pin=C48-1
+Added Pin To Net: NetName=GND Pin=C48-2
+Added Pin To Net: NetName=3.3v Pin=C49-1
+Added Pin To Net: NetName=GND Pin=C49-2
+Added Pin To Net: NetName=3.3v Pin=C61A-1
+Added Pin To Net: NetName=GND Pin=C61A-2
+Added Pin To Net: NetName=3.3v Pin=C61B-1
+Added Pin To Net: NetName=GND Pin=C61B-2
+Added Pin To Net: NetName=3.3v Pin=C62A-1
+Added Pin To Net: NetName=GND Pin=C62A-2
+Added Pin To Net: NetName=3.3v Pin=C62B-1
+Added Pin To Net: NetName=GND Pin=C62B-2
+Added Pin To Net: NetName=5v Pin=D1-1
+Added Pin To Net: NetName=FAN_EGND Pin=D1-2
+Added Pin To Net: NetName=5v Pin=FAN-1
+Added Pin To Net: NetName=5v Pin=FAN-2
+Added Pin To Net: NetName=FAN_EGND Pin=FAN-3
+Added Pin To Net: NetName=FAN_EGND Pin=FAN-4
+Added Pin To Net: NetName=ENK_SPI_MOSI Pin=IC1A-4
+Added Pin To Net: NetName=CS_U_Encoder1 Pin=IC1A-5
+Added Pin To Net: NetName=ENK_SPI_MISO Pin=IC1A-7
+Added Pin To Net: NetName=GND Pin=IC1A-8
+Added Pin To Net: NetName=GND Pin=IC1A-10
+Added Pin To Net: NetName=ENK_SPI_SCK Pin=IC1A-12
+Added Pin To Net: NetName=3.3v Pin=IC1A-13
+Added Pin To Net: NetName=GND Pin=IC1A-17
+Added Pin To Net: NetName=ENK_SPI_MOSI Pin=IC1B-4
+Added Pin To Net: NetName=CS_U_Encoder2 Pin=IC1B-5
+Added Pin To Net: NetName=ENK_SPI_MISO Pin=IC1B-7
+Added Pin To Net: NetName=GND Pin=IC1B-8
+Added Pin To Net: NetName=GND Pin=IC1B-10
+Added Pin To Net: NetName=ENK_SPI_SCK Pin=IC1B-12
+Added Pin To Net: NetName=3.3v Pin=IC1B-13
+Added Pin To Net: NetName=GND Pin=IC1B-17
+Added Pin To Net: NetName=GND Pin=IC2-1
+Added Pin To Net: NetName=3.3v Pin=IC2-2
+Added Pin To Net: NetName=5v Pin=IC2-3
+Added Pin To Net: NetName=NetIC3_1 Pin=IC3-1
+Added Pin To Net: NetName=NetIC3_2 Pin=IC3-2
+Added Pin To Net: NetName=NetIC3_3 Pin=IC3-3
+Added Pin To Net: NetName=GND Pin=IC3-4
+Added Pin To Net: NetName=I2C_EPROM_SDA Pin=IC3-5
+Added Pin To Net: NetName=I2C_EPROM_SCL Pin=IC3-6
+Added Pin To Net: NetName=NetIC3_7 Pin=IC3-7
+Added Pin To Net: NetName=3.3v Pin=IC3-8
+Added Pin To Net: NetName=GND Pin=IC3-9
+Added Pin To Net: NetName=NetIC4_1 Pin=IC4-1
+Added Pin To Net: NetName=GND Pin=IC4-2
+Added Pin To Net: NetName=GND Pin=IC4-3
+Added Pin To Net: NetName=IMU_INTERRUPT Pin=IC4-4
+Added Pin To Net: NetName=3.3v Pin=IC4-5
+Added Pin To Net: NetName=GND Pin=IC4-6
+Added Pin To Net: NetName=GND Pin=IC4-7
+Added Pin To Net: NetName=3.3v Pin=IC4-8
+Added Pin To Net: NetName=NetIC4_10 Pin=IC4-10
+Added Pin To Net: NetName=NetIC4_11 Pin=IC4-11
+Added Pin To Net: NetName=3.3v Pin=IC4-12
+Added Pin To Net: NetName=IMU_SCL Pin=IC4-13
+Added Pin To Net: NetName=IMU_SDA Pin=IC4-14
+Added Pin To Net: NetName=3.3v Pin=IC5-1
+Added Pin To Net: NetName=Vin Pin=IC5-2
+Added Pin To Net: NetName=JOY_UP Pin=IC5-3
+Added Pin To Net: NetName=JOY_DOWN Pin=IC5-4
+Added Pin To Net: NetName=CLK1 Pin=IC5-5
+Added Pin To Net: NetName=CLK2 Pin=IC5-6
+Added Pin To Net: NetName=NRST Pin=IC5-7
+Added Pin To Net: NetName=JOY_LEFT Pin=IC5-8
+Added Pin To Net: NetName=JOY_RIGHT Pin=IC5-9
+Added Pin To Net: NetName=JOY_CENTER Pin=IC5-10
+Added Pin To Net: NetName=Vbat_IN_ADC Pin=IC5-11
+Added Pin To Net: NetName=GND Pin=IC5-12
+Added Pin To Net: NetName=3.3v Pin=IC5-13
+Added Pin To Net: NetName=UART3_TX Pin=IC5-14
+Added Pin To Net: NetName=UART3_RX Pin=IC5-15
+Added Pin To Net: NetName=UART2_TX Pin=IC5-16
+Added Pin To Net: NetName=UART2_RX Pin=IC5-17
+Added Pin To Net: NetName=GND Pin=IC5-18
+Added Pin To Net: NetName=3.3v Pin=IC5-19
+Added Pin To Net: NetName=LINE_BACK_LEFT_B Pin=IC5-20
+Added Pin To Net: NetName=LINE_BACK_LEFT_A Pin=IC5-21
+Added Pin To Net: NetName=LINE_BACK_RIGHT_B Pin=IC5-22
+Added Pin To Net: NetName=LINE_BACK_RIGHT_A Pin=IC5-23
+Added Pin To Net: NetName=LINE_FRONT_LEFT_B Pin=IC5-24
+Added Pin To Net: NetName=LINE_FRONT_LEFT_A Pin=IC5-25
+Added Pin To Net: NetName=LINE_FRONT_RIGHT_B Pin=IC5-26
+Added Pin To Net: NetName=LINE_FRONT_RIGHT_A Pin=IC5-27
+Added Pin To Net: NetName=PWM_BUZZER Pin=IC5-28
+Added Pin To Net: NetName=START_MOD_LED_1 Pin=IC5-29
+Added Pin To Net: NetName=START_MOD_LED_2 Pin=IC5-30
+Added Pin To Net: NetName=Vcap1 Pin=IC5-31
+Added Pin To Net: NetName=GND Pin=IC5-32
+Added Pin To Net: NetName=3.3v Pin=IC5-33
+Added Pin To Net: NetName=START_MOD_LED_3 Pin=IC5-34
+Added Pin To Net: NetName=ENK_SPI_SCK Pin=IC5-35
+Added Pin To Net: NetName=ENK_SPI_MISO Pin=IC5-36
+Added Pin To Net: NetName=ENK_SPI_MOSI Pin=IC5-37
+Added Pin To Net: NetName=CS_U_Encoder2 Pin=IC5-38
+Added Pin To Net: NetName=CS_U_Encoder1 Pin=IC5-39
+Added Pin To Net: NetName=UART4_TX Pin=IC5-40
+Added Pin To Net: NetName=UART4_RX Pin=IC5-41
+Added Pin To Net: NetName=IMU_INTERRUPT Pin=IC5-42
+Added Pin To Net: NetName=IMU_SDA Pin=IC5-43
+Added Pin To Net: NetName=IMU_SCL Pin=IC5-44
+Added Pin To Net: NetName=UART1_RX Pin=IC5-45
+Added Pin To Net: NetName=UART1_TX Pin=IC5-46
+Added Pin To Net: NetName=START_MOD_IR_2 Pin=IC5-47
+Added Pin To Net: NetName=START_MOD_IR_1 Pin=IC5-48
+Added Pin To Net: NetName=SWDIO Pin=IC5-49
+Added Pin To Net: NetName=GND Pin=IC5-50
+Added Pin To Net: NetName=3.3v Pin=IC5-51
+Added Pin To Net: NetName=SWCLK Pin=IC5-52
+Added Pin To Net: NetName=Vin Pin=IC5-53
+Added Pin To Net: NetName=Vin Pin=IC5-54
+Added Pin To Net: NetName=Vin Pin=IC5-55
+Added Pin To Net: NetName=Vin Pin=IC5-56
+Added Pin To Net: NetName=Vin Pin=IC5-57
+Added Pin To Net: NetName=Vin Pin=IC5-58
+Added Pin To Net: NetName=Vin Pin=IC5-59
+Added Pin To Net: NetName=I2C_OLED_SCL Pin=IC5-60
+Added Pin To Net: NetName=I2C_OLED_SDA Pin=IC5-61
+Added Pin To Net: NetName=BOOT0 Pin=IC5-62
+Added Pin To Net: NetName=I2C_EPROM_SCL Pin=IC5-63
+Added Pin To Net: NetName=I2C_EPROM_SDA Pin=IC5-64
+Added Pin To Net: NetName=Vin Pin=IC5-65
+Added Pin To Net: NetName=Vcap2 Pin=IC5-66
+Added Pin To Net: NetName=GND Pin=IC5-67
+Added Pin To Net: NetName=3.3v Pin=IC5-68
+Added Pin To Net: NetName=GND Pin=IC5-69
+Added Pin To Net: NetName=LINE1A Pin=J1-1
+Added Pin To Net: NetName=START_MOD_LED_1 Pin=J1-2
+Added Pin To Net: NetName=LINE1B Pin=J1-3
+Added Pin To Net: NetName=START_MOD_LED_3 Pin=J1-4
+Added Pin To Net: NetName=LINE2A Pin=J1-5
+Added Pin To Net: NetName=START_MOD_LED_2 Pin=J1-6
+Added Pin To Net: NetName=LINE2B Pin=J1-7
+Added Pin To Net: NetName=JOYSTICK_1 Pin=J1-8
+Added Pin To Net: NetName=LINE3A Pin=J1-9
+Added Pin To Net: NetName=JOYSTICK_2 Pin=J1-10
+Added Pin To Net: NetName=LINE3B Pin=J1-11
+Added Pin To Net: NetName=JOYSTICK_3 Pin=J1-12
+Added Pin To Net: NetName=LINE4A Pin=J1-13
+Added Pin To Net: NetName=JOYSTICK_4 Pin=J1-14
+Added Pin To Net: NetName=LINE4B Pin=J1-15
+Added Pin To Net: NetName=JOYSTICK_5 Pin=J1-16
+Added Pin To Net: NetName=UART1_TX Pin=J1-17
+Added Pin To Net: NetName=I2C_OLED_SCL Pin=J1-18
+Added Pin To Net: NetName=UART1_RX Pin=J1-19
+Added Pin To Net: NetName=I2C_OLED_SDA Pin=J1-20
+Added Pin To Net: NetName=UART2_TX Pin=J1-21
+Added Pin To Net: NetName=START_MOD_IR_1 Pin=J1-22
+Added Pin To Net: NetName=UART2_RX Pin=J1-23
+Added Pin To Net: NetName=START_MOD_IR_2 Pin=J1-24
+Added Pin To Net: NetName=UART3_TX Pin=J1-25
+Added Pin To Net: NetName=Vin Pin=J1-26
+Added Pin To Net: NetName=UART3_RX Pin=J1-27
+Added Pin To Net: NetName=NRST Pin=J1-28
+Added Pin To Net: NetName=UART4_TX Pin=J1-29
+Added Pin To Net: NetName=SWCLK Pin=J1-30
+Added Pin To Net: NetName=UART4_RX Pin=J1-31
+Added Pin To Net: NetName=SWDIO Pin=J1-32
+Added Pin To Net: NetName=3.3v Pin=J1-33
+Added Pin To Net: NetName=Vcc Pin=J1-34
+Added Pin To Net: NetName=3.3v Pin=J1-35
+Added Pin To Net: NetName=GND Pin=J1-36
+Added Pin To Net: NetName=5v Pin=J1-37
+Added Pin To Net: NetName=GND Pin=J1-38
+Added Pin To Net: NetName=5v Pin=J1-39
+Added Pin To Net: NetName=GND Pin=J1-40
+Added Pin To Net: NetName=5v Pin=J?-1
+Added Pin To Net: NetName=5v Pin=J?-2
+Added Pin To Net: NetName=5v Pin=J?-3
+Added Pin To Net: NetName=5v Pin=J?-4
+Added Pin To Net: NetName=5v Pin=J?-5
+Added Pin To Net: NetName=5v Pin=J?-6
+Added Pin To Net: NetName=5v Pin=J?-7
+Added Pin To Net: NetName=5v Pin=J?-8
+Added Pin To Net: NetName=5v Pin=J?-9
+Added Pin To Net: NetName=GND Pin=J?-10
+Added Pin To Net: NetName=GND Pin=J?-11
+Added Pin To Net: NetName=GND Pin=J?-12
+Added Pin To Net: NetName=GND Pin=J?-13
+Added Pin To Net: NetName=GND Pin=J?-14
+Added Pin To Net: NetName=GND Pin=J?-15
+Added Pin To Net: NetName=GND Pin=J?-16
+Added Pin To Net: NetName=GND Pin=J?-17
+Added Pin To Net: NetName=GND Pin=J?-18
+Added Pin To Net: NetName=Vcc Pin=J?-19
+Added Pin To Net: NetName=Vin Pin=J?-20
+Added Pin To Net: NetName=Vin Pin=J?-21
+Added Pin To Net: NetName=Vin Pin=J?-22
+Added Pin To Net: NetName=Vin Pin=J?-23
+Added Pin To Net: NetName=Vin Pin=J?-24
+Added Pin To Net: NetName=Vin Pin=J?-25
+Added Pin To Net: NetName=Vin Pin=J?-26
+Added Pin To Net: NetName=Vin Pin=J?-27
+Added Pin To Net: NetName=Vin Pin=J?-28
+Added Pin To Net: NetName=Vin Pin=J?-29
+Added Pin To Net: NetName=Vin Pin=J?-30
+Added Pin To Net: NetName=NetQ1_1 Pin=Q1-1
+Added Pin To Net: NetName=GND Pin=Q1-2
+Added Pin To Net: NetName=FAN_EGND Pin=Q1-3
+Added Pin To Net: NetName=BOOT0 Pin=R1-1
+Added Pin To Net: NetName=GND Pin=R1-2
+Added Pin To Net: NetName=Vbat_IN_ADC Pin=R2-1
+Added Pin To Net: NetName=Vcc Pin=R2-2
+Added Pin To Net: NetName=GND Pin=R3-1
+Added Pin To Net: NetName=Vbat_IN_ADC Pin=R3-2
+Added Pin To Net: NetName=NetQ1_1 Pin=R4-1
+Added Pin To Net: NetName=PWM_BUZZER Pin=R4-2
+Added Pin To Net: NetName=GND Pin=R5-1
+Added Pin To Net: NetName=NetQ1_1 Pin=R5-2
+Added Pin To Net: NetName=NetIC3_3 Pin=R6-1
+Added Pin To Net: NetName=3.3v Pin=R6-2
+Added Pin To Net: NetName=NetIC3_2 Pin=R7-1
+Added Pin To Net: NetName=3.3v Pin=R7-2
+Added Pin To Net: NetName=LINE4B Pin=R8A-1
+Added Pin To Net: NetName=LINE_BACK_LEFT_B Pin=R8A-2
+Added Pin To Net: NetName=LINE4A Pin=R8B-1
+Added Pin To Net: NetName=LINE_BACK_LEFT_A Pin=R8B-2
+Added Pin To Net: NetName=LINE3B Pin=R8C-1
+Added Pin To Net: NetName=LINE_BACK_RIGHT_B Pin=R8C-2
+Added Pin To Net: NetName=LINE3A Pin=R8D-1
+Added Pin To Net: NetName=LINE_BACK_RIGHT_A Pin=R8D-2
+Added Pin To Net: NetName=LINE2B Pin=R8E-1
+Added Pin To Net: NetName=LINE_FRONT_LEFT_B Pin=R8E-2
+Added Pin To Net: NetName=LINE2A Pin=R8F-1
+Added Pin To Net: NetName=LINE_FRONT_LEFT_A Pin=R8F-2
+Added Pin To Net: NetName=LINE1B Pin=R8G-1
+Added Pin To Net: NetName=LINE_FRONT_RIGHT_B Pin=R8G-2
+Added Pin To Net: NetName=JOYSTICK_1 Pin=R8H-1
+Added Pin To Net: NetName=JOY_UP Pin=R8H-2
+Added Pin To Net: NetName=LINE1A Pin=R8I-1
+Added Pin To Net: NetName=LINE_FRONT_RIGHT_A Pin=R8I-2
+Added Pin To Net: NetName=JOYSTICK_5 Pin=R8J-1
+Added Pin To Net: NetName=JOY_CENTER Pin=R8J-2
+Added Pin To Net: NetName=JOYSTICK_4 Pin=R8K-1
+Added Pin To Net: NetName=JOY_RIGHT Pin=R8K-2
+Added Pin To Net: NetName=JOYSTICK_3 Pin=R8L-1
+Added Pin To Net: NetName=JOY_LEFT Pin=R8L-2
+Added Pin To Net: NetName=JOYSTICK_2 Pin=R8M-1
+Added Pin To Net: NetName=JOY_DOWN Pin=R8M-2
+Added Pin To Net: NetName=NetIC3_1 Pin=R9-1
+Added Pin To Net: NetName=3.3v Pin=R9-2
+Added Pin To Net: NetName=I2C_EPROM_SCL Pin=R10-1
+Added Pin To Net: NetName=3.3v Pin=R10-2
+Added Pin To Net: NetName=I2C_EPROM_SDA Pin=R11-1
+Added Pin To Net: NetName=3.3v Pin=R11-2
+Added Pin To Net: NetName=GND Pin=R12-1
+Added Pin To Net: NetName=NetIC3_7 Pin=R12-2
+Added Pin To Net: NetName=IMU_SDA Pin=R13-1
+Added Pin To Net: NetName=3.3v Pin=R13-2
+Added Pin To Net: NetName=IMU_SCL Pin=R14-1
+Added Pin To Net: NetName=3.3v Pin=R14-2
+Added Pin To Net: NetName=NetIC4_11 Pin=R15-1
+Added Pin To Net: NetName=3.3v Pin=R15-2
+Added Pin To Net: NetName=NetIC4_10 Pin=R16-1
+Added Pin To Net: NetName=3.3v Pin=R16-2
+Added Pin To Net: NetName=GND Pin=R17-1
+Added Pin To Net: NetName=NetIC4_1 Pin=R17-2
+Added Pin To Net: NetName=CLK1 Pin=Y1-1
+Added Pin To Net: NetName=GND Pin=Y1-2
+Added Pin To Net: NetName=CLK2 Pin=Y1-3
+Added Pin To Net: NetName=GND Pin=Y1-4
+Added Member To Class: ClassName=U_MCU Member=Component C1 22pF
+Added Member To Class: ClassName=U_MCU Member=Component C2 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C3 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C4 100nF
+Added Member To Class: ClassName=U_MCU Member=Component C5 100nF
+Added Member To Class: ClassName=U_MCU Member=Component C6 22pF
+Added Member To Class: ClassName=U_MCU Member=Component C7 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C8 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C9 100nF
+Added Member To Class: ClassName=U_MCU Member=Component C10 100nF
+Added Member To Class: ClassName=U_MCU Member=Component C11 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C12 100nF
+Added Member To Class: ClassName=U_MCU Member=Component C13 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C14 100nF
+Added Member To Class: ClassName=U_MCU Member=Component C15 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C16 100nF
+Added Member To Class: ClassName=U_MCU Member=Component C17 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C18 100nF
+Added Member To Class: ClassName=U_MCU Member=Component C19 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C20 100nF
+Added Member To Class: ClassName=U_MCU Member=Component C21 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C22 100nF
+Added Member To Class: ClassName=U_MCU Member=Component C23 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C24 100nF
+Added Member To Class: ClassName=U_Power_supply Member=Component C25 22uF
+Added Member To Class: ClassName=U_FAN Member=Component C26 (C49) 1uF
+Added Member To Class: ClassName=U_FAN Member=Component C27 (C50) 100nF
+Added Member To Class: ClassName=U_BTB_Main_connector. Member=Component C28 10uF 25V
+Added Member To Class: ClassName=U_BTB_Main_connector. Member=Component C29 1uF 25V
+Added Member To Class: ClassName=U_BTB_Main_connector. Member=Component C30 100nF 25V
+Added Member To Class: ClassName=U_BTB_Main_connector. Member=Component C31 10uF
+Added Member To Class: ClassName=U_BTB_Main_connector. Member=Component C32 1uF
+Added Member To Class: ClassName=U_Power_supply Member=Component C33 (C26) 10uF
+Added Member To Class: ClassName=Low pass filter1 Member=Component C35A (C27) 100nF
+Added Member To Class: ClassName=Low pass filter2 Member=Component C35B (C27) 100nF
+Added Member To Class: ClassName=Low pass filter3 Member=Component C35C (C27) 100nF
+Added Member To Class: ClassName=Low pass filter4 Member=Component C35D (C27) 100nF
+Added Member To Class: ClassName=Low pass filter5 Member=Component C35E (C27) 100nF
+Added Member To Class: ClassName=Low pass filter6 Member=Component C35F (C27) 100nF
+Added Member To Class: ClassName=Low pass filter7 Member=Component C35G (C27) 100nF
+Added Member To Class: ClassName=Low pass filter8 Member=Component C35H (C27) 100nF
+Added Member To Class: ClassName=LowPass1 Member=Component C35I (C27) 100nF
+Added Member To Class: ClassName=LowPass2 Member=Component C35J (C27) 100nF
+Added Member To Class: ClassName=LowPass3 Member=Component C35K (C27) 100nF
+Added Member To Class: ClassName=LowPass4 Member=Component C35L (C27) 100nF
+Added Member To Class: ClassName=LowPass5 Member=Component C35M (C27) 100nF
+Added Member To Class: ClassName=U_BTB_Main_connector. Member=Component C36 (C33) 100nF
+Added Member To Class: ClassName=U_EPROM Member=Component C37 (C43) 1uF
+Added Member To Class: ClassName=U_EPROM Member=Component C38 (C44) 100nF
+Added Member To Class: ClassName=U_IMU Member=Component C39 (C45) 1uF
+Added Member To Class: ClassName=U_IMU Member=Component C40 (C46) 100nF
+Added Member To Class: ClassName=U_BTB_Main_connector. Member=Component C41 (C34) 10uF 25V
+Added Member To Class: ClassName=U_BTB_Main_connector. Member=Component C42 (C35) 1uF 25V
+Added Member To Class: ClassName=U_BTB_Top_connector Member=Component C43 (C37) 10uF
+Added Member To Class: ClassName=U_BTB_Top_connector Member=Component C44 (C38) 1uF
+Added Member To Class: ClassName=U_BTB_Top_connector Member=Component C45 (C39) 100nF
+Added Member To Class: ClassName=U_BTB_Top_connector Member=Component C46 (C40) 10uF
+Added Member To Class: ClassName=U_BTB_Main_connector. Member=Component C47 (C36) 100nF 25V
+Added Member To Class: ClassName=U_BTB_Top_connector Member=Component C48 (C41) 1uF
+Added Member To Class: ClassName=U_BTB_Top_connector Member=Component C49 (C42) 100nF
+Added Member To Class: ClassName=U_Encoder1 Member=Component C61A (C47) 1uF
+Added Member To Class: ClassName=U_Encoder2 Member=Component C61B (C47) 1uF
+Added Member To Class: ClassName=U_Encoder1 Member=Component C62A (C48) 100nF
+Added Member To Class: ClassName=U_Encoder2 Member=Component C62B (C48) 100nF
+Added Member To Class: ClassName=U_FAN Member=Component D1 1N4148WT-7
+Added Member To Class: ClassName=U_FAN Member=Component FAN (FAN1) SM04B-XSRS-ETB_LF__SN_
+Added Member To Class: ClassName=U_Encoder1 Member=Component IC1A (IC5) MA730GQ-P
+Added Member To Class: ClassName=U_Encoder2 Member=Component IC1B (IC5) MA730GQ-P
+Added Member To Class: ClassName=U_Power_supply Member=Component IC2 AMS1117-3.3
+Added Member To Class: ClassName=U_EPROM Member=Component IC3 AT24C02D-MAHM-E
+Added Member To Class: ClassName=U_IMU Member=Component IC4 LSM6DSV320XTR
+Added Member To Class: ClassName=U_MCU Member=Component IC5 (IC1) STM32H562RIV6
+Added Member To Class: ClassName=U_BTB_Top_connector Member=Component J1 (INTERFACE1) 40PS-JMDSS-G-1-TFLFSN
+Added Member To Class: ClassName=U_BTB_Main_connector. Member=Component J? (DRIVER1) 10132797-033100LF
+Added Member To Class: ClassName=U_FAN Member=Component Q1 Model
+Added Member To Class: ClassName=U_MCU Member=Component R1 10k
+Added Member To Class: ClassName=U_MCU Member=Component R2 120k
+Added Member To Class: ClassName=U_MCU Member=Component R3 27k
+Added Member To Class: ClassName=U_FAN Member=Component R4 (R16) 330R
+Added Member To Class: ClassName=U_FAN Member=Component R5 (R17) 10K
+Added Member To Class: ClassName=U_EPROM Member=Component R6 (R5) 10K
+Added Member To Class: ClassName=U_EPROM Member=Component R7 (R6) 10K
+Added Member To Class: ClassName=Low pass filter1 Member=Component R8A (R4) 1K
+Added Member To Class: ClassName=Low pass filter2 Member=Component R8B (R4) 1K
+Added Member To Class: ClassName=Low pass filter3 Member=Component R8C (R4) 1K
+Added Member To Class: ClassName=Low pass filter4 Member=Component R8D (R4) 1K
+Added Member To Class: ClassName=Low pass filter5 Member=Component R8E (R4) 1K
+Added Member To Class: ClassName=Low pass filter6 Member=Component R8F (R4) 1K
+Added Member To Class: ClassName=Low pass filter7 Member=Component R8G (R4) 1K
+Added Member To Class: ClassName=Low pass filter8 Member=Component R8H (R4) 1K
+Added Member To Class: ClassName=LowPass1 Member=Component R8I (R4) 1K
+Added Member To Class: ClassName=LowPass2 Member=Component R8J (R4) 1K
+Added Member To Class: ClassName=LowPass3 Member=Component R8K (R4) 1K
+Added Member To Class: ClassName=LowPass4 Member=Component R8L (R4) 1K
+Added Member To Class: ClassName=LowPass5 Member=Component R8M (R4) 1K
+Added Member To Class: ClassName=U_EPROM Member=Component R9 (R7) 10K
+Added Member To Class: ClassName=U_EPROM Member=Component R10 (R8) 4.7K
+Added Member To Class: ClassName=U_EPROM Member=Component R11 (R9) 4.7K
+Added Member To Class: ClassName=U_EPROM Member=Component R12 (R10) 10K
+Added Member To Class: ClassName=U_IMU Member=Component R13 (R11) 4.7K
+Added Member To Class: ClassName=U_IMU Member=Component R14 (R12) 4.7K
+Added Member To Class: ClassName=U_IMU Member=Component R15 (R13) 0
+Added Member To Class: ClassName=U_IMU Member=Component R16 (R14) 0
+Added Member To Class: ClassName=U_IMU Member=Component R17 (R15) 10K
+Added Member To Class: ClassName=U_MCU Member=Component Y1 MCSJK-7U-16.00-10-10-80-B-10
+Added Room: Name=U_MCU
+Added Room: Name=U_Power_supply

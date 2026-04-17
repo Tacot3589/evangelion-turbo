@@ -1,0 +1,32 @@
+Change Component Designator: OldDesignator=C35_LowPass1 NewDesignator=C35I
+Change Component Designator: OldDesignator=C35_LowPass2 NewDesignator=C35J
+Change Component Designator: OldDesignator=C35_LowPass3 NewDesignator=C35K
+Change Component Designator: OldDesignator=C35_LowPass4 NewDesignator=C35L
+Change Component Designator: OldDesignator=C35_LowPass5 NewDesignator=C35M
+Change Component Designator: OldDesignator=C35_Low pass filter1 NewDesignator=C35A
+Change Component Designator: OldDesignator=C35_Low pass filter2 NewDesignator=C35B
+Change Component Designator: OldDesignator=C35_Low pass filter3 NewDesignator=C35C
+Change Component Designator: OldDesignator=C35_Low pass filter4 NewDesignator=C35D
+Change Component Designator: OldDesignator=C35_Low pass filter5 NewDesignator=C35E
+Change Component Designator: OldDesignator=C35_Low pass filter6 NewDesignator=C35F
+Change Component Designator: OldDesignator=C35_Low pass filter7 NewDesignator=C35G
+Change Component Designator: OldDesignator=C35_Low pass filter8 NewDesignator=C35H
+Change Component Designator: OldDesignator=C61_U_Encoder1 NewDesignator=C61A
+Change Component Designator: OldDesignator=C61_U_Encoder2 NewDesignator=C61B
+Change Component Designator: OldDesignator=C62_U_Encoder1 NewDesignator=C62A
+Change Component Designator: OldDesignator=C62_U_Encoder2 NewDesignator=C62B
+Change Component Designator: OldDesignator=IC1_U_Encoder1 NewDesignator=IC1A
+Change Component Designator: OldDesignator=IC1_U_Encoder2 NewDesignator=IC1B
+Change Component Designator: OldDesignator=R8_LowPass1 NewDesignator=R8I
+Change Component Designator: OldDesignator=R8_LowPass2 NewDesignator=R8J
+Change Component Designator: OldDesignator=R8_LowPass3 NewDesignator=R8K
+Change Component Designator: OldDesignator=R8_LowPass4 NewDesignator=R8L
+Change Component Designator: OldDesignator=R8_LowPass5 NewDesignator=R8M
+Change Component Designator: OldDesignator=R8_Low pass filter1 NewDesignator=R8A
+Change Component Designator: OldDesignator=R8_Low pass filter2 NewDesignator=R8B
+Change Component Designator: OldDesignator=R8_Low pass filter3 NewDesignator=R8C
+Change Component Designator: OldDesignator=R8_Low pass filter4 NewDesignator=R8D
+Change Component Designator: OldDesignator=R8_Low pass filter5 NewDesignator=R8E
+Change Component Designator: OldDesignator=R8_Low pass filter6 NewDesignator=R8F
+Change Component Designator: OldDesignator=R8_Low pass filter7 NewDesignator=R8G
+Change Component Designator: OldDesignator=R8_Low pass filter8 NewDesignator=R8H
