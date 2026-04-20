@@ -1,5 +1,5 @@
-Record=TopLevelDocument|FileName=PCB_motors.SchDoc|SheetNumber=1
-Record=SheetSymbol|SourceDocument=PCB_motors.SchDoc|Designator=U_BTB_Main_connector|SchDesignator=U_BTB_Main_connector|FileName=BTB_Main_connector.SchDoc|SheetNumber=4|SymbolType=Normal|RawFileName=BTB_Main_connector.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
-Record=SheetSymbol|SourceDocument=PCB_motors.SchDoc|Designator=U_MotorDriver|SchDesignator=U_MotorDriver|FileName=MotorDriver.SchDoc|SheetNumber=2|SymbolType=Normal|RawFileName=MotorDriver.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
-Record=SheetSymbol|SourceDocument=PCB_motors.SchDoc|Designator=U_MotorDriver|SchDesignator=U_MotorDriver|FileName=MotorDriver.SchDoc|SheetNumber=2|SymbolType=Normal|RawFileName=MotorDriver.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
-Record=SheetSymbol|SourceDocument=PCB_motors.SchDoc|Designator=U_Power_supply|SchDesignator=U_Power_supply|FileName=Power_supply.SchDoc|SheetNumber=3|SymbolType=Normal|RawFileName=Power_supply.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=TopLevelDocument|FileName=Interface.SchDoc|SheetNumber=2
+Record=NoMainPathDocument|SourceDocument=Interface.SchDoc|FileName=MCU.SchDoc|SheetNumber=5
+Record=NoMainPathDocument|SourceDocument=Interface.SchDoc|FileName=MotorDriver.SchDoc|SheetNumber=3
+Record=NoMainPathDocument|SourceDocument=Interface.SchDoc|FileName=PCB_motors.SchDoc|SheetNumber=1
+Record=NoMainPathDocument|SourceDocument=Interface.SchDoc|FileName=PowerSupply.SchDoc|SheetNumber=4
