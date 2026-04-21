@@ -1,0 +1,5 @@
+Removed Member From Class: ClassName=U_PowerSupply Member=C22
+Change Component Footprint: Designator=MOTA Old Footprint=Banana plug 3.5mm New Footprint=Banana plug 3mm half
+Change Component Footprint: Designator=MOTB Old Footprint=Banana plug 3.5mm New Footprint=Banana plug 3mm half
+Change Component Footprint: Designator=VBAT Old Footprint=Banana plug 3.5mm New Footprint=Banana plug 3mm half
+Change Component Footprint: Designator=VGND Old Footprint=Banana plug 3.5mm New Footprint=Banana plug 3mm half

@@ -1,0 +1,9 @@
+Removed Pin From Net: NetName=Vin Pin=D5-2
+Removed Pin From Net: NetName=Vin Pin=Q5-1
+Removed Pin From Net: NetName=Vin Pin=Q5-2
+Removed Pin From Net: NetName=Vin Pin=Q5-3
+Removed Pin From Net: NetName=GND Pin=R20-1
+Removed Member From Class: ClassName=U_PowerSupply Member=D5
+Removed Member From Class: ClassName=U_PowerSupply Member=Q5
+Removed Member From Class: ClassName=U_PowerSupply Member=R20
+Added Pin To Net: NetName=Vin Pin=VBAT-1

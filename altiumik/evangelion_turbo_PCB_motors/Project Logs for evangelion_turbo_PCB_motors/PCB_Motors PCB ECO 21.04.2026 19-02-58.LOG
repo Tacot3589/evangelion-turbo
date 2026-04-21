@@ -1,0 +1,16 @@
+Removed Pin From Net: NetName=3.3v Pin=C14-1
+Removed Pin From Net: NetName=GND Pin=C14-2
+Removed Pin From Net: NetName=Vcc Pin=C16-1
+Removed Pin From Net: NetName=GND Pin=C16-2
+Removed Pin From Net: NetName=Vcc Pin=C17-1
+Removed Pin From Net: NetName=GND Pin=C17-2
+Removed Pin From Net: NetName=Vcc Pin=C18-1
+Removed Pin From Net: NetName=GND Pin=C18-2
+Removed Pin From Net: NetName=5v Pin=C19-1
+Removed Pin From Net: NetName=GND Pin=C19-2
+Removed Member From Class: ClassName=U_PowerSupply Member=C14
+Removed Member From Class: ClassName=U_PowerSupply Member=C16
+Removed Member From Class: ClassName=U_PowerSupply Member=C17
+Removed Member From Class: ClassName=U_PowerSupply Member=C18
+Removed Member From Class: ClassName=U_PowerSupply Member=C19
+Change Component Comment : Designator=C21 Old Comment=10uF New Comment=10uF 16v

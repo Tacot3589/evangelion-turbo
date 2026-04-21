@@ -1,0 +1,12 @@
+Added Component: Designator=MOTA(Banana plug 3mm half)
+Added Component: Designator=MOTB(Banana plug 3mm half)
+Added Component: Designator=VBAT(Banana plug 3mm half)
+Added Component: Designator=VGND(Banana plug 3mm half)
+Added Pin To Net: NetName=SH2 A Pin=MOTA-1
+Added Pin To Net: NetName=SH1 A Pin=MOTB-1
+Added Pin To Net: NetName=BATTERY_VBAT_IN Pin=VBAT-1
+Added Pin To Net: NetName=GND Pin=VGND-1
+Added Member To Class: ClassName=U_Interface Member=Component MOTA banana_plug
+Added Member To Class: ClassName=U_Interface Member=Component MOTB banana_plug
+Added Member To Class: ClassName=U_Interface Member=Component VBAT banana_plug
+Added Member To Class: ClassName=U_Interface Member=Component VGND banana_plug

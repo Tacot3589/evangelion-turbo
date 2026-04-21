@@ -1,0 +1,49 @@
+Removed Pin From Net: NetName=GND Pin=GND1-1
+Removed Pin From Net: NetName=NetC13_2 Pin=L1-1
+Removed Pin From Net: NetName=5v Pin=L3-2
+Removed Member From Class: ClassName=U_PowerSupply Member=GND1
+Removed Member From Class: ClassName=U_PowerSupply Member=L2
+Removed Member From Class: ClassName=U_PowerSupply Member=L3
+Removed Member From Class: ClassName=U_MotorDriver Member=MOTA
+Removed Member From Class: ClassName=U_MotorDriver Member=MOTB
+Removed Member From Class: ClassName=U_PowerSupply Member=VBAT1
+Change Component Footprint: Designator=L1 Old Footprint=ASPI-0630LR New Footprint=L 0805
+Change Component Comment : Designator=L1 Old Comment=4.7uH New Comment=22uH
+Added Component: Designator=C22(C 0402)
+Added Component: Designator=C28(C 0402)
+Added Component: Designator=C35(C 0402)
+Added Component: Designator=C36(C 0402)
+Added Component: Designator=VBAT(Banana plug 3.5mm)
+Added Component: Designator=VGND(Banana plug 3.5mm)
+Added Pin To Net: NetName=MCU 3.3V Pin=C22-1
+Added Pin To Net: NetName=GND Pin=C22-2
+Added Pin To Net: NetName=MCU 3.3V Pin=C28-1
+Added Pin To Net: NetName=GND Pin=C28-2
+Added Pin To Net: NetName=3.3v Pin=C35-1
+Added Pin To Net: NetName=GND Pin=C35-2
+Added Pin To Net: NetName=3.3v Pin=C36-1
+Added Pin To Net: NetName=GND Pin=C36-2
+Added Pin To Net: NetName=5v Pin=L1-1
+Added Pin To Net: NetName=NetC13_2 Pin=L1-2
+Added Pin To Net: NetName=GND Pin=VGND-1
+Change Net Name : Old Net Name=CAN H New Net Name=CAN_P
+Change Net Name : Old Net Name=CAN L New Net Name=CAN_N
+Added Pin To Net: NetName=BATTERY_VBAT_IN Pin=Q5-5_8
+Added Pin To Net: NetName=BATTERY_VBAT_IN Pin=VBAT-1
+Added Net: Name=BATTERY_VBAT_IN
+Added Pin To Net: NetName=PWM A Pin=IC4-26
+Added Pin To Net: NetName=PWM A Pin=R2-1
+Added Net: Name=PWM A
+Added Pin To Net: NetName=PWM B Pin=IC4-25
+Added Pin To Net: NetName=PWM B Pin=R3-1
+Added Net: Name=PWM B
+Added Differential Pair: Name=CAN
+Added Member To Class: ClassName=U_MCU Member=Component C22 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C28 100nF
+Added Member To Class: ClassName=U_MCU Member=Component C35 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C36 100nF
+Added Member To Class: ClassName=U_Interface Member=Component MOTA banana_plug
+Added Member To Class: ClassName=U_Interface Member=Component MOTB banana_plug
+Added Member To Class: ClassName=U_Interface Member=Component VBAT banana_plug
+Added Member To Class: ClassName=U_Interface Member=Component VGND banana_plug
+Added Rule: Name=Schematic Clearance Constraint
