@@ -1,0 +1,6 @@
+Removed Pin From Net: NetName=3.3v Pin=C35-1
+Removed Pin From Net: NetName=GND Pin=C35-2
+Removed Pin From Net: NetName=3.3v Pin=C36-1
+Removed Pin From Net: NetName=GND Pin=C36-2
+Removed Member From Class: ClassName=U_MCU Member=C35
+Removed Member From Class: ClassName=U_MCU Member=C36

@@ -1,0 +1,92 @@
+Removed Pin From Net: NetName=3.3v Pin=C25-1
+Removed Pin From Net: NetName=3.3v Pin=C29-1
+Removed Pin From Net: NetName=3.3v Pin=C30-1
+Removed Pin From Net: NetName=GND Pin=IC3-2
+Removed Pin From Net: NetName=Vcc Pin=IC3-5
+Removed Pin From Net: NetName=3.3v Pin=IC4-1
+Removed Pin From Net: NetName=3.3v Pin=IC4-15
+Removed Pin From Net: NetName=3.3v Pin=IC4-17
+Removed Pin From Net: NetName=Vin Pin=MOTA-1
+Removed Pin From Net: NetName=GND Pin=MOTB-1
+Removed Pin From Net: NetName=Vcc Pin=R16-2
+Removed Pin From Net: NetName=5v Pin=R17-2
+Removed Pin From Net: NetName=GND Pin=R18-1
+Removed Pin From Net: NetName=SH2 A Pin=VBAT-1
+Removed Pin From Net: NetName=SH1 A Pin=VGND-1
+Removed Pin From Net: NetName=GND Pin=Y1-4
+Removed Member From Class: ClassName=U_PowerSupply Member=R16
+Removed Member From Class: ClassName=U_PowerSupply Member=R17
+Removed Member From Class: ClassName=U_PowerSupply Member=R18
+Change Component Footprint: Designator=C13 Old Footprint=C 0402 New Footprint=C 0805
+Change Component Footprint: Designator=Y1 Old Footprint=MCSJK7U1600101080B10 New Footprint=ABM12AIG24000MHZ101ZT
+Change Component Footprint: Designator=IC3 Old Footprint=SOT95P280X145-6N New Footprint=AP63203WU7
+Change Component Comment : Designator=C13 Old Comment=1uF New Comment=10uF 16v
+Change Component Comment : Designator=C26 Old Comment=22pF New Comment=10pF
+Change Component Comment : Designator=C27 Old Comment=22pF New Comment=10pF
+Change Component Comment : Designator=IC3 Old Comment=LMR54410FDBVR New Comment=AP63203WU-7
+Change Component Comment : Designator=Y1 Old Comment=MCSJK-7U-16.00-10-10-80-B-10 New Comment=ABM12AIG-24.000MHZ-10-1Z-T
+Change Component Designator: OldDesignator=3.3V NewDesignator=D3
+Change Component Designator: OldDesignator=5V NewDesignator=D2
+Change Component Designator: OldDesignator=VCC NewDesignator=D1
+Change component parameters: Designator = "Y1" ("Y1"); Footprint = "MCSJK7U1600101080B10"; UniqueID = "\OTJRFCGY\LNJLFEBK" ("\OTJRFCGY\LNJLFEBK")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "https://abracon.com/datasheets/ABM12AIG.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Height"; Value = "0.35mm"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "ABRACON"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "ABM12AIG-24.000MHZ-10-1Z-T"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters: Designator = "IC3" ("IC3"); Footprint = "SOT95P280X145-6N"; UniqueID = "\HCSPZVIO\AACLHMTE" ("\HCSPZVIO\AACLHMTE")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = "AP63203WU-7"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = "https://www.arrow.com/en/products/ap63203wu-7/diodes-incorporated?utm_currency=USD&region=europe"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "https://www.diodes.com/assets/Datasheets/AP63200-AP63201-AP63203-AP63205.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Height"; Value = "1mm"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "Diodes Incorporated"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "AP63203WU-7"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = "621-AP63203WU-7"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/Diodes-Incorporated/AP63203WU-7?qs=u16ybLDytRZ1JqxbuLkMJw%3D%3D"; VariantName = "[No Variations]"
+Added Component: Designator=C5(C 0402)
+Added Component: Designator=C12(C 0402)
+Added Component: Designator=C21(C 0805)
+Added Component: Designator=R11(R 0402)
+Added Component: Designator=R15(R 0402)
+Added Pin To Net: NetName=GND Pin=C12-2
+Added Pin To Net: NetName=GND Pin=C13-1
+Added Pin To Net: NetName=Vcc Pin=C13-2
+Added Pin To Net: NetName=5v Pin=C21-1
+Added Pin To Net: NetName=GND Pin=C21-2
+Added Pin To Net: NetName=5v Pin=IC3-1
+Added Pin To Net: NetName=Vcc Pin=IC3-2
+Added Pin To Net: NetName=Vcc Pin=IC3-3
+Added Pin To Net: NetName=GND Pin=IC3-4
+Added Pin To Net: NetName=SH2 A Pin=MOTA-1
+Added Pin To Net: NetName=SH1 A Pin=MOTB-1
+Added Pin To Net: NetName=Vcc Pin=R11-2
+Added Pin To Net: NetName=GND Pin=R15-1
+Added Pin To Net: NetName=Vin Pin=VBAT-1
+Added Pin To Net: NetName=GND Pin=VGND-1
+Added Pin To Net: NetName=MCU 3.3V Pin=C25-1
+Added Pin To Net: NetName=MCU 3.3V Pin=C29-1
+Added Pin To Net: NetName=MCU 3.3V Pin=C30-1
+Added Pin To Net: NetName=MCU 3.3V Pin=IC4-1
+Added Pin To Net: NetName=MCU 3.3V Pin=IC4-15
+Added Pin To Net: NetName=MCU 3.3V Pin=IC4-17
+Added Net: Name=MCU 3.3V
+Added Pin To Net: NetName=NetC5_1 Pin=C5-1
+Added Pin To Net: NetName=NetC5_1 Pin=IC3-6
+Added Net: Name=NetC5_1
+Added Pin To Net: NetName=NetC5_2 Pin=C5-2
+Added Pin To Net: NetName=NetC5_2 Pin=IC3-5
+Added Pin To Net: NetName=NetC5_2 Pin=L1-2
+Added Net: Name=NetC5_2
+Added Pin To Net: NetName=Voltage Meas Pin=C12-1
+Added Pin To Net: NetName=Voltage Meas Pin=IC4-13
+Added Pin To Net: NetName=Voltage Meas Pin=R11-1
+Added Pin To Net: NetName=Voltage Meas Pin=R15-2
+Added Net: Name=Voltage Meas
+Added Member To Class: ClassName=U_PowerSupply Member=Component C5 100nF
+Added Member To Class: ClassName=U_MCU Member=Component C12 1uF
+Added Member To Class: ClassName=U_PowerSupply Member=Component C21 22uF 16v
+Added Member To Class: ClassName=U_MCU Member=Component R11 91k
+Added Member To Class: ClassName=U_MCU Member=Component R15 10k

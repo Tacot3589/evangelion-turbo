@@ -1,0 +1,15 @@
+Removed Pin From Net: NetName=CAN_N Pin=J1-1
+Removed Pin From Net: NetName=CAN_P Pin=J1-2
+Removed Pin From Net: NetName=GND Pin=J1-3
+Removed Pin From Net: NetName=PWR_ENABLE Pin=J1-4
+Removed Member From Class: ClassName=U_MCU Member=MA
+Change Component Designator: OldDesignator=A NewDesignator=C33
+Change Component Designator: OldDesignator=B+ NewDesignator=VBAT
+Change Component Designator: OldDesignator=B- NewDesignator=VGND
+Change Component Designator: OldDesignator=MA NewDesignator=MOTA
+Change Component Designator: OldDesignator=MB NewDesignator=MOTB
+Added Pin To Net: NetName=PWR_ENABLE Pin=J1-1
+Added Pin To Net: NetName=GND Pin=J1-2
+Added Pin To Net: NetName=CAN_N Pin=J1-3
+Added Pin To Net: NetName=CAN_P Pin=J1-4
+Added Member To Class: ClassName=U_MCU Member=Component C33 100nF
