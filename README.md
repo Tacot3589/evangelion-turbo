@@ -1,4 +1,4 @@
-### Evangelion turbo - my biggest project and most complicated robot yet - succesor to Evangelion
+# Evangelion turbo - my biggest project and most complicated robot yet - succesor to Evangelion
 Sumo robot build by me! Built for RoboRave competition 2026
 - 10x10cm robot footprint (max 18-25cm, i think about adding flags)
 - max 1kg
@@ -6,16 +6,17 @@ Sumo robot build by me! Built for RoboRave competition 2026
 - 4 Distance sensors 
 - 4 line sensors
 - IMU
+- shielded motors :)
 - EPROM memory on board
 - strong and fast stm32H5 mcu on board
 - 7.5 gear ratio
 - two big external mosfters motor drivers capable of high current
 - two strong motors (8A max each... it will be gooood)
 
-Pros:
+####Pros:
  - not tested yet
 
-Cons:
+####Cons:
 - no buzzer :(
 - not tested yet
 - still in development
@@ -25,21 +26,26 @@ i already put 300ish hours into this robot :)
 im still working on main PCB
 also i have 3d printed parts in school, so mechanically everything is okay.
 
-Accomplishments:
+####Accomplishments:
  - not tested yet
+
+##Also my laptop broke...
+Guy in repair-center told me repair costs would be more than buying new laptop so... I can work only on my brothers PC or on shools crappy laptop ;-;
+As a results i may not get everything done and shipped before robotics championship in summer break, which is horrible.
+
 
 # Images!
 
-3D Model:
+## 3D Model:
 ![ET1](media/ET1.jpg)
 ![ET2](media/ET2.jpg)
 ![ET3](media/ET3.jpg)
 ![ET4](media/ET4.jpg)
 
-Motor driver pcb:
+## Motor driver pcb:
 ![PCB1](media/PCB1.jpg)
 ![PCB2](media/PCB2.jpg)
 
-Prototypes:
+## Prototypes:
 ![Prototype1](media/Prototype1.jpg)
 ![Prototype2](media/Prototype2.jpg)
