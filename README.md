@@ -1,4 +1,4 @@
-### Evangelion turbo - my biggest project and most complicated robot yet
+### Evangelion turbo - my biggest project and most complicated robot yet - succesor to Evangelion
 Sumo robot build by me! Built for RoboRave competition 2026
 - 10x10cm robot footprint (max 18-25cm, i think about adding flags)
 - max 1kg
