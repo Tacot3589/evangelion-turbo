@@ -37,9 +37,9 @@ Accomplishments:
 ![ET4](media/ET4.jpg)
 
 Motor driver pcb:
-![PCB1]([media/PCB1.jpg)
-![PCB2]([media/PCB2.jpg)
+![PCB1](media/PCB1.jpg)
+![PCB2](media/PCB2.jpg)
 
 Prototypes:
-![Prototype1]([media/Prototype1.jpg)
-![Prototype2]([media/Prototype2.jpg)
+![Prototype1](media/Prototype1.jpg)
+![Prototype2](media/Prototype2.jpg)
