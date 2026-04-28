@@ -29,7 +29,7 @@ also i have 3d printed parts in school, so mechanically everything is okay.
 #### Accomplishments:
  - not tested yet
 
-## Also my laptop broke...
+#### Also my laptop broke...
 Guy in repair-center told me repair costs would be more than buying new laptop so... I can work only on my brothers PC or on shools crappy laptop ;-;
 As a results i may not get everything done and shipped before robotics championship in summer break, which is horrible.
 
