@@ -22,7 +22,6 @@ Gears from pololu 37D already worked for me so for this robot i plan to use it t
 I measured and added LIPO batteries to test if i even can fit any of them (2s and 3s, 450 and 550mAh).
 Aaaalso i made double shear bearings, like in the VORONs. I like 3d printer and vorons :)
 ![CAD](journalMedia/03-09_01.jpg)
-![CAD2](journalMedia/03-09_02.jpg)
 **Total time spent: 8 hours**
 
 
@@ -197,21 +196,6 @@ PS. These are replacement motors from Evangelion, not these stronk ones i have f
 **Total time spent: 3 hours**
 
 
-# April 13: Sharpie Sharpie Sharpen?
-I printed all of the parts in school, to test all of the fittments. Before printing, while i was tinkering with this PEI plate i came with idea of making front of the robot with something similiar, but more thinner and flexible. I think it will be very cool and sharp! I made quick sketch, we well see whats comes out of this.
-After printer was done i assembled it and added insert. See image :D
-
-...Thus i dont know what i will do with motors wire connectors ;-;
-This is "my futures me" problem i suppose :D
-
-PS. These are replacement motors from Evangelion, not these stronk ones i have found on aliepxress, for Evangelion Turbo. But they are in same dimensions so yk...
-![springsteel](journalMedia/04-09_01.jpg)
-![3d printer parts! 1](journalMedia/04-09_02.jpg)
-![3d printer parts! 2](journalMedia/04-09_03.jpg)
-![3d printer parts! 3](journalMedia/04-09_04.jpg)
-**Total time spent: 3 hours**
-
-
 # April 13: doom.
 F... FFF... UC...
 I realised thad 0mm of clearance is to small. I moved everything by .7mm.
@@ -366,3 +350,15 @@ I will prob use JLC, beacuse i orded PCBs from there too
 ![BJ example from JLC](journalMedia/04-29_01.png)
 ![SML example from JLC](journalMedia/04-29_02.png)
 **Total time spent: 2 hours**
+
+
+# May 04: More testing!
+After some break and spending time with my GF i am back!
+My brother suprised me, he ordered for me one steel front! For the competition i will need to orded few more, theye are very prone to braking.
+After tapping aall of the holes and assembling it i had to change:
+ - Gearbox covers - walls (im afraid of shorting anything) and clearances to gearbox
+ - Gearboxes clearances for bearings
+ - Place of holes for the laser distance sensord (bruh, they are all wrong XD)
+ - Add place under the ceiling for the XT30 connector
+![prototyping](journalMedia/05-03_01.png)
+**Total time spent: 6 hours**
