@@ -1,0 +1,12 @@
+Change Component Footprint: Designator=Y1 Old Footprint=ABM12AIG24000MHZ101ZT New Footprint=US3200005Z
+Change Component Comment : Designator=Y1 Old Comment=ABM12AIG-24.000MHZ-10-1Z-T New Comment=US3200005Z
+Change component parameters: Designator = "Y1" ("Y1"); Footprint = "ABM12AIG24000MHZ101ZT"; UniqueID = "\OTJRFCGY\FWOMMNVZ" ("\OTJRFCGY\FWOMMNVZ")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = "US3200005Z"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = "https://www.arrow.com/en/products/us3200005z/diodes-incorporated?region=nac"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "https://www.digikey.com/en/products/detail/diodes-incorporated/US3200005Z/6049201"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Height"; Value = "0.4mm"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "Diodes Incorporated"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "US3200005Z"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = "729-US3200005Z"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/Diodes-Incorporated/US3200005Z?qs=ZrPdAQfJ6DNKaEa1UhmxSg%3D%3D"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=GND Pin=Y1-4

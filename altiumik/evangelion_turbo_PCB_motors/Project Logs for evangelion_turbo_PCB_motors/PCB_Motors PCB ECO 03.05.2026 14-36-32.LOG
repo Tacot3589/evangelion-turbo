@@ -1,0 +1,27 @@
+Added Component: Designator=3.3V(LED 0603 GREEN)
+Added Component: Designator=5V(LED 0603 BLUE)
+Added Component: Designator=R12(R 0402)
+Added Component: Designator=R13(R 0402)
+Added Component: Designator=R14(R 0402)
+Added Component: Designator=VCC(LED 0603 RED)
+Added Pin To Net: NetName=GND Pin=3.3V-2
+Added Pin To Net: NetName=GND Pin=5V-2
+Added Pin To Net: NetName=Vcc Pin=R12-2
+Added Pin To Net: NetName=5v Pin=R13-2
+Added Pin To Net: NetName=3.3v Pin=R14-2
+Added Pin To Net: NetName=GND Pin=VCC-2
+Added Pin To Net: NetName=Net3.3V_1 Pin=3.3V-1
+Added Pin To Net: NetName=Net3.3V_1 Pin=R14-1
+Added Net: Name=Net3.3V_1
+Added Pin To Net: NetName=Net5V_1 Pin=5V-1
+Added Pin To Net: NetName=Net5V_1 Pin=R13-1
+Added Net: Name=Net5V_1
+Added Pin To Net: NetName=NetR12_1 Pin=R12-1
+Added Pin To Net: NetName=NetR12_1 Pin=VCC-1
+Added Net: Name=NetR12_1
+Added Member To Class: ClassName=U_Interface Member=Component 3.3V LED GREEN
+Added Member To Class: ClassName=U_Interface Member=Component 5V LED BLUE
+Added Member To Class: ClassName=U_Interface Member=Component R12 10k
+Added Member To Class: ClassName=U_Interface Member=Component R13 2.1K
+Added Member To Class: ClassName=U_Interface Member=Component R14 1k
+Added Member To Class: ClassName=U_Interface Member=Component VCC LED RED

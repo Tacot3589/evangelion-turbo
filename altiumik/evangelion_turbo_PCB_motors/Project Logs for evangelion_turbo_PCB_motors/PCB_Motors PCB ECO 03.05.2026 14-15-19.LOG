@@ -1,0 +1,56 @@
+Removed Pin From Net: NetName=GH1 A Pin=Q1-1
+Removed Pin From Net: NetName=Vcc Pin=Q1-3
+Removed Pin From Net: NetName=GH2 A Pin=Q2-1
+Removed Pin From Net: NetName=Vcc Pin=Q2-3
+Removed Pin From Net: NetName=GL1 A Pin=Q3-1
+Removed Pin From Net: NetName=SH1 A Pin=Q3-3
+Removed Pin From Net: NetName=GL2 A Pin=Q4-1
+Removed Pin From Net: NetName=SH2 A Pin=Q4-3
+Change Component Footprint: Designator=Q1 Old Footprint=MCG50N04TP New Footprint=DFN33
+Change Component Footprint: Designator=Q2 Old Footprint=MCG50N04TP New Footprint=DFN33
+Change Component Footprint: Designator=Q3 Old Footprint=MCG50N04TP New Footprint=DFN33
+Change Component Footprint: Designator=Q4 Old Footprint=MCG50N04TP New Footprint=DFN33
+Change Component Comment : Designator=Q1 Old Comment=Model New Comment=Model?
+Change Component Comment : Designator=Q2 Old Comment=Model New Comment=Model?
+Change Component Comment : Designator=Q3 Old Comment=Model New Comment=Model?
+Change Component Comment : Designator=Q4 Old Comment=Model New Comment=Model?
+Added Pin To Net: NetName=SH1 A Pin=Q1-1
+Added Pin To Net: NetName=SH1 A Pin=Q1-1
+Added Pin To Net: NetName=SH1 A Pin=Q1-3
+Added Pin To Net: NetName=SH1 A Pin=Q1-3
+Added Pin To Net: NetName=GH1 A Pin=Q1-4
+Added Pin To Net: NetName=Vcc Pin=Q1-5_8
+Added Pin To Net: NetName=Vcc Pin=Q1-5_8
+Added Pin To Net: NetName=Vcc Pin=Q1-5_8
+Added Pin To Net: NetName=Vcc Pin=Q1-5_8
+Added Pin To Net: NetName=Vcc Pin=Q1-5_8
+Added Pin To Net: NetName=SH2 A Pin=Q2-1
+Added Pin To Net: NetName=SH2 A Pin=Q2-1
+Added Pin To Net: NetName=SH2 A Pin=Q2-3
+Added Pin To Net: NetName=SH2 A Pin=Q2-3
+Added Pin To Net: NetName=GH2 A Pin=Q2-4
+Added Pin To Net: NetName=Vcc Pin=Q2-5_8
+Added Pin To Net: NetName=Vcc Pin=Q2-5_8
+Added Pin To Net: NetName=Vcc Pin=Q2-5_8
+Added Pin To Net: NetName=Vcc Pin=Q2-5_8
+Added Pin To Net: NetName=Vcc Pin=Q2-5_8
+Added Pin To Net: NetName=NetIC1_21 Pin=Q3-1
+Added Pin To Net: NetName=NetIC1_21 Pin=Q3-1
+Added Pin To Net: NetName=NetIC1_21 Pin=Q3-3
+Added Pin To Net: NetName=NetIC1_21 Pin=Q3-3
+Added Pin To Net: NetName=GL1 A Pin=Q3-4
+Added Pin To Net: NetName=SH1 A Pin=Q3-5_8
+Added Pin To Net: NetName=SH1 A Pin=Q3-5_8
+Added Pin To Net: NetName=SH1 A Pin=Q3-5_8
+Added Pin To Net: NetName=SH1 A Pin=Q3-5_8
+Added Pin To Net: NetName=SH1 A Pin=Q3-5_8
+Added Pin To Net: NetName=NetIC1_21 Pin=Q4-1
+Added Pin To Net: NetName=NetIC1_21 Pin=Q4-1
+Added Pin To Net: NetName=NetIC1_21 Pin=Q4-3
+Added Pin To Net: NetName=NetIC1_21 Pin=Q4-3
+Added Pin To Net: NetName=GL2 A Pin=Q4-4
+Added Pin To Net: NetName=SH2 A Pin=Q4-5_8
+Added Pin To Net: NetName=SH2 A Pin=Q4-5_8
+Added Pin To Net: NetName=SH2 A Pin=Q4-5_8
+Added Pin To Net: NetName=SH2 A Pin=Q4-5_8
+Added Pin To Net: NetName=SH2 A Pin=Q4-5_8

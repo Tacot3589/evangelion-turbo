@@ -1,0 +1,7 @@
+Removed Pin From Net: NetName=V ref A Pin=IC4-9
+Removed Pin From Net: NetName=Voltage Meas Pin=IC4-13
+Removed Pin From Net: NetName=PWR_ENABLE Pin=JP1-1
+Removed Pin From Net: NetName=GND Pin=JP1-2
+Added Pin To Net: NetName=Voltage Meas Pin=IC4-9
+Added Pin To Net: NetName=V ref A Pin=IC4-13
+Added Member To Class: ClassName=U_Interface Member=Component J1 DF53-4S-0.6H

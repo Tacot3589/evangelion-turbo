@@ -311,7 +311,7 @@ Also guys! Never ever forget about you connectores! I realised today, that batte
 routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing routing
 
 ![pcb](journalMedia/04-26_01.jpg)
-![edge](journalMedia/I_am_living_on_the_edge.jpg)
+![edge](journalMedia/0I_am_living_on_the_edge.jpg)
 **Total time spent: 4 hours**
 
 
@@ -359,6 +359,22 @@ After tapping aall of the holes and assembling it i had to change:
  - Gearbox covers - walls (im afraid of shorting anything) and clearances to gearbox
  - Gearboxes clearances for bearings
  - Place of holes for the laser distance sensord (bruh, they are all wrong XD)
- - Add place under the ceiling for the XT30 connector
+ - Updated battery model and the xt30 connector
+ - Changed front mount so i will have place for connectors from battery etcetra
+ - Add place for cables from front sensors
+ - Back steel reinforcment plate
+ - Made front more steeep, yay!
+ - Aaalso Im thinking about burring whole *spring steel* front idea
+
+So uhm... After my coach told me my PCB is trash, i had to redo everythinkkkkk... WHYYYY..
+This time i used smaller mosfets and payed SO MUCH MORE attention to clarity. Im sending it to my robotics coach now, we well see what he will say.
+Also i found and used a few smaller components, like smaller quartz or bullet connectors (2mm instead od 3mm ones).
+
+HELLYE! My brother agreed to print my parts on his ender (thus  only most important ones...)!
+It will be junk, but not junk enought to test!
 ![prototyping](journalMedia/05-03_01.png)
-**Total time spent: 6 hours**
+![PCB1](journalMedia/05-03_02.png)
+![PCB2](journalMedia/05-03_03.png)
+![printin!](journalMedia/05-03_04.png)
+
+**Total time spent: 11.3 hours**

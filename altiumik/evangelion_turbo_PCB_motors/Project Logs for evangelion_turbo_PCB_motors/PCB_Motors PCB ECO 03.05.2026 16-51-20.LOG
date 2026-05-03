@@ -1,0 +1,6 @@
+Removed Pin From Net: NetName=Voltage Meas Pin=IC4-9
+Removed Pin From Net: NetName=V ref A Pin=IC4-13
+Removed Pin From Net: NetName=GND Pin=R22-1
+Removed Member From Class: ClassName=U_MCU Member=R22
+Added Pin To Net: NetName=V ref A Pin=IC4-9
+Added Pin To Net: NetName=Voltage Meas Pin=IC4-13

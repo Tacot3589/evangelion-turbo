@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=CAN_N Pin=J1-3
+Removed Pin From Net: NetName=CAN_P Pin=J1-4
+Added Pin To Net: NetName=CAN_P Pin=J1-3
+Added Pin To Net: NetName=CAN_N Pin=J1-4
+Added Member To Class: ClassName=U_Interface Member=Component J1 DF53-4S-0.6H
