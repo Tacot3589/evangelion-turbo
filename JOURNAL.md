@@ -393,6 +393,11 @@ So in SUM:
  - I2C for DAC.
 
 So uhm. After i made it i think about switching back to g431... After all it is more capable MCU and why not... Also can is better for noisy scenarios like meine.
+
+Guys. I scraped changes. I thought why not if i already took the effort to put bigger MCU here? Its like 1 bucks diffrence and i got full CAN now!
+I really wanted to do galvanic isolation, but i didnt manage to fit it. BUT. I organized texts and even added hackclub forge (guys give us bitmaps of your logosss)!
+I think i am really done here and i can start with main controller pcb.
 ![mcu](journalMedia/05-04_01.png)
 ![schematics](journalMedia/05-04_02.png)
-**Total time spent: 3.5 hours**
+![PCB](journalMedia/05-04_03.png)
+**Total time spent: 7.1 hours**
