@@ -349,6 +349,8 @@ After all i felt productive and devastaded today, so i made some research about 
 I will prob use JLC, beacuse i orded PCBs from there too
 ![BJ example from JLC](journalMedia/04-29_01.png)
 ![SML example from JLC](journalMedia/04-29_02.png)
+![BJ example from JLC](journalMedia/04-29_01.jpg)
+![SML example from JLC](journalMedia/04-29_02.jpg)
 **Total time spent: 2 hours**
 
 
@@ -376,6 +378,10 @@ It will be junk, but not junk enought to test!
 ![PCB1](journalMedia/05-03_02.png)
 ![PCB2](journalMedia/05-03_03.png)
 ![printin!](journalMedia/05-03_04.png)
+![prototyping](journalMedia/05-03_01.jpg)
+![PCB1](journalMedia/05-03_02.jpg)
+![PCB2](journalMedia/05-03_03.jpg)
+![printin!](journalMedia/05-03_04.jpg)
 
 **Total time spent: 11.3 hours**
 
@@ -400,4 +406,7 @@ I think i am really done here and i can start with main controller pcb.
 ![mcu](journalMedia/05-04_01.png)
 ![schematics](journalMedia/05-04_02.png)
 ![PCB](journalMedia/05-04_03.png)
+![mcu](journalMedia/05-04_01.jpg)
+![schematics](journalMedia/05-04_02.jpg)
+![PCB](journalMedia/05-04_03.jpg)
 **Total time spent: 7.1 hours**
