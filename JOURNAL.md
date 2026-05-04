@@ -347,8 +347,8 @@ I will work on that, but i think i will stick to 4 layer PCB, beacuse it is only
 
 After all i felt productive and devastaded today, so i made some research about pricing and options in metal parts. I found out that CNC is hella expensive, but you can get BJ or SML parts for pretty good bang for a buck.
 I will prob use JLC, beacuse i orded PCBs from there too
-![BJ example from JLC](journalMedia/04-29_01.png)
-![SML example from JLC](journalMedia/04-29_02.png)
+![BJ example from JLC](journalMedia/04-29_01.jpg)
+![SML example from JLC](journalMedia/04-29_02.jpg)
 **Total time spent: 2 hours**
 
 
@@ -372,10 +372,10 @@ Also i found and used a few smaller components, like smaller quartz or bullet co
 
 HELLYE! My brother agreed to print my parts on his ender (thus  only most important ones...)!
 It will be junk, but not junk enought to test!
-![prototyping](journalMedia/05-03_01.png)
-![PCB1](journalMedia/05-03_02.png)
-![PCB2](journalMedia/05-03_03.png)
-![printin!](journalMedia/05-03_04.png)
+![prototyping](journalMedia/05-03_01.jpg)
+![PCB1](journalMedia/05-03_02.jpg)
+![PCB2](journalMedia/05-03_03.jpg)
+![printin!](journalMedia/05-03_04.jpg)
 
 **Total time spent: 11.3 hours**
 
@@ -393,6 +393,6 @@ So in SUM:
  - I2C for DAC.
 
 So uhm. After i made it i think about switching back to g431... After all it is more capable MCU and why not... Also can is better for noisy scenarios like meine.
-![mcu](journalMedia/05-04_01.png)
-![schematics](journalMedia/05-04_02.png)
+![mcu](journalMedia/05-04_01.jpg)
+![schematics](journalMedia/05-04_02.jpg)
 **Total time spent: 3.5 hours**
