@@ -1,0 +1,122 @@
+Removed Pin From Net: NetName=3.3v Pin=C25-1
+Removed Pin From Net: NetName=GND Pin=C25-2
+Removed Pin From Net: NetName=3.3v Pin=C29-1
+Removed Pin From Net: NetName=GND Pin=C29-2
+Removed Pin From Net: NetName=3.3v Pin=C30-1
+Removed Pin From Net: NetName=GND Pin=C30-2
+Removed Pin From Net: NetName=5v Pin=C32-1
+Removed Pin From Net: NetName=GND Pin=C32-2
+Removed Pin From Net: NetName=5v Pin=C33-1
+Removed Pin From Net: NetName=GND Pin=C33-2
+Removed Pin From Net: NetName=Voltage Meas Pin=D5-2
+Removed Pin From Net: NetName=3.3v Pin=IC4-1
+Removed Pin From Net: NetName=Fet Temp A Pin=IC4-5
+Removed Pin From Net: NetName=V ref A Pin=IC4-9
+Removed Pin From Net: NetName=Current A Pin=IC4-11
+Removed Pin From Net: NetName=Voltage Meas Pin=IC4-13
+Removed Pin From Net: NetName=GND Pin=IC4-14
+Removed Pin From Net: NetName=3.3v Pin=IC4-15
+Removed Pin From Net: NetName=GND Pin=IC4-16
+Removed Pin From Net: NetName=3.3v Pin=IC4-17
+Removed Pin From Net: NetName=SWDIO Pin=IC4-23
+Removed Pin From Net: NetName=SWCLK Pin=IC4-24
+Removed Pin From Net: NetName=PWM B Pin=IC4-25
+Removed Pin From Net: NetName=PWM A Pin=IC4-26
+Removed Pin From Net: NetName=NetD6_1 Pin=IC4-29
+Removed Pin From Net: NetName=GND Pin=IC4-32
+Removed Pin From Net: NetName=GND Pin=IC4-33
+Removed Pin From Net: NetName=GND Pin=IC5-2
+Removed Pin From Net: NetName=5v Pin=IC5-3
+Removed Pin From Net: NetName=GND Pin=R21-1
+Removed Pin From Net: NetName=GND Pin=R25-1
+Removed Member From Class: ClassName=U_MCU Member=C25
+Removed Member From Class: ClassName=U_MCU Member=C29
+Removed Member From Class: ClassName=U_MCU Member=C30
+Removed Member From Class: ClassName=U_MCU Member=C32
+Removed Member From Class: ClassName=U_MCU Member=C33
+Removed Member From Class: ClassName=U_MCU Member=R21
+Removed Member From Class: ClassName=U_MCU Member=R25
+Change Component Footprint: Designator=IC4 Old Footprint=QFN50P500X500X60-33N-D New Footprint=20-UFQFPN
+Change Component Footprint: Designator=IC5 Old Footprint=SON65P300X300X100-9N-D New Footprint=SON50P200X200X80-9N
+Change Component Comment : Designator=IC4 Old Comment=STM32G431K6U3 New Comment=STM32C011
+Change Component Comment : Designator=IC5 Old Comment=TCAN1042VDRBTQ1 New Comment=DAC53701DSGRQ1
+Change component parameters: Designator = "IC5" ("IC5"); Footprint = "SON65P300X300X100-9N-D"; UniqueID = "\OTJRFCGY\XJYYYKWK" ("\OTJRFCGY\XJYYYKWK")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "https://www.ti.com/lit/ds/symlink/dac53701-q1.pdf?ts=1649144824761&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FDAC53701-Q1"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Height"; Value = "0.8mm"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "Texas Instruments"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "DAC53701DSGRQ1"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = "595-DAC53701DSGRQ1"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/DAC53701DSGRQ1?qs=ST9lo4GX8V2xe4sEp7n3kw%3D%3D"; VariantName = "[No Variations]"
+Change component parameters: Designator = "IC4" ("IC4"); Footprint = "QFN50P500X500X60-33N-D"; UniqueID = "\OTJRFCGY\NMIQTFRS" ("\OTJRFCGY\NMIQTFRS")
+Added Component: Designator=C17(C 0402)
+Added Component: Designator=C18(C 0402)
+Added Component: Designator=C19(C 0402)
+Added Component: Designator=C21(C 0402)
+Added Component: Designator=R10(R 0402)
+Added Component: Designator=R16(R 0402)
+Added Component: Designator=R17(R 0402)
+Added Pin To Net: NetName=3.3v Pin=C17-1
+Added Pin To Net: NetName=GND Pin=C17-2
+Added Pin To Net: NetName=3.3v Pin=C18-1
+Added Pin To Net: NetName=GND Pin=C18-2
+Added Pin To Net: NetName=3.3v Pin=C19-1
+Added Pin To Net: NetName=GND Pin=C19-2
+Added Pin To Net: NetName=GND Pin=C21-2
+Added Pin To Net: NetName=3.3v Pin=IC4-2
+Added Pin To Net: NetName=GND Pin=IC4-3
+Added Pin To Net: NetName=PWM A Pin=IC4-5
+Added Pin To Net: NetName=PWM B Pin=IC4-6
+Added Pin To Net: NetName=NetD6_1 Pin=IC4-12
+Added Pin To Net: NetName=Current A Pin=IC4-13
+Added Pin To Net: NetName=Fet Temp A Pin=IC4-15
+Added Pin To Net: NetName=SWDIO Pin=IC4-16
+Added Pin To Net: NetName=SWCLK Pin=IC4-17
+Added Pin To Net: NetName=GND Pin=IC5-5
+Added Pin To Net: NetName=3.3v Pin=IC5-6
+Added Pin To Net: NetName=V ref A Pin=IC5-7
+Added Pin To Net: NetName=V ref A Pin=IC5-8
+Added Pin To Net: NetName=3.3v Pin=R10-2
+Added Pin To Net: NetName=3.3v Pin=R16-2
+Added Pin To Net: NetName=GND Pin=R17-1
+Change Net Name : Old Net Name=Fet Temp A New Net Name=Board_Temp
+Change Net Name : Old Net Name=Voltage Meas New Net Name=NetC12_1
+Added Pin To Net: NetName=CRC1 Pin=C27-1
+Added Pin To Net: NetName=CRC1 Pin=IC4-1
+Added Pin To Net: NetName=CRC1 Pin=Y1-3
+Added Net: Name=CRC1
+Added Pin To Net: NetName=CRC2 Pin=C26-1
+Added Pin To Net: NetName=CRC2 Pin=IC4-20
+Added Pin To Net: NetName=CRC2 Pin=Y1-1
+Added Net: Name=CRC2
+Added Pin To Net: NetName=NetC21_1 Pin=C21-1
+Added Pin To Net: NetName=NetC21_1 Pin=IC5-4
+Added Net: Name=NetC21_1
+Added Pin To Net: NetName=NetIC4_18 Pin=IC4-18
+Added Pin To Net: NetName=NetIC4_18 Pin=IC5-2
+Added Pin To Net: NetName=NetIC4_18 Pin=R10-1
+Added Net: Name=NetIC4_18
+Added Pin To Net: NetName=NetIC4_19 Pin=IC4-19
+Added Pin To Net: NetName=NetIC4_19 Pin=IC5-3
+Added Pin To Net: NetName=NetIC4_19 Pin=R16-1
+Added Net: Name=NetIC4_19
+Added Pin To Net: NetName=NetIC5_1 Pin=IC5-1
+Added Pin To Net: NetName=NetIC5_1 Pin=R17-2
+Added Net: Name=NetIC5_1
+Added Pin To Net: NetName=UART_RX Pin=IC4-8
+Added Pin To Net: NetName=UART_RX Pin=J1-2
+Added Net: Name=UART_RX
+Added Pin To Net: NetName=UART_TX Pin=IC4-9
+Added Pin To Net: NetName=UART_TX Pin=J1-1
+Added Net: Name=UART_TX
+Added Pin To Net: NetName=Vbat Pin=D5-2
+Added Pin To Net: NetName=Vbat Pin=IC4-14
+Added Net: Name=Vbat
+Added Member To Class: ClassName=U_MCU Member=Component C17 100nF
+Added Member To Class: ClassName=U_MCU Member=Component C18 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C19 100nF
+Added Member To Class: ClassName=U_MCU Member=Component C21 1uF
+Added Member To Class: ClassName=U_MCU Member=Component R10 4.7k
+Added Member To Class: ClassName=U_MCU Member=Component R16 4.7k
+Added Member To Class: ClassName=U_MCU Member=Component R17 10k

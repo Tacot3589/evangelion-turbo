@@ -378,3 +378,21 @@ It will be junk, but not junk enought to test!
 ![printin!](journalMedia/05-03_04.png)
 
 **Total time spent: 11.3 hours**
+
+
+# May 05: Is c0 an better idea?
+After consultation with my coach we came up with idea of using smalle, stm32c011 MCU and using UART instead of CAN as communication.
+I have remade PCB and schematics. While working i discovered that C011 is so much smaller, BUT it doesnt have DAC. Quick search on DIGI and i found some DAC on I2C.
+So in SUM:
+ - UART for communication with main MCU
+ - HSE crystal
+ - Debug serial wire
+ - Gpio input NFault from DRV driver
+ - 2*PWM output for driver
+ - 3 ADCs for Temp, battery voltage and Current readout
+ - I2C for DAC.
+
+So uhm. After i made it i think about switching back to g431... After all it is more capable MCU and why not... Also can is better for noisy scenarios like meine.
+![mcu](journalMedia/05-04_01.png)
+![schematics](journalMedia/05-04_02.png)
+**Total time spent: 3.5 hours**

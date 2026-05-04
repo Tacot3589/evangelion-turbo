@@ -49,10 +49,6 @@ extern "C" {
 
 /* USER CODE END EM */
 
-void HAL_LPTIM_MspPostInit(LPTIM_HandleTypeDef *hlptim);
-
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -61,42 +57,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define DRV_CS2_Pin GPIO_PIN_13
-#define DRV_CS2_GPIO_Port GPIOC
-#define JOY1_Pin GPIO_PIN_14
-#define JOY1_GPIO_Port GPIOC
-#define JOY2_Pin GPIO_PIN_15
-#define JOY2_GPIO_Port GPIOC
-#define JOY3_Pin GPIO_PIN_0
-#define JOY3_GPIO_Port GPIOC
-#define JOY4_Pin GPIO_PIN_1
-#define JOY4_GPIO_Port GPIOC
-#define JOY5_Pin GPIO_PIN_2
-#define JOY5_GPIO_Port GPIOC
-#define FAN_PWM_Pin GPIO_PIN_2
+#define FAN_PWM_Pin GPIO_PIN_11
 #define FAN_PWM_GPIO_Port GPIOB
-#define START_MOD_LED_1_Pin GPIO_PIN_10
-#define START_MOD_LED_1_GPIO_Port GPIOB
-#define START_MOD_LED_2_Pin GPIO_PIN_11
-#define START_MOD_LED_2_GPIO_Port GPIOB
-#define START_MOD_LED_3_Pin GPIO_PIN_12
-#define START_MOD_LED_3_GPIO_Port GPIOB
-#define ENKODERKI_CS2_Pin GPIO_PIN_11
-#define ENKODERKI_CS2_GPIO_Port GPIOD
-#define ENKODERKI_CS1_Pin GPIO_PIN_12
-#define ENKODERKI_CS1_GPIO_Port GPIOD
-#define IMU_INTERRUPT_Pin GPIO_PIN_8
-#define IMU_INTERRUPT_GPIO_Port GPIOC
-#define IMU_SDA_Pin GPIO_PIN_9
-#define IMU_SDA_GPIO_Port GPIOC
-#define IMU_SCL_Pin GPIO_PIN_8
-#define IMU_SCL_GPIO_Port GPIOA
-#define START_MOD_IR2_Pin GPIO_PIN_11
-#define START_MOD_IR2_GPIO_Port GPIOA
-#define START_MOD_IR1_Pin GPIO_PIN_12
-#define START_MOD_IR1_GPIO_Port GPIOA
-#define DRV_CS1_Pin GPIO_PIN_0
-#define DRV_CS1_GPIO_Port GPIOE
+#define MOTA_EN_Pin GPIO_PIN_15
+#define MOTA_EN_GPIO_Port GPIOA
+#define MOTB_EN_Pin GPIO_PIN_12
+#define MOTB_EN_GPIO_Port GPIOC
+#define IMU_INT_Pin GPIO_PIN_5
+#define IMU_INT_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
