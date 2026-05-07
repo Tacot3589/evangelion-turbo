@@ -440,14 +440,22 @@ Have fun guys but dont forget about your mental health!
 **Total time spent: 6.6 hours**
 
 
-# May 06: Eat Sleep Program Design (spent some time with friends and came up with good ideas in meanwhile :)) repeat!
+# May 07: Eat Sleep Program Design (spent some time with friends and came up with good ideas in meanwhile :)) repeat!
 Beacuse we are going back to school tommorow, after holidays i have to do homework and accually learn for exams... This is saddd like yk i cant spent half a day in CAD.
 Yesterday when i was at sleepover and my thought was wandering i got worried about one things. And this is accualy question for anyone who is reading this.
 Do you think this is an issue? Or smth like that? Or with good lubrication it wont couse any issues?
 
 *Im talking about this flange bearing and middle-sized gear. They have 0.1mm of clearance... This part of flange bearing is statics - it doesnt move of anything like that...*
 
+Yeaaa... I lied... I didnt to all of my homework. Thus i have rims now!
+I accually have *some* experience in custom wheels and rims. First of all, silicone is like a gel - it wont go throu .1mm hole or anythink like that! Rule of thumb is about 1.5mm minimum radius for silicone to flow throu. 
+Secondly, it is really hard to pour silicone into mould when mold and rim have 1mm of diffrence in diameter! So keep about 3mm of "offset", without anny additional things to make your future life easier. So uhm... Experiment, try and learn guys! And remember, always wear protective gear! This thing *may* cause cancer for you futere self!
+
+*Simpler the rim, the better the wheel... i guess... Thats how my brother used to say* Thus idk how my schools printer will be able to print it :)
+
 ![fan guard](journalMedia/05-07_01.jpg)
-**Total time spent: 0.1 hours**
+![sketch](journalMedia/05-07_03.jpg)
+![3d](journalMedia/05-07_02.jpg)
+**Total time spent: 1.4 hours**
 
 
