@@ -1,7 +1,7 @@
-Record=TopLevelDocument|FileName=PCB_INTERFACE.SchDoc|SheetNumber=1
-Record=SheetSymbol|SourceDocument=PCB_INTERFACE.SchDoc|Designator=U_Connectors|SchDesignator=U_Connectors|FileName=Connectors.SchDoc|SheetNumber=5|SymbolType=Normal|RawFileName=Connectors.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
-Record=SheetSymbol|SourceDocument=PCB_INTERFACE.SchDoc|Designator=U_Interface|SchDesignator=U_Interface|FileName=Interface.SchDoc|SheetNumber=3|SymbolType=Normal|RawFileName=Interface.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
-Record=SheetSymbol|SourceDocument=PCB_INTERFACE.SchDoc|Designator=U_OledAndLed|SchDesignator=U_OledAndLed|FileName=OledAndLed.SchDoc|SheetNumber=2|SymbolType=Normal|RawFileName=OledAndLed.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
-Record=SheetSymbol|SourceDocument=PCB_INTERFACE.SchDoc|Designator=U_PWRButton|SchDesignator=U_PWRButton|FileName=PWRButton.SchDoc|SheetNumber=4|SymbolType=Normal|RawFileName=PWRButton.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
-Record=SheetSymbol|SourceDocument=PCB_INTERFACE.SchDoc|Designator=U_Sensor_connectors|SchDesignator=U_Sensor_connectors|FileName=Sensor_connectors.SchDoc|SheetNumber=7|SymbolType=Normal|RawFileName=Sensor_connectors.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
-Record=SheetSymbol|SourceDocument=PCB_INTERFACE.SchDoc|Designator=U_Start_mod|SchDesignator=U_Start_mod|FileName=Start_mod.SchDoc|SheetNumber=6|SymbolType=Normal|RawFileName=Start_mod.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=TopLevelDocument|FileName=Connectors.SchDoc|SheetNumber=5
+Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=Interface.SchDoc|SheetNumber=3
+Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=OledAndLed.SchDoc|SheetNumber=1
+Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=PCB_INTERFACE.SchDoc|SheetNumber=2
+Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=PWRButton.SchDoc|SheetNumber=4
+Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=Sensor_connectors.SchDoc|SheetNumber=7
+Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=Start_mod.SchDoc|SheetNumber=6

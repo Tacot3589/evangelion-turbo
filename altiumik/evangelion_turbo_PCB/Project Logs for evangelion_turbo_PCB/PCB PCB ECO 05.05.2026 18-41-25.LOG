@@ -1,0 +1,10 @@
+Removed Pin From Net: NetName=IMU_INT1_MCU Pin=IC1-42
+Removed Pin From Net: NetName=IMU_SDA Pin=IC1-43
+Removed Pin From Net: NetName=IMU_SCL Pin=IC1-44
+Removed Pin From Net: NetName=I2C_OLED_SDA Pin=IC1-60
+Removed Pin From Net: NetName=I2C_OLED_SCL Pin=IC1-61
+Added Pin To Net: NetName=I2C_OLED_SDA Pin=IC1-43
+Added Pin To Net: NetName=I2C_OLED_SCL Pin=IC1-44
+Added Pin To Net: NetName=IMU_INT1_MCU Pin=IC1-59
+Added Pin To Net: NetName=IMU_SDA Pin=IC1-60
+Added Pin To Net: NetName=IMU_SCL Pin=IC1-61

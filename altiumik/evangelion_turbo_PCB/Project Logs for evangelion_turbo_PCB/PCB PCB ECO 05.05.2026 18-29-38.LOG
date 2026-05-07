@@ -1,0 +1,18 @@
+Removed Pin From Net: NetName=_CAN_L Pin=MAIN_DR1-1
+Removed Pin From Net: NetName=_CAN_H Pin=MAIN_DR1-2
+Removed Member From Class: ClassName=U_Uart_LowPass_HighFreqFilterA Member=C70B
+Added Component: Designator=C42(C 0402)
+Added Component: Designator=C43(C 0402)
+Added Pin To Net: NetName=5v Pin=C42-1
+Added Pin To Net: NetName=GND Pin=C42-2
+Added Pin To Net: NetName=5v Pin=C43-1
+Added Pin To Net: NetName=GND Pin=C43-2
+Added Pin To Net: NetName=_CAN_H Pin=MAIN_DR1-1
+Added Pin To Net: NetName=_CAN_L Pin=MAIN_DR1-2
+Change Class Name : Old Net Name=U_Uart_LowPass_HighFreqFilterA New Net Name=U_Uart_LowPass_HighFreqFilterC
+Change Class Name : Old Net Name=U_Uart_LowPass_HighFreqFilterC New Net Name=U_Uart_LowPass_HighFreqFilterB
+Change Class Name : Old Net Name=U_Uart_LowPass_HighFreqFilterD New Net Name=U_Uart_LowPass_HighFreqFilterA
+Added Class: Name=U_Uart_LowPass_HighFreqFilterD
+Added Member To Class: ClassName=U_MCU_2 Member=Component C42 1uF
+Added Member To Class: ClassName=U_MCU_2 Member=Component C43 100nF
+Added Member To Class: ClassName=U_Uart_LowPass_HighFreqFilterC Member=Component C70C (C70) 10pF

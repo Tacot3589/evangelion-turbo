@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=DR2_EN_MCU Pin=IC1-45
+Removed Pin From Net: NetName=DR1_EN_MCU Pin=IC1-54
+Added Pin To Net: NetName=DR1_EN_MCU Pin=IC1-45
+Added Pin To Net: NetName=DR2_EN_MCU Pin=IC1-54

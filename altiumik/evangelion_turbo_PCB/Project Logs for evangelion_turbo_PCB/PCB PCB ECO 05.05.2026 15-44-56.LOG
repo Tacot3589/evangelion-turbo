@@ -1,0 +1,24 @@
+Change Component Designator: OldDesignator=C?A NewDesignator=C25A
+Change Component Designator: OldDesignator=C?A NewDesignator=C70A
+Change Component Designator: OldDesignator=C?B NewDesignator=C25B
+Change Component Designator: OldDesignator=C?B NewDesignator=C70B
+Change Component Designator: OldDesignator=C?C NewDesignator=C25C
+Change Component Designator: OldDesignator=C?C NewDesignator=C70C
+Change Component Designator: OldDesignator=C?D NewDesignator=C25D
+Change Component Designator: OldDesignator=C?D NewDesignator=C70D
+Change Component Designator: OldDesignator=R?A NewDesignator=R38A
+Change Component Designator: OldDesignator=R?A NewDesignator=R39A
+Change Component Designator: OldDesignator=R?B NewDesignator=R38B
+Change Component Designator: OldDesignator=R?B NewDesignator=R39B
+Change Component Designator: OldDesignator=R?C NewDesignator=R38C
+Change Component Designator: OldDesignator=R?C NewDesignator=R39C
+Change Component Designator: OldDesignator=R?D NewDesignator=R38D
+Change Component Designator: OldDesignator=R?D NewDesignator=R39D
+Added Member To Class: ClassName=U_Uart_LowPass_HighFreqFilterD Member=Component C25D (C25) 10pF
+Added Member To Class: ClassName=U_Uart_LowPass_HighFreqFilterA Member=Component C70A (C70) 10pF
+Added Member To Class: ClassName=U_Uart_LowPass_HighFreqFilterB Member=Component C70B (C70) 10pF
+Added Member To Class: ClassName=U_Uart_LowPass_HighFreqFilterC Member=Component C70C (C70) 10pF
+Added Member To Class: ClassName=U_Uart_LowPass_HighFreqFilterB Member=Component R38B (R38) 30R
+Added Member To Class: ClassName=U_Uart_LowPass_HighFreqFilterC Member=Component R38C (R38) 30R
+Added Member To Class: ClassName=U_Uart_LowPass_HighFreqFilterA Member=Component R39A (R39) 30R
+Added Member To Class: ClassName=U_Uart_LowPass_HighFreqFilterD Member=Component R39D (R39) 30R

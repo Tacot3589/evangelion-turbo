@@ -352,7 +352,7 @@ I will prob use JLC, beacuse i orded PCBs from there too
 **Total time spent: 2 hours**
 
 
-# May 04: More testing!
+# May 03: More testing!
 After some break and spending time with my GF i am back!
 My brother suprised me, he ordered for me one steel front! For the competition i will need to orded few more, theye are very prone to braking.
 After tapping aall of the holes and assembling it i had to change:
@@ -380,7 +380,7 @@ It will be junk, but not junk enought to test!
 **Total time spent: 11.3 hours**
 
 
-# May 05: Is c0 an better idea?
+# May 04: Is c0 an better idea?
 After consultation with my coach we came up with idea of using smalle, stm32c011 MCU and using UART instead of CAN as communication.
 I have remade PCB and schematics. While working i discovered that C011 is so much smaller, BUT it doesnt have DAC. Quick search on DIGI and i found some DAC on I2C.
 So in SUM:
@@ -401,3 +401,53 @@ I think i am really done here and i can start with main controller pcb.
 ![schematics](journalMedia/05-04_02.jpg)
 ![PCB](journalMedia/05-04_03.jpg)
 **Total time spent: 7.1 hours**
+
+
+# May 05: CANing and Schmatiing
+So after all of my effort i had to rewrite my schemtaics... yay..?
+Thus i have like 7 pins left on MCU so its okay :)
+Anyway, guys! Remember! To connect signal ports (these big blue ones, not small yellow ones) you HAVE TO USE signal harness! Not normal wire. I spent like hour figuring out what is wrong XD
+Discovery came by mistake.... Yeah. It is awful. But i think schematics are done!
+
+So uhm... Another problem. Annotation. Tools-Annottaion-Board Level Annotation. Here you can change how altium annotates, reset and re-annotate all components...
+
+THE HECK! JLC WANT LIKE 70 BUCKS MORE FOR .15MM VIAS XDDD
+I had to change everthjinnnnn
+
+Thus... I think i have cooked today. I dont know how i will route this... But yk. TO BE COOKED OR COOKIN!
+![overall](journalMedia/05-05_01.jpg)
+![cubeMX](journalMedia/05-05_02.jpg)
+![PCB XDDD](journalMedia/05-05_03.jpg)
+![hello do anyone read this?](journalMedia/05-05_04.jpg)
+**Total time spent: 9.9 hours**
+
+# May 06: Burnout?
+Today i have worked most of the time on main controller PCB. Yk some routing some parts placementr etcetra...
+Yesterday evening i came up with few improvments for the 3D model.
+I changed them to!
+here they are:
+ - Added holes to rotate back distance sensors to add space for cables if neccesarry
+ - I added some place for thrust bearing in gearbox - we well se if it fits tho, beacuse it is tight fit 
+ - Added a looot of fillets to make easier assembly
+ - Changed fan mouting - now it is screwless. also he have little guard for protection now!
+ - Chamfer for screw to go in!
+
+I also think about adding buzzer to main PCB. We well think about that later. Thus i worked not-so-much i started feeling burned out... 
+So no more work for today! Im going to sleepover with my friends and chill out with some board games!
+Have fun guys but dont forget about your mental health!
+
+![fan guard](journalMedia/05-06_01.jpg)
+**Total time spent: 6.6 hours**
+
+
+# May 06: Eat Sleep Program Design (spent some time with friends and came up with good ideas in meanwhile :)) repeat!
+Beacuse we are going back to school tommorow, after holidays i have to do homework and accually learn for exams... This is saddd like yk i cant spent half a day in CAD.
+Yesterday when i was at sleepover and my thought was wandering i got worried about one things. And this is accualy question for anyone who is reading this.
+Do you think this is an issue? Or smth like that? Or with good lubrication it wont couse any issues?
+
+*Im talking about this flange bearing and middle-sized gear. They have 0.1mm of clearance... This part of flange bearing is statics - it doesnt move of anything like that...*
+
+![fan guard](journalMedia/05-07_01.jpg)
+**Total time spent: 0.1 hours**
+
+

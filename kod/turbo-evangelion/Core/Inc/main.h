@@ -57,14 +57,36 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define FAN_PWM_Pin GPIO_PIN_11
-#define FAN_PWM_GPIO_Port GPIOB
-#define MOTA_EN_Pin GPIO_PIN_15
-#define MOTA_EN_GPIO_Port GPIOA
-#define MOTB_EN_Pin GPIO_PIN_12
-#define MOTB_EN_GPIO_Port GPIOC
-#define IMU_INT_Pin GPIO_PIN_5
-#define IMU_INT_GPIO_Port GPIOB
+#define IR2_Pin GPIO_PIN_13
+#define IR2_GPIO_Port GPIOC
+#define JOY1_Pin GPIO_PIN_5
+#define JOY1_GPIO_Port GPIOC
+#define JOY2_Pin GPIO_PIN_0
+#define JOY2_GPIO_Port GPIOB
+#define JOY3_Pin GPIO_PIN_1
+#define JOY3_GPIO_Port GPIOB
+#define JOY4_Pin GPIO_PIN_2
+#define JOY4_GPIO_Port GPIOB
+#define JOY5_Pin GPIO_PIN_10
+#define JOY5_GPIO_Port GPIOB
+#define FAN_Pin GPIO_PIN_11
+#define FAN_GPIO_Port GPIOB
+#define IR1_Pin GPIO_PIN_11
+#define IR1_GPIO_Port GPIOD
+#define IMU_INT2_Pin GPIO_PIN_7
+#define IMU_INT2_GPIO_Port GPIOC
+#define IMU_INT1_Pin GPIO_PIN_8
+#define IMU_INT1_GPIO_Port GPIOC
+#define DR2_EN_Pin GPIO_PIN_9
+#define DR2_EN_GPIO_Port GPIOA
+#define DR1_EN_Pin GPIO_PIN_10
+#define DR1_EN_GPIO_Port GPIOA
+#define START_LED3_Pin GPIO_PIN_15
+#define START_LED3_GPIO_Port GPIOA
+#define START_LED2_Pin GPIO_PIN_10
+#define START_LED2_GPIO_Port GPIOC
+#define START_LED1_Pin GPIO_PIN_11
+#define START_LED1_GPIO_Port GPIOC
 
 /* USER CODE BEGIN Private defines */
 

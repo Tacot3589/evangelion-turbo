@@ -1,0 +1,8 @@
+Removed Pin From Net: NetName=5v Pin=C33-1
+Removed Pin From Net: NetName=GND Pin=C33-2
+Removed Member From Class: ClassName=U_Power_supply Member=C33
+Change Component Designator: OldDesignator=PROG_DR1 NewDesignator=PROG_DR2
+Change Component Designator: OldDesignator=PROG_DR2 NewDesignator=PROG_DR3
+Added Member To Class: ClassName=U_OledAndLed Member=Component OLED1 oled flex 0.96
+Added Member To Class: ClassName=U_Interface Member=Component PROG_DR2 (PDR1) DF53-4S-0.6H
+Added Member To Class: ClassName=U_Interface Member=Component PROG_DR3 (PDR2) DF53-4S-0.6H

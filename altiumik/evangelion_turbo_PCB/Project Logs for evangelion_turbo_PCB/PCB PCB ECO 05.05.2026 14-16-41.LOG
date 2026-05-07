@@ -1,0 +1,40 @@
+Removed Pin From Net: NetName=GND Pin=GND1-1
+Removed Pin From Net: NetName=PWR_ENABLE_DRIVER1 Pin=J3-1
+Removed Pin From Net: NetName=PWR_ENABLE_DRIVER2 Pin=J4-1
+Removed Pin From Net: NetName=NetQ1_5_8 Pin=VCC1-1
+Removed Member From Class: ClassName=U_Power_supply Member=GND1
+Removed Member From Class: ClassName=U_Power_supply Member=VCC1
+Added Component: Designator=D9(1N4148WT7)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = "1N4148WT-7"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = "https://www.arrow.com/en/products/1n4148wt-7/diodes-incorporated?region=nac"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets-305/73268.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "0mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "Diodes Inc."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "1N4148WT-7"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = "621-1N4148WT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/Diodes-Incorporated/1N4148WT-7?qs=FITO%2F%2FQgYDlMYETivVNccQ%3D%3D"; VariantName = "[No Variations]"
+Added Component: Designator=D10(1N4148WT7)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = "1N4148WT-7"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = "https://www.arrow.com/en/products/1n4148wt-7/diodes-incorporated?region=nac"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets-305/73268.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "0mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "Diodes Inc."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "1N4148WT-7"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = "621-1N4148WT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/Diodes-Incorporated/1N4148WT-7?qs=FITO%2F%2FQgYDlMYETivVNccQ%3D%3D"; VariantName = "[No Variations]"
+Added Component: Designator=GND(Banana plug 2mm)
+Added Component: Designator=VCC(Banana plug 2mm)
+Added Pin To Net: NetName=PWR_ENABLE_DRIVER2 Pin=D9-1
+Added Pin To Net: NetName=PWR_ENABLE_DRIVER1 Pin=D10-1
+Added Pin To Net: NetName=GND Pin=GND-1
+Added Pin To Net: NetName=NetQ1_5_8 Pin=VCC-1
+Added Pin To Net: NetName=NetD9_2 Pin=D9-2
+Added Pin To Net: NetName=NetD9_2 Pin=J3-1
+Added Net: Name=NetD9_2
+Added Pin To Net: NetName=NetD10_2 Pin=D10-2
+Added Pin To Net: NetName=NetD10_2 Pin=J4-1
+Added Net: Name=NetD10_2
+Added Member To Class: ClassName=PCB Member=Component D9 1N4148WT-7
+Added Member To Class: ClassName=PCB Member=Component D10 1N4148WT-7
+Added Member To Class: ClassName=U_Power_supply Member=Component GND banana_plug
+Added Member To Class: ClassName=U_Power_supply Member=Component VCC banana_plug
