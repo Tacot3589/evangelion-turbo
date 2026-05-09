@@ -1,0 +1,3 @@
+Added Component: Designator=VBAT(Banana plug 3mm half)
+Added Pin To Net: NetName=BATTERY_VBAT_IN Pin=VBAT-1
+Added Member To Class: ClassName=U_Interface Member=Component VBAT banana_plug

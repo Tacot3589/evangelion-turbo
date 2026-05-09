@@ -1,0 +1,8 @@
+Change Component Footprint: Designator=C50 Old Footprint=C 0805 New Footprint=C 0603
+Change Component Footprint: Designator=Q1 Old Footprint=DFN 5x6 New Footprint=dfn33
+Change Component Footprint: Designator=Q2 Old Footprint=DFN 5x6 New Footprint=dfn33
+Change Component Comment : Designator=Q1 Old Comment=AON6403 New Comment=P mos power
+Change Component Comment : Designator=Q2 Old Comment=AON6403 New Comment=P mos power
+Change Component Designator: OldDesignator=FAN? NewDesignator=FAN1
+Change Component Designator: OldDesignator=OLED? NewDesignator=OLED1
+Change Net Name : Old Net Name=NetOLED?_26 New Net Name=NetOLED1_26

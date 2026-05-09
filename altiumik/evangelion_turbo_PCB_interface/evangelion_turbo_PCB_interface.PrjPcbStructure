@@ -1,7 +1,0 @@
-Record=TopLevelDocument|FileName=Connectors.SchDoc|SheetNumber=5
-Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=Interface.SchDoc|SheetNumber=3
-Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=OledAndLed.SchDoc|SheetNumber=1
-Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=PCB_INTERFACE.SchDoc|SheetNumber=2
-Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=PWRButton.SchDoc|SheetNumber=4
-Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=Sensor_connectors.SchDoc|SheetNumber=7
-Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=Start_mod.SchDoc|SheetNumber=6

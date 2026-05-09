@@ -453,9 +453,53 @@ Secondly, it is really hard to pour silicone into mould when mold and rim have 1
 
 *Simpler the rim, the better the wheel... i guess... Thats how my brother used to say* Thus idk how my schools printer will be able to print it :)
 
+So yeaaa... I lied agaid... Instead of doing homework i found smaller mosftets and made reverse currect protection. I had to delete all of the tracks from MCU, then move everything up a little bit and reroute everything back. Idk why altium is so bad to me... Thus now i have reverse polarity protection!
+
 ![fan guard](journalMedia/05-07_01.jpg)
 ![sketch](journalMedia/05-07_03.jpg)
 ![3d](journalMedia/05-07_02.jpg)
-**Total time spent: 1.4 hours**
+![mosfets!](journalMedia/05-07_04.jpg)
+**Total time spent: 2.8 hours**
 
 
+# May 08: I had to get up early to school. Such a shame.
+Im tired. But it is wekend now!! I think i will have done PCBs in a week or so!
+Today i routed few things, changes few things in 3D model. Also researched and checked price on JLCCNC. It was horribly expensive ;-;
+Cames out, that mills accually exists and have *some* diameter. That why you need to add internal fillets when you design something for CNC! Bigger the fillet, smaller the machining time, lower the costs!
+I managed to bring down price from about 150 bucks per plow to 35 bucks per two! (they were about 50 bucks for one so it is like... pay 50% more, get one free deal, so not bad).
+Thus it was not a lottttt today unfortunatelly.
+
+Also screw holes were in diffrent places from holes in CAD lol
+
+![pcb](journalMedia/05-08_01.jpg)
+![cncmill](journalMedia/05-08_03.jpg)
+![JLC](journalMedia/05-08_02.jpg)
+**Total time spent: 3.8 hours**
+
+
+# May 09:OMFG MOM LOOK, THAT ME!
+Thanks guyssss!
+![me](journalMedia/05-09_01.jpg)
+**Total time spent: 0 hours**
+
+
+# May 09: *Clap calp* **TUDUTUDU Wake up Daddy's Home!** (thats my vibe nowwww!) (if anyone didnt catch, thats an ironman reference)
+Yeah guys, i think i accually didnt explain one thing before. Low pass filter on ADC sensor lines and URAT lines. I use them, for analog signals, to not get messy and distorted by high freq nearby signals like PWM, uart, buck conv, it is just cleaner for MCU! There i use about 10k cutoff freq.
+"Wait, if low pass filter is used to negate quick changes in signal, using it on uart wont make it junk and unusable for mcu?" Yeas, unless you use configure it to have veeery high cutoff frequency! I used about 500kHz cutoff here.
+Normally i dont use low pass filter for uart, they are just not needed. But Beacuse of space saving im routing them *under* buck converter, which is just fast switching thing, so it generates a lot of noise. Good thing is that this noise for my buck is in 1Mhz-2Mhz spectrum,
+so as i  said beffore, i added 0.5Mhz cutoff low pass filter, to cut off this noise! My uart is running 115200 baud, and chatgpt told me it is about 50kHz, but for signal intergriety and other electric shieniegasens you need about x2 to x10 higher cutoff freq, to not distort clean uart!
+So put 30ohm and 10pF here.
+
+As a thanks for picking me out, from all project decided to add buzzer, to annoy everyone i can think of :)
+And one more IR receiver for start ir controls. (For sumo robot you want all of them - more ir receivers = lower chance of **not** picking out referee signal to start sumo fight).
+And i made these small PCBs for rised ir recivers today
+
+Also 4pin 1.27mm connector i found was discountinoued so i had to search for another one lol.
+I found some 1mm ones, at the competition i willpray that they will not desintegrate and fight.
+
+Mire routing and squeezing everything...
+
+![IR receiver on rised schematic](journalMedia/05-09_02.jpg)
+![IR receiver on rised PCB](journalMedia/05-09_03.jpg)
+![controller](journalMedia/05-09_04.jpg)
+**Total time spent: 9.4 hours**
