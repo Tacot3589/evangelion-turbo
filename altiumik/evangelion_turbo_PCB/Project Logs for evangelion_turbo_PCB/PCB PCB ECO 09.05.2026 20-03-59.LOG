@@ -1,0 +1,3 @@
+Removed Pin From Net: NetName=START_MOD_IR_3 Pin=IC1-28
+Added Pin To Net: NetName=START_MOD_IR_3 Pin=IC1-30
+Added Member To Class: ClassName=U_FAN Member=Component R18 330R

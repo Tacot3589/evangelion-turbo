@@ -1,0 +1,8 @@
+Removed Pin From Net: NetName=TX_OUTA Pin=IC1-14
+Removed Pin From Net: NetName=RX_OUTA Pin=IC1-15
+Removed Pin From Net: NetName=TX_OUTC Pin=IC1-16
+Removed Pin From Net: NetName=RX_OUTC Pin=IC1-17
+Added Pin To Net: NetName=TX_OUTC Pin=IC1-14
+Added Pin To Net: NetName=RX_OUTC Pin=IC1-15
+Added Pin To Net: NetName=TX_OUTA Pin=IC1-16
+Added Pin To Net: NetName=RX_OUTA Pin=IC1-17

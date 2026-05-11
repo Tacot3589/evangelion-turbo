@@ -1,0 +1,8 @@
+Removed Pin From Net: NetName=JOY_CENTER Pin=IC1-25
+Removed Pin From Net: NetName=JOY_RIGHT Pin=IC1-26
+Removed Pin From Net: NetName=JOY_LEFT Pin=IC1-27
+Removed Pin From Net: NetName=LED GREEN Pin=IC1-40
+Added Pin To Net: NetName=JOY_CENTER Pin=IC1-38
+Added Pin To Net: NetName=JOY_RIGHT Pin=IC1-39
+Added Pin To Net: NetName=JOY_LEFT Pin=IC1-40
+Added Pin To Net: NetName=LED GREEN Pin=IC1-41

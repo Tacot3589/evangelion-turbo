@@ -1,0 +1,6 @@
+Removed Pin From Net: NetName=LINE1A Pin=LINE1-1
+Removed Pin From Net: NetName=LINE1B Pin=LINE1-2
+Added Pin To Net: NetName=LINE1B Pin=LINE1-1
+Added Pin To Net: NetName=LINE1A Pin=LINE1-2
+Added Member To Class: ClassName=U_IMU Member=Component R15 4.7K
+Added Member To Class: ClassName=U_IMU Member=Component R16 4.7K

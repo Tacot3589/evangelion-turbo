@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=JOY_UP Pin=IC1-39
+Removed Pin From Net: NetName=JOY_LEFT Pin=IC1-40
+Added Pin To Net: NetName=JOY_LEFT Pin=IC1-39
+Added Pin To Net: NetName=JOY_UP Pin=IC1-40

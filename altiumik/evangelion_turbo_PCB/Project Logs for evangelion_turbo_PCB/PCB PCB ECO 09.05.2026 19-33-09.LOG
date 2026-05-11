@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=ADCIN6 Pin=IC1-24
+Removed Pin From Net: NetName=JOY_DOWN Pin=IC1-25
+Added Pin To Net: NetName=JOY_DOWN Pin=IC1-24
+Added Pin To Net: NetName=ADCIN6 Pin=IC1-25
