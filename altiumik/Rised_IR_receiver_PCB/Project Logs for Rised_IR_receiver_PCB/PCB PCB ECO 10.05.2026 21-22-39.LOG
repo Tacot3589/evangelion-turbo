@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=IR Pin=J1-3
+Removed Pin From Net: NetName=3.3v Pin=J1-4
+Added Pin To Net: NetName=3.3v Pin=J1-3
+Added Pin To Net: NetName=IR Pin=J1-4
+Added Room: Name=Main

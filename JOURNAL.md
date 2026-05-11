@@ -503,3 +503,46 @@ Mire routing and squeezing everything...
 ![IR receiver on rised PCB](journalMedia/05-09_03.jpg)
 ![controller](journalMedia/05-09_04.jpg)
 **Total time spent: 9.4 hours**
+
+
+# May 10: Ah yeas, the price of working too long last night
+So yeeaeaa... It was as productive day as yesterday
+Today every signa line got routed. Tommorow will be power lines.
+New quick tip for you! Dont route fast signal lines near eachother (for example UART neart I2C, urat TX very close to uart RX, SPI to i2c, like every possible combination) (exception is ofcourse differentail lines like usb (d+, d-) or can (can high, can low), beacuse theye are like veeery noise resistant).
+Thus why may you ask. Beacuse of electric interference. One quick changin wire near second one quick changing wire will make them both super duper noisy. Nobody like noisy signal. Analog signals dont care about it, beacuse they change greadually, and slow.
+Thats why, i routed uart slightly apart.
+
+I also exported PCB into cad (File>export as>.step) to check if i made any errors while settings boards shape, check holes aligment etcetra.
+And yeah, it is lookin HELLA SICK!
+
+Ceil too :)
+
+![routinggg](journalMedia/05-10_01.jpg)
+![hellye](journalMedia/05-10_02.jpg)
+![ceil](journalMedia/05-10_03.jpg)
+
+**Total time spent: 8.9 hours**
+
+
+# May 11: Capabitiles of manufacturing ;-;
+I checked JLC design capabilites, specially for vias. When i read it last time there was that vias need to be .3mm hole and .4mm diameter annular ring, so i followed that.
+After reading it again i saw it... They can do .3/.4mm via BUT preffered for them is .3/.45mm (and bigger annular ring)... I had to change every via on controller and drivers .-.
+Hellye... I guess...
+
+Also i routed power lines!
+And... Somehow ground...
+Yeah, always remember to use Design Rule Checker to check you work.
+
+I changed vias to pad in power microswitch - i done this beacuse im worried, that it myght short circuit on my metal gearbox lol.
+
+GUYS I DISCOVERED NEW COOL THING!
+Shift+S to get into cool one layer view mode
+Then ctrl+shift+scrol wheel
+This way i checked if i had any overcomplicated traces or vias which shouldnt been there!
+
+![Bcool thing](journalMedia/05-11_03.jpg)
+![microswitch](journalMedia/05-11_01.jpg)
+![BURN THE WITCH!!!](journalMedia/05-11_02.jpg)
+
+**Total time spent: 6.6 hours**
+
