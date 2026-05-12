@@ -568,7 +568,7 @@ I talked with my brother and he gave me some feedback!
  - Also to make then in one chuck so it would be cheaper to order!
 
 *Indeed these cat annotations are abslutely necessary*
-![front](journalMedia/05-12_01.jpg.jpg)
-![back](journalMedia/05-12_02.jpg.jpg)
+![front](journalMedia/05-12_01.jpg)
+![back](journalMedia/05-12_02.jpg)
 
 **Total time spent: 5.4 hours**
