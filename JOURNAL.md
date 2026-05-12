@@ -550,22 +550,22 @@ This way i checked if i had any overcomplicated traces or vias which shouldnt be
 # May 12: Final touches and we are done!
 Guys! I cooked so much!
 
-Final touches, few disconnected GND lines, few disconnected signal, overall cleanup.
+Final touches, few disconnected GND lines, more than a few (lol) disconnected signal, overall cleanup.
 And ofc ANNOTATIONS!
 Remember to annotate! IT is sooo muchh easier to solder if you have good annotations.
-And another important thing, annotate your connector - add text for these gnd, power and signal line - you will not have to open you laptop to cript these connectors in the future 😃
+And another important thing, annotate your connectors - add text for these gnd, power and signal lines (right beside connector) - you will not have to open you laptop to crimp these connectors in the future 😃
 
-Additionally i spent some time on reseach on MOSFETS. I want one that are capable of high current with little-to-to power loss - beacuse power loss means HEAT!
+Additionally i spent some time on reseach on MOSFETS. I want one that are capable of high current with little-to-no power loss - beacuse power loss means HEAT!
 And more heat equal more bad. Also i learned that if you use enough inneficient mosfet, it can desolder itself from PCB and cause big mess lol
 
-I talked with my brother and he gave me some feedback!
+In the qucik dinner breake I talked with my brother and he gave me some feedback! Here it is:
  - Check LDO footprint (it varies a lot and wrong one can couse a lot of problems)
  - Remove dead copper (more copper = more heat capacitance, BUT more dead copper = higher capacitance of traces so it is worse)
  - Straighted lines from EPROM (i2c is fast and dont like suddent changes in direction)
  - Bruh, low-pass filter on TX near MCU? The heck? - Yeah, it wouldnt work. low pass filter filter noise, but i put it before any noise was added to signal. nice.
  - Also i had to fix some power lines, beacuse i made GND tight necks lol (less space = higher resistance = higher noise and more heat -> So it is bad. We want alll of the space for comeback of GND)
- - Planet and non-plated vias ;-;
- - Also to make then in one chuck so it would be cheaper to order!
+ - Plated and non-plated vias ;-;... I had to fix them!
+ - Also to make then (PCBs) in one chuck so it would be cheaper to order! - like yk, connecter all of the pcbs into one panel and order them as one pcb, cheaper!
 
 *Indeed these cat annotations are abslutely necessary*
 ![front](journalMedia/05-12_01.jpg)
