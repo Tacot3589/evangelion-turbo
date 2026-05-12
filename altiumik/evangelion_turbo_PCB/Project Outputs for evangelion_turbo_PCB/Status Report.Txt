@@ -1,13 +1,15 @@
+Source PCB Design PCB-kit.PcbDoc contains embedded board array. It is recomended to generate individual BOM for each embedded board PCB design.
+
 Output: NC Drill Files
 Type  : NC Drill
 From  : Project [evangelion_turbo_PCB.PrjPcb]
-   Generated File[PCB-Plated.TXT]
-   Generated File[PCB-NonPlated.TXT]
-   Generated File[PCB.LDP]
-   Generated File[PCB.DRR]
+   Generated File[PCB-kit-Plated.TXT]
+   Generated File[PCB-kit-NonPlated.TXT]
+   Generated File[PCB-kit.LDP]
+   Generated File[PCB-kit.DRR]
 
 
 Files Generated   : 4
 Documents Printed : 0
 
-Finished Output Generation At 21:05:30 On 11.05.2026
+Finished Output Generation At 19:07:25 On 12.05.2026
