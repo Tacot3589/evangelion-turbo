@@ -1,0 +1,34 @@
+Removed Member From Class: ClassName=U_Power_supply Member=DIST3
+Removed Member From Class: ClassName=U_Power_supply Member=LINE3
+Change Component Comment : Designator=C25A Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=C25B Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=C25C Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=C25D Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=C70A Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=C70B Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=C70C Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=C70D Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=R38A Old Comment=30R New Comment=300R
+Change Component Comment : Designator=R38B Old Comment=30R New Comment=300R
+Change Component Comment : Designator=R38C Old Comment=30R New Comment=300R
+Change Component Comment : Designator=R38D Old Comment=30R New Comment=300R
+Change Component Comment : Designator=R39A Old Comment=30R New Comment=300R
+Change Component Comment : Designator=R39B Old Comment=30R New Comment=300R
+Change Component Comment : Designator=R39C Old Comment=30R New Comment=300R
+Change Component Comment : Designator=R39D Old Comment=30R New Comment=300R
+Change Component Designator: OldDesignator=DIST1 NewDesignator=LUNA1
+Change Component Designator: OldDesignator=DIST3 NewDesignator=LUNA3
+Change Component Designator: OldDesignator=DIST4 NewDesignator=LUNA4
+Change Component Designator: OldDesignator=DR1 NewDesignator=PROG_DR1
+Change Component Designator: OldDesignator=DR2 NewDesignator=PROG_DR_1
+Change Component Designator: OldDesignator=DST2 NewDesignator=LUNA2
+Change Component Designator: OldDesignator=LIN2 NewDesignator=LINE2
+Change Component Designator: OldDesignator=PROG_DR1 NewDesignator=PROG_DR3
+Added Member To Class: ClassName=U_Power_supply Member=Component D1
+Added Member To Class: ClassName=U_Start_mod Member=Component IC7 TSOP57438TT1
+Added Member To Class: ClassName=U_Power_supply Member=Component L1 22uH
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component LINE1 DF53-4S-0.6H
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component LUNA1 DF53-4S-0.6H
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component LUNA4 DF53-4S-0.6H
+Added Member To Class: ClassName=U_Interface Member=Component PROG_DR3 (PDR2) DF53-4S-0.6H
+Added Room: Name=U_Buzzer

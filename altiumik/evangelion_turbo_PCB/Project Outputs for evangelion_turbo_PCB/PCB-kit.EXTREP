@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------------------------
-Gerber File Extension Report For: PCB-kit.GBR   12.05.2026  19:07:01
+Gerber File Extension Report For: PCB-kit.GBR   12.05.2026  21:14:43
 ------------------------------------------------------------------------------------------
 
 
@@ -16,7 +16,7 @@ Layer Extension     Layer Description
 .GBS                Bottom Solder                           
 .GBP                Bottom Paste                            
 .GBO                Bottom Overlay                          
-.GM2                Board Shape                             
+.GM3                Shape                                   
 .GKO                Keep-Out Layer                          
 .GPT                Top Pad Master                          
 .GPB                Bottom Pad Master                       

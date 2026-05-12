@@ -2,6 +2,44 @@
 FileName = PCB-kit.GBR
 AutoAperture = True
 *************************************************************
+Generating : Bottom Pad Master
+      File : PCB-kit.GPB
+
+    Adding Layer      : Bottom Layer
+
+    Adding Layer      : Multi-Layer
+
+    Adding Layer      : Shape
+
+
+Used DCodes :
+    D12
+    D13
+    D14
+    D15
+    D17
+    D20
+    D21
+    D27
+    D40
+    D43
+    D73
+    D76
+    D77
+    D78
+    D79
+    D82
+    D83
+    D84
+    D85
+    D86
+    D87
+    D88
+    D89
+    D90
+*************************************************************
+
+*************************************************************
 Generating : Top Pad Master
       File : PCB-kit.GPT
 
@@ -9,7 +47,7 @@ Generating : Top Pad Master
 
     Adding Layer      : Multi-Layer
 
-    Adding Layer      : Board Shape
+    Adding Layer      : Shape
 
 
 Used DCodes :
@@ -70,76 +108,231 @@ Used DCodes :
     D71
     D72
     D73
-    D74
+    D76
     D77
     D78
     D79
-    D80
 *************************************************************
 
 *************************************************************
-Generating : MidPlane Bottom
-      File : PCB-kit.G2
+Generating : Top Overlay
+      File : PCB-kit.GTO
 
-    Adding Layer      : MiddleBottom
+    Adding Layer      : Top Overlay
 
-    Adding Layer      : Board Shape
-
-    Adding Layer      : Multi-Layer
+    Adding Layer      : Shape
 
 
 Used DCodes :
     D11
     D54
-    D55
     D73
-    D74
-    D75
-    D76
-    D77
-    D78
-    D79
-    D80
-    D81
-    D82
+    D91
+    D92
+    D93
+    D94
 *************************************************************
 
 *************************************************************
-Generating : MidPlane Top
-      File : PCB-kit.G1
+Generating : Top Paste
+      File : PCB-kit.GTP
 
-    Adding Layer      : MiddleTop
+    Adding Layer      : Top Paste
 
-    Adding Layer      : Board Shape
+    Adding Layer      : Shape
+
+    Adding Layer      : Top Layer
 
     Adding Layer      : Multi-Layer
 
 
 Used DCodes :
-    D11
-    D54
-    D55
+    D10
+    D12
+    D13
+    D14
+    D15
+    D16
+    D17
+    D18
+    D20
+    D21
+    D22
+    D23
+    D24
+    D25
+    D26
+    D27
+    D28
+    D29
+    D30
+    D31
+    D32
+    D33
+    D34
+    D35
+    D36
+    D37
+    D38
+    D39
+    D40
+    D41
+    D42
+    D43
+    D44
+    D45
+    D46
+    D47
+    D48
+    D49
+    D50
+    D51
+    D52
+    D53
+    D59
+    D60
+    D61
+    D62
+    D63
+    D64
+    D65
+    D66
+    D67
+    D68
+    D69
+    D71
+    D72
     D73
-    D74
-    D75
-    D76
-    D77
-    D78
-    D79
-    D80
-    D81
-    D82
 *************************************************************
 
 *************************************************************
-Generating : Bottom Pad Master
-      File : PCB-kit.GPB
+Generating : Top Solder
+      File : PCB-kit.GTS
+
+    Adding Layer      : Top Solder
+
+    Adding Layer      : Shape
+
+    Adding Layer      : Top Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D73
+    D95
+    D96
+    D97
+    D98
+    D99
+    D100
+    D101
+    D102
+    D103
+    D104
+    D105
+    D106
+    D107
+    D108
+    D109
+    D110
+    D111
+    D112
+    D113
+    D114
+    D115
+    D116
+    D117
+    D118
+    D119
+    D120
+    D121
+    D122
+    D123
+    D124
+    D125
+    D126
+    D127
+    D128
+    D129
+    D130
+    D131
+    D132
+    D133
+    D134
+    D135
+    D136
+    D137
+    D138
+    D139
+    D140
+    D141
+    D142
+    D143
+    D144
+    D145
+    D146
+    D147
+    D148
+    D149
+    D150
+    D151
+    D152
+    D153
+    D154
+*************************************************************
+
+*************************************************************
+Generating : Bottom Solder
+      File : PCB-kit.GBS
+
+    Adding Layer      : Bottom Solder
+
+    Adding Layer      : Shape
 
     Adding Layer      : Bottom Layer
 
     Adding Layer      : Multi-Layer
 
-    Adding Layer      : Board Shape
+
+Used DCodes :
+    D73
+    D96
+    D97
+    D98
+    D99
+    D101
+    D104
+    D105
+    D111
+    D124
+    D127
+    D151
+    D152
+    D153
+    D154
+    D155
+    D156
+    D157
+    D158
+    D159
+    D160
+    D161
+    D162
+    D163
+*************************************************************
+
+*************************************************************
+Generating : Bottom Paste
+      File : PCB-kit.GBP
+
+    Adding Layer      : Bottom Paste
+
+    Adding Layer      : Shape
+
+    Adding Layer      : Bottom Layer
+
+    Adding Layer      : Multi-Layer
 
 
 Used DCodes :
@@ -154,11 +347,7 @@ Used DCodes :
     D40
     D43
     D73
-    D74
-    D77
-    D78
-    D79
-    D80
+    D82
     D83
     D84
     D85
@@ -167,6 +356,49 @@ Used DCodes :
     D88
     D89
     D90
+*************************************************************
+
+*************************************************************
+Generating : Bottom Overlay
+      File : PCB-kit.GBO
+
+    Adding Layer      : Bottom Overlay
+
+    Adding Layer      : Shape
+
+
+Used DCodes :
+    D54
+    D73
+    D91
+    D94
+*************************************************************
+
+*************************************************************
+Generating : Shape
+      File : PCB-kit.GM3
+
+    Adding Layer      : Shape
+
+    Adding Layer      : Shape
+
+
+Used DCodes :
+    D73
+*************************************************************
+
+*************************************************************
+Generating : Keep-Out Layer
+      File : PCB-kit.GKO
+
+    Adding Layer      : Keep-Out Layer
+
+    Adding Layer      : Shape
+
+
+Used DCodes :
+    D54
+    D73
     D91
 *************************************************************
 
@@ -176,7 +408,7 @@ Generating : Top Layer
 
     Adding Layer      : Top Layer
 
-    Adding Layer      : Board Shape
+    Adding Layer      : Shape
 
     Adding Layer      : Multi-Layer
 
@@ -254,301 +486,58 @@ Used DCodes :
     D79
     D80
     D81
-    D82
 *************************************************************
 
 *************************************************************
-Generating : Top Overlay
-      File : PCB-kit.GTO
+Generating : MidPlane Top
+      File : PCB-kit.G1
 
-    Adding Layer      : Top Overlay
+    Adding Layer      : MiddleTop
 
-    Adding Layer      : Board Shape
+    Adding Layer      : Shape
+
+    Adding Layer      : Multi-Layer
 
 
 Used DCodes :
     D11
+    D54
     D55
     D73
     D74
-    D92
-    D93
-    D94
+    D75
+    D76
+    D77
+    D78
+    D79
+    D80
+    D81
 *************************************************************
 
 *************************************************************
-Generating : Top Paste
-      File : PCB-kit.GTP
+Generating : MidPlane Bottom
+      File : PCB-kit.G2
 
-    Adding Layer      : Top Paste
+    Adding Layer      : MiddleBottom
 
-    Adding Layer      : Board Shape
-
-    Adding Layer      : Top Layer
+    Adding Layer      : Shape
 
     Adding Layer      : Multi-Layer
 
 
 Used DCodes :
-    D10
-    D12
-    D13
-    D14
-    D15
-    D16
-    D17
-    D18
-    D20
-    D21
-    D22
-    D23
-    D24
-    D25
-    D26
-    D27
-    D28
-    D29
-    D30
-    D31
-    D32
-    D33
-    D34
-    D35
-    D36
-    D37
-    D38
-    D39
-    D40
-    D41
-    D42
-    D43
-    D44
-    D45
-    D46
-    D47
-    D48
-    D49
-    D50
-    D51
-    D52
-    D53
-    D59
-    D60
-    D61
-    D62
-    D63
-    D64
-    D65
-    D66
-    D67
-    D68
-    D69
-    D71
-    D72
-    D73
-    D74
-*************************************************************
-
-*************************************************************
-Generating : Top Solder
-      File : PCB-kit.GTS
-
-    Adding Layer      : Top Solder
-
-    Adding Layer      : Board Shape
-
-    Adding Layer      : Top Layer
-
-    Adding Layer      : Multi-Layer
-
-
-Used DCodes :
-    D73
-    D74
-    D95
-    D96
-    D97
-    D98
-    D99
-    D100
-    D101
-    D102
-    D103
-    D104
-    D105
-    D106
-    D107
-    D108
-    D109
-    D110
-    D111
-    D112
-    D113
-    D114
-    D115
-    D116
-    D117
-    D118
-    D119
-    D120
-    D121
-    D122
-    D123
-    D124
-    D125
-    D126
-    D127
-    D128
-    D129
-    D130
-    D131
-    D132
-    D133
-    D134
-    D135
-    D136
-    D137
-    D138
-    D139
-    D140
-    D141
-    D142
-    D143
-    D144
-    D145
-    D146
-    D147
-    D148
-    D149
-    D150
-    D151
-    D152
-    D153
-    D154
-*************************************************************
-
-*************************************************************
-Generating : Bottom Solder
-      File : PCB-kit.GBS
-
-    Adding Layer      : Bottom Solder
-
-    Adding Layer      : Board Shape
-
-    Adding Layer      : Bottom Layer
-
-    Adding Layer      : Multi-Layer
-
-
-Used DCodes :
-    D73
-    D74
-    D96
-    D97
-    D98
-    D99
-    D101
-    D104
-    D105
-    D111
-    D124
-    D127
-    D151
-    D152
-    D153
-    D154
-    D155
-    D156
-    D157
-    D158
-    D159
-    D160
-    D161
-    D162
-    D163
-*************************************************************
-
-*************************************************************
-Generating : Bottom Paste
-      File : PCB-kit.GBP
-
-    Adding Layer      : Bottom Paste
-
-    Adding Layer      : Board Shape
-
-    Adding Layer      : Bottom Layer
-
-    Adding Layer      : Multi-Layer
-
-
-Used DCodes :
-    D12
-    D13
-    D14
-    D15
-    D17
-    D20
-    D21
-    D27
-    D40
-    D43
-    D73
-    D74
-    D83
-    D84
-    D85
-    D86
-    D87
-    D88
-    D89
-    D90
-    D91
-*************************************************************
-
-*************************************************************
-Generating : Bottom Overlay
-      File : PCB-kit.GBO
-
-    Adding Layer      : Bottom Overlay
-
-    Adding Layer      : Board Shape
-
-
-Used DCodes :
+    D11
+    D54
     D55
     D73
     D74
-    D92
-*************************************************************
-
-*************************************************************
-Generating : Board Shape
-      File : PCB-kit.GM2
-
-    Adding Layer      : Board Shape
-
-    Adding Layer      : Board Shape
-
-
-Used DCodes :
-    D73
-    D74
-*************************************************************
-
-*************************************************************
-Generating : Keep-Out Layer
-      File : PCB-kit.GKO
-
-    Adding Layer      : Keep-Out Layer
-
-    Adding Layer      : Board Shape
-
-
-Used DCodes :
-    D55
-    D73
-    D74
-    D92
+    D75
+    D76
+    D77
+    D78
+    D79
+    D80
+    D81
 *************************************************************
 
 *************************************************************
@@ -557,7 +546,7 @@ Generating : Bottom Layer
 
     Adding Layer      : Bottom Layer
 
-    Adding Layer      : Board Shape
+    Adding Layer      : Shape
 
     Adding Layer      : Multi-Layer
 
@@ -597,6 +586,5 @@ Used DCodes :
     D88
     D89
     D90
-    D91
 *************************************************************
 
