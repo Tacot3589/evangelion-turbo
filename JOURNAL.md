@@ -572,3 +572,45 @@ In the qucik dinner breake I talked with my brother and he gave me some feedback
 ![back](journalMedia/05-12_02.jpg)
 
 **Total time spent: 5.4 hours**
+
+
+# May 13: JLC!
+So If you want to but 3d printer parts from JLC, it not ADD>PAY>RECEIVE. Its more of sending them files, they rewiev it, then you send new version, then they may approve it or add another 60 bucks to you overall costs and then finnally they make it for you...
+Yeah. Lesson for future me and all of you guys. It is a lot more work than i thought lol. Also always check your manufacturer capabilites. One more thing that came up unexpendictally is that they can do sharp edges - like lol, it just 45 degree mill and go brr, nothing crazy.
+But the edge has to be dull, minimum of .5mm. Pretty sad, that i will have to sand a lot of material and blackening. Also i had to add little things, so they wouldnt complain (i had .5mm wall and their minimum is 1.5mm), to sand off later.
+
+*I spent about 3hrs on thing freaking thing (isntead of sleepinn), but i think it shouldnt taken into time of improvment of this project, so i only journaled time accually spent in CAD*
+
+![1](journalMedia/05-13_01.jpg)
+![2](journalMedia/05-13_02.jpg)
+
+**Total time spent: 1 hours**
+
+# May 14: BOM and ceil!
+Today i checked actual pricing in JLC and updated the bom accordlingly.
+Also finnaly i had some time and motivation to make the ceil propely, and not quick and dirty way! (photos included ofcourse).
+
+Qucik tip time!
+If you want to extrude you image in inventor:
+ - Convert it to black and white only (no gray, please)
+ - Convert your image to SVG - beacouse we want vectors! (smth like https://convertio.co/ works)
+ - ~~Use some webpage to convert it to dwg~~
+ - ~~Open fusion 360 or autocad~~
+ - ~~Nevermind... Accually open oneshape lol~~
+ - ~~Import your image in SVG format~~
+ - ~~Save file~~
+
+NEVERMIN GUYS IT DOESNT WORK BUT I FOUND IT - I FOUND WEBPAGE CAPABLE OF CONVERTING SVG TO DXF.
+https://cloudconvert.com/svg-to-dxf
+Go check it out.
+I spent too much time searching how to do this, so here you are :)
+
+Also one cool thing i discovered is that you can group parts of you sketch with "create blox" - with that part of your sketch act as one.
+
+*Pretty things took a lot longer than expreceted...*
+
+![ceil](journalMedia/05-14_01.jpg)
+![katze](journalMedia/05-14_02.jpg)
+![ceiling!](journalMedia/05-14_03.jpg)
+
+**Total time spent: 4.8 hours**

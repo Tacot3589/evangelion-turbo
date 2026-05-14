@@ -45,3 +45,6 @@ also i have 3d printed parts in school, so mechanically everything is okay.
 ## Prototypes:
 ![Prototype1](media/Prototype1.jpg)
 ![Prototype2](media/Prototype2.jpg)
+
+
+# *PS. Please - dont copy my work. Watch it, rewiev it, learn from in, take notes - but dont just change a few things and rebuild it. Do better! Make your own better version from scratch!*

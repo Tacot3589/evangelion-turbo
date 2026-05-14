@@ -1,26 +1,12 @@
-Output: Gerber Files
-Type  : Gerber
-From  : Variant [[No Variations]] of Project [evangelion_turbo_PCB_motors.PrjPcb]
-   Generated File[PCB_Motors.GTO]
-   Generated File[PCB_Motors.GTP]
-   Generated File[PCB_Motors.GTS]
-   Generated File[PCB_Motors.GTL]
-   Generated File[PCB_Motors.G1]
-   Generated File[PCB_Motors.G2]
-   Generated File[PCB_Motors.GBL]
-   Generated File[PCB_Motors.GBS]
-   Generated File[PCB_Motors.GBP]
-   Generated File[PCB_Motors.GBO]
-   Generated File[PCB_Motors.GM1]
-   Generated File[PCB_Motors.GKO]
-   Generated File[PCB_Motors.GPT]
-   Generated File[PCB_Motors.GPB]
-   Generated File[PCB_Motors.RUL]
-   Generated File[PCB_Motors.EXTREP]
-   Generated File[PCB_Motors.REP]
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [evangelion_turbo_PCB_motors.PrjPcb]
+   Generated File[PCB_Motors-Plated.TXT]
+   Generated File[PCB_Motors.LDP]
+   Generated File[PCB_Motors.DRR]
 
 
-Files Generated   : 17
+Files Generated   : 3
 Documents Printed : 0
 
-Finished Output Generation At 17:50:02 On 12.05.2026
+Finished Output Generation At 23:13:39 On 12.05.2026
