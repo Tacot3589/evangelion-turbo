@@ -47,4 +47,5 @@ also i have 3d printed parts in school, so mechanically everything is okay.
 ![Prototype2](media/Prototype2.jpg)
 
 
-# *PS. Please - dont copy my work. Watch it, rewiev it, learn from in, take notes - but dont just change a few things and rebuild it. Do better! Make your own better version from scratch!*
+# *PS. Please - dont copy my work. Watch it, rewiev it, learn from in, take notes - but dont just change a few things and rebuild it. Do better! Make your own better version!*
+*This project is out here to **inspire** you, not to be copy and pasted!*
