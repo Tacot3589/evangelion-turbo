@@ -15,9 +15,10 @@ Sumo robot build by me! Designed for RoboRave competition 2026
 
 #### Pros:
  - not tested yet
+ - Buzzer!
 
 #### Cons:
-- no buzzer :(
+- ~~no buzzer :(~~
 - not tested yet
 - still in development
 
