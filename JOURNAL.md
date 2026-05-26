@@ -623,9 +623,9 @@ Also yes i fixed MCU configuration where i could.
 
 Always check your PCB before you are done with it lol.
 
+*If somebody didnt catch i exchanged i2c SCL and SDA pins. SDA is data pin, SCL i clock pin and they cant be switched in software. So im cooked. Not so much coocked, beacuse it is only IMU, but still, i wanted it to work!*
 ![mcu1](journalMedia/05-26_01.jpg)
 ![mcu2](journalMedia/05-26_02.jpg)
 ![cube ide](journalMedia/05-26_03.jpg)
-
 
 **Total time spent: 1 hours**
