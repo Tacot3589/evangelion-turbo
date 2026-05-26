@@ -614,3 +614,18 @@ Also one cool thing i discovered is that you can group parts of you sketch with 
 ![ceiling!](journalMedia/05-14_03.jpg)
 
 **Total time spent: 4.8 hours**
+
+
+# May 26: Long break lol
+Soo yeee... I started thinking about writing some simple code... But i have a lot to do at school right now lol.
+I opened editor to adjust MCU configuration and i messed up badly lol.
+Also yes i fixed MCU configuration where i could.
+
+Always check your PCB before you are done with it lol.
+
+![mcu1](journalMedia/05-26_01.jpg)
+![mcu2](journalMedia/05-26_02.jpg)
+![cube ide](journalMedia/05-26_03.jpg)
+
+
+**Total time spent: 1 hours**
