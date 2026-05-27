@@ -96,7 +96,7 @@ In my previous robot, Evangelion, motors were highly limited by drivers (they we
 
 GUYS! You can choose from hardware and software version of this driver. It accually is little driffrence. In hardware you use resistors etc to change max AMP for example, in software you do this via SPI. In both versions you need to control both drivers via PWM tho.
 
-![drivers](journalMedia/04-03_01.jpg)
+![drivers](journalMedia/04-01_01.jpg)
 **Total time spent: 3 hours**
 
 
@@ -278,7 +278,7 @@ For this project - Evangelion Turbo - my most complicated robot i wanted to go w
 **Total time spent: 5 hours**
 
 
-# April 20: No change i will route this thing and thi will work at high frequencies...
+# April 20: No chance, that i will route this thing and this will work at high frequencies...
 I redone HUBS. Little flanges was added, to make wheel more stable.
 I added and arranged nearly all of the parts on the PCB. 2 Layers will not be enought, which is sad, beacuse theye are cheaper... We well see.
 ![hubs](journalMedia/04-20_01.jpg)
@@ -627,5 +627,18 @@ Always check your PCB before you are done with it lol.
 ![mcu2](journalMedia/05-26_02.jpg)
 ![cube ide](journalMedia/05-26_03.jpg)
 
+**Total time spent: 0.8 hours**
 
-**Total time spent: 1 hours**
+
+# May 27: I accually started doing something beacuse of streak system LoL
+Retook images from CAD and Altium, polished readme, made proper BOM in .csv format. 
+nothing serius. Just beeing consistent :)
+
+Added BOM in .csv format and BOM section to readme.
+
+Accually i took a look at some readme's and change mine.
+credits for inspiration: https://github.com/notaroomba/cyberboard/
+
+![mcu1](journalMedia/05-27_01.jpg)
+
+**Total time spent: 1.8 hours**

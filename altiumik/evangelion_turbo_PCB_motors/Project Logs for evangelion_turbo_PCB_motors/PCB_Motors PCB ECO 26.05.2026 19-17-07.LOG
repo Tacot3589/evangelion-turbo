@@ -1,0 +1,21 @@
+Change Component Designator: OldDesignator=GND NewDesignator=VGND
+Change Component Designator: OldDesignator=MAIN NewDesignator=J1
+Change Component Designator: OldDesignator=MTA NewDesignator=MOTA
+Change Component Designator: OldDesignator=MTB NewDesignator=MOTB
+Change Component Designator: OldDesignator=VCC NewDesignator=VBAT
+Added Pin To Net: NetName=GND Pin=C4-1
+Added Pin To Net: NetName=GND Pin=C15-1
+Added Pin To Net: NetName=GND Pin=C25-1
+Added Pin To Net: NetName=GND Pin=C29-1
+Added Pin To Net: NetName=GND Pin=C30-1
+Added Pin To Net: NetName=GND Pin=D5-3
+Added Pin To Net: NetName=GND Pin=IC2-3
+Added Pin To Net: NetName=GND Pin=IC4-1
+Added Pin To Net: NetName=GND Pin=IC4-15
+Added Pin To Net: NetName=GND Pin=IC4-17
+Added Pin To Net: NetName=GND Pin=R7-2
+Added Pin To Net: NetName=GND Pin=R14-2
+Added Pin To Net: NetName=GND Pin=R24-2
+Change Net Name : Old Net Name=GND New Net Name=3.3v
+Change Net Color : Old Net Color=RGB(50, 50, 50) New Net Color=RGB(221, 126, 107)
+Added Member To Class: ClassName=U_Interface Member=Component VBAT banana_plug

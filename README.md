@@ -22,15 +22,10 @@ Sumo robot build by me! Designed for RoboRave competition 2026
 - not tested yet
 - still in development
 
-
-i already put 300ish hours into this robot :)
-im still working on main PCB
-also i have 3d printed parts in school, so mechanically everything is okay.
-
 #### Accomplishments:
  - not tested yet
 
-   
+
 # Images!
 
 ## 3D Model:
@@ -39,14 +34,51 @@ also i have 3d printed parts in school, so mechanically everything is okay.
 ![ET3](media/ET3.jpg)
 ![ET4](media/ET4.jpg)
 
-## Motor driver pcb:
+## Main controller (4 layer PCB):
 ![PCB1](media/PCB1.jpg)
 ![PCB2](media/PCB2.jpg)
+![PCB3](media/PCB3.jpg)
+
+## Motor driver (4 layer PCB):
+![PCB4](media/PCB4.jpg)
+![PCB5](media/PCB5.jpg)
+![PCB6](media/PCB6.jpg)
 
 ## Prototypes:
 ![Prototype1](media/Prototype1.jpg)
 ![Prototype2](media/Prototype2.jpg)
 
 
-# *PS. Please - dont copy my work. Watch it, rewiev it, learn from in, take notes - but dont just change a few things and rebuild it. Do better! Make your own better version!*
+# Rough BOM:
+## [Actual BOM](/BOM.csv):
+| Name | Quantity |
+|---------------|---------------|
+| RS385 dc motor | 2 |
+| pololu 37d 19.4:1 gearboxes | 2 |
+| tfluna TOF sensors| 4 |
+| main controller PCB | 1 |
+| motor driver PCB | 1 |
+| rised IR receiver PCB | 2 |
+| metal 3D printed parts | *a lot* |
+| laser cut 1mm and 2mm parts | 3 |
+| CNC cut front wedge | 1 |
+| *patience* | *more than a lot* |
+| electronical components | *see bom. A lot, lol.* |
+| silicone for wheel, shore 10A | 0.5Kg |
+
+
+# *PS. Please - dont copy my work. Watch it, rewiev it, learn from in, take notes - but dont just change a few things and rebuild it. Do better! Make your own better version! Beat me at the next competition!!!*
 *This project is out here to **inspire** you, not to be copy and pasted!*
+
+If you want to take a look:
+    - 3D files are in the "3DP" folder
+    - Board gerber files are in the "altiumik/*name of the PCB, for example "Riser_IR_receiver_PCB"*/Project Outputs *blah blah blag*" You will find them, dont worry
+    - Wiring? Everything is written on the PCBs. If you need more, take a look at the PCB files in "altiumik" folder
+
+## Credits
+
+This project uses:
+- [Altium Designer](https://www.altium.com/altium-designer) - routing PCB
+- [Autodesk inventor](https://www.autodesk.com/products/inventor/overview) - designing all of the parts and assembliess
+- [stm32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html) - programming the MCU
+- [Hack Club Forge](https://forge.hackclub.com/projects/232) - yea, it is my project :)

@@ -15,21 +15,17 @@ Used DCodes :
 *************************************************************
 
 *************************************************************
-Generating : MidPlane Top
-      File : PCB_Motors.G1
+Generating : Keep-Out Layer
+      File : PCB_Motors.GKO
 
-    Adding Layer      : MidPlane Top
+    Adding Layer      : Keep-Out Layer
 
     Adding Layer      : Mechanical 1
 
-    Adding Layer      : Multi-Layer
-
 
 Used DCodes :
+    D10
     D12
-    D67
-    D72
-    D73
 *************************************************************
 
 *************************************************************
@@ -45,78 +41,6 @@ Used DCodes :
     D10
     D12
     D13
-*************************************************************
-
-*************************************************************
-Generating : Keep-Out Layer
-      File : PCB_Motors.GKO
-
-    Adding Layer      : Keep-Out Layer
-
-    Adding Layer      : Mechanical 1
-
-
-Used DCodes :
-    D10
-    D12
-*************************************************************
-
-*************************************************************
-Generating : Bottom Layer
-      File : PCB_Motors.GBL
-
-    Adding Layer      : Bottom Layer
-
-    Adding Layer      : Mechanical 1
-
-    Adding Layer      : Multi-Layer
-
-
-Used DCodes :
-    D12
-    D17
-    D37
-    D67
-    D68
-    D69
-    D70
-    D71
-    D72
-    D73
-    D74
-    D75
-    D76
-    D77
-    D78
-    D79
-    D80
-    D81
-*************************************************************
-
-*************************************************************
-Generating : Bottom Pad Master
-      File : PCB_Motors.GPB
-
-    Adding Layer      : Bottom Layer
-
-    Adding Layer      : Multi-Layer
-
-    Adding Layer      : Mechanical 1
-
-
-Used DCodes :
-    D12
-    D17
-    D37
-    D72
-    D74
-    D75
-    D76
-    D77
-    D78
-    D79
-    D80
-    D81
 *************************************************************
 
 *************************************************************
@@ -175,54 +99,6 @@ Used DCodes :
 *************************************************************
 
 *************************************************************
-Generating : Top Layer
-      File : PCB_Motors.GTL
-
-    Adding Layer      : Top Layer
-
-    Adding Layer      : Mechanical 1
-
-    Adding Layer      : Multi-Layer
-
-
-Used DCodes :
-    D12
-    D14
-    D15
-    D16
-    D17
-    D18
-    D19
-    D20
-    D21
-    D22
-    D23
-    D24
-    D25
-    D26
-    D27
-    D28
-    D29
-    D30
-    D31
-    D32
-    D33
-    D34
-    D35
-    D36
-    D37
-    D38
-    D39
-    D67
-    D68
-    D69
-    D70
-    D71
-    D72
-    D73
-*************************************************************
-
-*************************************************************
 Generating : Top Solder
       File : PCB_Motors.GTS
 
@@ -264,25 +140,6 @@ Used DCodes :
     D64
     D65
     D66
-*************************************************************
-
-*************************************************************
-Generating : MidPlane Bottom
-      File : PCB_Motors.G2
-
-    Adding Layer      : MidPlane Bottom
-
-    Adding Layer      : Mechanical 1
-
-    Adding Layer      : Multi-Layer
-
-
-Used DCodes :
-    D12
-    D67
-    D68
-    D72
-    D73
 *************************************************************
 
 *************************************************************
@@ -384,5 +241,148 @@ Used DCodes :
     D38
     D39
     D72
+*************************************************************
+
+*************************************************************
+Generating : Bottom Pad Master
+      File : PCB_Motors.GPB
+
+    Adding Layer      : Bottom Layer
+
+    Adding Layer      : Multi-Layer
+
+    Adding Layer      : Mechanical 1
+
+
+Used DCodes :
+    D12
+    D17
+    D37
+    D72
+    D74
+    D75
+    D76
+    D77
+    D78
+    D79
+    D80
+    D81
+*************************************************************
+
+*************************************************************
+Generating : Bottom Layer
+      File : PCB_Motors.GBL
+
+    Adding Layer      : Bottom Layer
+
+    Adding Layer      : Mechanical 1
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D12
+    D17
+    D37
+    D67
+    D68
+    D69
+    D70
+    D71
+    D72
+    D73
+    D74
+    D75
+    D76
+    D77
+    D78
+    D79
+    D80
+    D81
+*************************************************************
+
+*************************************************************
+Generating : MidPlane Bottom
+      File : PCB_Motors.G2
+
+    Adding Layer      : MidPlane Bottom
+
+    Adding Layer      : Mechanical 1
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D12
+    D67
+    D68
+    D72
+    D73
+*************************************************************
+
+*************************************************************
+Generating : MidPlane Top
+      File : PCB_Motors.G1
+
+    Adding Layer      : MidPlane Top
+
+    Adding Layer      : Mechanical 1
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D12
+    D67
+    D72
+    D73
+*************************************************************
+
+*************************************************************
+Generating : Top Layer
+      File : PCB_Motors.GTL
+
+    Adding Layer      : Top Layer
+
+    Adding Layer      : Mechanical 1
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D12
+    D14
+    D15
+    D16
+    D17
+    D18
+    D19
+    D20
+    D21
+    D22
+    D23
+    D24
+    D25
+    D26
+    D27
+    D28
+    D29
+    D30
+    D31
+    D32
+    D33
+    D34
+    D35
+    D36
+    D37
+    D38
+    D39
+    D67
+    D68
+    D69
+    D70
+    D71
+    D72
+    D73
 *************************************************************
 
