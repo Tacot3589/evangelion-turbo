@@ -67,13 +67,13 @@ Sumo robot build by me! Designed for RoboRave competition 2026
 | silicone for wheel, shore 10A | 0.5Kg |
 
 
-# *PS. Please - dont copy my work. Watch it, rewiev it, learn from in, take notes - but dont just change a few things and rebuild it. Do better! Make your own better version! Beat me at the next competition!!!*
+## *PS. Please - dont copy my work. Watch it, rewiev it, learn from in, take notes - but dont just change a few things and rebuild it. Do better! Make your own better version! Beat me at the next competition!!!*
 *This project is out here to **inspire** you, not to be copy and pasted!*
 
 If you want to take a look:
-    - 3D files are in the "3DP" folder
-    - Board gerber files are in the "altiumik/*name of the PCB, for example "Riser_IR_receiver_PCB"*/Project Outputs *blah blah blag*" You will find them, dont worry
-    - Wiring? Everything is written on the PCBs. If you need more, take a look at the PCB files in "altiumik" folder
+ - 3D files are in the "3DP" folder
+ - Board gerber files are in the "altiumik/*name of the PCB, for example "Riser_IR_receiver_PCB"*/Project Outputs *blah blah blag*" You will find them, dont worry
+ - Wiring? Everything is written on the PCBs. If you need more, take a look at the PCB files in "altiumik" folder
 
 ## Credits
 
