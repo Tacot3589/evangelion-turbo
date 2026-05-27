@@ -639,6 +639,10 @@ Added BOM in .csv format and BOM section to readme.
 Accually i took a look at some readme's and change mine.
 credits for inspiration: https://github.com/notaroomba/cyberboard/
 
-![mcu1](journalMedia/05-27_01.jpg)
+Also guys remember to have everything separated by "," and not by ";". I had to repair bom beacuse github was mad at me beacuse of it lol.
+Also my github is tweaking...
 
-**Total time spent: 1.8 hours**
+![mcu1](journalMedia/05-27_01.jpg)
+![bom](journalMedia/05-27_02.jpg)
+
+**Total time spent: 1.9 hours**
