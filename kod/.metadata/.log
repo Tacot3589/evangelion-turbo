@@ -608,3 +608,44 @@ java.lang.Exception: Resource '/evangelion-turbo' does not exist.
 
 !ENTRY org.eclipse.cdt.core 1 0 2026-05-26 18:21:52.346
 !MESSAGE Indexed 'evangelion-turbo' (26 sources, 91 headers) in 2.45 sec: 10,721 declarations; 82,622 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0.0021%)
+!SESSION 2026-05-27 18:13:47.874 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-05-27 18:14:01.977
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-05-27 18:14:01.985
+!MESSAGE Log4j2 initialized with config file D:\tech\robotyka\robots\evangelion-turbo\kod\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-05-27 18:14:14.121
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.core.jobs 2 2 2026-05-27 18:14:23.123
+!MESSAGE Job found still running after platform shutdown.  Jobs should be canceled by the plugin that scheduled them during shutdown: org.eclipse.ui.internal.Workbench$39 RUNNING
+	 at java.base/java.lang.Thread.sleep0(Native Method)
+	 at java.base/java.lang.Thread.sleep(Thread.java:509)
+	 at java.prefs/java.util.prefs.WindowsPreferences.WindowsRegCreateKeyEx1(WindowsPreferences.java:237)
+	 at java.prefs/java.util.prefs.WindowsPreferences.<init>(WindowsPreferences.java:462)
+	 at java.prefs/java.util.prefs.WindowsPreferences.getSystemRoot(WindowsPreferences.java:126)
+	 at java.prefs/java.util.prefs.WindowsPreferencesFactory.systemRoot(WindowsPreferencesFactory.java:49)
+	 at java.prefs/java.util.prefs.Preferences.systemRoot(Preferences.java:474)
+	 at com.st.microxplorer.plugins.updater.util.WinRegistry.getMethod(WinRegistry.java:356)
+	 at com.st.microxplorer.plugins.updater.util.WinRegistry.<clinit>(WinRegistry.java:341)
+	 at com.st.microxplorer.plugins.updater.engine.MainUpdater.<init>(MainUpdater.java:239)
+	 at com.st.microxplorer.plugins.updater.Updater.initPhase2(Updater.java:1162)
+	 at com.st.microxplorer.plugins.updater.Updater.setUserPreferencesHandler(Updater.java:1216)
+	 at com.st.stm32cube.common.mx.core.CubeMxInstance.<init>(CubeMxInstance.java:141)
+	 at com.st.stm32cube.common.mx.core.CubeMxInstance.getInstance(CubeMxInstance.java:91)
+	 at com.st.stm32cube.common.mx.userauth.UserAuthAdapter.<init>(UserAuthAdapter.java:25)
+	 at com.st.stm32cube.common.mx.userauth.UserAuthProvider.getUserAuthAdapter(UserAuthProvider.java:16)
+	 at com.st.stm32cube.common.ecosystemintegration.ui.core.MCUEcoSystemIntegrationUiHelper.getUserAuth(MCUEcoSystemIntegrationUiHelper.java:100)
+	 at com.st.stm32cube.ide.mcu.userauth.UserAuthStartup.earlyStartup(UserAuthStartup.java:32)
+	 at org.eclipse.ui.internal.EarlyStartupRunnable.runEarlyStartup(EarlyStartupRunnable.java:79)
+	 at org.eclipse.ui.internal.EarlyStartupRunnable.run(EarlyStartupRunnable.java:55)
+	 at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	 at org.eclipse.ui.internal.Workbench$39.run(Workbench.java:2733)
+	 at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)

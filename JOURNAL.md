@@ -646,3 +646,17 @@ Also my github is tweaking...
 ![bom](journalMedia/05-27_02.jpg)
 
 **Total time spent: 1.9 hours**
+
+
+# May 28: Research day
+Not so much. As far as i want i will have massive pill of the code for this robot, so i wanted to do some multi-file programming thing.
+Today i researched a bit about this, global variables, local variables and everything that sounds complicated lol.
+
+Some nice page to read, about global variables and when they are acceptable: https://sqlpey.com/c++/when-are-global-variables-acceptable/
+I think this is basic, but very important, for multi-file design: https://codelucky.com/c-multi-file-programs/
+
+I still have to do some deep research on headers, beacuse they sound complicated and unecesarry for me, for now...
+
+![research](journalMedia/05-28_01.jpg)
+
+**Total time spent: 0.6 hours**
