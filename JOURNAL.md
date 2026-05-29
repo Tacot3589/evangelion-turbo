@@ -660,3 +660,14 @@ I still have to do some deep research on headers, beacuse they sound complicated
 ![research](journalMedia/05-28_01.jpg)
 
 **Total time spent: 0.6 hours**
+
+
+# May 29: ~Printin~!
+Nevermind. I accually work same as before, but now i journal every small step, that i was like "meh, only 20min of work, i am too lasy to journal this.".
+Now i actually journal this lol.
+
+I changed a bit my distance sensor mounts/holders and printed them in school, so i wouldnt have to worry about them in future!
+![3dmodel](journalMedia/05-29_01.jpg)
+![printed](journalMedia/05-29_02.jpg)
+
+**Total time spent: 0.3 hours**
