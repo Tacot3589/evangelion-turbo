@@ -671,3 +671,35 @@ I changed a bit my distance sensor mounts/holders and printed them in school, so
 ![printed](journalMedia/05-29_02.jpg)
 
 **Total time spent: 0.3 hours**
+
+
+# May 30: Coding - start (first time using lapse... lemme know if link is accesible guys)
+I never thought i like coding, but now i think i hate it lol.
+I started by adding multiple .h and .c  and after thinking for a while and coding some other things i deleted them lol
+I dont know how i will use them if i cant use variables from main. Writing function could be my soution, but we well see in the future.
+
+One thing i wanted to point out is how i choose prescaler and counter period for timers, which are used to generate PWM signals for drivers.
+Bigger freq = less noise, less torque and lower "speed" and more, a lot more EMI! Lower freq have unfortunalety more noise, but dont generate as much emi as higher ones. 
+On the other hand going much lower than 20-30Khz can lead to very bad noise which you may hear (humans hear from 20Hz to about 20Khz) and unstable torque and speed of the dc motors.
+
+*Also writing code for hardware i dont have yet is pretty hard. I cant test and write code in the same time. If i would write whole code now, and then get some errors, debuging this would be crazy.
+[Im talking about hardware problems, STM32 is pretty...  whimsical lol. For example my oled wasnt working at my old robot, beacuse I2C was... too SLOOW. Like whattte helll]*
+
+Oh and i would forgot. I added OLED libraries to my project! Guys, if you want to use oled, please do it the right way. Use DMA or interrupt, now polling. DMA and interrupt is soo much lighter on cpu!
+
+Alsoo i got into measuring load of the cpu... Which comes out to be harder than expected lol
+Like in the MCU everything works how you set it up... Unless it cant, beacuse next interrupt comes before end of the last one.
+I have written some code - will test it and fix it in the future, when i will have hardware. Now i cant even check it lol
+
+Guys my lapse... I have too slow internet for lapse for now. Network provider said that they will fix it by last friday. Yesterday the exceeded expectation and send another info, that they will fix it by next saturday.
+Currently im trying to work on my phone hotspot but it is painfully slow lol
+
+*Aarav please dont sue me for not having lapse while coding😭*
+![ioc](journalMedia/05-30_01.jpg)
+![code](journalMedia/05-30_02.jpg)
+![lapse](journalMedia/05-30_03.jpg)
+![error](journalMedia/05-30_04.jpg)
+![timer](journalMedia/05-30_05.jpg)
+![how i feel](journalMedia/05-30_06.jpg)
+
+**Total time spent: 3 hours**

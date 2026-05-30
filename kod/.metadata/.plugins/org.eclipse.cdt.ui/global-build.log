@@ -1,0 +1,17 @@
+17:29:41 **** Incremental Build of configuration Debug for project evangelion-turbo ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H562xx -c -I../Core/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:131:16: warning: '_DISABLE_MOTORS' defined but not used [-Wunused-variable]
+  131 | static uint8_t _DISABLE_MOTORS = False;
+      |                ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "evangelion-turbo.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion-turbo\STM32H562RIVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion-turbo.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion-turbo.elf
+ 
+arm-none-eabi-size  evangelion-turbo.elf 
+arm-none-eabi-objdump -h -S evangelion-turbo.elf  > "evangelion-turbo.list"
+   text	   data	    bss	    dec	    hex	filename
+  60668	     12	   4180	  64860	   fd5c	evangelion-turbo.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion-turbo.list
+ 

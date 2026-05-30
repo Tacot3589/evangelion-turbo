@@ -25,10 +25,10 @@ Core/Src/stm32h5xx_it.o: ../Core/Src/stm32h5xx_it.c ../Core/Inc/main.h \
  ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_flash_ex.h \
  ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_i2c.h \
  ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_i2c_ex.h \
- ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_lptim.h \
- ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_ll_lptim.h \
  ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_pwr.h \
  ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_pwr_ex.h \
+ ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_tim.h \
+ ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_tim_ex.h \
  ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_uart.h \
  ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_uart_ex.h \
  ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_exti.h \
@@ -61,10 +61,10 @@ Core/Src/stm32h5xx_it.o: ../Core/Src/stm32h5xx_it.c ../Core/Inc/main.h \
 ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_flash_ex.h:
 ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_i2c.h:
 ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_i2c_ex.h:
-../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_lptim.h:
-../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_ll_lptim.h:
 ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_pwr.h:
 ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_pwr_ex.h:
+../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_tim.h:
+../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_tim_ex.h:
 ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_uart.h:
 ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_uart_ex.h:
 ../Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_exti.h:

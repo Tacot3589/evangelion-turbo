@@ -1,0 +1,25 @@
+/*
+ * init.h
+ *
+ *  Created on: May 30, 2026
+ *      Author: szymo
+ */
+
+#ifndef INC_INIT_H_
+#define INC_INIT_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "stm32h5xx_hal.h"
+
+uint8_t _INIT();
+
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* INC_INIT_H_ */

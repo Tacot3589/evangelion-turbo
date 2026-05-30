@@ -1,0 +1,11 @@
+/*
+ * variables.c
+ *
+ *  Created on: May 30, 2026
+ *      Author: szymo
+ */
+
+
+#include "variables.h"
+
+extern  uint8_t dupa=0;
