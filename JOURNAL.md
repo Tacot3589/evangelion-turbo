@@ -694,7 +694,7 @@ I have written some code - will test it and fix it in the future, when i will ha
 Guys my lapse... I have too slow internet for lapse for now. Network provider said that they will fix it by last friday. Yesterday the exceeded expectation and send another info, that they will fix it by next saturday.
 Currently im trying to work on my phone hotspot but it is painfully slow lol
 
-*Aarav please dont sue me for not having lapse while coding😭*
+*Aarav please dont sue me for not having lapse while coding, it broke while i was trying to upload it😭*
 ![ioc](journalMedia/05-30_01.jpg)
 ![code](journalMedia/05-30_02.jpg)
 ![lapse](journalMedia/05-30_03.jpg)
