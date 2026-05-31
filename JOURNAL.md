@@ -727,7 +727,7 @@ Best video of kalman filter i have found: https://www.youtube.com/watch?v=HCd-le
 This has a lot of information too: https://www.youtube.com/watch?v=jn8vQSEGmuM
 
 After research  i think i will stick to ADRC or PiD in this robot. Kalman would be cool for IMU or predicting opponent location but it is hard and complicated!
-![research](journalMedia/05-30_2.mp4)
+![research](journalMedia/05-30_2.jpg)
 
 Lapse link for todays research: https://lapse.hackclub.com/timelapse/bxvmavSPl1Jg
 
