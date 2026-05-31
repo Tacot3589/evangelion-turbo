@@ -716,4 +716,6 @@ I managed to recover yesterdays laps and make it smaller and faster! At the star
 Video file is right here: "journalMedia/05-30_67.jpg"
 ![Video file](journalMedia/05-30_67.jpg)
 
+*lol, it came through, i didnt believed that github would allow this lol*
+
 **Total time spent: 0.5 hours**
