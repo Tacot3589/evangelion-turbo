@@ -710,4 +710,10 @@ Currently im trying to work on my phone hotspot but it is painfully slow lol
 Laps freakin not workin. I also posted in lapse-help channel. Raghhhhhhh!
 ![beuh](journalMedia/05-31_01.jpg)
 
+
+### HORRAY! I managed to recover lapse
+I managed to recover yesterdays laps and make it smaller and faster! At the start i set stoper and at the end i also show it so i have about 3hrs and a few minutes lapsed :)
+Video file is right here: "journalMedia/05-30_67.jpg"
+![Video file](journalMedia/05-30_67.jpg)
+
 **Total time spent: 0.5 hours**
