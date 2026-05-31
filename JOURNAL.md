@@ -713,8 +713,8 @@ Laps freakin not workin. I also posted in lapse-help channel. Raghhhhhhh!
 
 HORRAY! I managed to recover lapse!
 I managed to recover yesterdays laps and make it smaller and faster! At the start i set stoper and at the end i also show it so i have about 3hrs and a few minutes lapsed :)
-Video file is right here: "journalMedia/05-30_67.jpg"
-![Video file](journalMedia/05-30_67.jpg)
+Video file is right here: "journalMedia/05-30_67.mp4"
+![Video file](journalMedia/05-30_67.mp4)
 
 *lol, it came through, i didnt believed that github would allow this lol*
 
