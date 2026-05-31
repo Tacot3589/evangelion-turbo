@@ -703,3 +703,11 @@ Currently im trying to work on my phone hotspot but it is painfully slow lol
 ![how i feel](journalMedia/05-30_06.jpg)
 
 **Total time spent: 3 hours**
+
+
+# May 31: RAAAGHHH I CANT WORK IF LAPSE ISNT WORKING AND IM TRYING TO FIX IT INSTEAD OF WORKING
+
+Laps freakin not workin. I also posted in lapse-help channel. Raghhhhhhh!
+![beuh](journalMedia/05-31_01.jpg)
+
+**Total time spent: 0.5 hours**
