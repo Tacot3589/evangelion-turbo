@@ -718,4 +718,17 @@ Video file is right here: "journalMedia/05-30_67.mp4"
 
 *lol, it came through, i didnt believed that github would allow this lol*
 
-**Total time spent: 0.5 hours**
+*------------------------------------------------------*
+
+Today we are doing research on how to clear signals from sensors - kalman filter, median filter, moving average etcetra.
+Im trying to use lapse in google chroom instead of firefox this time, we well see if it helps and works now!
+
+Best video of kalman filter i have found: https://www.youtube.com/watch?v=HCd-leV8OkU
+This has a lot of information too: https://www.youtube.com/watch?v=jn8vQSEGmuM
+
+After research  i think i will stick to ADRC or PiD in this robot. Kalman would be cool for IMU or predicting opponent location but it is hard and complicated!
+![research](journalMedia/05-30_2.mp4)
+
+Lapse link for todays research: https://lapse.hackclub.com/timelapse/bxvmavSPl1Jg
+
+**Total time spent: 1.5 hours**
