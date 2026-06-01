@@ -742,6 +742,6 @@ I am worriend that without this i would die of EMI lol
 Also double checked everything before submitting. Wish me luck guys!
 
 *have a nice day fellow rewiever :)*
-![emi](journalMedia/06-01_1.jpg)
+![emi](journalMedia/06-01_01.jpg)
 
 **Total time spent: 0.5 hours**
