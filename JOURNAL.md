@@ -732,3 +732,16 @@ After research  i think i will stick to ADRC or PiD in this robot. Kalman would 
 Lapse link for todays research: https://lapse.hackclub.com/timelapse/bxvmavSPl1Jg
 
 **Total time spent: 1.5 hours**
+
+
+# June 01: Sending for review!
+
+After quick thought process and qucik talk with my brother i decided to ground all of the metal parts and motor encosures with 1Mohm resistor and 100nF capacitor.
+I am worriend that without this i would die of EMI lol
+
+Also double checked everything before submitting. Wish me luck guys!
+
+*have a nice day fellow rewiever :)*
+![emi](journalMedia/06-01_1.jpg)
+
+**Total time spent: 0.5 hours**

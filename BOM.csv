@@ -105,3 +105,5 @@ P mos power,,Q5 Q6,dfn33,P mos power,4
 NTC 10k,General pourpouse resistor,R26,R 0603,Resistor,2
 LED RED,,VCC,LED 0603 RED,LED RED,2
 US3200005Z,Crystal or Oscillator,Y1,US3200005Z,US3200005Z,2
+1M/1000K/as big as you can find,Breadboard resistor,,,,5
+100nF/1uF,Breadboard capacitor mlcc,,,,5
