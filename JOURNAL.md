@@ -33,4 +33,10 @@ Heres photos!
 ![IMG7](journalMedia/06-01_08.jpg)
 ![IMG8](journalMedia/06-01_09.jpg)
 
-**Total time spent: 5.4 hours**
+
+Also i found out that my MCU stm32g431 have been sold everywhere... as well as all of the normal replacement - so i have gone digging.
+And to my suprise i have found something! stm32g491 will work lol.
+*most important pins for compatibility arent gpio or any other connector but rather Vcc, Vss, clock, BOOT0 and nrst - with them wrongly connecter you will either kill your mcu or it wont work at all!*
+![IMG8](journalMedia/06-01_10.jpg)
+
+**Total time spent: 7.2 hours**

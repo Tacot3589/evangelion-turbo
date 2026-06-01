@@ -689,3 +689,33 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64
 
 !ENTRY org.eclipse.cdt.core 1 0 2026-05-30 15:03:08.972
 !MESSAGE Indexed 'evangelion-turbo_driver' (19 sources, 81 headers) in 1.77 sec: 4,752 declarations; 19,365 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0.0083%)
+!SESSION 2026-06-01 21:58:06.486 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-06-01 21:59:09.188
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-06-01 21:59:09.197
+!MESSAGE Log4j2 initialized with config file D:\tech\robotyka\robots\evangelion-turbo\kod\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-06-01 21:59:21.456
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2026-06-01 22:04:29.603 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-06-01 22:04:44.695
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-06-01 22:04:44.695
+!MESSAGE Log4j2 initialized with config file D:\tech\robotyka\robots\evangelion-turbo\kod\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-06-01 22:05:12.231
+!MESSAGE Started RMI Server, listening on port 41337
