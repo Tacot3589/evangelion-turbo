@@ -40,3 +40,25 @@ And to my suprise i have found something! stm32g491 will work lol.
 ![IMG8](journalMedia/06-01_10.jpg)
 
 **Total time spent: 7.2 hours**
+
+
+# June 02: Im cooked lol
+
+Today i cut banana plugs to exact dimensions (always wear protective gear guys!) and broke my PCBs.
+
+Uhm... I ordered only 5 of them from JLC...
+
+I wanted to heat them to 230 degress, solder plugs and a *a lot* of capacitor, wait a while and be happy. Something broke and now i have shortcircuit on battery lol.
+![IMG1](journalMedia/06-02_01.jpg)
+![IMG2](journalMedia/06-02_02.jpg)
+![IMG3](journalMedia/06-02_03.jpg)
+
+Also i forgor, but i made some research on the way to school, (about 1hr in the bus lol) about IR filters.
+Halogen lamps may disturb work of IR TOF sensors, so i thought about adding them.
+From my research i concluded, that i want narrowband filters at 850NM, which will cut every other spectrum of the light that i dont need - my lidars work with 850NM, and narrowband filter will cut everything below 850-30NM, and everyhing above 850+30NM.
+Theye are not cheap but i think i will give them a try.
+
+Lapse:
+https://lapse.hackclub.com/timelapse/hRIpPztWr8to
+
+**Total time spent: 2.5 hours**
