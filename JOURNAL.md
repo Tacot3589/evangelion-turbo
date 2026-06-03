@@ -62,3 +62,22 @@ Lapse:
 https://lapse.hackclub.com/timelapse/hRIpPztWr8to
 
 **Total time spent: 2.5 hours**
+
+
+# June 03: Solderingggg
+
+Im coking with soldering main controller PCB.
+I got scared of destroying motor drivers so im focusing on controller for now.
+
+Tip for today: use flux for soldering, dont depend only on tip (soldering iron? soldering thing? idk how to call thing you solder with, im not talking about the tool, im talking about this usable thing on spools lol) - it makes life easier and soldering a looooot quicker and more precise. 
+Also it gives nice look.
+
+Unfortunetaly i have bought some wrong components which i have to buy...
+Some zener diodes in wrong casing, some resistors which i forgor.
+
+![front](journalMedia/06-03_01.jpg)
+![back](journalMedia/06-03_02.jpg)
+
+Lapse link:
+https://lapse.hackclub.com/timelapse/dXYIZFRqisLL
+**Total time spent: 4.5 hours**

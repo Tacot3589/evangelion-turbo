@@ -1,0 +1,71 @@
+Removed Pin From Net: NetName=I2C_EPROM_SCL Pin=IC1-63
+Removed Pin From Net: NetName=I2C_EPROM_SDA Pin=IC1-64
+Removed Pin From Net: NetName=NetD11_2 Pin=M1-1
+Removed Pin From Net: NetName=3.3v Pin=M1-2
+Removed Member From Class: ClassName=U_ADC_low_pass_filterA Member=12
+Removed Member From Class: ClassName=U_ADC_low_pass_filterB Member=12
+Removed Member From Class: ClassName=U_ADC_low_pass_filterC Member=12
+Removed Member From Class: ClassName=U_ADC_low_pass_filterD Member=12
+Removed Member From Class: ClassName=U_ADC_low_pass_filterE Member=12
+Removed Member From Class: ClassName=U_ADC_low_pass_filterF Member=12
+Removed Member From Class: ClassName=U_ADC_low_pass_filterH Member=12
+Removed Member From Class: ClassName=U_Buzzer Member=M1
+Change Component Comment : Designator=R28 Old Comment=4K7 New Comment=4.7K
+Change Component Comment : Designator=R30 Old Comment=4K7 New Comment=4.7K
+Change Component Comment : Designator=R31 Old Comment=4K7 New Comment=4.7K
+Change Component Comment : Designator=C25A Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=C25B Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=C25C Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=C25D Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=C70A Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=C70B Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=C70C Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=C70D Old Comment=10pF New Comment=1000pF / 1nF
+Change Component Comment : Designator=R38A Old Comment=30R New Comment=300R
+Change Component Comment : Designator=R38B Old Comment=30R New Comment=300R
+Change Component Comment : Designator=R38C Old Comment=30R New Comment=300R
+Change Component Comment : Designator=R38D Old Comment=30R New Comment=300R
+Change Component Comment : Designator=R39A Old Comment=30R New Comment=300R
+Change Component Comment : Designator=R39B Old Comment=30R New Comment=300R
+Change Component Comment : Designator=R39C Old Comment=30R New Comment=300R
+Change Component Comment : Designator=R39D Old Comment=30R New Comment=300R
+Change Component Designator: OldDesignator=12 NewDesignator=R5A
+Change Component Designator: OldDesignator=12 NewDesignator=R5B
+Change Component Designator: OldDesignator=12 NewDesignator=R5C
+Change Component Designator: OldDesignator=12 NewDesignator=R5D
+Change Component Designator: OldDesignator=12 NewDesignator=R5E
+Change Component Designator: OldDesignator=12 NewDesignator=R5F
+Change Component Designator: OldDesignator=12 NewDesignator=R5G
+Change Component Designator: OldDesignator=12 NewDesignator=R5H
+Change Component Designator: OldDesignator=DIST1 NewDesignator=LUNA1
+Change Component Designator: OldDesignator=DIST3 NewDesignator=LUNA3
+Change Component Designator: OldDesignator=DIST4 NewDesignator=LUNA4
+Change Component Designator: OldDesignator=DR1 NewDesignator=PROG_DR1
+Change Component Designator: OldDesignator=DR2 NewDesignator=PROG_DR_1
+Change Component Designator: OldDesignator=DST2 NewDesignator=LUNA2
+Change Component Designator: OldDesignator=LIN2 NewDesignator=LINE2
+Change Component Designator: OldDesignator=PROG_DR1 NewDesignator=PROG_DR3
+Added Component: Designator=M?(HCT5020A)
+Added Pin To Net: NetName=I2C_EPROM_SDA Pin=IC1-63
+Added Pin To Net: NetName=I2C_EPROM_SCL Pin=IC1-64
+Added Pin To Net: NetName=NetD11_2 Pin=M?-1
+Added Pin To Net: NetName=3.3v Pin=M?-2
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component LINE2 DF53-4S-0.6H
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component LUNA1 DF53-4S-0.6H
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component LUNA2 DF53-4S-0.6H
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component LUNA3 DF53-4S-0.6H
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component LUNA4 DF53-4S-0.6H
+Added Member To Class: ClassName=U_Buzzer Member=Component M? Buzzer
+Added Member To Class: ClassName=U_Interface Member=Component PROG_DR1 4 PIN
+Added Member To Class: ClassName=U_Interface Member=Component PROG_DR3 (PDR2) DF53-4S-0.6H
+Added Member To Class: ClassName=U_Interface Member=Component PROG_DR_1 4 PIN
+Added Member To Class: ClassName=U_MCU Member=Component R1 10k
+Added Member To Class: ClassName=U_ADC_low_pass_filterA Member=Component R5A (R5) 1K
+Added Member To Class: ClassName=U_ADC_low_pass_filterB Member=Component R5B (R5) 1K
+Added Member To Class: ClassName=U_ADC_low_pass_filterC Member=Component R5C (R5) 1K
+Added Member To Class: ClassName=U_ADC_low_pass_filterD Member=Component R5D (R5) 1K
+Added Member To Class: ClassName=U_ADC_low_pass_filterE Member=Component R5E (R5) 1K
+Added Member To Class: ClassName=U_ADC_low_pass_filterF Member=Component R5F (R5) 1K
+Added Member To Class: ClassName=U_ADC_low_pass_filterH Member=Component R5H (R5) 1K
+Added Member To Class: ClassName=U_FAN Member=Component R17 10K
+Added Room: Name=U_Buzzer

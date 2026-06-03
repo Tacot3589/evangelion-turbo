@@ -1,0 +1,30 @@
+Change Component Footprint: Designator=Q3 Old Footprint=SOT323 New Footprint=SOT23-3
+Change Component Comment : Designator=D1 Old Comment= New Comment=16V
+Change Component Comment : Designator=D2 Old Comment= New Comment=16V
+Change Component Designator: OldDesignator=M? NewDesignator=M1
+Added Member To Class: ClassName=U_MCU Member=Component C1 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C2 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C5 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C6 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C7 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C13 1uF
+Added Member To Class: ClassName=U_MCU Member=Component C14 1uF
+Added Member To Class: ClassName=U_Power_supply Member=Component C30 1uF
+Added Member To Class: ClassName=U_EPROM Member=Component C36 1uF
+Added Member To Class: ClassName=U_IMU Member=Component C38 1uF
+Added Member To Class: ClassName=U_FAN Member=Component C40 1uF
+Added Member To Class: ClassName=U_MCU_2 Member=Component C42 1uF
+Added Member To Class: ClassName=U_MCU_2 Member=Component C44 1uF
+Added Member To Class: ClassName=U_MCU_2 Member=Component C45 1uF
+Added Member To Class: ClassName=U_OledAndLed Member=Component C46 1uF
+Added Member To Class: ClassName=U_OledAndLed Member=Component C47 1uF
+Added Member To Class: ClassName=U_OledAndLed Member=Component C48 1uF
+Added Member To Class: ClassName=U_OledAndLed Member=Component C52 1uF
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component C54 1uF
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component C55 1uF
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component C58 1uF
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component C59 1uF
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component C62 1uF
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component C64 1uF
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component C65 1uF
+Added Member To Class: ClassName=U_Sensor_connectors Member=Component C68 1uF

@@ -1,0 +1,11 @@
+Removed Pin From Net: NetName=IMU_SDA Pin=IC1-60
+Removed Pin From Net: NetName=IMU_SCL Pin=IC1-61
+Removed Pin From Net: NetName=I2C_EPROM_SDA Pin=IC1-63
+Removed Pin From Net: NetName=I2C_EPROM_SCL Pin=IC1-64
+Removed Member From Class: ClassName=U_ADC_low_pass_filterG Member=R5A
+Added Pin To Net: NetName=IMU_SCL Pin=IC1-60
+Added Pin To Net: NetName=IMU_SDA Pin=IC1-61
+Added Pin To Net: NetName=I2C_EPROM_SCL Pin=IC1-63
+Added Pin To Net: NetName=I2C_EPROM_SDA Pin=IC1-64
+Added Member To Class: ClassName=U_Interface Member=Component PROG_DR1 4 PIN
+Added Room: Name=U_Buzzer

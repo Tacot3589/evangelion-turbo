@@ -737,3 +737,18 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64
 
 !ENTRY org.eclipse.cdt.core 1 0 2026-06-01 22:35:47.025
 !MESSAGE Indexed 'evangelion-turbo_driver_g491' (19 sources, 81 headers) in 2.04 sec: 4,799 declarations; 19,753 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0.0081%)
+!SESSION 2026-06-03 15:36:21.822 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-06-03 15:36:37.147
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-06-03 15:36:37.156
+!MESSAGE Log4j2 initialized with config file D:\tech\robotyka\robots\evangelion-turbo\kod\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-06-03 15:36:48.113
+!MESSAGE Started RMI Server, listening on port 41337
