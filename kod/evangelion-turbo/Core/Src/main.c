@@ -250,6 +250,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  /*
 	 //CPU load calculations //TODO wont work for 100 percent lol
 		uint32_t t1 = DWT->CYCCNT;
 		__WFI();
@@ -271,6 +272,16 @@ int main(void)
 			idle_cycles_total = 0;
 			last_total_cycles = now;
 		}
+		*/
+
+	    HAL_GPIO_WritePin(START_LED_RED_GPIO_Port, START_LED_RED_Pin, GPIO_PIN_SET);
+	    HAL_GPIO_WritePin(START_LED_GREEN_GPIO_Port, START_LED_GREEN_Pin, GPIO_PIN_SET);
+	    HAL_GPIO_WritePin(START_LED_BLUE_GPIO_Port, START_LED_BLUE_Pin, GPIO_PIN_SET);
+	    HAL_Delay(1000);                                                              // 1 s
+	    HAL_GPIO_WritePin(START_LED_RED_GPIO_Port, START_LED_RED_Pin, GPIO_PIN_RESET);
+	    HAL_GPIO_WritePin(START_LED_GREEN_GPIO_Port, START_LED_GREEN_Pin, GPIO_PIN_RESET);
+	    HAL_GPIO_WritePin(START_LED_BLUE_GPIO_Port, START_LED_BLUE_Pin, GPIO_PIN_RESET);
+	    HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

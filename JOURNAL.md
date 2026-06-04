@@ -90,7 +90,23 @@ At 01:00 AM i got finnaly to sleep with more issues than before lol.
 
 # June 03: I should have bought PCBA lol
 
-Yea... I got camera working for lapse!
-![front](journalMedia/06-04_01.jpg)
+*Yea... I got camera working for lapse!*
 
-**Total time spent: 0 hours**
+After 4hrs of debuging i managed to connect to stm32cubeprog withg diffrent computer.
+It comes out that i had too log USB cables and it didnt work lol.
+
+IT FREAKIN CONNECTED HELLYE!
+*Beacuze of all the mess i dont have any way to connect my camera lol, maybe i will find to change it into internet one, it is some xiao esp sense c3 that i won at some competition*
+
+
+BRUUUUH...
+my controller, which is based around stm32h5 works while beeing connected with like 3cm cables to voltage maker, but using proper cables with Crocodile connectors not works.
+
+So today i managed to connect to the mcu. But nothing else lol.. *Kill me plyz stm32h is so complicateddd*
+![cam](journalMedia/06-04_01.jpg)
+![pcb](journalMedia/06-04_02.jpg)
+
+Lapse link:
+https://lapse.hackclub.com/timelapse/elWAS2NwqL74
+
+**Total time spent: 9 hours**
