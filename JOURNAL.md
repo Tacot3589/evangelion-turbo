@@ -80,4 +80,17 @@ Some zener diodes in wrong casing, some resistors which i forgor.
 
 Lapse link:
 https://lapse.hackclub.com/timelapse/dXYIZFRqisLL
-**Total time spent: 4.5 hours**
+
+Actually i soldered MCU (i started doing it at 22.00 o clock), beacuse i wanted to check if everyting was okay. It was not. I didnt start lapse bcoz i though it was quick 20min job lol.
+So i have shortcircuit on my mainboard, so i took another one and solderem LDO and MCU into this...
+I have 1v instead of 1.8v on Vcap and core. I will try to fix it next day.
+At 01:00 AM i got finnaly to sleep with more issues than before lol.
+**Total time spent: 7.5 hours**
+
+
+# June 03: I should have bought PCBA lol
+
+Yea... I got camera working for lapse!
+![front](journalMedia/06-04_01.jpg)
+
+**Total time spent: 0 hours**
