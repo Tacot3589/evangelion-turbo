@@ -109,4 +109,8 @@ So today i managed to connect to the mcu. But nothing else lol.. *Kill me plyz s
 Lapse link:
 https://lapse.hackclub.com/timelapse/elWAS2NwqL74
 
-**Total time spent: 9 hours**
+
+We got another late nite session lol.
+I managed to connect to PC propelly. It comed out that i had micro-short-circuit between 3.3 and boot0, which caused MCU to stuck on bootloader and never boot to programm...
+It was hard to find out, beacuse this shortcircuit wasnt really short circuit, it had about 5kOhm resistance! Combined with 10K pulldon, there was about 2.2-2.6v on BOOT0, which is high state lol. 
+**Total time spent: 11 hours**

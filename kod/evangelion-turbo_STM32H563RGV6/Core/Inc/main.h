@@ -31,7 +31,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+extern volatile uint32_t dupa;
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -57,6 +57,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define A_Pin GPIO_PIN_1
+#define A_GPIO_Port GPIOB
+#define B_Pin GPIO_PIN_2
+#define B_GPIO_Port GPIOB
+#define C_Pin GPIO_PIN_10
+#define C_GPIO_Port GPIOB
+#define D_Pin GPIO_PIN_11
+#define D_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
