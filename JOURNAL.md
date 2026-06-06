@@ -114,3 +114,14 @@ We got another late nite session lol.
 I managed to connect to PC propelly. It comed out that i had micro-short-circuit between 3.3 and boot0, which caused MCU to stuck on bootloader and never boot to programm...
 It was hard to find out, beacuse this shortcircuit wasnt really short circuit, it had about 5kOhm resistance! Combined with 10K pulldon, there was about 2.2-2.6v on BOOT0, which is high state lol. 
 **Total time spent: 11 hours**
+
+
+# June 06: Evangelion Turbo edit incoming?
+
+@Leo dmed me on slack, asking if he could use my proj for his edit... Im kinda curious what he will cook.
+I added some filets, deleted few thing, made a few things more pretty and sent him step file of the project!
+
+*Im looking forward for you edit leooo!!!*
+![conv](journalMedia/06-06_01.jpg)
+![step](journalMedia/06-06_02.jpg). 
+**Total time spent: 0.5 hours**
