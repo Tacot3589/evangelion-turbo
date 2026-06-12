@@ -139,9 +139,12 @@ Why? Beacuse i want to be exacytly 990g - 990g in 1% accuracy weigh is exactly 1
 
 *My calculations from excel says that this robot will weight 890g for now, that is okay, thus not what i really wanted*
 
+I also made little 3d printed thing for chamfering, beacuse last one didnt work well lol
+
 Imagesss!
 ![img1](journalMedia/06-12_01.jpg)
 ![img2](journalMedia/06-12_02.jpg)
 ![img3](journalMedia/06-12_03.jpg)
 ![img4](journalMedia/06-12_04.jpg)
-**Total time spent: 2 hours**
+![img4](journalMedia/06-12_05.jpg)
+**Total time spent: 2.5 hours**
