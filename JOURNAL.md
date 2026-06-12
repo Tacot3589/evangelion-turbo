@@ -125,3 +125,21 @@ I added some filets, deleted few thing, made a few things more pretty and sent h
 ![conv](journalMedia/06-06_01.jpg)
 ![step](journalMedia/06-06_02.jpg). 
 **Total time spent: 0.5 hours**
+
+
+# June 12: Comeback after short beake!
+
+Parts from JLC finally arrived!
+I opened box and carefully inspected for anything which may be wrong (this costed shitload of money)
+
+Also i weighted everything for future use and writed it down into excel!
+Disasembly of current prototype was also a thing, i weighted, like everyhing lol.
+
+Why? Beacuse i want to be exacytly 990g - 990g in 1% accuracy weigh is exactly 1kg, which is maximum i wanted.
+
+Imagesss!
+![img1](journalMedia/06-12_01.jpg)
+![img2](journalMedia/06-12_02.jpg)
+![img3](journalMedia/06-12_03.jpg)
+![img4](journalMedia/06-12_04.jpg)
+**Total time spent: 2 hours**
