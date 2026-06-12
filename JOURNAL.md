@@ -137,6 +137,8 @@ Disasembly of current prototype was also a thing, i weighted, like everyhing lol
 
 Why? Beacuse i want to be exacytly 990g - 990g in 1% accuracy weigh is exactly 1kg, which is maximum i wanted.
 
+*My calculations from excel says that this robot will weight 890g for now, that is okay, thus not what i really wanted*
+
 Imagesss!
 ![img1](journalMedia/06-12_01.jpg)
 ![img2](journalMedia/06-12_02.jpg)
