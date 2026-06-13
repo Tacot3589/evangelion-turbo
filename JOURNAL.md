@@ -146,5 +146,32 @@ Imagesss!
 ![img2](journalMedia/06-12_02.jpg)
 ![img3](journalMedia/06-12_03.jpg)
 ![img4](journalMedia/06-12_04.jpg)
-![img4](journalMedia/06-12_05.jpg)
+![img5](journalMedia/06-12_05.jpg)
 **Total time spent: 2.5 hours**
+
+
+# June 13: lock the heck in
+
+Okay so today i locked in onto making metal parts usable and accurate, beacuse dimensional accuracy in SLM parts is pretty poor!
+I sanded everything that i didnt want by hand (photos before and after), chamfered according to proj.
+Also i rechamfered my front and back plates, beacuse theye were not straight lol.
+
+My front plow is made from #45 steel CNCed which is pretty hard! *Guess, who said "yeee, its only half of the milimiter, i will sand it by hand, no problem" and cant sand it now, even with sanding mashine...*
+
+I wanted to tap everyhing but i broke like 4 taps... *I had hard, very hard, time removing broken bits from holes*
+Thankfully i managed to tap all plastic parts before!
+
+*Quick tip for today!
+Tapping, sanding, drilling, always use oil! It sound weird to use something slicky, but trust me it works lol. It helps to keep your tools be cool and live longer and it is a loot easier to drill!*
+
+Imagesss!
+![img1](journalMedia/06-13_01.jpg)
+![img2](journalMedia/06-13_02.jpg)
+![img3](journalMedia/06-13_03.jpg)
+![img4](journalMedia/06-13_04.jpg)
+![img5](journalMedia/06-13_05.jpg)
+![img6](journalMedia/06-13_06.jpg)
+![img7](journalMedia/06-13_07.jpg)
+![img8](journalMedia/06-13_08.jpg)
+![img9](journalMedia/06-13_09.jpg)
+**Total time spent: 9.8 hours**
