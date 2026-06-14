@@ -175,3 +175,26 @@ Imagesss!
 ![img8](journalMedia/06-13_08.jpg)
 ![img9](journalMedia/06-13_09.jpg)
 **Total time spent: 9.8 hours**
+
+# June 13: W grandpa
+
+He found M3 tap for me! *I broke it like 40min salet :sob-emoji:*
+Also my brother found M2 tap for me! *Yup, also broke it, 10min later :skull-emoji:*
+
+I tapped all M2.5 on all metal parts, and all M3 on front mount... Then i felt that this is easy and i understand it now LOL
+
+Additionally i broke like 4 drills on these 1mm holessss... Using new HSS drill bit was the key. *One bit stuck inside, and i had bad time taking it out xD*
+
+So the key for doing geat taps and dont braking them inside your part, is actually PID tuning. You have to tune yourself to be gentle and dont feel to good.
+Go little, like quater of a turn, then go back same quater turn... Go and back... Stop and go. You will learn this someday!
+*AND OFCOURSE A LOT OF LUBRICATION OR OLI!*
+
+Imagesss!
+![img1](journalMedia/06-14_01.jpg)
+![img2](journalMedia/06-14_02.jpg)
+![img3](journalMedia/06-14_03.jpg)
+![img4](journalMedia/06-14_04.jpg)
+![img5](journalMedia/06-14_05.jpg)
+![img6](journalMedia/06-14_06.jpg)
+![img7](journalMedia/06-14_07.jpg)
+**Total time spent: 5.7 hours**
