@@ -176,7 +176,7 @@ Imagesss!
 ![img9](journalMedia/06-13_09.jpg)
 **Total time spent: 9.8 hours**
 
-# June 13: W grandpa
+# June 14: W grandpa
 
 He found M3 tap for me! *I broke it like 40min salet :sob-emoji:*
 Also my brother found M2 tap for me! *Yup, also broke it, 10min later :skull-emoji:*
@@ -198,3 +198,25 @@ Imagesss!
 ![img6](journalMedia/06-14_06.jpg)
 ![img7](journalMedia/06-14_07.jpg)
 **Total time spent: 5.7 hours**
+
+
+# June 15: Again in school robotics club!
+
+Hellyeeee! In the morning i bought M3 taps kit, with 3 stages. First stage was easy, i could do it even with hard dril... I broke all of the 3 of them.
+Fourtunetaly i managed do tap all of the m3 holes in hearboxes befora that lol. I also borrowed (i knowrrr, agaainnn) M3 tap from frien... WHICH I ALSO BROKE LOL
+
+I should be laughing but... These shish material is so freakin harddd.
+
+Also i tried sanding front wedges on the mashine, which shjould be easy. Guys it is only .5mm... right?
+Is is not "only" .5mm. It is .5mm of frakin hard steel! I burned my fingers like three times.
+
+After all of this i tried to get tap out from hole, from the other side with screw.. You wont believe it. i broke it also LOL
+
+Imagesss!
+![img1](journalMedia/06-15_01.jpg)
+![img2](journalMedia/06-15_02.jpg)
+![img3](journalMedia/06-15_03.jpg)
+![img4](journalMedia/06-15_04.jpg)
+![img5](journalMedia/06-15_05.jpg)
+![img6](journalMedia/06-15_06.jpg)
+**Total time spent: 5.2 hours**
