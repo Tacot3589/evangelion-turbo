@@ -1,5 +1,4 @@
-xml
-# *Big thanks, for help in making this project possible, to:*
+# *Big thanks to those who helped make this project possible:*
 
 <p align="center">
   <a href="https://roboilo.com/">
