@@ -7,7 +7,7 @@
     <img src="./ThanksTo_assets/ROBOILO.png" alt="RoboIlo" height="100">
   </a>
   <a href="https://forge.hackclub.com/auth/hca/start?ref=7YQKYFS7">
-    <img src="./ThanksTo_assets/HCF.png" alt="Hackclub: Forge" height="100">
+    <img src="./ThanksTo_assets/HC.png" alt="Hackclub: Forge" height="100">
   </a>
     <a href="https://www.pcbway.com/">
     <img src="./ThanksTo_assets/PCBWAY.png" alt="PCBWay" height="100">
