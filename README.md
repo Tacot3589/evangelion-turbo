@@ -1,16 +1,25 @@
+xml
 # *Big thanks, for help in making this project possible, to:*
+
 <p align="center">
-  <a href="https://www.rosa3d.pl/en/">
-    <img src="./ThanksTo_assets/ROSA.jpg" alt="Rosa3D" height="80">
-  </a>
   <a href="https://roboilo.com/">
     <img src="./ThanksTo_assets/ROBO.png" alt="RoboIlo" height="80">
   </a>
-  <a href="https://forge.hackclub.com/auth/hca/start?ref=7YQKYFS7">
-    <img src="./ThanksTo_assets/HC.png" alt="Hackclub: Forge" height="80">
-  </a>
-    <a href="https://www.pcbway.com/">
+</p>
+
+<p align="center">
+  <a href="https://www.pcbway.com/">
     <img src="./ThanksTo_assets/PCBWAY.png" alt="PCBWay" height="80">
+  </a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://www.rosa3d.pl/en/">
+    <img src="./ThanksTo_assets/ROSA.jpg" alt="Rosa3D" height="80">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://forge.hackclub.com/auth/hca/start?ref=7YQKYFS7">
+    <img src="./ThanksTo_assets/HC.png" alt="Hack Club Forge" height="80">
   </a>
 </p>
 
