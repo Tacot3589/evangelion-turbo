@@ -14,6 +14,7 @@
   </a>
 </p>
 
+---
 
 # Evangelion turbo - my biggest project and most complicated robot yet - succesor to Evangelion
 Sumo robot build by me! Designed for RoboRave competition 2026
