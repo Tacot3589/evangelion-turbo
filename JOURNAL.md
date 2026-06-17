@@ -220,3 +220,18 @@ Imagesss!
 ![img5](journalMedia/06-15_05.jpg)
 ![img6](journalMedia/06-15_06.jpg)
 **Total time spent: 5.2 hours**
+
+# June 16: Parts!
+
+Second batch, last one, of electronics parts finally came!
+It was MCUs, drivers, mosfets and other similiar parts, so this was more expensive one...
+
+Alsoo i just wanted to share how comediacilly smally are these connector lol
+I ordered 30 of them (i need about 17 for one robot, but yk, i can broke while soldering, theye are small and hard to solder), so i ordered 30.
+Chinesee guy only sent me 10... Hope they will arrive until competition, or im cooked.
+
+Imagesss!
+*.6mm jst connector next to m4 screw*
+![img1](journalMedia/06-16_01.jpg)
+![img2](journalMedia/06-16_02.jpg)
+**Total time spent: 0.2 hours**
