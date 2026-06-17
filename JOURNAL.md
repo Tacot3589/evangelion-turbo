@@ -248,10 +248,10 @@ And ye, i nearly broken my electric screwdriver, which i got fo christmasss...
 After all of this, finnaly gearboxes were done. One was spiinning okayich but other one was not. Thats bad, it is only 7.5:1 so it should spin like butter. I think it if bearings fault, but i had to go home so i could fix it then.
 Also pretty suprising, but tolerances on SLM on right gearbox and left one are pretty driffrent. Like left one is loose and right one - i had to drill a lot of holes beacuse it didnt fit.
 
-*Now as i got home and ate dinner i can go back to soldering!*
-
-
 When i was trying to force gearboxes to run normally, it started to smoke from somewhere... I think i have burned out motors :skulk:
+
+*Additionally i emailed some local filament resselers to see if they would sent me some free samples*
+
 
 Imagesss!
 ![img1](journalMedia/06-17_01.jpg)
@@ -263,4 +263,4 @@ Imagesss!
 ![img7](journalMedia/06-17_07.jpg)
 ![img8](journalMedia/06-17_08.jpg)
 ![img9](journalMedia/06-17_09.jpg)
-**Total time spent: 6.2 hours**
+**Total time spent: 6.7 hours**
