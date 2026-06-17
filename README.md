@@ -10,7 +10,7 @@
     <img src="./ThanksTo_assets/HCF.png" alt="Hackclub: Forge" height="70">
   </a>
     <a href="https://www.pcbway.com/">
-    <img src="./assets/sponsors/PCBWAY.png" alt="PCBWay" height="70">
+    <img src="./ThanksTo_assets/PCBWAY.png" alt="PCBWay" height="70">
   </a>
 </p>
 
