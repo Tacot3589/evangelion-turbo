@@ -1,3 +1,20 @@
+# Big thanks, for help in making this project possible, to:
+<p align="center">
+  <a href="https://roboilo.com/">
+    <img src="./ThanksTo_assets/ROSA.jpg" alt="Rosa3D" height="70">
+  </a>
+  <a href="https://twoj-sponsor-2.com">
+    <img src="./ThanksTo_assets/ROBOILO.png" alt="RoboIlo" height="70">
+  </a>
+  <a href="https://twoj-sponsor-3.com">
+    <img src="./ThanksTo_assets/HCF.png" alt="Hackclub: Forge" height="70">
+  </a>
+    <a href="https://twoj-sponsor-3.com">
+    <img src="./assets/sponsors/PCBWAY.png" alt="PCBWay" height="70">
+  </a>
+</p>
+
+
 # Evangelion turbo - my biggest project and most complicated robot yet - succesor to Evangelion
 Sumo robot build by me! Designed for RoboRave competition 2026
 - 10x10cm robot footprint (max 18-25cm, i think about adding flags)
