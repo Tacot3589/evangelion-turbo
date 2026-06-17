@@ -235,3 +235,29 @@ Imagesss!
 ![img1](journalMedia/06-16_01.jpg)
 ![img2](journalMedia/06-16_02.jpg)
 **Total time spent: 0.2 hours**
+
+# June 17: Lock in again day.
+
+It was funny and a lot of work today.
+
+In the morning i cleared silicone form (in our robotics club), made silicone and poured it into. I wanted to go for nice purple color, by mixing pink with black, but they came up grayish...
+Later i started working on assembly but... It wasnt quite rigt. My screw i got were .1mm to large (i used longer ones from diffrent batch, with right tolerances), bearing were broken (i had to hammer them out, and hammer good ones in).
+A few days ago i broke screw inside, so i tryed cut it in half to get it out with "-" screwdriwer... I countld so i just sanded it flat. I also had to sand my SUPERHARD CNC MILLED FRONT WEDGE WHICH WAS SUPER HARD AND TEDIOUS BEACUSE IT IS FREAKIN SUPER HARD... *thankfully it fit*
+And ye, i nearly broken my electric screwdriver, which i got fo christmasss...
+
+After all of this, finnaly gearboxes were done. One was spiinning okayich but other one was not. Thats bad, it is only 7.5:1 so it should spin like butter. I think it if bearings fault, but i had to go home so i could fix it then.
+Also pretty suprising, but tolerances on SLM on right gearbox and left one are pretty driffrent. Like left one is loose and right one - i had to drill a lot of holes beacuse it didnt fit.
+
+*Now as i got home and ate dinner i can go back to soldering!*
+
+Imagesss!
+![img1](journalMedia/06-17_01.jpg)
+![img2](journalMedia/06-17_02.jpg)
+![img3](journalMedia/06-17_03.jpg)
+![img4](journalMedia/06-17_04.jpg)
+![img5](journalMedia/06-17_05.jpg)
+![img6](journalMedia/06-17_06.jpg)
+![img7](journalMedia/06-17_07.jpg)
+![img8](journalMedia/06-17_08.jpg)
+![img9](journalMedia/06-17_09.jpg)
+**Total time spent: 6.2 hours**
