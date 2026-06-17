@@ -29,31 +29,27 @@ xml
 Sumo robot build by me! Designed for RoboRave competition 2026
 - 10x10cm robot footprint (max 18-25cm, i think about adding flags)
 - max 1kg
-- metal parts (i think i will order BJ parts from jlc beacuse they are cheapest, still not cheap tho)
+- Parts manufactured from steel, aluminium and high performance filaments
 - 4 Distance sensors 
 - 4 line sensors
 - IMU
-- shielded motors :)
+- shielded motors
 - EPROM memory on board
-- strong and fast stm32H5 mcu on board
+- strong and fast stm32H5 mcu
 - 7.5 gear ratio
-- two big external mosfters motor drivers capable of high current
-- two strong motors (8A max each... it will be gooood)
+- powerfull external mosfters motor drivers capable of high current
+- two high power brushed DC motors
 
 #### Pros:
- - not tested yet
- - Buzzer!
+ - not tested yet, still in development
 
 #### Cons:
-- ~~no buzzer :(~~
-- not tested yet
-- still in development
+- not tested yet, still in development
 
 #### Accomplishments:
- - not tested yet
+ - not tested yet, still in development
 
-
-# Images!
+# Photos and images:
 
 ## 3D Model:
 ![ET1](media/ET1.jpg)
