@@ -4,7 +4,7 @@
     <img src="./ThanksTo_assets/ROSA.jpg" alt="Rosa3D" height="70">
   </a>
   <a href="https://roboilo.com/">
-    <img src="./ThanksTo_assets/ROBOILO.png" alt="RoboIlo" height="70">
+    <img src="./ThanksTo_assets/roboilo.png" alt="RoboIlo" height="70">
   </a>
   <a href="https://forge.hackclub.com/auth/hca/start?ref=7YQKYFS7">
     <img src="./ThanksTo_assets/HCF.png" alt="Hackclub: Forge" height="70">
