@@ -250,6 +250,9 @@ Also pretty suprising, but tolerances on SLM on right gearbox and left one are p
 
 *Now as i got home and ate dinner i can go back to soldering!*
 
+
+When i was trying to force gearboxes to run normally, it started to smoke from somewhere... I think i have burned out motors :skulk:
+
 Imagesss!
 ![img1](journalMedia/06-17_01.jpg)
 ![img2](journalMedia/06-17_02.jpg)
