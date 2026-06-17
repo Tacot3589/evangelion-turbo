@@ -250,7 +250,7 @@ Also pretty suprising, but tolerances on SLM on right gearbox and left one are p
 
 When i was trying to force gearboxes to run normally, it started to smoke from somewhere... I think i have burned out motors :skulk:
 
-*Additionally i emailed some local filament resselers to see if they would sent me some free samples*
+*Additionally i emailed some local filament resselers to see if they would sent me some free samples. Aaand cutified readme :)*
 
 
 Imagesss!
@@ -263,4 +263,4 @@ Imagesss!
 ![img7](journalMedia/06-17_07.jpg)
 ![img8](journalMedia/06-17_08.jpg)
 ![img9](journalMedia/06-17_09.jpg)
-**Total time spent: 6.7 hours**
+**Total time spent: 7.3 hours**
