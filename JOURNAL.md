@@ -264,3 +264,31 @@ Imagesss!
 ![img8](journalMedia/06-17_08.jpg)
 ![img9](journalMedia/06-17_09.jpg)
 **Total time spent: 7.3 hours**
+
+
+# June 18: I just want it to work already >.<
+
+I started day with getting wheels out of the forms (wait, actually i checked, theye are called mold in english lol, sorry). It was messy, but after clearing, they comed out nicely.
+
+I soldered everythin what was left (ye, small .6mm raster connectors too) to the maincontroll. Eveything worked... To the point. After soldering eeevyrhing but bullet plugs... It just borked itself. I got 0.23ohms of resistance beetween 3.3v and GND.
+FREAKING AGAIN! I didnt do much. It was only soldering bullet plugsss. When i apply current it heats up under MCU, but it i think is okay... This shish hars is.
+
+I got one board left, idk what to do to be honest. I can solder it but i dont have these small connectors on hand, beacuse chinese guy sent only 10pcs, not orginal quantity. And i need about 17teen for this board lol. Not funny, nevermind. Cryout.
+I didnt even ate dinner beacuse of that.
+
+Wait i got one idea while returning by bus home. I can use some smaller connector and one electrolyte cappacitor, insteal of two chunky bullets plugs (may this be the problem in destroying eveyrhing inside pcb, we well see).
+
+So yea. I actually started lapse in the morning, about 8AM, but it got totally borked while i made 1hr break for my sanity and qucik ice cream (GOD I FREAKIN LOVE ICE CREAM). ye, it sucks.
+
+
+Imagesss!
+![img1](journalMedia/06-18_01.jpg)
+![img2](journalMedia/06-18_02.jpg)
+![img3](journalMedia/06-18_03.jpg)
+![img4](journalMedia/06-18_04.jpg)
+![img5](journalMedia/06-18_05.jpg)
+![img6](journalMedia/06-18_06.jpg)
+![img7](journalMedia/06-18_07.jpg)
+![img8](journalMedia/06-18_08.jpg)
+![img9](journalMedia/06-18_09.jpg)
+**Total time spent: 8.4 hours**
