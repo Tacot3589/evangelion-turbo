@@ -12,7 +12,7 @@
   </a>
   &nbsp;&nbsp;&nbsp;
   <a href="https://www.rosa3d.pl/en/">
-    <img src="./ThanksTo_assets/ROSA.jpg" alt="Rosa3D" height="80">
+    <img src="./ThanksTo_assets/ROSA.png" alt="Rosa3D" height="80">
   </a>
 </p>
 
