@@ -8,11 +8,11 @@
 
 <p align="center">
   <a href="https://www.pcbway.com/">
-    <img src="./ThanksTo_assets/PCBWAY.png" alt="PCBWay" height="90">
+    <img src="./ThanksTo_assets/PCBWAY.png" alt="PCBWay" height="80">
   </a>
   &nbsp;&nbsp;&nbsp;
   <a href="https://www.rosa3d.pl/en/">
-    <img src="./ThanksTo_assets/ROSA.png" alt="Rosa3D" height="90">
+    <img src="./ThanksTo_assets/ROSA.png" alt="Rosa3D" height="80">
   </a>
 </p>
 
