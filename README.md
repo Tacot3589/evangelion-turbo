@@ -8,20 +8,20 @@
 
 <p align="center">
   <a href="https://www.pcbway.com/">
-    <img src="./ThanksTo_assets/PCBWAY.png" alt="PCBWay" height="80">
+    <img src="./ThanksTo_assets/PCBWAY.png" alt="PCBWay" height="85">
   </a>
   &nbsp;&nbsp;&nbsp;
   <a href="https://www.rosa3d.pl/en/">
-    <img src="./ThanksTo_assets/ROSA.png" alt="Rosa3D" height="80">
+    <img src="./ThanksTo_assets/ROSA.png" alt="Rosa3D" height="85">
   </a>
 </p>
 
 <p align="center">
   <a href="https://forge.hackclub.com/auth/hca/start?ref=7YQKYFS7">
-    <img src="./ThanksTo_assets/HC.png" alt="Hack Club: Forge" height="80">
+    <img src="./ThanksTo_assets/HC.png" alt="Hack Club: Forge" height="75">
   </a>
   <a href="https://hackclub.com/">
-    <img src="./ThanksTo_assets/HCF.png" alt="Hack Club" height="80">
+    <img src="./ThanksTo_assets/HCF.png" alt="Hack Club" height="75">
   </a>
 </p>
 
