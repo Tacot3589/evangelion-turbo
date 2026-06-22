@@ -327,8 +327,8 @@ Why only one? Beacuse im worried about breaking it or cooking it on solded plate
 I have done most of A side, tommorrow next side and shitty connectors which i hate <3
 
 Imagesss!
-![img1](journalMedia/06-19_01.jpg)
-![img2](journalMedia/06-19_02.jpg)
-![img3](journalMedia/06-19_03.jpg)
-![img4](journalMedia/06-19_04.jpg)
+![img1](journalMedia/06-22_01.jpg)
+![img2](journalMedia/06-22_02.jpg)
+![img3](journalMedia/06-22_03.jpg)
+![img4](journalMedia/06-22_04.jpg)
 **Total time spent: 7.6 hours**
