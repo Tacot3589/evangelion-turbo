@@ -292,3 +292,43 @@ Imagesss!
 ![img8](journalMedia/06-18_08.jpg)
 ![img9](journalMedia/06-18_09.jpg)
 **Total time spent: 8.4 hours**
+
+
+# June 19: Physicz in like magic
+
+I asked for help my robotics coach, Patryk, via messenger. Next day (which is today) he took his warm-camera (idk how to call it lol).
+I soldered directly into 3.3v line, beacuse short cicruit was on this like (about 0.22Ohm from 3.3 to GND, about 20K 5v to GND, about 100K VCC to GND -> shortcircuit somewhere on 3.3v line).
+Current limiter on bench power supply to 2 Amp and here we go. After some searching one line lit up clearly. In altium i search and it was 3.3v line, so there was something bad happening *at the end* of this trace.
+After mooore searching and *crying* we found a little too much of solder under my 'lil connector.
+AND THAT WAS IT! IT WORKED AFTER I REMOVED CONNECTOR AND THE PROBLEM! SCIENCE IS OUR MAGIC GUYS!
+
+
+Also i emailed PCBWay if they could machine front wedge for me, beacouse one i got from JLC is far from perfect...
+
+
+*Im spending my time, workign at our robotics club at school, and i have my camera set up at home, so no lapse :sob:*
+
+Imagesss!
+![img1](journalMedia/06-19_01.jpg)
+**Total time spent: 1 hours**
+
+
+
+# June 22: Work work work work work
+
+PCBWay said that they will partially fund me my front wedge! Succes!
+
+Today i soldered more components, and checked again for any FREAKIN SHORT CIRCUIT. There were none, so it is okay :)
+It work like a bliss. AND IT LOOKS SO FREAKIN COOL BABBYYYYYYYYYY!!!
+*Soldering these small zener diodes beetween MOSFETS was so freaking hard lol.*
+
+After cooking with main controller (it looks so freakin cool!) i started working on one motor driver.
+Why only one? Beacuse im worried about breaking it or cooking it on solded plate. So ye, cookin cookin cookin!
+I have done most of A side, tommorrow next side and shitty connectors which i hate <3
+
+Imagesss!
+![img1](journalMedia/06-22_01.jpg)
+![img2](journalMedia/06-22_02.jpg)
+![img3](journalMedia/06-22_03.jpg)
+![img4](journalMedia/06-22_04.jpg)
+**Total time spent: 7.6 hours**
