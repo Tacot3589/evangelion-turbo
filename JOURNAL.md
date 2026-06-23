@@ -332,3 +332,27 @@ Imagesss!
 ![img3](journalMedia/06-22_03.jpg)
 ![img4](journalMedia/06-22_04.jpg)
 **Total time spent: 7.6 hours**
+
+
+# June 23: 10.00 to 19.00 with two half hour breakes. Nice. One hour spend on troubleshooting my younger robotics collegue robot lol.
+
+Today i fully soldered one motor driver! It was tedious but here we are! I had some problems with random shortcircuit, but i hotaired a few things, desoldered mosfets and DRV motor driver, soldered new ones and now it is all okay!
+I didnt have time to connect it to PC and test it, but all of the status leds are on so i praise to be okay and workin.
+
+Next i soldered silicone wires to motors (silicone is better at disspating heat and more heat resistant than PVC or other wires. Also It is easier to manage and SO SATYSFYING TO TOUCH. And easier to solder).
+And sanded by hand motor mounts, beacuse cad i okay, irl is sanding :)
+
+For tommorof i plan mostly assembly, silicon insulating eveyrhing around motors and soldering two more motors drivers.
+
+
+*these small connecotr are PAIN IN THE FREAKING ASS to solder*
+
+Imagesss!
+![img1](journalMedia/06-23_01.jpg)
+![img2](journalMedia/06-23_02.jpg)
+![img3](journalMedia/06-23_03.jpg)
+![img4](journalMedia/06-23_04.jpg)
+![img5](journalMedia/06-23_05.jpg)
+![img6](journalMedia/06-23_06.jpg)
+![img7](journalMedia/06-23_07.jpg)
+**Total time spent: 7.0 hours**
