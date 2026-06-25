@@ -367,12 +367,12 @@ Most chellenging thing was little connectors and diodes.
 After soldering i tried assembling robot a bit and it looks so freakin cooooool!
 
 Imagesss!
-![img1](journalMedia/06-23_01.jpg)
-![img2](journalMedia/06-23_02.jpg)
-![img3](journalMedia/06-23_03.jpg)
-![img4](journalMedia/06-23_04.jpg)
-![img5](journalMedia/06-23_05.jpg)
-![img6](journalMedia/06-23_06.jpg)
+![img1](journalMedia/06-24_01.jpg)
+![img2](journalMedia/06-24_02.jpg)
+![img3](journalMedia/06-24_03.jpg)
+![img4](journalMedia/06-24_04.jpg)
+![img5](journalMedia/06-24_05.jpg)
+![img6](journalMedia/06-24_06.jpg)
 **Total time spent: 6.1 hours**
 
 
@@ -390,9 +390,9 @@ We well see about that.
 Also i feel very burned out today...
 
 Imagesss!
-![img1](journalMedia/06-23_01.jpg)
-![img2](journalMedia/06-23_02.jpg)
-![img3](journalMedia/06-23_03.jpg)
-![img4](journalMedia/06-23_04.jpg)
-![img5](journalMedia/06-23_05.jpg)
+![img1](journalMedia/06-25_01.jpg)
+![img2](journalMedia/06-25_02.jpg)
+![img3](journalMedia/06-25_03.jpg)
+![img4](journalMedia/06-25_04.jpg)
+![img5](journalMedia/06-25_05.jpg)
 **Total time spent: 8.9hours**
