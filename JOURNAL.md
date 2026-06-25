@@ -356,3 +356,43 @@ Imagesss!
 ![img6](journalMedia/06-23_06.jpg)
 ![img7](journalMedia/06-23_07.jpg)
 **Total time spent: 7.0 hours**
+
+
+# June 24: Batch work(out)!
+
+As of yesterdas "one motor driver is working", today i have done two more motor drivers, but i didnt test them(yet)!
+
+Most chellenging thing was little connectors and diodes.
+
+After soldering i tried assembling robot a bit and it looks so freakin cooooool!
+
+Imagesss!
+![img1](journalMedia/06-23_01.jpg)
+![img2](journalMedia/06-23_02.jpg)
+![img3](journalMedia/06-23_03.jpg)
+![img4](journalMedia/06-23_04.jpg)
+![img5](journalMedia/06-23_05.jpg)
+![img6](journalMedia/06-23_06.jpg)
+**Total time spent: 6.1 hours**
+
+
+# June 25: I start to burnoout
+
+So ye... One motor driver is working! While other one not. I resoldered mosfets and mcu, drv driver and CAN, nothing worked, i soldered new mosfets and new mcu, new drv and new can - still no good. So i just ditched it into "i will take a look later box".
+
+AND FINNALY I ASSEMBLED WHOLE ROBOT FOR THE FIRST TIME! It looks SOO FREAKIKNG COOL!
+Also our robotics coach told me it loock good :D
+
+After going back home from long work i got aliexpress package with taps! I started tapping my M2 holes for distance sensors, but like 3 of them broke ;-;
+A lof of cutting, sanding, cutting, getting burned i recovered one broken tap tip, and other one i just sanded dlat and a lil bit more. I want to put some PETG here and melt heat-set insert into this.
+We well see about that.
+
+Also i feel very burned out today...
+
+Imagesss!
+![img1](journalMedia/06-23_01.jpg)
+![img2](journalMedia/06-23_02.jpg)
+![img3](journalMedia/06-23_03.jpg)
+![img4](journalMedia/06-23_04.jpg)
+![img5](journalMedia/06-23_05.jpg)
+**Total time spent: 8.9hours**
