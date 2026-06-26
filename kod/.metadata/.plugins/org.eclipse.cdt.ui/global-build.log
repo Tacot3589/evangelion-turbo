@@ -1,21 +1,183 @@
-22:15:02 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
-make -j16 all 
+17:21:54 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
+make -j12 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H563xx -c -I../Core/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I../Drivers/CMSIS/Include -I"/evangelion-turbo_STM32H563RGV6/Core/Src" -I"/evangelion-turbo_STM32H563RGV6/Core/Inc" -Og -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ssd1306.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H563xx -c -I../Core/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I../Drivers/CMSIS/Include -I"/evangelion-turbo_STM32H563RGV6/Core/Src" -I"/evangelion-turbo_STM32H563RGV6/Core/Inc" -Og -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ssd1306.d" -MT"Core/Src/ssd1306.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ssd1306.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:108:3: warning: implicit declaration of function '_ssd1306_WriteInTheMiddle' [-Wimplicit-function-declaration]
+  108 |   _ssd1306_WriteInTheMiddle("ROBOILO", 0, BIG);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:295:6: warning: conflicting types for '_ssd1306_WriteInTheMiddle'; have 'void(char *, uint8_t,  uint8_t)' {aka 'void(char *, unsigned char,  unsigned char)'}
+  295 | void _ssd1306_WriteInTheMiddle(char *text, uint8_t y, uint8_t font)
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:108:3: note: previous implicit declaration of '_ssd1306_WriteInTheMiddle' with type 'void(char *, uint8_t,  uint8_t)' {aka 'void(char *, unsigned char,  unsigned char)'}
+  108 |   _ssd1306_WriteInTheMiddle("ROBOILO", 0, BIG);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion-turbo_STM32H563RGV6.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion-turbo_STM32H563RGV6\STM32H563RGVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion-turbo_STM32H563RGV6.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion-turbo_STM32H563RGV6.elf
+ 
 arm-none-eabi-size  evangelion-turbo_STM32H563RGV6.elf 
+arm-none-eabi-objdump -h -S evangelion-turbo_STM32H563RGV6.elf  > "evangelion-turbo_STM32H563RGV6.list"
    text	   data	    bss	    dec	    hex	filename
-   5332	     16	   1568	   6916	   1b04	evangelion-turbo_STM32H563RGV6.elf
+  23120	     32	   2696	  25848	   64f8	evangelion-turbo_STM32H563RGV6.elf
 Finished building: default.size.stdout
  
-22:43:02 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
-make -j16 all 
+Finished building: evangelion-turbo_STM32H563RGV6.list
+ 
+17:22:09 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
+make -j12 all 
 arm-none-eabi-size  evangelion-turbo_STM32H563RGV6.elf 
    text	   data	    bss	    dec	    hex	filename
-   5332	     16	   1568	   6916	   1b04	evangelion-turbo_STM32H563RGV6.elf
+  23120	     32	   2696	  25848	   64f8	evangelion-turbo_STM32H563RGV6.elf
 Finished building: default.size.stdout
  
-22:52:20 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
-make -j16 all 
+17:22:40 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
+make -j12 all 
 arm-none-eabi-size  evangelion-turbo_STM32H563RGV6.elf 
    text	   data	    bss	    dec	    hex	filename
-   5332	     16	   1568	   6916	   1b04	evangelion-turbo_STM32H563RGV6.elf
+  23120	     32	   2696	  25848	   64f8	evangelion-turbo_STM32H563RGV6.elf
+Finished building: default.size.stdout
+ 
+17:23:45 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
+make -j12 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H563xx -c -I../Core/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I../Drivers/CMSIS/Include -I"/evangelion-turbo_STM32H563RGV6/Core/Src" -I"/evangelion-turbo_STM32H563RGV6/Core/Inc" -Og -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:108:3: warning: implicit declaration of function '_ssd1306_WriteInTheMiddle' [-Wimplicit-function-declaration]
+  108 |   _ssd1306_WriteInTheMiddle("ROBOILO", 0, BIG);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:295:6: warning: conflicting types for '_ssd1306_WriteInTheMiddle'; have 'void(char *, uint8_t,  uint8_t)' {aka 'void(char *, unsigned char,  unsigned char)'}
+  295 | void _ssd1306_WriteInTheMiddle(char *text, uint8_t y, uint8_t font)
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:108:3: note: previous implicit declaration of '_ssd1306_WriteInTheMiddle' with type 'void(char *, uint8_t,  uint8_t)' {aka 'void(char *, unsigned char,  unsigned char)'}
+  108 |   _ssd1306_WriteInTheMiddle("ROBOILO", 0, BIG);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion-turbo_STM32H563RGV6.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion-turbo_STM32H563RGV6\STM32H563RGVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion-turbo_STM32H563RGV6.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion-turbo_STM32H563RGV6.elf
+ 
+arm-none-eabi-size  evangelion-turbo_STM32H563RGV6.elf 
+arm-none-eabi-objdump -h -S evangelion-turbo_STM32H563RGV6.elf  > "evangelion-turbo_STM32H563RGV6.list"
+   text	   data	    bss	    dec	    hex	filename
+  23116	     32	   2696	  25844	   64f4	evangelion-turbo_STM32H563RGV6.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion-turbo_STM32H563RGV6.list
+ 
+17:23:51 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
+make -j12 all 
+arm-none-eabi-size  evangelion-turbo_STM32H563RGV6.elf 
+   text	   data	    bss	    dec	    hex	filename
+  23116	     32	   2696	  25844	   64f4	evangelion-turbo_STM32H563RGV6.elf
+Finished building: default.size.stdout
+ 
+17:24:34 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
+make -j12 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H563xx -c -I../Core/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I../Drivers/CMSIS/Include -I"/evangelion-turbo_STM32H563RGV6/Core/Src" -I"/evangelion-turbo_STM32H563RGV6/Core/Inc" -Og -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:107:3: warning: implicit declaration of function '_ssd1306_WriteInTheMiddle' [-Wimplicit-function-declaration]
+  107 |   _ssd1306_WriteInTheMiddle("ROBOILO", 0, BIG);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:294:6: warning: conflicting types for '_ssd1306_WriteInTheMiddle'; have 'void(char *, uint8_t,  uint8_t)' {aka 'void(char *, unsigned char,  unsigned char)'}
+  294 | void _ssd1306_WriteInTheMiddle(char *text, uint8_t y, uint8_t font)
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:107:3: note: previous implicit declaration of '_ssd1306_WriteInTheMiddle' with type 'void(char *, uint8_t,  uint8_t)' {aka 'void(char *, unsigned char,  unsigned char)'}
+  107 |   _ssd1306_WriteInTheMiddle("ROBOILO", 0, BIG);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:278:6: warning: 'COOKED' defined but not used [-Wunused-function]
+  278 | void COOKED(uint8_t error_code)
+      |      ^~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion-turbo_STM32H563RGV6.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion-turbo_STM32H563RGV6\STM32H563RGVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion-turbo_STM32H563RGV6.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion-turbo_STM32H563RGV6.elf
+ 
+arm-none-eabi-size  evangelion-turbo_STM32H563RGV6.elf 
+arm-none-eabi-objdump -h -S evangelion-turbo_STM32H563RGV6.elf  > "evangelion-turbo_STM32H563RGV6.list"
+   text	   data	    bss	    dec	    hex	filename
+  23076	     32	   2688	  25796	   64c4	evangelion-turbo_STM32H563RGV6.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion-turbo_STM32H563RGV6.list
+ 
+17:25:07 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
+make -j12 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H563xx -c -I../Core/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I../Drivers/CMSIS/Include -I"/evangelion-turbo_STM32H563RGV6/Core/Src" -I"/evangelion-turbo_STM32H563RGV6/Core/Inc" -Og -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:280:6: warning: 'COOKED' defined but not used [-Wunused-function]
+  280 | void COOKED(uint8_t error_code)
+      |      ^~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion-turbo_STM32H563RGV6.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion-turbo_STM32H563RGV6\STM32H563RGVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion-turbo_STM32H563RGV6.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion-turbo_STM32H563RGV6.elf
+ 
+arm-none-eabi-size  evangelion-turbo_STM32H563RGV6.elf 
+arm-none-eabi-objdump -h -S evangelion-turbo_STM32H563RGV6.elf  > "evangelion-turbo_STM32H563RGV6.list"
+   text	   data	    bss	    dec	    hex	filename
+  13032	     16	   1656	  14704	   3970	evangelion-turbo_STM32H563RGV6.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion-turbo_STM32H563RGV6.list
+ 
+17:26:04 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
+make -j12 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H563xx -c -I../Core/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I../Drivers/CMSIS/Include -I"/evangelion-turbo_STM32H563RGV6/Core/Src" -I"/evangelion-turbo_STM32H563RGV6/Core/Inc" -Og -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:280:6: warning: 'COOKED' defined but not used [-Wunused-function]
+  280 | void COOKED(uint8_t error_code)
+      |      ^~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion-turbo_STM32H563RGV6.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion-turbo_STM32H563RGV6\STM32H563RGVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion-turbo_STM32H563RGV6.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion-turbo_STM32H563RGV6.elf
+ 
+arm-none-eabi-size  evangelion-turbo_STM32H563RGV6.elf 
+arm-none-eabi-objdump -h -S evangelion-turbo_STM32H563RGV6.elf  > "evangelion-turbo_STM32H563RGV6.list"
+   text	   data	    bss	    dec	    hex	filename
+  13028	     16	   1656	  14700	   396c	evangelion-turbo_STM32H563RGV6.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion-turbo_STM32H563RGV6.list
+ 
+17:26:15 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
+make -j12 all 
+arm-none-eabi-size  evangelion-turbo_STM32H563RGV6.elf 
+   text	   data	    bss	    dec	    hex	filename
+  13028	     16	   1656	  14700	   396c	evangelion-turbo_STM32H563RGV6.elf
+Finished building: default.size.stdout
+ 
+17:27:12 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
+make -j12 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H563xx -c -I../Core/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I../Drivers/CMSIS/Include -I"/evangelion-turbo_STM32H563RGV6/Core/Src" -I"/evangelion-turbo_STM32H563RGV6/Core/Inc" -Og -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion-turbo_STM32H563RGV6.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion-turbo_STM32H563RGV6\STM32H563RGVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion-turbo_STM32H563RGV6.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion-turbo_STM32H563RGV6.elf
+ 
+arm-none-eabi-size  evangelion-turbo_STM32H563RGV6.elf 
+arm-none-eabi-objdump -h -S evangelion-turbo_STM32H563RGV6.elf  > "evangelion-turbo_STM32H563RGV6.list"
+   text	   data	    bss	    dec	    hex	filename
+  13028	     16	   1656	  14700	   396c	evangelion-turbo_STM32H563RGV6.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion-turbo_STM32H563RGV6.list
+ 
+17:27:43 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
+make -j12 all 
+arm-none-eabi-size  evangelion-turbo_STM32H563RGV6.elf 
+   text	   data	    bss	    dec	    hex	filename
+  13028	     16	   1656	  14700	   396c	evangelion-turbo_STM32H563RGV6.elf
+Finished building: default.size.stdout
+ 
+17:29:55 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
+make -j12 all 
+arm-none-eabi-size  evangelion-turbo_STM32H563RGV6.elf 
+   text	   data	    bss	    dec	    hex	filename
+  13028	     16	   1656	  14700	   396c	evangelion-turbo_STM32H563RGV6.elf
+Finished building: default.size.stdout
+ 
+17:31:35 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
+make -j12 all 
+arm-none-eabi-size  evangelion-turbo_STM32H563RGV6.elf 
+   text	   data	    bss	    dec	    hex	filename
+  13028	     16	   1656	  14700	   396c	evangelion-turbo_STM32H563RGV6.elf
+Finished building: default.size.stdout
+ 
+17:33:16 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
+make -j12 all 
+arm-none-eabi-size  evangelion-turbo_STM32H563RGV6.elf 
+   text	   data	    bss	    dec	    hex	filename
+  13028	     16	   1656	  14700	   396c	evangelion-turbo_STM32H563RGV6.elf
 Finished building: default.size.stdout
  
