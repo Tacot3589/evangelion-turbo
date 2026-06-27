@@ -413,3 +413,18 @@ Imagesss!
 ![img1](journalMedia/06-26_01.jpg)
 ![img2](journalMedia/06-26_02.jpg)
 **Total time spent: 2.7 hours**
+
+
+# June 27: Quick!
+
+I wanted to get more wheels, so i had to 3d print rims! Model i designed before was perfect for SLS, but terrible for FDM so i changed it a bit.
+I deleted all of bumbs and other thing that would cause problems for my brothers ender 3.
+
+If you are casting you wheels by yourself (like you got your silicone part A, silicone part B, mold, mix them, wait, etc), then you have to have one thing in mind:
+ - Silicone dont stick to any glue well, so you have to add bumb/hold yo your rims. Anything will help. On smooth surface silicone will just spinn. Most of the time it is grippier than rubber.
+ - Rubber stick to glue well! You can skip anything uneccesaryy here! You can print flat/smooth rim and glue it later! It is easer to pour and grippier in *some* scenarios than silicone.
+
+Imagesss!
+![img1](journalMedia/06-27_01.jpg)
+![img2](journalMedia/06-27_02.jpg)
+**Total time spent: 0.5 hours**
