@@ -1,10 +1,10 @@
-22:52:20 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
-make -j16 all 
+17:33:16 **** Incremental Build of configuration Debug for project evangelion-turbo_STM32H563RGV6 ****
+make -j12 all 
 arm-none-eabi-size  evangelion-turbo_STM32H563RGV6.elf 
    text	   data	    bss	    dec	    hex	filename
-   5332	     16	   1568	   6916	   1b04	evangelion-turbo_STM32H563RGV6.elf
+  13028	     16	   1656	  14700	   396c	evangelion-turbo_STM32H563RGV6.elf
 Finished building: default.size.stdout
  
 
-22:52:20 Build Finished. 0 errors, 0 warnings. (took 136ms)
+17:33:17 Build Finished. 0 errors, 0 warnings. (took 266ms)
 
