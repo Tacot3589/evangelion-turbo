@@ -396,3 +396,20 @@ Imagesss!
 ![img4](journalMedia/06-25_04.jpg)
 ![img5](journalMedia/06-25_05.jpg)
 **Total time spent: 8.9hours**
+
+
+# June 26: Helpdesk
+
+Today i spent most of our robotics club day at helping other with their robots and eating pizza! Thats why this is such low timestamp here.
+
+I assembled whole thing again and soldered tiny tiny cables into all of the front sensors. I added some hot glue to act as a strain reliefe, so i would snap pads or cables by mistake! Additonally hot glue is somewhat good insulator,
+so i wont short anything on metal parts. After that i started programming and checking configuration (.ioc) file, but i could get anything to work!
+
+*shortie shorie, not so long, we had end-of-year ceremony today. We celebrated with big pizzas!*
+
+*Tommorow im going to lake nearby, to help rescuers as a volunter (no money for me unfortunetaly :( ), but im going to chill out there a looooot!*
+
+Imagesss!
+![img1](journalMedia/06-26_01.jpg)
+![img2](journalMedia/06-26_02.jpg)
+**Total time spent: 2.7 hours**
