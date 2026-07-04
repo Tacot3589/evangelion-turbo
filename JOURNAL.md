@@ -428,3 +428,24 @@ Imagesss!
 ![img1](journalMedia/06-27_01.jpg)
 ![img2](journalMedia/06-27_02.jpg)
 **Total time spent: 0.5 hours**
+
+
+# July 04: Comeback!
+
+Comeback in breaking taps! I broke 4 today. This metal SLM from jlc is pretty hard lol. Beacuse of that i designen plastic bracked to hold back distance sensors.
+Ah yeas, i would forgot, my connector arrived, i soldered them, and started assembly, as well as lubricated gearboxes :)
+
+More assembly, soldering, wire cutting and soldering. Im cooked with wires, they dont fully fit :skulker:
+
+*I was tapping in my grapnda workshop, so no lapse for that*
+
+Lapse: 
+https://lapse.hackclub.com/timelapse/Wfvlu2ybgLXT
+
+Imagesss!
+![img1](journalMedia/07-04_01.jpg)
+![img2](journalMedia/07-04_02.jpg)
+![img3](journalMedia/07-04_03.jpg)
+![img4](journalMedia/07-04_04.jpg)
+![img5](journalMedia/07-04_05.jpg)
+**Total time spent: 9.5hours**
