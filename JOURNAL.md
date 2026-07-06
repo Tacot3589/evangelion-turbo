@@ -448,4 +448,17 @@ Imagesss!
 ![img3](journalMedia/07-04_03.jpg)
 ![img4](journalMedia/07-04_04.jpg)
 ![img5](journalMedia/07-04_05.jpg)
-**Total time spent: 9.5hours**
+![img6](journalMedia/07-04_06.jpg)
+![img7](journalMedia/07-04_07.jpg)
+![img8](journalMedia/07-04_08.jpg)
+**Total time spent: 9.5 hours**
+
+
+# July 05: 3dp!
+
+I designed and 3d printed hold for drivers, beacuse i coudnt fit wires yesterday!
+
+Imagesss!
+![img1](journalMedia/07-05_01.jpg)
+![img2](journalMedia/07-05_02.jpg)
+**Total time spent: 0.9 hours**
