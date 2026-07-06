@@ -462,3 +462,22 @@ Imagesss!
 ![img1](journalMedia/07-05_01.jpg)
 ![img2](journalMedia/07-05_02.jpg)
 **Total time spent: 0.9 hours**
+
+
+# July 06: Works!?!?
+
+Today i rewired everething that would eat more than some power (battery, motors) with smaller AWG cables, beacuse i could fit orginal ones lol
+
+Later i actually started it! And nothing broke! Controller and one motor driver connected to stm32cubeprog like a charm, but one looks like to be dead...
+
+After trying to code something, while nothing worked, i found out that i have some problem with external crystal... I just bypassed it and decided to use high speed internal one. For now nofith more broke!
+
+Lapse: 
+https://lapse.hackclub.com/timelapse/XehMPpMb8ODr
+
+Imagesss!
+![img1](journalMedia/07-04_01.jpg)
+![img2](journalMedia/07-04_02.jpg)
+![img3](journalMedia/07-04_03.jpg)
+![img4](journalMedia/07-04_04.jpg)
+**Total time spent: 4 hours**
