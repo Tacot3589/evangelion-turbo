@@ -476,8 +476,8 @@ Lapse:
 https://lapse.hackclub.com/timelapse/XehMPpMb8ODr
 
 Imagesss!
-![img1](journalMedia/07-04_01.jpg)
-![img2](journalMedia/07-04_02.jpg)
-![img3](journalMedia/07-04_03.jpg)
-![img4](journalMedia/07-04_04.jpg)
+![img1](journalMedia/07-06_01.jpg)
+![img2](journalMedia/07-06_02.jpg)
+![img3](journalMedia/07-06_03.jpg)
+![img4](journalMedia/07-06_04.jpg)
 **Total time spent: 4 hours**
