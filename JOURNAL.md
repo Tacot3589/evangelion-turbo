@@ -481,3 +481,25 @@ Imagesss!
 ![img3](journalMedia/07-06_03.jpg)
 ![img4](journalMedia/07-06_04.jpg)
 **Total time spent: 4 hours**
+
+
+# July 07: Programming
+
+Helloooo
+
+Today i started seriously programming. I could resolve problem with clock but idk why i have 3.3 on 5v line lol, still, i did normally connect to MCUs. Weirdo.
+My oled dont work, beacuse i messsed up the footprint... I added one random pad inside. Fuck...
+Not good Not good. I tried forcefully soldering it while skipping one pad... but it work out horribly lol.
+
+Ah yeas, and i have written most of the code for motor driver.
+
+Lapse: 
+https://lapse.hackclub.com/timelapse/publish/LrqeOEumgj6O
+
+Imagesss!
+![img1](journalMedia/07-07_01.jpg)
+![img2](journalMedia/07-07_02.jpg)
+![img3](journalMedia/07-07_03.jpg)
+![img4](journalMedia/07-07_04.jpg)
+![img5](journalMedia/07-07_05.jpg)
+**Total time spent: 7 hours**

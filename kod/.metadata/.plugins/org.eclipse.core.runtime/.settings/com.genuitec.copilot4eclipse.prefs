@@ -1,0 +1,3 @@
+copilotDisabledLangIdsPreference=abap,aspdotnet,bibtex,blade,csharp,cpp,css,cuda,clojure,cobol,coffee,dart,diff,dotenv,elixir,erlang,fsharp,fortran,go,graphql,groovy,haml,handlebars,haskell,kotlin,lisp,latex,less,lua,makefile,markdown,matlab,php,perl,powershell,pug,r,razor,ruby,rust,scss,sass,scala,shaderlab,shellscript,slim,stylus,swift,vb,xsl,verilog,vim
+eclipse.preferences.version=1
+workspaceLabels=c

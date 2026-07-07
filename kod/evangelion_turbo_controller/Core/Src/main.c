@@ -21,17 +21,25 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "fonts.h"
+#include "ssd1306.h"
+#include "stdlib.h"
+#include "MY_INCLUDES.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+extern DMA_HandleTypeDef hdma_usart1_rx;
+extern DMA_HandleTypeDef hdma_usart2_rx;
+extern DMA_HandleTypeDef hdma_usart4_rx;
+extern DMA_HandleTypeDef hdma_usart5_rx;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define CAN_SELF_ID 0x0A
+#define CAN_MOTOR_DRIVER_A_ID 0x0B
+#define CAN_MOTOR_DRIVER_B_ID 0x0C
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -45,6 +53,7 @@ ADC_HandleTypeDef hadc1;
 FDCAN_HandleTypeDef hfdcan1;
 
 I2C_HandleTypeDef hi2c3;
+DMA_HandleTypeDef handle_GPDMA1_Channel0;
 
 TIM_HandleTypeDef htim3;
 
@@ -54,20 +63,28 @@ UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-volatile uint32_t dupa=21;
+//CAN
+FDCAN_RxHeaderTypeDef 		CAN_RX_Header; 		//CAN Bus Transmit Header
+FDCAN_TxHeaderTypeDef 		CAN_TX_Header; 		//CAN Bus Receive Header
+uint8_t                     CAN_TX[8];
+uint8_t                     CAN_RX[8];
+FDCAN_FilterTypeDef 		CAN_Filter;
+
+volatile int32_t dupa=-21;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_GPDMA1_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_FDCAN1_Init(void);
 static void MX_I2C3_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_UART4_Init(void);
 static void MX_UART5_Init(void);
-static void MX_USART1_UART_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -94,7 +111,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  HAL_Delay(200);
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -106,27 +123,75 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_GPDMA1_Init();
   MX_ADC1_Init();
   MX_FDCAN1_Init();
   MX_I2C3_Init();
   MX_TIM3_Init();
   MX_UART4_Init();
   MX_UART5_Init();
-  MX_USART1_UART_Init();
   MX_USART2_UART_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
+  CAN_Filter.IdType = FDCAN_STANDARD_ID;
+  CAN_Filter.FilterIndex = 0;
+  CAN_Filter.FilterType = FDCAN_FILTER_DISABLE;
+  CAN_Filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+  CAN_Filter.FilterID1 = 0;
+  CAN_Filter.FilterID2 = 0;
+
+ // CAN_TX_Header.Identifier = CAN_SELF_ID;
+  CAN_TX_Header.Identifier = 0x0B;
+  CAN_TX_Header.IdType = FDCAN_STANDARD_ID;
+  CAN_TX_Header.TxFrameType = FDCAN_DATA_FRAME;
+  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_8;
+  CAN_TX_Header.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
+  CAN_TX_Header.BitRateSwitch = FDCAN_BRS_ON;
+  CAN_TX_Header.FDFormat = FDCAN_FD_CAN;
+  CAN_TX_Header.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
+  CAN_TX_Header.MessageMarker = 0;
+
+  //HAL_FDCAN_Start(&hfdcan1);
+  //HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+
+  //CAN_TX_Header.Identifier = CAN_MOTOR_DRIVER_A_ID;
+  /*
+  while(true)
+  {
+	  CAN_TX[0] = 0x1C;
+	  CAN_TX[1] = 0x1C;
+	  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	  HAL_Delay(1000);
+  }
+
+  */
+
+
+  if(ssd1306_Init() == 0)
+	  Error_Handler();
+  ssd1306_ResetOrientation();
+  ssd1306_SetColor(White);
+  ssd1306_Clear();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  dupa=dupa+1;
-	  HAL_Delay(500);
-	  HAL_GPIO_TogglePin(START_LED_RED_GPIO_Port, START_LED_RED_Pin);
-	  HAL_GPIO_TogglePin(START_LED_BLUE_GPIO_Port, START_LED_BLUE_Pin);
-	  HAL_GPIO_TogglePin(START_LED_GREEN_GPIO_Port, START_LED_GREEN_Pin);
+	    //dupa=dupa+1;
+	    ssd1306_SetColor(White);
+		ssd1306_Fill();
+		ssd1306_UpdateScreen();
+		HAL_Delay(500);
+
+		HAL_GPIO_TogglePin(START_LED_RED_GPIO_Port, START_LED_RED_Pin);
+		HAL_GPIO_TogglePin(START_LED_BLUE_GPIO_Port, START_LED_BLUE_Pin);
+		HAL_GPIO_TogglePin(START_LED_GREEN_GPIO_Port, START_LED_GREEN_Pin);
+		ssd1306_SetColor(Black);
+		ssd1306_Fill();
+		ssd1306_UpdateScreen();
+		HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -145,7 +210,7 @@ void SystemClock_Config(void)
 
   /** Configure the main internal regulator output voltage
   */
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE0);
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
   while(!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}
 
@@ -159,7 +224,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLL1_SOURCE_HSI;
   RCC_OscInitStruct.PLL.PLLM = 4;
-  RCC_OscInitStruct.PLL.PLLN = 31;
+  RCC_OscInitStruct.PLL.PLLN = 21;
   RCC_OscInitStruct.PLL.PLLP = 2;
   RCC_OscInitStruct.PLL.PLLQ = 2;
   RCC_OscInitStruct.PLL.PLLR = 2;
@@ -182,7 +247,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB3CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
   {
     Error_Handler();
   }
@@ -268,19 +333,19 @@ static void MX_FDCAN1_Init(void)
   /* USER CODE END FDCAN1_Init 1 */
   hfdcan1.Instance = FDCAN1;
   hfdcan1.Init.ClockDivider = FDCAN_CLOCK_DIV1;
-  hfdcan1.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
+  hfdcan1.Init.FrameFormat = FDCAN_FRAME_FD_BRS;
   hfdcan1.Init.Mode = FDCAN_MODE_NORMAL;
   hfdcan1.Init.AutoRetransmission = DISABLE;
   hfdcan1.Init.TransmitPause = DISABLE;
   hfdcan1.Init.ProtocolException = DISABLE;
-  hfdcan1.Init.NominalPrescaler = 16;
+  hfdcan1.Init.NominalPrescaler = 34;
   hfdcan1.Init.NominalSyncJumpWidth = 1;
-  hfdcan1.Init.NominalTimeSeg1 = 1;
-  hfdcan1.Init.NominalTimeSeg2 = 1;
-  hfdcan1.Init.DataPrescaler = 1;
+  hfdcan1.Init.NominalTimeSeg1 = 2;
+  hfdcan1.Init.NominalTimeSeg2 = 2;
+  hfdcan1.Init.DataPrescaler = 17;
   hfdcan1.Init.DataSyncJumpWidth = 1;
-  hfdcan1.Init.DataTimeSeg1 = 1;
-  hfdcan1.Init.DataTimeSeg2 = 1;
+  hfdcan1.Init.DataTimeSeg1 = 2;
+  hfdcan1.Init.DataTimeSeg2 = 2;
   hfdcan1.Init.StdFiltersNbr = 0;
   hfdcan1.Init.ExtFiltersNbr = 0;
   hfdcan1.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
@@ -291,6 +356,34 @@ static void MX_FDCAN1_Init(void)
   /* USER CODE BEGIN FDCAN1_Init 2 */
 
   /* USER CODE END FDCAN1_Init 2 */
+
+}
+
+/**
+  * @brief GPDMA1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPDMA1_Init(void)
+{
+
+  /* USER CODE BEGIN GPDMA1_Init 0 */
+
+  /* USER CODE END GPDMA1_Init 0 */
+
+  /* Peripheral clock enable */
+  __HAL_RCC_GPDMA1_CLK_ENABLE();
+
+  /* GPDMA1 interrupt Init */
+    HAL_NVIC_SetPriority(GPDMA1_Channel0_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(GPDMA1_Channel0_IRQn);
+
+  /* USER CODE BEGIN GPDMA1_Init 1 */
+
+  /* USER CODE END GPDMA1_Init 1 */
+  /* USER CODE BEGIN GPDMA1_Init 2 */
+
+  /* USER CODE END GPDMA1_Init 2 */
 
 }
 
@@ -310,7 +403,7 @@ static void MX_I2C3_Init(void)
 
   /* USER CODE END I2C3_Init 1 */
   hi2c3.Instance = I2C3;
-  hi2c3.Init.Timing = 0x60808CD3;
+  hi2c3.Init.Timing = 0x00802172;
   hi2c3.Init.OwnAddress1 = 0;
   hi2c3.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c3.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -333,6 +426,13 @@ static void MX_I2C3_Init(void)
   /** Configure Digital filter
   */
   if (HAL_I2CEx_ConfigDigitalFilter(&hi2c3, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** I2C Fast mode Plus enable
+  */
+  if (HAL_I2CEx_ConfigFastModePlus(&hi2c3, I2C_FASTMODEPLUS_ENABLE) != HAL_OK)
   {
     Error_Handler();
   }
@@ -670,6 +770,15 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
+
+void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
+{
+
+	HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &CAN_RX_Header, CAN_RX);
+	HAL_FDCAN_ActivateNotification(hfdcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+}
+
+
 /* USER CODE END 4 */
 
 /**
@@ -679,6 +788,9 @@ static void MX_GPIO_Init(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
+	dupa=0;
+	HAL_GPIO_TogglePin(START_LED_RED_GPIO_Port, START_LED_RED_Pin);
+	HAL_Delay(10);
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
   while (1)

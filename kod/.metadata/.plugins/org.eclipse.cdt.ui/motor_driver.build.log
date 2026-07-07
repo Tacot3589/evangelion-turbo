@@ -1,0 +1,10 @@
+17:04:48 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  32980	     96	   2984	  36060	   8cdc	motor_driver.elf
+Finished building: default.size.stdout
+ 
+
+17:04:49 Build Finished. 0 errors, 0 warnings. (took 142ms)
+
