@@ -493,6 +493,8 @@ Not good Not good. I tried forcefully soldering it while skipping one pad... but
 
 Ah yeas, and i have written most of the code for motor driver.
 
+Also i cleared out and fixed few minor things in schematics of pcbs.
+
 Lapse: 
 https://lapse.hackclub.com/timelapse/publish/LrqeOEumgj6O
 
@@ -502,4 +504,5 @@ Imagesss!
 ![img3](journalMedia/07-07_03.jpg)
 ![img4](journalMedia/07-07_04.jpg)
 ![img5](journalMedia/07-07_05.jpg)
+![img6](journalMedia/07-07_06.jpg)
 **Total time spent: 7 hours**
