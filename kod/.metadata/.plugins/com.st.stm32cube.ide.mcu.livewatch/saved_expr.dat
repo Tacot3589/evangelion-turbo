@@ -1,3 +1,11 @@
 dupa
-CAN_TX
-CAN_RX
+UART2_RX
+ERROR_FLAG
+UART_TX
+FrontLeft
+FrontRight
+BackLeft
+BackRight
+Eva
+BATTERY_CONSTANT
+ADC_BUFFER

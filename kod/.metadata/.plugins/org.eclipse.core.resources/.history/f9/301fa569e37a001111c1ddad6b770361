@@ -1,0 +1,204 @@
+/*
+ * MY_INCLUDES.h
+ *
+ *  Created on: Jun 26, 2026
+ *      Author: szymo
+ */
+
+#ifndef INC_MY_INCLUDES_H_
+#define INC_MY_INCLUDES_H_
+
+
+//OPTIONS
+#define ENABLE_BUZZER 0
+#define FREQ_STARTING 500
+#define FREQ_STEP_INIT 50
+
+
+//==================================================== OLED
+#define _ssd1306_SetCursor(x, y) ssd1306_SetCursor(y, x)
+#define BIG 1
+#define SMALL 0
+
+#define _ARR_UP '('
+#define _ARR_DOWN '@'
+#define _CHECKBOX_EMPTY '^'
+#define _CHECKBOX_CHECKED '$'
+#define _CHECKBOX_EMPTY_BIG ')'
+#define _CHECKBOX_CHECKED_BIG '\''
+#define _CANCEL '}'
+#define _APPLY '{'
+
+
+//==================================================== MOTOR SETTINGS
+#define SWITCH_MOTORS 1
+#define REVERSE_RIGHT_MOTOR 1
+#define REVERSE_LEFT_MOTOR 1
+#define REAL_MIN_PWM_PERCENTAGE 60 //slower is basicly not moving at all
+#define REAL_MAX_PWM_PERCENTAGE 85 //faster is basicly killing meeeee = 90
+
+
+//==================================================== SENSORS
+#define MIN_AMP_TRESCHOLD 200
+#define SWITCH_SIDE_LIDARS 0
+#define SWITCH_LIDARS 1 //uart1 is left; uart2 is right normally
+#define MAX_RETRIES_LIDARS_INIT 5
+#define LIDARS_INIT_UART_TIMEOUT 500
+#define LIDARS_FILTERING_ARRAY_SIZE 11
+#define MAX_DISTANCE 100
+#define INTRO_MIN_DISTANCE_FOR_LAST_SEEN 3
+#define WHITE_LINE_TRESCHOLD 3700 //white is less
+#define SWITCH_LINE_SENSORS 0
+
+#define IMU_INIT_I2C_TIMEOUT 500
+
+//==================================================== BATTERY
+//#define Reference_Voltage				3.6157		// V
+#define Reference_Voltage				3.311		// V
+#define Voltage_Resistor_Top 			91.0		// kOhm
+#define Voltage_Resistor_Bottom  		10.0		// kOhm
+#define ADC_MAX_VALUE					4096
+
+//==================================================== START SETUP
+#define STARTIING_WAIT_TIME	0 //3000
+
+//==================================================== BATTERY
+#define R1 120
+#define R2 27
+#define BATTERY_VOLTAGE_COMPENSATION 1.007597
+#define MIN_BATTERY_VOLTAGE_PER_CELL 3.45
+#define BATTERY_ADC_CHANNEL 3
+#define BATTERY_CONST  ((3.3f / 4095.0f * ((R1) + (R2)) / (R2)) * (BATTERY_VOLTAGE_COMPENSATION) * 100.0f)
+#define BATTERY_ADC_READOUT_BUFFER_SIZE 10 // <= 16
+
+
+//==================================================== WORKING SETUP
+#define MAIN_FREQ 1000
+#define SIDE_FREQ 100
+#define OLED_FREQ 25
+#define true 1
+#define TRUE 1
+#define false 0
+#define FALSE 0
+
+//==================================================== ERROR FLAGS
+//<200 init error flags
+//==200 start delay
+//>200 error, veery bad error
+//in separate file
+
+//==================================================== BUZZER
+//INTRO
+#define FREQ_STARTING 500
+#define FREQ_STEP_INIT 50
+
+
+//=================================================== YEEEAAAA BOOIIIIII
+#define NONE 0
+#define LEFT 1
+#define RIGHT 2
+
+//misc
+#define true 1
+#define TRUE 1
+#define false 0
+#define FALSE 0
+
+
+//============DEFAULT SETTINGS
+#define DISABLE_OLED								FALSE
+#define DEFAULT_SETTING_BATTERY_CELL_NO				3
+#define DEFAULT_SETTING_DONT_USE_MOTORS				FALSE
+#define DEFAULT_SETTING_ALWAYS_IN_BATTLE			FALSE
+#define DEFAULT_SETTING_IGNORE_START_MODULE			FALSE
+#define DEFAULT_SETTING_LINE_SENSORS_ALWAYS_IN		TRUE
+#define DEFAULT_SETTING_IGNORE_ACCEL				TRUE
+#define DEFAULT_SETTING_ENABLE_BUZZER				FALSE //reverse polarity XD
+#define DEFAULT_SETTING_DONT_INITIALIZE_LIDARS		FALSE
+#define DEFAULT_SETTING_ALWAYS_SHOW_OLED			TRUE
+#define DEFAULT_ATTACK_MODE_ID						1 //0 MM, 1 sumo, 2 sumo curve
+
+
+//===================================INIT ERRORS
+#define START_SIGNAL_AT_STARTUP 1
+
+#define TIM1_INIT_ERR 2
+#define TIM2_INIT_ERR 3
+#define TIM3_INIT_ERR 4
+#define TIM4_INIT_ERR 5
+
+#define ADC_INIT_ERR 6
+
+#define BATTLE_TIM_INIT_ERR 10
+#define WATCHDOG_TIM_INIT_ERR 11
+#define OLED_TIM_INIT_ERR 12
+
+#define LIDARS_INIT_ERR 13
+
+#define IMU_I2C_INIT_ERR 23
+
+#define START_MOD_UART_CONNECTION_COOKED 24
+
+
+//===================================
+#define START_DELAY_IN_USE 200
+
+
+//===================================BAD_ERRORS >200, no HALT of mcu
+#define OLED_INIT_ERR 201
+#define LOW_BATTERY_VOLTAGE 200
+
+
+
+//option IDs
+#define OPTION_ID_BATTERY 1
+#define OPTION_ID_START_MOD 2
+#define OPTION_ID_LUNA_DIST 3
+#define OPTION_ID_LUNA_AMP 4
+#define OPTION_ID_LINES 6
+#define OPTION_ID_ACCEL 7
+#define OPTION_ID_GYRO 8
+#define OPTION_ID_IMU_PEAK 9
+#define OPTION_ID_SET_MOTS 10
+#define OPTION_ID_DEBUG 11
+#define OPTION_ID_ATTACK_MODE 12
+
+//===================ACCCEl
+#define BMI323_ADDR (0x69 << 1)
+#define BMI323_REG_STATUS 0x02
+//jeden dummy? moze dwa
+//int1
+
+#define BMI323_REG_CMD         0x7E
+#define BMI323_CMD_SOFT_RESET  0xDEAF
+
+#define BMI323_REG_INT_CONF 0x39
+#define BMI323_INT_LATCHED 0x0001
+
+#define BMI323_o_int_ctrl 0x38
+#define BMI323_o_int_setting 0x0004
+
+#define BMI323_int_map1 0x3B
+#define BMI323_data_ready_it 0x0400
+
+#define BMI323_acc_conf 0x20
+#define BMI323_acc_conf_my 0x723B //ODR=800Hz 16g, averaging/4 idk/2
+
+#define BMI323_gyro_conf 0x21
+#define BMI323_gyro_conf_my 0x724B //ODR=800Hz +/-2000◦/s, 16.4 LSB/◦/s, averaging/4 idk/2
+
+//TFLUNA via i2c communication
+#define TFLUNA1_ADDRESS (0x20 << 1)
+#define TFLUNA2_ADDRESS (0x10 << 1)
+
+#define TFLUNA_ADDR_DIST_LOW	0x00
+#define TFLUNA_ADDR_DIST_HIGH	0x01
+
+#define TFLUNA_ADDR_SET_TRIG_MODE    0x23
+#define TFLUNA_ADDR_SOFT_RESET		 0x21
+#define TFLUNA_INIT_I2C_TIMEOUT 	 400
+
+//============etc
+#define ABS(x) ((x) < 0 ? -(x) : (x))
+
+#endif /* INC_MY_INCLUDES_H_ */

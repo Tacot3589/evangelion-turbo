@@ -496,7 +496,7 @@ Ah yeas, and i have written most of the code for motor driver.
 Also i cleared out and fixed few minor things in schematics of pcbs.
 
 Lapse: 
-https://lapse.hackclub.com/timelapse/publish/LrqeOEumgj6O
+https://lapse.hackclub.com/timelapse/ypU_1K0k5lqW
 
 Imagesss!
 ![img1](journalMedia/07-07_01.jpg)
@@ -506,3 +506,32 @@ Imagesss!
 ![img5](journalMedia/07-07_05.jpg)
 ![img6](journalMedia/07-07_06.jpg)
 **Total time spent: 7 hours**
+
+
+# July 08: Go go go go power-rangers
+
+Helloooo
+
+Today dones from todo:
+ - Get buzzer to working
+ - Program distance sensors (get them to work faster, 250Hz instead of default 100Hz) (made some shieninigans, and now i have one big function to which i gave RX table, TX table, UART handle and it works like a charm (i could do this in before robots lol))
+ - Literally it was so much work, but i made them work!
+ - Good filtration for all data from distance sensors (their temp, distance, strenthg of reflected laser, moving average filtration for all of this)
+ - Got all of the ADC to work fully autonomusly, with battery voltage readout too!
+ - Made full initial routine for robot
+
+ Also i got hold up on new rulebook for upcoming competition!
+
+*Also later i searched up for some smaller alternative motor driver and MCU, for v2 version! I think i would like to fit one big motor driver into one small PCB, we well se 'bout that. I have found upcoming stm32c532 FREAKIN small mcu. It got CAN, 144HZ and poretty powerfull cortex core, and DRV8701 in same package. It would be so freaking small, BUT! But.. but... butt :3... but the MCU ist out yet lol.*
+
+*Ah yeas! i would forgor! I got shortcircuit on TX line on uart! I fixed in quickly and it works like a charm now*
+
+Lapse: 
+https://lapse.hackclub.com/timelapse/t728XH_6cTbH
+
+Imagesss!
+![img1](journalMedia/07-08_01.jpg)
+![img2](journalMedia/07-08_02.jpg)
+![img3](journalMedia/07-08_03.jpg)
+![img4](journalMedia/07-08_04.jpg)
+**Total time spent: 4.5 hours**

@@ -8,6 +8,13 @@
 #ifndef INC_MY_INCLUDES_H_
 #define INC_MY_INCLUDES_H_
 
+
+//OPTIONS
+#define ENABLE_BUZZER 0
+#define FREQ_STARTING 500
+#define FREQ_STEP_INIT 50
+
+
 //==================================================== OLED
 #define _ssd1306_SetCursor(x, y) ssd1306_SetCursor(y, x)
 #define BIG 1
@@ -27,8 +34,8 @@
 #define SWITCH_MOTORS 1
 #define REVERSE_RIGHT_MOTOR 1
 #define REVERSE_LEFT_MOTOR 1
-#define REAL_MIN_PWM_PERCENTAGE 60 //slower is basicly not moving at all
-#define REAL_MAX_PWM_PERCENTAGE 85 //faster is basicly killing meeeee = 90
+#define LEFT_MOTOR_SPEED_MULTIPLIER 1
+#define RIGHT_MOTOR_SPEED_MULTIPLIER 1
 
 
 //==================================================== SENSORS
@@ -36,26 +43,32 @@
 #define SWITCH_SIDE_LIDARS 0
 #define SWITCH_LIDARS 1 //uart1 is left; uart2 is right normally
 #define MAX_RETRIES_LIDARS_INIT 5
-#define LIDARS_INIT_UART_TIMEOUT 200
+#define LIDARS_INIT_UART_TIMEOUT 500
 #define LIDARS_FILTERING_ARRAY_SIZE 11
-#define MAX_DISTANCE 100
+#define MAX_LIDAR_DISTANCE 80
+#define MIN_LIDAR_DISTANCE 5
+#define ACKNOWLEDGE_LIDAR_DISTANCE 30
 #define INTRO_MIN_DISTANCE_FOR_LAST_SEEN 3
 #define WHITE_LINE_TRESCHOLD 3700 //white is less
 #define SWITCH_LINE_SENSORS 0
 
 #define IMU_INIT_I2C_TIMEOUT 500
 
+
 //==================================================== START SETUP
-#define STARTIING_WAIT_TIME	0 //3000
+#define START_WAITING_TIME 2900
+#define ROTATE_BEFORE_TASK_SPEED 100
+#define GO_TO_LINE_TASK_SPEED 100
 
 //==================================================== BATTERY
 #define R1 120
 #define R2 27
 #define BATTERY_VOLTAGE_COMPENSATION 1.007597
 #define MIN_BATTERY_VOLTAGE_PER_CELL 3.45
-#define BATTERY_ADC_CHANNEL 3
-#define BATTERY_CONST  ((3.3f / 4095.0f * ((R1) + (R2)) / (R2)) * (BATTERY_VOLTAGE_COMPENSATION) * 100.0f)
-#define BATTERY_ADC_READOUT_BUFFER_SIZE 10 // <= 16
+#define Reference_Voltage				3.311		// V
+#define Voltage_Resistor_Top 			91.0		// kOhm
+#define Voltage_Resistor_Bottom  		10.0		// kOhm
+#define ADC_MAX_VALUE					4096
 
 
 //==================================================== WORKING SETUP
@@ -113,25 +126,13 @@
 #define TIM3_INIT_ERR 4
 #define TIM4_INIT_ERR 5
 
-#define ADC1_INIT_ERR 6
-#define ADC2_INIT_ERR 7
-#define ADC1_BUFFER_INIT_ERR 8
-#define ADC2_BUFFER_INIT_ERR 9
+#define ADC_INIT_ERR 6
 
 #define BATTLE_TIM_INIT_ERR 10
 #define WATCHDOG_TIM_INIT_ERR 11
 #define OLED_TIM_INIT_ERR 12
 
-#define LEFT_LIDAR_INIT_ERR1 13
-#define RIGHT_LIDAR_INIT_ERR1 14
-#define LEFT_LIDAR_INIT_ERR2 15
-#define RIGHT_LIDAR_INIT_ERR2 16
-#define LEFT_LIDAR_INIT_ERR3 17
-#define RIGHT_LIDAR_INIT_ERR3 18
-#define LEFT_LIDAR_INIT_ERR4 19
-#define RIGHT_LIDAR_INIT_ERR4 20
-#define LEFT_LIDAR_UART_ERR 21
-#define RIGHT_LIDAR_UART_ERR 22
+#define LIDARS_INIT_ERR 13
 
 #define IMU_I2C_INIT_ERR 23
 

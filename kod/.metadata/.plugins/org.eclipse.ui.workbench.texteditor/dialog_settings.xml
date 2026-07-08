@@ -3,10 +3,26 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
-		<item value="[Motor]"/>
-		<item value="IDLE"/>
-		<item value="#define Current_A &#x09;&#x09;&#x09;&#x09;&#x09;1  &#x09;&#x09;// number of ADC readout channel"/>
+		<item value="TASK_BEFORE_ATTACK"/>
+		<item value="ROTATE_BEFORE_ATTACK_TASK()"/>
+		<item value="Eva.inBa"/>
+		<item value="Eva.State"/>
+		<item value="Battery_constant"/>
+		<item value="GET_START_MOD"/>
+		<item value="HAL_UARTEx_ReceiveToIdle_DMA"/>
+		<item value="LIDARS_INIT"/>
+		<item value="dupa"/>
+		<item value="DMA"/>
+		<item value="__HAL_LINKDMA"/>
+		<item value="UART1_RX"/>
+		<item value="MX_DMA_Init()"/>
+		<item value="hdma_usart2_rx"/>
+		<item value="&amp;huart1"/>
 	</list>
 	<list key="replacehistory">
+		<item value="TASK_BEFORE_ATTACK"/>
+		<item value="BATTERY_CONSTANT"/>
+		<item value="RX"/>
+		<item value="huart"/>
 	</list>
 </section>
