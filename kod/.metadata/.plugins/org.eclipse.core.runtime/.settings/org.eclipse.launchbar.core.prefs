@@ -1,7 +1,7 @@
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch=x86_64
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/name=Local
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=win32
-configDescList=org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Hiroshima Motor Driver G431 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:motor_driver Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion-2 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion_turbo_controller Debug
+configDescList=org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Hiroshima Motor Driver G431 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:motor_driver Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion-2 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion_turbo_controller Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion_turbo_controller-v1
 eclipse.preferences.version=1
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Hiroshima\ Motor\ Driver\ G431\ Debug/activeLaunchMode=run
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Hiroshima\ Motor\ Driver\ G431\ Debug/activeLaunchTarget=null\:---
@@ -10,4 +10,5 @@ org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion-turbo/activeLaunchTa
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion-turbo_STM32H563RGV6\ Debug/activeLaunchMode=debug
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion_turbo_controller\ Debug/activeLaunchMode=debug
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion_turbo_controller\ Debug/activeLaunchTarget=null\:---
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion_turbo_controller-v1/activeLaunchMode=run
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:motor_driver\ Debug/activeLaunchMode=debug

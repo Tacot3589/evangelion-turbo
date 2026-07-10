@@ -526,6 +526,8 @@ Today dones from todo:
 
 *Ah yeas! i would forgor! I got shortcircuit on TX line on uart! I fixed in quickly and it works like a charm now*
 
+EDIT: AND I HAVE WRITTEN QUICK SCRIPT IN PYTHON TO CONVERT DEC TO HEX, BEACUSE WHO ON THE EARTH WOULD USE DECIMAL IN UART COMMUNICATION
+
 Lapse: 
 https://lapse.hackclub.com/timelapse/t728XH_6cTbH
 
@@ -535,3 +537,28 @@ Imagesss!
 ![img3](journalMedia/07-08_03.jpg)
 ![img4](journalMedia/07-08_04.jpg)
 **Total time spent: 4.5 hours**
+
+
+# July 08: Holy **not** 67
+
+Helloooo
+
+FUCK. I bought 3.3v buck conv instead of 5v one. Thankfully it arrived today :D 6767676
+I soldered it into all of the PCBs. got few shortcircuits in a process, but i got them out.
+Later i tried to start CANning (yk, i CAN, beacuse it it spelled CAN, not CANNOT!) and i got huge problem. Some weirdo put NC on my schematics, where it should be Vdd for logic level :skulker:
+So... ye... i got fucked up. Thankfully i have like .2mm wire in insulation and microscope lol. Here we go guys! Lets wire this thing up. 
+ANOTHER FUCK TODAY! WHYYYYYYYYYYYYYYYYYYYY. I got shortcirtuic on 3.3 and gnd. WHY TODAY GUYZ; after desoldering components from PCB... it come up... IT WAS FUCKIN MCU. Blyat... 
+
+OH YES. I forgot, but i have crosser CANH and CANL lines on motor drivers xD
+I think i will order V2 version of PCBs in the future!
+But ye, resoldering these tiny cables was paaaaaaaaaaaaaaaaaaaain in theeeeeeee assssssssssssssss.
+
+Lapse: 
+No lapse, i forgor :(
+
+Imagesss!
+![img1](journalMedia/07-08_01.jpg)
+![img2](journalMedia/07-08_02.jpg)
+![img3](journalMedia/07-08_03.jpg)
+![img4](journalMedia/07-08_04.jpg)
+**Total time spent: 5.3 hours**
