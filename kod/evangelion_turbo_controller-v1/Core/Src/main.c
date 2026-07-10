@@ -298,16 +298,15 @@ int main(void)
   CAN_Filter.FilterID1 = 0;
   CAN_Filter.FilterID2 = 0;
 
- // CAN_TX_Header.Identifier = CAN_SELF_ID;
   CAN_TX_Header.Identifier = 0x0B;
   CAN_TX_Header.IdType = FDCAN_STANDARD_ID;
   CAN_TX_Header.TxFrameType = FDCAN_DATA_FRAME;
   CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_8;
   CAN_TX_Header.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
-  CAN_TX_Header.BitRateSwitch = FDCAN_BRS_ON;
-  CAN_TX_Header.FDFormat = FDCAN_FD_CAN;
   CAN_TX_Header.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
   CAN_TX_Header.MessageMarker = 0;
+  CAN_TX_Header.FDFormat = FDCAN_CLASSIC_CAN;
+  CAN_TX_Header.BitRateSwitch = FDCAN_BRS_OFF;
 
   BATTERY_CONSTANT = ((Voltage_Resistor_Top + Voltage_Resistor_Bottom) / Voltage_Resistor_Bottom) * Reference_Voltage / 4096;
 
@@ -318,20 +317,6 @@ int main(void)
 
   lastSeen = LEFT;
 
-  //HAL_FDCAN_Start(&hfdcan1);
-  //HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
-
-  //CAN_TX_Header.Identifier = CAN_MOTOR_DRIVER_A_ID;
-  /*
-  while(true)
-  {
-	  CAN_TX[0] = 0x1C;
-	  CAN_TX[1] = 0x1C;
-	  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
-	  HAL_Delay(1000);
-  }
-
-  */
     //GPIO LED MISC
 	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
 	PLAY_FREQ(actual_init_freq);
@@ -360,12 +345,6 @@ int main(void)
 	  COOKED(ADC_INIT_ERR);
 
 
-	hfdcan1.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
-	hfdcan1.Init.Mode = FDCAN_MODE_EXTERNAL_LOOPBACK;
-	hfdcan1.Init.AutoRetransmission = DISABLE;
-	CAN_TX_Header.FDFormat = FDCAN_CLASSIC_CAN;
-	CAN_TX_Header.BitRateSwitch = FDCAN_BRS_OFF;
-
 	if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
 		Error_Handler();
   /* USER CODE END 2 */
@@ -374,23 +353,43 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  CAN_TX[0] = 0x12;
-	  CAN_TX[1] = 0x80;
-	  CAN_TX[2] = 0;
-	  CAN_TX[3] = 0;
-	  CAN_TX[4] = 0;
-	  CAN_TX[5] = 0;
-	  CAN_TX[6] = 0;
-	  CAN_TX[7] = 0;
-
-	  if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX) == HAL_OK)
+	  if(dupa>300)
 	  {
-	    dupa++;
-	  }
-	  else
-		  dupa2++;
+		  CAN_TX[0] = 0x50;
+		  CAN_TX[1] = 50;
+		  CAN_TX[2] = 50;
+		  CAN_TX[3] = 0x01;
+		  CAN_TX[4] = 0;
+		  CAN_TX[5] = 0;
+		  CAN_TX[6] = 0;
+		  CAN_TX[7] = 0;
 
-	  HAL_Delay(100);
+		  if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX) == HAL_OK)
+		  {
+			dupa++;
+		  }
+	  }
+
+	  else
+	  {
+		  CAN_TX[0] = 0x50;
+		  CAN_TX[1] = -50;
+		  CAN_TX[2] = -50;
+		  CAN_TX[3] = 0x01;
+		  CAN_TX[4] = 0;
+		  CAN_TX[5] = 0;
+		  CAN_TX[6] = 0;
+		  CAN_TX[7] = 0;
+
+		  if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX) == HAL_OK)
+		  {
+			dupa++;
+		  }
+	  }
+
+	  if(dupa>600)
+		  dupa=0;
+	  HAL_Delay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
