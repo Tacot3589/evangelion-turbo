@@ -55,7 +55,7 @@
 //#define Reference_Voltage				3.6157		// V
 #define Reference_Voltage				3.262		// V
 #define NTC_Series_Resistor				10000	// Ohm
-#define NTC_Beta						3850
+#define NTC_Beta						3453
 #define NTC_Nominal_Resistance			10000	// Ohm
 #define NTC_Nominal_Temperature			25		// C degree
 #define ADC_MAX_VALUE					4096
@@ -72,7 +72,7 @@
 #define MAX_MOTOR_TEMPERATURE			90				// Maximum allowed motor temperature in C
 #define MAX_FET_TEMPERATURE				90				// Maximum allowed mosfets temperature in C
 
-#define CAN_TIMEOUT						200				// Time after driver goes to idle. 200 is 1second
+#define CAN_TIMEOUT						1000				// Time after driver goes to idle. 200 is 1second
 
 // MACHINE STATES
 #define IDLE							0
@@ -119,15 +119,15 @@ TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
 
 /* USER CODE BEGIN PV */
-volatile int32_t dupa=1;
+volatile int32_t dupa=0;
 
 
 // State Machine
 uint8_t 			MACHINE_STATE;
 
 // peripheral's Buffers
-uint16_t ADC1_BUFFER[2]={0};
-uint16_t ADC2_BUFFER[1]={0};
+uint16_t ADC1_BUFFER[2];	 //TEMP, VBAT
+uint16_t ADC2_BUFFER[1];	//CURRENT
 
 FDCAN_RxHeaderTypeDef 		CAN_RX_Header; 		//CAN Bus Transmit Header
 FDCAN_TxHeaderTypeDef 		CAN_TX_Header; 		//CAN Bus Receive Header
@@ -234,7 +234,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  HAL_Delay(100);
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -256,17 +256,35 @@ int main(void)
   MX_TIM15_Init();
   MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
-	HAL_Delay(100);
+
+  CAN_Filter.IdType = FDCAN_STANDARD_ID;
+  CAN_Filter.FilterIndex = 0;
+  CAN_Filter.FilterType = FDCAN_FILTER_DISABLE;
+  CAN_Filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+  CAN_Filter.FilterID1 = 0;
+  CAN_Filter.FilterID2 = 0;
+
+
+  CAN_TX_Header.Identifier = 0x0B;
+  CAN_TX_Header.IdType = FDCAN_STANDARD_ID;
+  CAN_TX_Header.TxFrameType = FDCAN_DATA_FRAME;
+  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_8;
+  CAN_TX_Header.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
+  CAN_TX_Header.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
+  CAN_TX_Header.MessageMarker = 0;
+  CAN_TX_Header.FDFormat = FDCAN_CLASSIC_CAN;
+  CAN_TX_Header.BitRateSwitch = FDCAN_BRS_OFF;
 
 	if (HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED) != HAL_OK)
 	  Error_Handler();
 	if (HAL_ADCEx_Calibration_Start(&hadc2, ADC_SINGLE_ENDED) != HAL_OK)
 	  Error_Handler();
-
+/*
 	if (HAL_ADC_Start_DMA(&hadc1, ADC1_BUFFER, 2) != HAL_OK)
 	  Error_Handler();
 	if (HAL_ADC_Start_DMA(&hadc2, ADC2_BUFFER, 1) != HAL_OK)
 	  Error_Handler();
+*/
 
 	DAC_Value = 2000;
 	HAL_DAC_Start(&hdac1, DAC_CHANNEL_1);
@@ -274,8 +292,7 @@ int main(void)
 
 	MACHINE_STATE = IDLE;
 
-
-	TIM2->CCR2 = 0;
+	TIM2->CCR1 = 0;
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 	HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, 0);
 
@@ -289,32 +306,17 @@ int main(void)
 	Max_Current_Peak = SHORT_DURATION_CURRENT_LIMIT;
 	REVERSED = FALSE;
 
+
 	// Initialize CAN
-	CAN_Filter.IdType = FDCAN_STANDARD_ID;
-	CAN_Filter.FilterIndex = 0;
-	CAN_Filter.FilterType = FDCAN_FILTER_DISABLE;
-	CAN_Filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
-	CAN_Filter.FilterID1 = 0;
-	CAN_Filter.FilterID2 = 0;
-
-	CAN_TX_Header.Identifier = CAN_ID;
-	CAN_TX_Header.IdType = FDCAN_STANDARD_ID;
-	CAN_TX_Header.TxFrameType = FDCAN_DATA_FRAME;
-	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_8;
-	CAN_TX_Header.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
-	CAN_TX_Header.BitRateSwitch = FDCAN_BRS_ON;
-	CAN_TX_Header.FDFormat = FDCAN_FD_CAN;
-	CAN_TX_Header.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
-	CAN_TX_Header.MessageMarker = 0;
-
-	HAL_FDCAN_Start(&hfdcan1);
+	if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
+		Error_Handler();
 	HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
-	CAN_TX[3] = 5;
 	HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 
 	HAL_TIM_Base_Start_IT(&htim17);
 	HAL_TIM_Base_Start_IT(&htim16);
 	HAL_TIM_Base_Start_IT(&htim15);
+
 
   /* USER CODE END 2 */
 
@@ -322,7 +324,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
+	  dupa++;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -410,7 +412,7 @@ static void MX_ADC1_Init(void)
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc1.Init.DMAContinuousRequests = DISABLE;
+  hadc1.Init.DMAContinuousRequests = ENABLE;
   hadc1.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
   hadc1.Init.OversamplingMode = DISABLE;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
@@ -486,7 +488,7 @@ static void MX_ADC2_Init(void)
   hadc2.Init.DiscontinuousConvMode = DISABLE;
   hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc2.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc2.Init.DMAContinuousRequests = DISABLE;
+  hadc2.Init.DMAContinuousRequests = ENABLE;
   hadc2.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
   hadc2.Init.OversamplingMode = DISABLE;
   if (HAL_ADC_Init(&hadc2) != HAL_OK)
@@ -576,7 +578,7 @@ static void MX_FDCAN1_Init(void)
   /* USER CODE END FDCAN1_Init 1 */
   hfdcan1.Instance = FDCAN1;
   hfdcan1.Init.ClockDivider = FDCAN_CLOCK_DIV1;
-  hfdcan1.Init.FrameFormat = FDCAN_FRAME_FD_BRS;
+  hfdcan1.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
   hfdcan1.Init.Mode = FDCAN_MODE_NORMAL;
   hfdcan1.Init.AutoRetransmission = DISABLE;
   hfdcan1.Init.TransmitPause = DISABLE;
@@ -623,7 +625,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 17-1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 99;
+  htim2.Init.Period = 999;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
@@ -1041,8 +1043,20 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 	    break;
 		case 0x50:	// MOTOR DUTY - STANDARD COMPACT FEEDBACK
 			// Set Motor Duties
-			if (CAN_RX[1] != 0xFF)				CAN_Duty = CAN_RX[1] * 10;		// Id duty is set to 0xFF Do not update the register
-			if (CAN_RX[2] != 0xFF)				CAN_Duty = CAN_RX[2] * 10;
+			if (CAN_RX[1] != 0xFF)
+			{
+				if((int8_t)CAN_RX[1] >= 101)
+					CAN_Duty = CAN_RX[1] - 101;
+
+				CAN_Duty = CAN_Duty * 10;		// Id duty is set to 0xFF Do not update the register
+			}
+			if (CAN_RX[2] != 0xFF)
+			{
+				if((int8_t)CAN_RX[2] >= 101)
+					CAN_Duty = CAN_RX[1] - 101;
+
+				CAN_Duty = CAN_Duty * 10;		// Id duty is set to 0xFF Do not update the register
+			}
 			if (MACHINE_STATE != ERROR) 		MACHINE_STATE = CAN_RX[3];
 
 			//Update State Machine if allowed
@@ -1050,10 +1064,13 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 			// Configure response length
 			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_8;
 			//	Send Response
+			int16_t response_duty=Actual_Duty;
+			if(response_duty < 0)
+				response_duty = 101 - Actual_Duty;
 			CAN_TX[0] = 0x50;
 			CAN_TX[1] = Battery_Voltage * 10;
-			CAN_TX[2] = Actual_Duty / 10;
-			CAN_TX[3] = Actual_Duty / 10;
+			CAN_TX[2] = response_duty / 10;
+			CAN_TX[3] = response_duty / 10;
 			CAN_TX[4] = FET_Temperature;
 			CAN_TX[5] = Motor_Current * 10;
 			CAN_TX[6] = Motor_Current * 10;
@@ -1061,8 +1078,20 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 	    break;
 		case 0x51: // MOTOR DUTY - 3 FRAME EXTENDED FEEDBACK
 			// Set Motor Duties
-			if (CAN_RX[1] != 0xFF)							Duty_Buff = CAN_RX[1];		// Id duty is set to 0xFF Do not update the register
-			if (CAN_RX[2] != 0xFF)							Duty_Buff = CAN_RX[2];
+			if (CAN_RX[1] != 0xFF)
+			{
+				if((int8_t)(CAN_RX[1]) > 101)
+					Duty_Buff = (int8_t)CAN_RX[1] - 101;
+				else
+					Duty_Buff = CAN_RX[1];		// Id duty is set to 0xFF Do not update the register
+			}
+			if (CAN_RX[2] != 0xFF)
+			{
+				if((int8_t)(CAN_RX[2]) > 100)
+					Duty_Buff = (int8_t)CAN_RX[2] - 101;
+				else
+					Duty_Buff = CAN_RX[2];		// Id duty is set to 0xFF Do not update the register
+			}
 			if (MACHINE_STATE != ERROR) 					MACHINE_STATE = CAN_RX[3]; 			// Set up Machine state into Run or Idle
 
 			CAN_Duty = Duty_Buff * 10;
@@ -1083,8 +1112,12 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 				CAN_TX[1] = Battery_Voltage_Buffer >> 8;
 				CAN_TX[2] = Battery_Voltage_Buffer;
 
-				if (REVERSED == TRUE)		CAN_TX[3] = -Actual_Duty / 10;
-				else 						CAN_TX[3] = Actual_Duty / 10;
+				int16_t response_duty=Actual_Duty;
+				if(response_duty < 0)
+					response_duty = 101 - Actual_Duty;
+
+				if (REVERSED == TRUE)		CAN_TX[3] = -response_duty / 10;
+				else 						CAN_TX[3] = response_duty / 10;
 
 				CAN_TX[5] = CAN_RX[1];
 				CAN_TX[6] = CAN_RX[2];
@@ -1197,7 +1230,7 @@ void Run(void)
 	// Motor A
 	if	(CAN_Duty == 0 )							// Forward Movement, Decelerating
 		Duty = CAN_Duty;
-	else if	(CAN_Duty >0 	&& 	CAN_Duty <=  1000 		&& 	Duty >= CAN_Duty)							// Forward Movement, Decelerating
+	else if	(CAN_Duty > 0 	&& 	CAN_Duty <=  1000 		&& 	Duty >= CAN_Duty)							// Forward Movement, Decelerating
 		Duty = CAN_Duty;
 	else if (CAN_Duty < 0 	&& 	CAN_Duty >= -1000		&& 	Duty <= CAN_Duty)							// Reverse Movement, Decelerating
 		Duty = CAN_Duty;
@@ -1442,6 +1475,8 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
 	dupa=-1;
+	HAL_Delay(10);
+	__BKPT(0);
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
   while (1)
