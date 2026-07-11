@@ -373,8 +373,8 @@ int main(void)
 	  else
 	  {
 		  CAN_TX[0] = 0x50;
-		  CAN_TX[1] = 151;
-		  CAN_TX[2] = 151;
+		  CAN_TX[1] = -50;
+		  CAN_TX[2] = -50;
 		  CAN_TX[3] = 0x01;
 		  CAN_TX[4] = 0;
 		  CAN_TX[5] = 0;

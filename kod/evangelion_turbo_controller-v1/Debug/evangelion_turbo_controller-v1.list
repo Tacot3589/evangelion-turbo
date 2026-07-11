@@ -1217,13 +1217,13 @@ int main(void)
  8000ddc:	4b2b      	ldr	r3, [pc, #172]	@ (8000e8c <main+0x274>)
  8000dde:	2250      	movs	r2, #80	@ 0x50
  8000de0:	701a      	strb	r2, [r3, #0]
-		  CAN_TX[1] = -50;
+		  CAN_TX[1] = 151;
  8000de2:	4b2a      	ldr	r3, [pc, #168]	@ (8000e8c <main+0x274>)
- 8000de4:	22ce      	movs	r2, #206	@ 0xce
+ 8000de4:	2297      	movs	r2, #151	@ 0x97
  8000de6:	705a      	strb	r2, [r3, #1]
-		  CAN_TX[2] = -50;
+		  CAN_TX[2] = 151;
  8000de8:	4b28      	ldr	r3, [pc, #160]	@ (8000e8c <main+0x274>)
- 8000dea:	22ce      	movs	r2, #206	@ 0xce
+ 8000dea:	2297      	movs	r2, #151	@ 0x97
  8000dec:	709a      	strb	r2, [r3, #2]
 		  CAN_TX[3] = 0x01;
  8000dee:	4b27      	ldr	r3, [pc, #156]	@ (8000e8c <main+0x274>)

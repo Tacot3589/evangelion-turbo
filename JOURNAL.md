@@ -539,7 +539,7 @@ Imagesss!
 **Total time spent: 4.5 hours**
 
 
-# July 08: Holy **not** 67
+# July 09: Holy **not** 67
 
 Helloooo
 
@@ -557,8 +557,37 @@ Lapse:
 No lapse, i forgor :(
 
 Imagesss!
-![img1](journalMedia/07-08_01.jpg)
-![img2](journalMedia/07-08_02.jpg)
-![img3](journalMedia/07-08_03.jpg)
-![img4](journalMedia/07-08_04.jpg)
+![img1](journalMedia/07-09_01.jpg)
+![img2](journalMedia/07-09_02.jpg)
+![img3](journalMedia/07-09_03.jpg)
+![img4](journalMedia/07-09_04.jpg)
+![img5](journalMedia/07-09_05.jpg)
+![img6](journalMedia/07-09_06.jpg)
+![img7](journalMedia/07-09_07.jpg)
+![img8](journalMedia/07-09_08.jpg)
 **Total time spent: 5.3 hours**
+
+
+# July 10: WHOA
+
+Yeeee!
+Today i desoldered mcu, sodlered mcu, desoldered mcu, had crashout, soldered it again lol.
+A lot of work done today. I understanded CAN, got it to working, failed it, got it to work again....
+Im crooked rn, letme go sleep guyz.
+
+Lapse it is *but im dyin lol*:
+https://lapse.hackclub.com/timelapse/tlmj2piRnfcS
+(I got one break, 8 to 9hr of recording, i forgot to stop lapse, but after short snack break i forgot to turn it back on. I have 13hrs on my work timer ":skulker:")
+
+Imagesss!
+![img1](journalMedia/07-09_01.jpg)
+![img2](journalMedia/07-09_02.jpg)
+![img3](journalMedia/07-09_03.jpg)
+![img4](journalMedia/07-09_04.jpg)
+![img5](journalMedia/07-09_05.jpg)
+![img6](journalMedia/07-09_06.jpg)
+![img7](journalMedia/07-09_07.jpg)
+![img8](journalMedia/07-09_08.jpg)
+![img9](journalMedia/07-09_09.jpg)
+![img10](journalMedia/07-09_10.jpg)
+**Total time spent: 12 hours**

@@ -887,3 +887,139 @@ arm-none-eabi-size  motor_driver.elf
   31476	     92	   2988	  34556	   86fc	motor_driver.elf
 Finished building: default.size.stdout
  
+02:00:38 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "motor_driver.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\motor_driver\STM32G431KBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_driver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: motor_driver.elf
+ 
+arm-none-eabi-size  motor_driver.elf 
+arm-none-eabi-objdump -h -S motor_driver.elf  > "motor_driver.list"
+   text	   data	    bss	    dec	    hex	filename
+  31576	     92	   2988	  34656	   8760	motor_driver.elf
+Finished building: default.size.stdout
+ 
+Finished building: motor_driver.list
+ 
+02:02:37 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "motor_driver.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\motor_driver\STM32G431KBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_driver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: motor_driver.elf
+ 
+arm-none-eabi-size  motor_driver.elf 
+arm-none-eabi-objdump -h -S motor_driver.elf  > "motor_driver.list"
+   text	   data	    bss	    dec	    hex	filename
+  31584	     92	   2988	  34664	   8768	motor_driver.elf
+Finished building: default.size.stdout
+ 
+Finished building: motor_driver.list
+ 
+02:04:45 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "motor_driver.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\motor_driver\STM32G431KBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_driver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: motor_driver.elf
+ 
+arm-none-eabi-size  motor_driver.elf 
+arm-none-eabi-objdump -h -S motor_driver.elf  > "motor_driver.list"
+   text	   data	    bss	    dec	    hex	filename
+  31584	     92	   2988	  34664	   8768	motor_driver.elf
+Finished building: default.size.stdout
+ 
+Finished building: motor_driver.list
+ 
+02:06:38 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "motor_driver.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\motor_driver\STM32G431KBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_driver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: motor_driver.elf
+ 
+arm-none-eabi-size  motor_driver.elf 
+arm-none-eabi-objdump -h -S motor_driver.elf  > "motor_driver.list"
+   text	   data	    bss	    dec	    hex	filename
+  31584	     92	   2988	  34664	   8768	motor_driver.elf
+Finished building: default.size.stdout
+ 
+Finished building: motor_driver.list
+ 
+02:06:59 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  31584	     92	   2988	  34664	   8768	motor_driver.elf
+Finished building: default.size.stdout
+ 
+02:07:22 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  31584	     92	   2988	  34664	   8768	motor_driver.elf
+Finished building: default.size.stdout
+ 
+02:09:52 **** Incremental Build of configuration Debug for project evangelion_turbo_controller-v1 ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H562xx -c -I../Core/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:1341:6: warning: 'BATTLE' defined but not used [-Wunused-function]
+ 1341 | void BATTLE()
+      |      ^~~~~~
+arm-none-eabi-gcc -o "evangelion_turbo_controller-v1.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_controller-v1\STM32H562RIVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_controller-v1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_controller-v1.elf
+ 
+arm-none-eabi-size  evangelion_turbo_controller-v1.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_controller-v1.elf  > "evangelion_turbo_controller-v1.list"
+   text	   data	    bss	    dec	    hex	filename
+  76396	     20	   3892	  80308	  139b4	evangelion_turbo_controller-v1.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_controller-v1.list
+ 
+02:11:46 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "motor_driver.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\motor_driver\STM32G431KBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_driver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: motor_driver.elf
+ 
+arm-none-eabi-size  motor_driver.elf 
+arm-none-eabi-objdump -h -S motor_driver.elf  > "motor_driver.list"
+   text	   data	    bss	    dec	    hex	filename
+  31576	     92	   2988	  34656	   8760	motor_driver.elf
+Finished building: default.size.stdout
+ 
+Finished building: motor_driver.list
+ 
+02:12:41 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  31576	     92	   2988	  34656	   8760	motor_driver.elf
+Finished building: default.size.stdout
+ 
+02:13:36 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "motor_driver.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\motor_driver\STM32G431KBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_driver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: motor_driver.elf
+ 
+arm-none-eabi-size  motor_driver.elf 
+arm-none-eabi-objdump -h -S motor_driver.elf  > "motor_driver.list"
+   text	   data	    bss	    dec	    hex	filename
+  31560	     92	   2988	  34640	   8750	motor_driver.elf
+Finished building: default.size.stdout
+ 
+Finished building: motor_driver.list
+ 
+02:16:46 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "motor_driver.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\motor_driver\STM32G431KBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_driver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: motor_driver.elf
+ 
+arm-none-eabi-size  motor_driver.elf 
+arm-none-eabi-objdump -h -S motor_driver.elf  > "motor_driver.list"
+   text	   data	    bss	    dec	    hex	filename
+  31612	     92	   2988	  34692	   8784	motor_driver.elf
+Finished building: default.size.stdout
+ 
+Finished building: motor_driver.list
+ 
