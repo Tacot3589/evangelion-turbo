@@ -73,7 +73,7 @@
 #define MAX_MOTOR_TEMPERATURE			90				// Maximum allowed motor temperature in C
 #define MAX_FET_TEMPERATURE				90				// Maximum allowed mosfets temperature in C
 
-#define CAN_TIMEOUT						1000				// Time after driver goes to idle. 200 is 1second
+#define CAN_TIMEOUT						20000				// Time after driver goes to idle. 200 is 1second
 
 // MACHINE STATES
 #define IDLE							0
@@ -98,8 +98,8 @@
 
 
 
-#define SELF_ID 'L'
-//#define SELF_IF 'R'
+//#define SELF_ID 'L'
+#define SELF_ID 'R'
 
 
 
@@ -963,10 +963,18 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 	HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &CAN_RX_Header, CAN_RX);
 	HAL_FDCAN_ActivateNotification(hfdcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
 	CAN_STATUS_FLAG = 1;
-	CAN_TX[0] = SELF_ID;
 
 	if(CAN_RX[0] == SELF_ID)
 	{
+		CAN_TX[0] = SELF_ID;
+		CAN_TX[1] = 0;
+		CAN_TX[2] = 0;
+		CAN_TX[3] = 0;
+		CAN_TX[4] = 0;
+		CAN_TX[5] = 0;
+		CAN_TX[6] = 0;
+		CAN_TX[7] = 0;
+
 		// Write data to Buffers
 		switch (CAN_RX[1])
 		{
@@ -1103,7 +1111,8 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 					else
 						CAN_Duty = CAN_RX[2] * 10;
 
-				if (MACHINE_STATE != ERROR) 		MACHINE_STATE = CAN_RX[3];
+				if (MACHINE_STATE != ERROR)
+					MACHINE_STATE = CAN_RX[3];
 
 				//Update State Machine if allowed
 

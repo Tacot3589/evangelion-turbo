@@ -212,6 +212,15 @@ uint8_t FLAG_BLINK_RED = 0;
 uint8_t FLAG_BLINK_BLUE = 0;
 uint8_t FLAG_BLINK_GREEN = 0;
 
+
+//performance!
+static uint32_t last_total = 0;
+static uint32_t last_idle = 0;
+volatile uint32_t cpu_idle_cycles = 0;
+volatile uint32_t cpu_load_permille = 0;
+volatile uint8_t MCU_LOAD = 0;
+volatile uint8_t MCU_LOAD_MAX = 0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -243,6 +252,8 @@ static void GET_LAST_SEEN_ROTATIONE(void);
 static void TASK_BEFORE_ATTACK(void);
 static void LED_BLINK_INTERUPT(void);
 static void SET_MOTORS(int8_t l, int8_t r);
+
+static inline void DWT_Init(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -350,49 +361,57 @@ int main(void)
 
 	if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
 		Error_Handler();
+	HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+	HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+
+	DWT_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(dupa>300)
-	  {
-		  CAN_TX[0] = MOTOR_L_ID;
-		  CAN_TX[1] = 0x50;
-		  CAN_TX[2] = 50;
-		  CAN_TX[3] = 50;
-		  CAN_TX[4] = 0x01;
-		  CAN_TX[5] = 0;
-		  CAN_TX[6] = 0;
-		  CAN_TX[7] = 0;
+		dupa++;
+		uint32_t start = DWT->CYCCNT;
+		__WFI();
+		cpu_idle_cycles += (DWT->CYCCNT - start);
 
-		  if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX) == HAL_OK)
-		  {
-			dupa++;
-		  }
-	  }
 
-	  else
-	  {
-		  CAN_TX[0] = MOTOR_L_ID;
-		  CAN_TX[1] = 0x50;
-		  CAN_TX[2] = 150;
-		  CAN_TX[3] = 150;
-		  CAN_TX[4] = 0x01;
-		  CAN_TX[5] = 0;
-		  CAN_TX[6] = 0;
-		  CAN_TX[7] = 0;
+	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+	  CAN_TX[0] = MOTOR_R_ID;
+	  CAN_TX[1] = 0x50;
+	  CAN_TX[2] = 50;
+	  CAN_TX[3] = 0x01;
+	  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
+		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 
-		  if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX) == HAL_OK)
-		  {
-			dupa++;
-		  }
-	  }
+	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+	  CAN_TX[0] = MOTOR_L_ID;
+	  CAN_TX[1] = 0x50;
+	  CAN_TX[2] = 50;
+	  CAN_TX[3] = 0x01;
+	  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
+		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 
-	  if(dupa>600)
-		  dupa=0;
-	  HAL_Delay(10);
+	  HAL_Delay(500);
+
+	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+	  CAN_TX[0] = MOTOR_R_ID;
+	  CAN_TX[1] = 0x50;
+	  CAN_TX[2] = 150;
+	  CAN_TX[3] = 0x01;
+	  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
+		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+
+	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+	  CAN_TX[0] = MOTOR_L_ID;
+	  CAN_TX[1] = 0x50;
+	  CAN_TX[2] = 150;
+	  CAN_TX[3] = 0x01;
+	  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
+		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+//HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);//todocan
+	  HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -607,7 +626,7 @@ static void MX_FDCAN1_Init(void)
   hfdcan1.Instance = FDCAN1;
   hfdcan1.Init.ClockDivider = FDCAN_CLOCK_DIV1;
   hfdcan1.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
-  hfdcan1.Init.Mode = FDCAN_MODE_EXTERNAL_LOOPBACK;
+  hfdcan1.Init.Mode = FDCAN_MODE_NORMAL;
   hfdcan1.Init.AutoRetransmission = DISABLE;
   hfdcan1.Init.TransmitPause = DISABLE;
   hfdcan1.Init.ProtocolException = DISABLE;
@@ -1203,6 +1222,24 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(htim->Instance == TIM17) //100hz everything else
 	{
 	   WATCHDOG();
+
+	   //LOAD
+		uint32_t total = DWT->CYCCNT;
+		uint32_t total_diff = total - last_total;
+		uint32_t idle_diff  = cpu_idle_cycles - last_idle;
+
+		last_total = total;
+		last_idle = cpu_idle_cycles;
+
+		if (total_diff > 0)
+			cpu_load_permille = (1000U * (total_diff - idle_diff)) / total_diff;
+		else
+			cpu_load_permille = 0;
+
+		MCU_LOAD = cpu_load_permille / 10;
+
+		if(MCU_LOAD > MCU_LOAD_MAX)
+			MCU_LOAD_MAX = MCU_LOAD;
 	}
 }
 
@@ -1837,6 +1874,13 @@ void WATCHDOG()
 	Eva.CellVoltage = Eva.AttackMode / 3;
 	if(Eva.CellVoltage < MIN_BATTERY_VOLTAGE_PER_CELL)
 		FLAG_BLINK_BLUE = 1;
+}
+
+static inline void DWT_Init(void)
+{
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+    DWT->CYCCNT = 0;
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 }
 /* USER CODE END 4 */
 

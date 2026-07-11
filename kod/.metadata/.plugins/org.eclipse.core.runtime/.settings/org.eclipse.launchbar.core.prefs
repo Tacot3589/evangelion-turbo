@@ -10,5 +10,5 @@ org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion-turbo/activeLaunchTa
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion-turbo_STM32H563RGV6\ Debug/activeLaunchMode=debug
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion_turbo_controller\ Debug/activeLaunchMode=debug
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion_turbo_controller\ Debug/activeLaunchTarget=null\:---
-org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion_turbo_controller-v1/activeLaunchMode=run
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:evangelion_turbo_controller-v1/activeLaunchMode=debug
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:motor_driver\ Debug/activeLaunchMode=debug

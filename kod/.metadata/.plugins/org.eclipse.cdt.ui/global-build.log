@@ -1,13 +1,29 @@
-22:44:41 **** Incremental Build of configuration Debug for project motor_driver ****
+23:33:29 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20204	     92	   3084	  23380	   5b54	motor_driver.elf
+Finished building: default.size.stdout
+ 
+23:33:34 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20204	     92	   3084	  23380	   5b54	motor_driver.elf
+Finished building: default.size.stdout
+ 
+23:34:14 **** Incremental Build of configuration Debug for project motor_driver ****
 make -j16 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -Ofast -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
 ../Core/Src/main.c: In function 'HAL_FDCAN_RxFifo0Callback':
-../Core/Src/main.c:969:17: error: break statement not within loop or switch
-  969 |                 break;
-      |                 ^~~~~
+../Core/Src/main.c:967:25: error: 'SELF_ID' undeclared (first use in this function); did you mean 'SELF_IF'?
+  967 |         if(CAN_RX[0] == SELF_ID)
+      |                         ^~~~~~~
+      |                         SELF_IF
+../Core/Src/main.c:967:25: note: each undeclared identifier is reported only once for each function it appears in
 make: *** [Core/Src/subdir.mk:34: Core/Src/main.o] Error 1
 "make -j16 all" terminated with exit code 2. Build might be incomplete.
-22:45:22 **** Incremental Build of configuration Debug for project motor_driver ****
+23:34:20 **** Incremental Build of configuration Debug for project motor_driver ****
 make -j16 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -Ofast -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
 arm-none-eabi-gcc -o "motor_driver.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\motor_driver\STM32G431KBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_driver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
@@ -16,15 +32,122 @@ Finished building target: motor_driver.elf
 arm-none-eabi-size  motor_driver.elf 
 arm-none-eabi-objdump -h -S motor_driver.elf  > "motor_driver.list"
    text	   data	    bss	    dec	    hex	filename
-  20176	     92	   3084	  23352	   5b38	motor_driver.elf
+  20204	     92	   3084	  23380	   5b54	motor_driver.elf
 Finished building: default.size.stdout
  
 Finished building: motor_driver.list
  
-22:47:10 **** Incremental Build of configuration Debug for project motor_driver ****
+23:34:49 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -Ofast -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "motor_driver.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\motor_driver\STM32G431KBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_driver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: motor_driver.elf
+ 
+arm-none-eabi-size  motor_driver.elf 
+arm-none-eabi-objdump -h -S motor_driver.elf  > "motor_driver.list"
+   text	   data	    bss	    dec	    hex	filename
+  20204	     92	   3084	  23380	   5b54	motor_driver.elf
+Finished building: default.size.stdout
+ 
+Finished building: motor_driver.list
+ 
+23:39:21 **** Incremental Build of configuration Debug for project evangelion_turbo_controller-v1 ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H562xx -c -I../Core/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I../Drivers/CMSIS/Include -Ofast -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:1365:6: warning: 'BATTLE' defined but not used [-Wunused-function]
+ 1365 | void BATTLE()
+      |      ^~~~~~
+../Core/Src/main.c: In function 'HAL_UARTEx_RxEventCallback':
+../Core/Src/main.c:1561:41: warning: 'Dist' may be used uninitialized [-Wmaybe-uninitialized]
+ 1561 |                 window1_Dist[idx1_Dist] = Dist;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+../Core/Src/main.c:1520:18: note: 'Dist' was declared here
+ 1520 |         uint16_t Dist, Temp, Amp;
+      |                  ^~~~
+../Core/Src/main.c:1585:38: warning: 'Temp' may be used uninitialized [-Wmaybe-uninitialized]
+ 1585 |                 FrontRight.LidarTemp = Temp;
+      |                 ~~~~~~~~~~~~~~~~~~~~~^~~~~~
+../Core/Src/main.c:1520:24: note: 'Temp' was declared here
+ 1520 |         uint16_t Dist, Temp, Amp;
+      |                        ^~~~
+../Core/Src/main.c:1562:39: warning: 'Amp' may be used uninitialized [-Wmaybe-uninitialized]
+ 1562 |                 window1_Amp[idx1_Amp] = Amp;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:1520:30: note: 'Amp' was declared here
+ 1520 |         uint16_t Dist, Temp, Amp;
+      |                              ^~~
+arm-none-eabi-gcc -o "evangelion_turbo_controller-v1.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_controller-v1\STM32H562RIVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_controller-v1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_controller-v1.elf
+ 
+arm-none-eabi-size  evangelion_turbo_controller-v1.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_controller-v1.elf  > "evangelion_turbo_controller-v1.list"
+   text	   data	    bss	    dec	    hex	filename
+  50288	     16	   3904	  54208	   d3c0	evangelion_turbo_controller-v1.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_controller-v1.list
+ 
+23:40:46 **** Incremental Build of configuration Debug for project evangelion_turbo_controller-v1 ****
+make -j16 all 
+arm-none-eabi-size  evangelion_turbo_controller-v1.elf 
+   text	   data	    bss	    dec	    hex	filename
+  50288	     16	   3904	  54208	   d3c0	evangelion_turbo_controller-v1.elf
+Finished building: default.size.stdout
+ 
+23:41:32 **** Incremental Build of configuration Debug for project evangelion_turbo_controller-v1 ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H562xx -c -I../Core/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I../Drivers/CMSIS/Include -Ofast -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:1381:6: warning: 'BATTLE' defined but not used [-Wunused-function]
+ 1381 | void BATTLE()
+      |      ^~~~~~
+../Core/Src/main.c: In function 'HAL_UARTEx_RxEventCallback':
+../Core/Src/main.c:1577:41: warning: 'Dist' may be used uninitialized [-Wmaybe-uninitialized]
+ 1577 |                 window1_Dist[idx1_Dist] = Dist;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+../Core/Src/main.c:1536:18: note: 'Dist' was declared here
+ 1536 |         uint16_t Dist, Temp, Amp;
+      |                  ^~~~
+../Core/Src/main.c:1601:38: warning: 'Temp' may be used uninitialized [-Wmaybe-uninitialized]
+ 1601 |                 FrontRight.LidarTemp = Temp;
+      |                 ~~~~~~~~~~~~~~~~~~~~~^~~~~~
+../Core/Src/main.c:1536:24: note: 'Temp' was declared here
+ 1536 |         uint16_t Dist, Temp, Amp;
+      |                        ^~~~
+../Core/Src/main.c:1578:39: warning: 'Amp' may be used uninitialized [-Wmaybe-uninitialized]
+ 1578 |                 window1_Amp[idx1_Amp] = Amp;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:1536:30: note: 'Amp' was declared here
+ 1536 |         uint16_t Dist, Temp, Amp;
+      |                              ^~~
+arm-none-eabi-gcc -o "evangelion_turbo_controller-v1.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_controller-v1\STM32H562RIVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_controller-v1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_controller-v1.elf
+ 
+arm-none-eabi-size  evangelion_turbo_controller-v1.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_controller-v1.elf  > "evangelion_turbo_controller-v1.list"
+   text	   data	    bss	    dec	    hex	filename
+  50368	     16	   3904	  54288	   d410	evangelion_turbo_controller-v1.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_controller-v1.list
+ 
+23:42:57 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -Ofast -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "motor_driver.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\motor_driver\STM32G431KBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_driver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: motor_driver.elf
+ 
+arm-none-eabi-size  motor_driver.elf 
+arm-none-eabi-objdump -h -S motor_driver.elf  > "motor_driver.list"
+   text	   data	    bss	    dec	    hex	filename
+  20204	     92	   3084	  23380	   5b54	motor_driver.elf
+Finished building: default.size.stdout
+ 
+Finished building: motor_driver.list
+ 
+23:43:23 **** Incremental Build of configuration Debug for project motor_driver ****
 make -j16 all 
 arm-none-eabi-size  motor_driver.elf 
    text	   data	    bss	    dec	    hex	filename
-  20176	     92	   3084	  23352	   5b38	motor_driver.elf
+  20204	     92	   3084	  23380	   5b54	motor_driver.elf
 Finished building: default.size.stdout
  
