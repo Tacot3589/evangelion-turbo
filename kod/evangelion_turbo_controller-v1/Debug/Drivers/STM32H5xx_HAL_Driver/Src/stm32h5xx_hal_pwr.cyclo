@@ -13,7 +13,7 @@
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr.c:427:6:HAL_PWR_DisableSleepOnExit	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr.c:440:6:HAL_PWR_EnableSEVOnPend	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr.c:452:6:HAL_PWR_DisableSEVOnPend	1
-../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr.c:466:6:HAL_PWR_PVD_IRQHandler	2
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr.c:491:13:HAL_PWR_PVDCallback	1
+../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr.c:466:6:HAL_PWR_PVD_IRQHandler	2
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr.c:534:6:HAL_PWR_ConfigAttributes	3
-../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr.c:617:19:HAL_PWR_GetConfigAttributes	3
+../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr.c:617:19:HAL_PWR_GetConfigAttributes	2

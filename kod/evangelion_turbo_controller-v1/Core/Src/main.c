@@ -40,6 +40,9 @@
 #define DMA_HANDLE_UART2 &handle_GPDMA1_Channel2
 #define DMA_HANDLE_UART4 &handle_GPDMA1_Channel4
 #define DMA_HANDLE_UART5 &handle_GPDMA1_Channel5
+
+#define MOTOR_L_ID 'L' 	//0x4C 	76
+#define MOTOR_R_ID 'R'	//0x52 	82
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -355,11 +358,11 @@ int main(void)
   {
 	  if(dupa>300)
 	  {
-		  CAN_TX[0] = 0x50;
-		  CAN_TX[1] = 50;
+		  CAN_TX[0] = MOTOR_L_ID;
+		  CAN_TX[1] = 0x50;
 		  CAN_TX[2] = 50;
-		  CAN_TX[3] = 0x01;
-		  CAN_TX[4] = 0;
+		  CAN_TX[3] = 50;
+		  CAN_TX[4] = 0x01;
 		  CAN_TX[5] = 0;
 		  CAN_TX[6] = 0;
 		  CAN_TX[7] = 0;
@@ -372,11 +375,11 @@ int main(void)
 
 	  else
 	  {
-		  CAN_TX[0] = 0x50;
-		  CAN_TX[1] = 151;
-		  CAN_TX[2] = 151;
-		  CAN_TX[3] = 0x01;
-		  CAN_TX[4] = 0;
+		  CAN_TX[0] = MOTOR_L_ID;
+		  CAN_TX[1] = 0x50;
+		  CAN_TX[2] = 150;
+		  CAN_TX[3] = 150;
+		  CAN_TX[4] = 0x01;
 		  CAN_TX[5] = 0;
 		  CAN_TX[6] = 0;
 		  CAN_TX[7] = 0;

@@ -61,8 +61,6 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define TEMP_Pin GPIO_PIN_0
 #define TEMP_GPIO_Port GPIOA
-#define DEVICE_ID_Vref_Pin GPIO_PIN_1
-#define DEVICE_ID_Vref_GPIO_Port GPIOA
 #define MAX_CURRENT_Pin GPIO_PIN_4
 #define MAX_CURRENT_GPIO_Port GPIOA
 #define CURRENT_Pin GPIO_PIN_6

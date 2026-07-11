@@ -123,13 +123,12 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
     __HAL_RCC_GPIOB_CLK_ENABLE();
     /**ADC1 GPIO Configuration
     PA0     ------> ADC1_IN1
-    PA1     ------> ADC1_IN2
     PB0     ------> ADC1_IN15
     */
-    GPIO_InitStruct.Pin = TEMP_Pin|DEVICE_ID_Vref_Pin;
+    GPIO_InitStruct.Pin = TEMP_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    HAL_GPIO_Init(TEMP_GPIO_Port, &GPIO_InitStruct);
 
     GPIO_InitStruct.Pin = VBAT_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
@@ -146,7 +145,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
     hdma_adc1.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
     hdma_adc1.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
     hdma_adc1.Init.Mode = DMA_CIRCULAR;
-    hdma_adc1.Init.Priority = DMA_PRIORITY_MEDIUM;
+    hdma_adc1.Init.Priority = DMA_PRIORITY_LOW;
     if (HAL_DMA_Init(&hdma_adc1) != HAL_OK)
     {
       Error_Handler();
@@ -198,7 +197,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
     hdma_adc2.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
     hdma_adc2.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
     hdma_adc2.Init.Mode = DMA_CIRCULAR;
-    hdma_adc2.Init.Priority = DMA_PRIORITY_MEDIUM;
+    hdma_adc2.Init.Priority = DMA_PRIORITY_LOW;
     if (HAL_DMA_Init(&hdma_adc2) != HAL_OK)
     {
       Error_Handler();
@@ -234,10 +233,9 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
 
     /**ADC1 GPIO Configuration
     PA0     ------> ADC1_IN1
-    PA1     ------> ADC1_IN2
     PB0     ------> ADC1_IN15
     */
-    HAL_GPIO_DeInit(GPIOA, TEMP_Pin|DEVICE_ID_Vref_Pin);
+    HAL_GPIO_DeInit(TEMP_GPIO_Port, TEMP_Pin);
 
     HAL_GPIO_DeInit(VBAT_GPIO_Port, VBAT_Pin);
 
@@ -299,7 +297,7 @@ void HAL_DAC_MspInit(DAC_HandleTypeDef* hdac)
     HAL_GPIO_Init(MAX_CURRENT_GPIO_Port, &GPIO_InitStruct);
 
     /* DAC1 interrupt Init */
-    HAL_NVIC_SetPriority(TIM6_DAC_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(TIM6_DAC_IRQn, 6, 0);
     HAL_NVIC_EnableIRQ(TIM6_DAC_IRQn);
     /* USER CODE BEGIN DAC1_MspInit 1 */
 
@@ -380,9 +378,9 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan)
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
     /* FDCAN1 interrupt Init */
-    HAL_NVIC_SetPriority(FDCAN1_IT0_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(FDCAN1_IT0_IRQn, 4, 0);
     HAL_NVIC_EnableIRQ(FDCAN1_IT0_IRQn);
-    HAL_NVIC_SetPriority(FDCAN1_IT1_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(FDCAN1_IT1_IRQn, 5, 0);
     HAL_NVIC_EnableIRQ(FDCAN1_IT1_IRQn);
     /* USER CODE BEGIN FDCAN1_MspInit 1 */
 
@@ -455,7 +453,21 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* htim_pwm)
   */
 void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
 {
-  if(htim_base->Instance==TIM15)
+  if(htim_base->Instance==TIM8)
+  {
+    /* USER CODE BEGIN TIM8_MspInit 0 */
+
+    /* USER CODE END TIM8_MspInit 0 */
+    /* Peripheral clock enable */
+    __HAL_RCC_TIM8_CLK_ENABLE();
+    /* TIM8 interrupt Init */
+    HAL_NVIC_SetPriority(TIM8_UP_IRQn, 15, 0);
+    HAL_NVIC_EnableIRQ(TIM8_UP_IRQn);
+    /* USER CODE BEGIN TIM8_MspInit 1 */
+
+    /* USER CODE END TIM8_MspInit 1 */
+  }
+  else if(htim_base->Instance==TIM15)
   {
     /* USER CODE BEGIN TIM15_MspInit 0 */
 
@@ -463,7 +475,7 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
     /* Peripheral clock enable */
     __HAL_RCC_TIM15_CLK_ENABLE();
     /* TIM15 interrupt Init */
-    HAL_NVIC_SetPriority(TIM1_BRK_TIM15_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(TIM1_BRK_TIM15_IRQn, 3, 0);
     HAL_NVIC_EnableIRQ(TIM1_BRK_TIM15_IRQn);
     /* USER CODE BEGIN TIM15_MspInit 1 */
 
@@ -477,7 +489,7 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
     /* Peripheral clock enable */
     __HAL_RCC_TIM16_CLK_ENABLE();
     /* TIM16 interrupt Init */
-    HAL_NVIC_SetPriority(TIM1_UP_TIM16_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(TIM1_UP_TIM16_IRQn, 2, 0);
     HAL_NVIC_EnableIRQ(TIM1_UP_TIM16_IRQn);
     /* USER CODE BEGIN TIM16_MspInit 1 */
 
@@ -491,7 +503,7 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
     /* Peripheral clock enable */
     __HAL_RCC_TIM17_CLK_ENABLE();
     /* TIM17 interrupt Init */
-    HAL_NVIC_SetPriority(TIM1_TRG_COM_TIM17_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(TIM1_TRG_COM_TIM17_IRQn, 1, 0);
     HAL_NVIC_EnableIRQ(TIM1_TRG_COM_TIM17_IRQn);
     /* USER CODE BEGIN TIM17_MspInit 1 */
 
@@ -556,7 +568,21 @@ void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef* htim_pwm)
   */
 void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* htim_base)
 {
-  if(htim_base->Instance==TIM15)
+  if(htim_base->Instance==TIM8)
+  {
+    /* USER CODE BEGIN TIM8_MspDeInit 0 */
+
+    /* USER CODE END TIM8_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_TIM8_CLK_DISABLE();
+
+    /* TIM8 interrupt DeInit */
+    HAL_NVIC_DisableIRQ(TIM8_UP_IRQn);
+    /* USER CODE BEGIN TIM8_MspDeInit 1 */
+
+    /* USER CODE END TIM8_MspDeInit 1 */
+  }
+  else if(htim_base->Instance==TIM15)
   {
     /* USER CODE BEGIN TIM15_MspDeInit 0 */
 

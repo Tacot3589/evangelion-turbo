@@ -21,9 +21,9 @@
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr_ex.c:466:6:HAL_PWREx_DisableBatteryCharging	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr_ex.c:478:6:HAL_PWREx_EnableAnalogBooster	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr_ex.c:491:6:HAL_PWREx_DisableAnalogBooster	1
-../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr_ex.c:506:6:HAL_PWREx_PVD_AVD_IRQHandler	3
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr_ex.c:533:13:HAL_PWREx_PVD_AVD_Rising_Callback	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr_ex.c:544:13:HAL_PWREx_PVD_AVD_Falling_Callback	1
+../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr_ex.c:506:6:HAL_PWREx_PVD_AVD_IRQHandler	3
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr_ex.c:573:6:HAL_PWREx_EnableWakeUpPin	5
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr_ex.c:614:6:HAL_PWREx_DisableWakeUpPin	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_pwr_ex.c:647:6:HAL_PWREx_EnableFlashPowerDown	1

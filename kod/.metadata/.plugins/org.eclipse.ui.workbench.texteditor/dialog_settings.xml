@@ -3,21 +3,21 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
-		<item value="TASK_BEFORE_ATTACK"/>
-		<item value="ROTATE_BEFORE_ATTACK_TASK()"/>
-		<item value="Eva.inBa"/>
-		<item value="Eva.State"/>
-		<item value="Battery_constant"/>
-		<item value="GET_START_MOD"/>
-		<item value="HAL_UARTEx_ReceiveToIdle_DMA"/>
-		<item value="LIDARS_INIT"/>
-		<item value="dupa"/>
-		<item value="DMA"/>
-		<item value="__HAL_LINKDMA"/>
-		<item value="UART1_RX"/>
-		<item value="MX_DMA_Init()"/>
-		<item value="hdma_usart2_rx"/>
-		<item value="&amp;huart1"/>
+		<item value="CAN_Duty"/>
+		<item value="CCR"/>
+		<item value="CAN_TX"/>
+		<item value="Motor_Control"/>
+		<item value="SET_MOTOR"/>
+		<item value="DIR_P"/>
+		<item value="TIM2-&gt;CCR2"/>
+		<item value="FET_Temperature "/>
+		<item value="NTC_SEries_resistor"/>
+		<item value="NTC_Nominal_Resistance"/>
+		<item value="FET_Temperature"/>
+		<item value="Motor_Error"/>
+		<item value="CAN_Duty "/>
+		<item value="Actual_Duty"/>
+		<item value="CAN_RX"/>
 	</list>
 	<list key="replacehistory">
 		<item value="TASK_BEFORE_ATTACK"/>

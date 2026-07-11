@@ -1,8 +1,8 @@
-../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:143:19:HAL_Init	2
-../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:177:19:HAL_DeInit	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:211:13:HAL_MspInit	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:222:13:HAL_MspDeInit	1
-../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:245:26:HAL_InitTick	8
+../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:177:19:HAL_DeInit	1
+../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:245:26:HAL_InitTick	7
+../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:143:19:HAL_Init	2
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:335:13:HAL_IncTick	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:346:17:HAL_GetTick	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:355:10:HAL_GetTickPrio	1
@@ -33,8 +33,8 @@
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:757:6:HAL_SBS_DisableVddIO2CompensationCell	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:770:6:HAL_SBS_VDDCompensationCodeSelect	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:785:6:HAL_SBS_VDDIOCompensationCodeSelect	1
-../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:796:10:HAL_SBS_GetVddIO1CompensationCellReadyFlag	2
-../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:805:10:HAL_SBS_GetVddIO2CompensationCellReadyFlag	2
+../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:796:10:HAL_SBS_GetVddIO1CompensationCellReadyFlag	1
+../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:805:10:HAL_SBS_GetVddIO2CompensationCellReadyFlag	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:820:6:HAL_SBS_VDDCompensationCodeConfig	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:839:6:HAL_SBS_VDDIOCompensationCodeConfig	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:852:10:HAL_SBS_GetNMOSVddCompensationValue	1
@@ -43,7 +43,7 @@
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:880:10:HAL_SBS_GetPMOSVddIO2CompensationValue	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:890:6:HAL_SBS_FLASH_DisableECCNMI	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:900:6:HAL_SBS_FLASH_EnableECCNMI	1
-../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:910:10:HAL_SBS_FLASH_ECCNMI_IsDisabled	2
+../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:910:10:HAL_SBS_FLASH_ECCNMI_IsDisabled	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:938:6:HAL_SBS_IncrementHDPLValue	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:953:10:HAL_SBS_GetHDPLValue	1
 ../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal.c:988:6:HAL_SBS_EPOCHSelection	1

@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <math.h>
+#include "core_cm4.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -92,6 +93,17 @@
 #define FORWARD							6		// MOTOR DIRECTION
 #define REVERSE							8		//
 
+
+
+
+
+
+#define SELF_ID 'L'
+//#define SELF_IF 'R'
+
+
+
+
 // Error MAP
 //		Bit 0		| 		Bit 1		| 		Bit 2		| 		Bit 3		| 		Bit 4		| 		Bit 5		| 		Bit 6		| 		Bit 7		|
 //  Critical Error	|  LD Over-current	| 	   Not Used		|  FET Temperature	| Motor Temperature	|	SD Over current |	   Not Used		| 	Motor Status	|
@@ -114,6 +126,7 @@ DAC_HandleTypeDef hdac1;
 FDCAN_HandleTypeDef hfdcan1;
 
 TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim8;
 TIM_HandleTypeDef htim15;
 TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
@@ -126,8 +139,8 @@ volatile int32_t dupa=0;
 uint8_t 			MACHINE_STATE;
 
 // peripheral's Buffers
-uint16_t ADC1_BUFFER[2];	 //TEMP, VBAT
-uint16_t ADC2_BUFFER[1];	//CURRENT
+volatile uint16_t ADC1_BUFFER[2];	 //TEMP, VBAT
+volatile uint16_t ADC2_BUFFER[1];	//CURRENT
 
 FDCAN_RxHeaderTypeDef 		CAN_RX_Header; 		//CAN Bus Transmit Header
 FDCAN_TxHeaderTypeDef 		CAN_TX_Header; 		//CAN Bus Receive Header
@@ -166,6 +179,14 @@ float	 		Battery_Voltage;
 float			Battery_constant;
 float			Current_constant;
 
+//performance!
+static uint32_t last_total = 0;
+static uint32_t last_idle = 0;
+volatile uint32_t cpu_idle_cycles = 0;
+volatile uint32_t cpu_load_permille = 0;
+volatile uint8_t MCU_LOAD = 0;
+volatile uint8_t MCU_LOAD_MAX = 0;
+
 // OLD Variables
 // Current measurements for debug - to implement in functions
 volatile uint32_t 		CurrentA_Average = 0;
@@ -184,6 +205,7 @@ static void MX_TIM2_Init(void);
 static void MX_TIM17_Init(void);
 static void MX_TIM15_Init(void);
 static void MX_TIM16_Init(void);
+static void MX_TIM8_Init(void);
 /* USER CODE BEGIN PFP */
 
 void Interrupt10kHz(void);
@@ -210,6 +232,7 @@ uint8_t SetBrakeFlag (uint8_t DIR1, uint8_t DIR2);
 
 void Calculate_Temp(void);
 
+static inline void DWT_Init(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -255,6 +278,7 @@ int main(void)
   MX_TIM17_Init();
   MX_TIM15_Init();
   MX_TIM16_Init();
+  MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
 
   CAN_Filter.IdType = FDCAN_STANDARD_ID;
@@ -276,15 +300,20 @@ int main(void)
   CAN_TX_Header.BitRateSwitch = FDCAN_BRS_OFF;
 
 	if (HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED) != HAL_OK)
-	  Error_Handler();
+		Error_Handler();
+	HAL_Delay(10);
+	if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC1_BUFFER, 2) != HAL_OK)
+		Error_Handler();
+	HAL_Delay(10);
+
 	if (HAL_ADCEx_Calibration_Start(&hadc2, ADC_SINGLE_ENDED) != HAL_OK)
-	  Error_Handler();
-/*
-	if (HAL_ADC_Start_DMA(&hadc1, ADC1_BUFFER, 2) != HAL_OK)
-	  Error_Handler();
-	if (HAL_ADC_Start_DMA(&hadc2, ADC2_BUFFER, 1) != HAL_OK)
-	  Error_Handler();
-*/
+		Error_Handler();
+	HAL_Delay(10);
+	if (HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ADC2_BUFFER, 1) != HAL_OK)
+		Error_Handler();
+	HAL_Delay(10);
+
+
 
 	DAC_Value = 2000;
 	HAL_DAC_Start(&hdac1, DAC_CHANNEL_1);
@@ -313,9 +342,13 @@ int main(void)
 	HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
 	HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 
-	HAL_TIM_Base_Start_IT(&htim17);
-	HAL_TIM_Base_Start_IT(&htim16);
-	HAL_TIM_Base_Start_IT(&htim15);
+	HAL_TIM_Base_Start_IT(&htim17); //10KHz, main
+	HAL_TIM_Base_Start_IT(&htim16); //2Khz
+	HAL_TIM_Base_Start_IT(&htim15); //200Hz, watchdog
+	HAL_TIM_Base_Start_IT(&htim8); //100Hz, load
+
+	DWT_Init();
+
 
 
   /* USER CODE END 2 */
@@ -324,7 +357,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  dupa++;
+	dupa++;
+	uint32_t start = DWT->CYCCNT;
+	__WFI();
+	cpu_idle_cycles += (DWT->CYCCNT - start);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -432,7 +468,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_24CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_92CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
@@ -500,7 +536,7 @@ static void MX_ADC2_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_3;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_24CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_92CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
@@ -654,6 +690,53 @@ static void MX_TIM2_Init(void)
 }
 
 /**
+  * @brief TIM8 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM8_Init(void)
+{
+
+  /* USER CODE BEGIN TIM8_Init 0 */
+
+  /* USER CODE END TIM8_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM8_Init 1 */
+
+  /* USER CODE END TIM8_Init 1 */
+  htim8.Instance = TIM8;
+  htim8.Init.Prescaler = 17-1;
+  htim8.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim8.Init.Period = 9999;
+  htim8.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim8.Init.RepetitionCounter = 0;
+  htim8.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim8, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterOutputTrigger2 = TIM_TRGO2_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim8, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM8_Init 2 */
+
+  /* USER CODE END TIM8_Init 2 */
+
+}
+
+/**
   * @brief TIM15 Initialization Function
   * @param None
   * @retval None
@@ -717,7 +800,7 @@ static void MX_TIM16_Init(void)
   htim16.Instance = TIM16;
   htim16.Init.Prescaler = 85-1;
   htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim16.Init.Period = 65535;
+  htim16.Init.Period = 99;
   htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim16.Init.RepetitionCounter = 0;
   htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -775,10 +858,10 @@ static void MX_DMA_Init(void)
 
   /* DMA interrupt init */
   /* DMA1_Channel1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 14, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
   /* DMA1_Channel2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 14, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel2_IRQn);
 
 }
@@ -840,6 +923,32 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	{
 		Interrupt200Hz();
 	}
+	if(htim->Instance == TIM8) // 100Hz, load measurment
+	{
+		uint32_t total = DWT->CYCCNT;
+		uint32_t total_diff = total - last_total;
+		uint32_t idle_diff  = cpu_idle_cycles - last_idle;
+
+		last_total = total;
+		last_idle = cpu_idle_cycles;
+
+		if (total_diff > 0)
+			cpu_load_permille = (1000U * (total_diff - idle_diff)) / total_diff;
+		else
+			cpu_load_permille = 0;
+
+		MCU_LOAD = cpu_load_permille / 10;
+
+		if(MCU_LOAD > MCU_LOAD_MAX)
+			MCU_LOAD_MAX = MCU_LOAD;
+	}
+}
+
+static inline void DWT_Init(void)
+{
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+    DWT->CYCCNT = 0;
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 }
 
 
@@ -848,325 +957,243 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 	static uint8_t Can_Phase;
 	uint16_t Battery_Voltage_Buffer;
 	uint16_t Motor_Current_Buffer;
-	int8_t	Duty_Buff;
+	int8_t	Duty_Buff=0;
+	int16_t response_duty;
 
 	HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &CAN_RX_Header, CAN_RX);
 	HAL_FDCAN_ActivateNotification(hfdcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
 	CAN_STATUS_FLAG = 1;
+	CAN_TX[0] = SELF_ID;
 
-	// Write data to Buffers
-	switch (CAN_RX[0])
+	if(CAN_RX[0] == SELF_ID)
 	{
-		case 0x01:	// STATUS FRAME
-			//	Do nothing
+		// Write data to Buffers
+		switch (CAN_RX[1])
+		{
+			case 0x01:	// STATUS FRAME
+				//	Do nothing
 
-			// Configure response length
-			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_8;
-			//	Send Response
-			CAN_TX[0] = 0x01;
-			CAN_TX[1] = Battery_Voltage * 10;
-			CAN_TX[2] = Actual_Duty;
-			CAN_TX[3] = Actual_Duty;
-			CAN_TX[4] = FET_Temperature;
-			CAN_TX[5] = Motor_Current * 10;
-			CAN_TX[6] = Motor_Current * 10;
-			CAN_TX[7] = MACHINE_STATE;
-		break;
-		case 0x10:	// SET CAN STANDARD
-			// Write CAN Format to registers
-			CAN_Format = CAN_RX[1];
-
-			// Configure response length
-			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_5;
-			//	Send Response
-			CAN_TX[0] = 0x10;
-			CAN_TX[1] = CAN_Format;
-			CAN_TX[2] = CAN_Addres_Mask;
-			CAN_TX[3] = CAN_ADDR;
-			CAN_TX[4] = CAN_ADDR;
-			CAN_TX[5] = 0x00;
-			CAN_TX[6] = 0x00;
-			CAN_TX[7] = 0x00;
-		break;
-		case 0x11:	// SET CAN ADDRES
-			// Write CAN Address to registers
-			CAN_Addres_Mask = CAN_RX[1];
-			CAN_ADDR = CAN_RX[2];
-			CAN_ADDR = CAN_RX[3];
-
-			// Configure response length
-			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_5;
-			//	Send Response
-			CAN_TX[0] = 0x11;
-			CAN_TX[1] = CAN_Format;
-			CAN_TX[2] = CAN_Addres_Mask;
-			CAN_TX[3] = CAN_ADDR;
-			CAN_TX[4] = CAN_ADDR;
-			CAN_TX[5] = 0x00;
-			CAN_TX[6] = 0x00;
-			CAN_TX[7] = 0x00;
-		break;
-		case 0x12:	// SET MOTOR TEMPERATURE LIMIT
-			// Write Temperatures to registers
-			if (CAN_RX[1] != 0xFF)		Motor_Temp_Limit = CAN_RX[1];
-
-
-			// Configure response length
-			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_7;
-			//	Send Response
-			CAN_TX[0] = 0x12;
-			CAN_TX[1] = Motor_Temp_Limit;
-			CAN_TX[2] = 0x00;
-			CAN_TX[3] = Max_Current_Peak;
-			CAN_TX[4] = 0x00;
-			CAN_TX[5] = Max_Current_Continous;
-			CAN_TX[6] = 0x00;
-			CAN_TX[7] = 0x00;
-		break;
-		case 0x13:	// SET MOTOR PEAK CURRENT LIMIT
-			// Write Current Limits to registers
-			if (CAN_RX[1] != 0xFF)		Max_Current_Peak = CAN_RX[1];
-
-
-			// Configure response length
-			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_7;
-			//	Send Response
-			CAN_TX[0] = 0x13;
-			CAN_TX[1] = Motor_Temp_Limit;
-			CAN_TX[2] = 0x00;
-			CAN_TX[3] = Max_Current_Peak;
-			CAN_TX[4] = 0x00;
-			CAN_TX[5] = Max_Current_Continous;
-			CAN_TX[6] = 0x00;
-			CAN_TX[7] = 0x00;
-	    break;
-		case 0x14:	// SET MOTOR CONSTANT CURRENT LIMIT
-			// Write Current Limits to registers
-			if (CAN_RX[1] != 0xFF)		Max_Current_Continous = CAN_RX[1];
-
-
-			// Configure response length
-			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_7;
-			//	Send Response
-			CAN_TX[0] = 0x14;
-			CAN_TX[1] = Motor_Temp_Limit;
-			CAN_TX[2] = 0x00;
-			CAN_TX[3] = Max_Current_Peak;
-			CAN_TX[4] = 0x00;
-			CAN_TX[5] = Max_Current_Continous;
-			CAN_TX[6] = 0x00;
-			CAN_TX[7] = 0x00;
-	    break;
-		case 0x15:	// SET MOTOR MAX ACCELERATION AND DECELERATION
-			// Write Acceleration limits to registers
-			if (CAN_RX[1] != 0xFF)		Max_Acceleration = CAN_RX[1];
-			if (CAN_RX[2] != 0xFF)		Max_Acceleration = CAN_RX[2];
-			if (CAN_RX[3] != 0xFF)		Max_Deceleration = CAN_RX[3];
-			if (CAN_RX[4] != 0xFF)		Max_Deceleration = CAN_RX[4];
-
-			// Configure response length
-			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_5;
-			//	Send Response
-			CAN_TX[0] = 0x15;
-			CAN_TX[1] = Max_Acceleration;
-			CAN_TX[2] = Max_Acceleration;
-			CAN_TX[3] = Max_Deceleration;
-			CAN_TX[4] = Max_Deceleration;
-			CAN_TX[5] = 0x00;
-			CAN_TX[6] = 0x00;
-			CAN_TX[7] = 0x00;
-	    break;
-		case 0x16:	// SET MOTOR MAX ACCELERATION AND DECELERATION
-			// Write Acceleration limits to registers
-			if 		(CAN_RX[1] == 0x01)		REVERSED = TRUE;
-			else if (CAN_RX[1] == 0x00)		REVERSED = FALSE;
-			if 		(CAN_RX[2] == 0x01)		REVERSED = TRUE;
-			else if (CAN_RX[2] == 0x00)		REVERSED = FALSE;
-
-			// Configure response length
-			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_5;
-			//	Send Response
-			CAN_TX[0] = 0x16;
-			CAN_TX[1] = REVERSED;
-			CAN_TX[2] = REVERSED;
-			CAN_TX[3] = 0x00;
-			CAN_TX[4] = 0x00;
-			CAN_TX[5] = 0x00;
-			CAN_TX[6] = 0x00;
-			CAN_TX[7] = 0x00;
-	    break;
-		case 0x1D:	// STORE SETTINGS IN FLASH
-			//Save data in Flash
-
-			// Configure response length
-			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_2;
-			//	Send Response
-			CAN_TX[0] = 0x1D;
-			CAN_TX[1] = 0x1D;
-			CAN_TX[2] = 0x00;
-			CAN_TX[3] = 0x00;
-			CAN_TX[4] = 0x00;
-			CAN_TX[5] = 0x00;
-			CAN_TX[6] = 0x00;
-			CAN_TX[7] = 0x00;
-	    break;
-		case 0x1C:	// RESET SETTINGS TO FACTORY DEFAULTS
-			// Load Factory defaults data
-			// Clear Flash memory
-
-			// Configure response length
-			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_2;
-			//	Send Response
-			CAN_TX[0] = 0x1C;
-			CAN_TX[1] = 0x1C;
-			CAN_TX[2] = 0x00;
-			CAN_TX[3] = 0x00;
-			CAN_TX[4] = 0x00;
-			CAN_TX[5] = 0x00;
-			CAN_TX[6] = 0x00;
-			CAN_TX[7] = 0x00;
-	    break;
-		case 0x20:	// SET OPERATION MODE
-			//Set Up Operation Mode
-
-			// Configure response length
-			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_8;
-			//	Send Response
-			CAN_TX[0] = 0x20;
-			CAN_TX[1] = 0xA1;	// For Now, run only in standard mode
-			CAN_TX[2] = 0x00;
-			CAN_TX[3] = 0x00;
-			CAN_TX[4] = 0x00;
-			CAN_TX[5] = 0x00;
-			CAN_TX[6] = 0x00;
-			CAN_TX[7] = 0x00;
-	    break;
-		case 0x50:	// MOTOR DUTY - STANDARD COMPACT FEEDBACK
-			// Set Motor Duties
-			if (CAN_RX[1] != 0xFF)
-			{
-				if((int8_t)CAN_RX[1] >= 101)
-					CAN_Duty = CAN_RX[1] - 101;
-
-				CAN_Duty = CAN_Duty * 10;		// Id duty is set to 0xFF Do not update the register
-			}
-			if (CAN_RX[2] != 0xFF)
-			{
-				if((int8_t)CAN_RX[2] >= 101)
-					CAN_Duty = CAN_RX[1] - 101;
-
-				CAN_Duty = CAN_Duty * 10;		// Id duty is set to 0xFF Do not update the register
-			}
-			if (MACHINE_STATE != ERROR) 		MACHINE_STATE = CAN_RX[3];
-
-			//Update State Machine if allowed
-
-			// Configure response length
-			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_8;
-			//	Send Response
-			int16_t response_duty=Actual_Duty;
-			if(response_duty < 0)
-				response_duty = 101 - Actual_Duty;
-			CAN_TX[0] = 0x50;
-			CAN_TX[1] = Battery_Voltage * 10;
-			CAN_TX[2] = response_duty / 10;
-			CAN_TX[3] = response_duty / 10;
-			CAN_TX[4] = FET_Temperature;
-			CAN_TX[5] = Motor_Current * 10;
-			CAN_TX[6] = Motor_Current * 10;
-			CAN_TX[7] = Motor_Error;
-	    break;
-		case 0x51: // MOTOR DUTY - 3 FRAME EXTENDED FEEDBACK
-			// Set Motor Duties
-			if (CAN_RX[1] != 0xFF)
-			{
-				if((int8_t)(CAN_RX[1]) > 101)
-					Duty_Buff = (int8_t)CAN_RX[1] - 101;
-				else
-					Duty_Buff = CAN_RX[1];		// Id duty is set to 0xFF Do not update the register
-			}
-			if (CAN_RX[2] != 0xFF)
-			{
-				if((int8_t)(CAN_RX[2]) > 100)
-					Duty_Buff = (int8_t)CAN_RX[2] - 101;
-				else
-					Duty_Buff = CAN_RX[2];		// Id duty is set to 0xFF Do not update the register
-			}
-			if (MACHINE_STATE != ERROR) 					MACHINE_STATE = CAN_RX[3]; 			// Set up Machine state into Run or Idle
-
-			CAN_Duty = Duty_Buff * 10;
-			CAN_Duty = Duty_Buff * 10;
-
-			if(REVERSED == TRUE)
-				CAN_Duty= -CAN_Duty;
-
-
-			// Configure response length
-			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_7;
-			//	Send Response
-			if (Can_Phase == 0)
-			{
-				Battery_Voltage_Buffer = Battery_Voltage * 100;
-
-				CAN_TX[0] = 0x51;
-				CAN_TX[1] = Battery_Voltage_Buffer >> 8;
-				CAN_TX[2] = Battery_Voltage_Buffer;
-
-				int16_t response_duty=Actual_Duty;
-				if(response_duty < 0)
-					response_duty = 101 - Actual_Duty;
-
-				if (REVERSED == TRUE)		CAN_TX[3] = -response_duty / 10;
-				else 						CAN_TX[3] = response_duty / 10;
-
-				CAN_TX[5] = CAN_RX[1];
-				CAN_TX[6] = CAN_RX[2];
-				CAN_TX[7] = 0x00;
-			}
-			if (Can_Phase == 1)
-			{
-				Motor_Current_Buffer = Motor_Current * 100;
-
-				CAN_TX[0] = 0x52;
-				CAN_TX[1] = Motor_Current_Buffer >> 8;
-				CAN_TX[2] = Motor_Current_Buffer;
-				CAN_TX[3] = Motor_Current_Buffer >> 8;
-				CAN_TX[4] = Motor_Current_Buffer;
-				CAN_TX[5] = Motor_Temperature;
-				CAN_TX[6] = Motor_Temperature;
-				CAN_TX[7] = 0x00;
-			}
-
-			if (Can_Phase == 2)
-			{
-				CAN_TX[0] = 0x53;
-				CAN_TX[1] = Motor_Error;
-				CAN_TX[2] = Motor_Error;
-				CAN_TX[3] = FET_Temperature;
+				// Configure response length
+				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_7;
+				//	Send Response
+				CAN_TX[1] = 0x01;
+				CAN_TX[2] = Battery_Voltage * 10;
+				CAN_TX[3] = Actual_Duty;
 				CAN_TX[4] = FET_Temperature;
-				CAN_TX[5] = 0x00;
-				CAN_TX[6] = 0x00;
-				CAN_TX[7] = 0x00;
-			}
+				CAN_TX[5] = Motor_Current * 10;
+				CAN_TX[6] = MACHINE_STATE;
+			break;
+			case 0x10:	// SET CAN STANDARD
+				// Write CAN Format to registers
+				CAN_Format = CAN_RX[2];
 
-			Can_Phase++;
-			Can_Phase = Can_Phase % 3;
-	    break;
-		case 0x54: // MOTOR DUTY AND ACCELERATION - STANDARD COMPACT FEEDBACK
+				// Configure response length
+				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_5;
+				//	Send Response
+				CAN_TX[1] = 0x10;
+				CAN_TX[2] = CAN_Format;
+				CAN_TX[3] = CAN_Addres_Mask;
+				CAN_TX[4] = CAN_ADDR;
+			break;
+			case 0x11:	// SET CAN ADDRES
+				// Write CAN Address to registers
+				//CAN_Addres_Mask = CAN_RX[2];
+				//CAN_ADDR = CAN_RX[3];
 
-	    break;
-		case 0x55: // MOTOR DUTY AND ACCELERATION- 3 FRAME EXTENDED FEEDBACK
+				// Configure response length
+				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_5;
+				//	Send Response
+				CAN_TX[1] = 0x11;
+				//CAN_TX[2] = CAN_Format;
+				//CAN_TX[3] = CAN_Addres_Mask;
+				//CAN_TX[4] = CAN_ADDR;
+				CAN_TX[2] = 0xFF;
+				CAN_TX[3] = 0xFF;
+				CAN_TX[4] = 0xFF;
+			break;
+			case 0x12:	// SET MOTOR TEMPERATURE LIMIT
+				// Write Temperatures to registers
+				if (CAN_RX[2] != 0xFF)		Motor_Temp_Limit = CAN_RX[2];
 
-	    break;
-		default:
-			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_2;
-			CAN_TX[0] = 0xEE;
-			CAN_TX[1] = 0xEE;
-		break;
 
+				// Configure response length
+				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+				//	Send Response
+				CAN_TX[1] = 0x12;
+				CAN_TX[2] = Motor_Temp_Limit;
+			break;
+			case 0x13:	// SET MOTOR PEAK CURRENT LIMIT
+				// Write Current Limits to registers
+				if (CAN_RX[2] != 0xFF)		Max_Current_Peak = CAN_RX[2];
+
+
+				// Configure response length
+				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+				//	Send Response
+				CAN_TX[1] = 0x13;
+				CAN_TX[2] = Max_Current_Peak;
+			break;
+			case 0x14:	// SET MOTOR CONSTANT CURRENT LIMIT
+				// Write Current Limits to registers
+				if (CAN_RX[2] != 0xFF)		Max_Current_Continous = CAN_RX[2];
+
+
+				// Configure response length
+				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+				//	Send Response
+				CAN_TX[1] = 0x14;
+				CAN_TX[2] = Max_Current_Continous;
+			break;
+			case 0x15:	// SET MOTOR MAX ACCELERATION AND DECELERATION
+				// Write Acceleration limits to registers
+				if (CAN_RX[2] != 0xFF)		Max_Acceleration = CAN_RX[2];
+				if (CAN_RX[3] != 0xFF)		Max_Deceleration = CAN_RX[3];
+
+				// Configure response length
+				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+				//	Send Response
+				CAN_TX[1] = 0x15;
+				CAN_TX[2] = Max_Acceleration;
+				CAN_TX[3] = Max_Deceleration;
+			break;
+			case 0x16:
+				if 		(CAN_RX[2] == 0x01)		REVERSED = TRUE;
+				else if (CAN_RX[2] == 0x00)		REVERSED = FALSE;
+
+				// Configure response length
+				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+				//	Send Response
+				CAN_TX[1] = 0x16;
+				CAN_TX[2] = REVERSED;
+			break;
+			case 0x1D:	// STORE SETTINGS IN FLASH
+				//Save data in Flash
+
+				// Configure response length
+				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+				//	Send Response
+				CAN_TX[1] = 0x1D;
+				CAN_TX[2] = 0x1D;
+			break;
+			case 0x1C:	// RESET SETTINGS TO FACTORY DEFAULTS
+				// Load Factory defaults data
+				// Clear Flash memory
+
+				// Configure response length
+				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+				//	Send Response
+				CAN_TX[1] = 0x1C;
+				CAN_TX[2] = 0x1C;
+			break;
+			case 0x20:	// SET OPERATION MODE
+				//Set Up Operation Mode
+
+				// Configure response length
+				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+				//	Send Response
+				CAN_TX[1] = 0x20;
+				CAN_TX[2] = 0xA1;	// For Now, run only in standard mode
+			break;
+			case 0x50:	// MOTOR DUTY - STANDARD COMPACT FEEDBACK
+				// Set Motor Duties
+				if (CAN_RX[2] != 0xFF)
+				{
+					if(CAN_RX[2] >= 100)
+						CAN_Duty =(100 - CAN_RX[2]) * 10;
+					else
+						CAN_Duty = CAN_RX[2] * 10;
+
+				if (MACHINE_STATE != ERROR) 		MACHINE_STATE = CAN_RX[3];
+
+				//Update State Machine if allowed
+
+				// Configure response length
+				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_7;
+				//	Send Response
+				response_duty=Actual_Duty;
+				if(response_duty < 0)
+					response_duty = 1000 - Actual_Duty;
+				CAN_TX[1] = 0x50;
+				CAN_TX[2] = Battery_Voltage * 10;
+				CAN_TX[3] = response_duty/10;
+				CAN_TX[4] = FET_Temperature;
+				CAN_TX[5] = Motor_Current * 10;
+				CAN_TX[6] = Motor_Error;
+			break;
+			case 0x51: // MOTOR DUTY - 3 FRAME EXTENDED FEEDBACK
+				// Set Motor Duties
+				if (CAN_RX[3] != 0xFF)
+				{
+					if(CAN_RX[2] >= 100)
+						Duty_Buff = 100 - CAN_RX[2];
+					else
+						Duty_Buff = CAN_RX[2];		// Id duty is set to 0xFF Do not update the register
+				}
+				if (MACHINE_STATE != ERROR) 					MACHINE_STATE = CAN_RX[3]; 			// Set up Machine state into Run or Idle
+
+				CAN_Duty = Duty_Buff * 10;
+
+				if(REVERSED == TRUE)
+					CAN_Duty= -CAN_Duty;
+
+
+				// Configure response length
+				//	Send Response
+				if (Can_Phase == 0)
+				{
+					CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_8;
+				}
+					Battery_Voltage_Buffer = Battery_Voltage * 100;
+
+					CAN_TX[1] = 0x51;
+					CAN_TX[2] = Battery_Voltage_Buffer >> 8;
+					CAN_TX[3] = Battery_Voltage_Buffer;
+
+					response_duty=Actual_Duty;
+					if(response_duty < 0)
+						response_duty = 1000 - Actual_Duty;
+
+					if (REVERSED == TRUE)		CAN_TX[4] = -response_duty/10;
+					else 						CAN_TX[4] = response_duty/10;
+
+					CAN_TX[5] = Duty_Buff;
+					CAN_TX[6] = Motor_Temperature;
+					CAN_TX[7] = 0x00;
+				}
+				if (Can_Phase == 1)
+				{
+					CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_7;
+					Motor_Current_Buffer = Motor_Current * 100;
+
+					CAN_TX[1] = 0x52;
+					CAN_TX[2] = Motor_Current_Buffer >> 8;
+					CAN_TX[3] = Motor_Current_Buffer;
+					CAN_TX[4] = Motor_Error;
+					CAN_TX[5] = FET_Temperature;
+					CAN_TX[6] = 0x00;
+				}
+				Can_Phase++;
+				Can_Phase = Can_Phase % 2;
+			break;
+			case 0x54: // MOTOR DUTY AND ACCELERATION - STANDARD COMPACT FEEDBACK
+
+			break;
+			case 0x55: // MOTOR DUTY AND ACCELERATION- 3 FRAME EXTENDED FEEDBACK
+
+			break;
+			default:
+				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_2;
+				CAN_TX[0] = 0xEE;
+				CAN_TX[1] = 0xEE;
+			break;
+
+		}
+		if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0) //todo
+		{
+			// Prepare response
+			HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+		}
 	}
-	// Prepare response
-	HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 }
 
 void Interrupt10kHz(void)
@@ -1476,7 +1503,6 @@ void Error_Handler(void)
   /* USER CODE BEGIN Error_Handler_Debug */
 	dupa=-1;
 	HAL_Delay(10);
-	__BKPT(0);
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
   while (1)

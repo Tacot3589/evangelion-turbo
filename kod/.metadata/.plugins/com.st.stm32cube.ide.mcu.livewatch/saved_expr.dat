@@ -1,0 +1,11 @@
+dupa
+dupa2
+CAN_RX
+CAN_TX
+ADC1_BUFFER
+ADC2_BUFFER
+Motor_Error
+Motor_Status
+Actual_Duty
+htim2->Instance->CCR1
+CAN_Duty
