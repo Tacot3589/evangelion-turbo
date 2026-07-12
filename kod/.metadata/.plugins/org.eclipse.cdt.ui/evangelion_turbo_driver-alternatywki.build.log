@@ -1,0 +1,10 @@
+18:57:21 **** Incremental Build of configuration Debug for project evangelion_turbo_driver-alternatywki ****
+make -j16 all 
+arm-none-eabi-size  evangelion_turbo_driver-alternatywki.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20640	     92	   3236	  23968	   5da0	evangelion_turbo_driver-alternatywki.elf
+Finished building: default.size.stdout
+ 
+
+18:57:21 Build Finished. 0 errors, 0 warnings. (took 151ms)
+

@@ -22,7 +22,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <math.h>
-#include "core_cm4.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -32,11 +31,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-//MY
-#define CAN_ID 0x0B
-
-
-
 #define READ 		1
 #define WRITE 		0
 #define TRUE 		1
@@ -96,8 +90,8 @@
 
 
 #define CAN_ID_CTRL  60
-#define CAN_ID_DRV1  67
-#define CAN_ID_DRV2  69
+#define CAN_ID_DRV0  67
+#define CAN_ID_DRV1  69
 #define MACHINE_CHOICE 1
 // Error MAP
 //		Bit 0		| 		Bit 1		| 		Bit 2		| 		Bit 3		| 		Bit 4		| 		Bit 5		| 		Bit 6		| 		Bit 7		|
@@ -121,14 +115,15 @@ DAC_HandleTypeDef hdac1;
 FDCAN_HandleTypeDef hfdcan1;
 
 TIM_HandleTypeDef htim2;
-TIM_HandleTypeDef htim8;
 TIM_HandleTypeDef htim15;
 TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
 
 /* USER CODE BEGIN PV */
-volatile int32_t dupa=0;
-volatile int32_t dupa2=0;
+volatile int32_t dupa=1;
+volatile int32_t dupa2=1;
+volatile int32_t dupa3=1;
+
 
 
 // State Machine
@@ -160,6 +155,7 @@ int16_t CAN_Duty;
 uint8_t CAN_Status_Instruction;
 
 uint8_t CAN_STATUS_FLAG;
+uint8_t CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG=0;
 
 // Status Registers
 volatile int16_t Actual_Duty;
@@ -176,12 +172,8 @@ float			Battery_constant;
 float			Current_constant;
 
 //performance!
-static uint32_t last_total = 0;
-static uint32_t last_idle = 0;
-volatile uint32_t cpu_idle_cycles = 0;
-volatile uint32_t cpu_load_permille = 0;
-volatile uint8_t MCU_LOAD = 0;
-volatile uint8_t MCU_LOAD_MAX = 0;
+volatile uint8_t CAN_TX_OVERFLOW = 0;
+volatile uint8_t CAN_RX_OVERFLOW = 0;
 
 static uint8_t SELF_CAN_ID;
 
@@ -203,11 +195,10 @@ static void MX_TIM2_Init(void);
 static void MX_TIM17_Init(void);
 static void MX_TIM15_Init(void);
 static void MX_TIM16_Init(void);
-static void MX_TIM8_Init(void);
 /* USER CODE BEGIN PFP */
 
 void Interrupt10kHz(void);
-//void Interrupt2000Hz(void);
+void PREPARE_AND_SEND_CAN_RESPONSE_IT(void);
 void Interrupt200Hz(void);
 
 void Idle(void);
@@ -229,63 +220,12 @@ int16_t ConvertPWM (uint8_t DIR1, uint16_t PWM);
 uint8_t SetBrakeFlag (uint8_t DIR1, uint8_t DIR2);
 
 void Calculate_Temp(void);
-
-static inline void DWT_Init(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-typedef struct
-{
-    uint32_t IR;
-    uint32_t IE;
-    uint32_t ILS;
-    uint32_t ILE;
 
-    uint32_t CCCR;
-    uint32_t NBTP;
-    uint32_t DBTP;
-    uint32_t TEST;
-    uint32_t PSR;
-    uint32_t ECR;
-
-    uint32_t RXF0S;
-    uint32_t RXF1S;
-    uint32_t TXBC;
-    uint32_t TXFQS;
-    uint32_t TXEFS;
-    uint32_t TXBRP;
-    uint32_t TXBAR;
-    uint32_t TXBTO;
-    uint32_t TXBCF;
-
-    uint32_t GFC;
-    uint32_t SIDFC;
-    uint32_t XIDFC;
-
-    uint32_t lec;
-    uint32_t rec;
-    uint32_t tec;
-
-    uint32_t bo_flag;
-    uint32_t ep_flag;
-    uint32_t ew_flag;
-
-    uint32_t rf0f;
-    uint32_t rf0l;
-    uint32_t rf1f;
-    uint32_t rf1l;
-
-    uint32_t hpm;
-    uint32_t tc;
-    uint32_t tcf;
-    uint32_t tefn;
-    uint32_t teff;
-    uint32_t tefl;
-} can_dbg_t;
-
-volatile can_dbg_t _can;
 /* USER CODE END 0 */
 
 /**
@@ -305,7 +245,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  HAL_Delay(100);
+  HAL_Delay(10);
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -326,28 +266,23 @@ int main(void)
   MX_TIM17_Init();
   MX_TIM15_Init();
   MX_TIM16_Init();
-  MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
-/*
+
+
   CAN_Filter.IdType = FDCAN_STANDARD_ID;
   CAN_Filter.FilterIndex = 0;
   CAN_Filter.FilterType = FDCAN_FILTER_DISABLE;
   CAN_Filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
   CAN_Filter.FilterID1 = 0;
   CAN_Filter.FilterID2 = 0;
-*/
+  if(HAL_FDCAN_ConfigFilter(&hfdcan1, &CAN_Filter) != HAL_OK)
+	  Error_Handler();
+
 	if(MACHINE_CHOICE == 1)
 		SELF_CAN_ID = CAN_ID_DRV1;
 	else
-		SELF_CAN_ID = CAN_ID_DRV2;
+		SELF_CAN_ID = CAN_ID_DRV0;
 
-  CAN_Filter.IdType = FDCAN_STANDARD_ID;
-  CAN_Filter.FilterIndex = 0;
-  CAN_Filter.FilterType = FDCAN_FILTER_RANGE;
-  CAN_Filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
-  CAN_Filter.FilterID1 = CAN_ID_CTRL;
-  CAN_Filter.FilterID2 = CAN_ID_DRV2;
-  HAL_FDCAN_ConfigFilter(&hfdcan1, &CAN_Filter);
 
   CAN_TX_Header.Identifier = SELF_CAN_ID;
   CAN_TX_Header.IdType = FDCAN_STANDARD_ID;
@@ -360,19 +295,17 @@ int main(void)
   CAN_TX_Header.BitRateSwitch = FDCAN_BRS_OFF;
 
 
+  //DMA
 	if (HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED) != HAL_OK)
 		Error_Handler();
-	HAL_Delay(10);
-	if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC1_BUFFER, 2) != HAL_OK)
+	if (HAL_ADC_Start_DMA(&hadc1, ADC1_BUFFER, 2) != HAL_OK)
 		Error_Handler();
-	HAL_Delay(10);
 
 	if (HAL_ADCEx_Calibration_Start(&hadc2, ADC_SINGLE_ENDED) != HAL_OK)
 		Error_Handler();
-	HAL_Delay(10);
-	if (HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ADC2_BUFFER, 1) != HAL_OK)
+	if (HAL_ADC_Start_DMA(&hadc2, ADC2_BUFFER, 1) != HAL_OK)
 		Error_Handler();
-	HAL_Delay(10);
+	//HAL_Delay(10);
 
 
 
@@ -396,21 +329,33 @@ int main(void)
 	REVERSED = FALSE;
 
 
-	// Initialize CAN
+	//Initialize CAN
 	if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
 		Error_Handler();
+	dupa=2;
 	HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
-	HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	//HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 
-	HAL_TIM_Base_Start_IT(&htim17); //10KHz, main
-	HAL_TIM_Base_Start_IT(&htim16); //2Khz
-	HAL_TIM_Base_Start_IT(&htim15); //200Hz, watchdog
-	HAL_TIM_Base_Start_IT(&htim8); //100Hz, load
+	//timers
+	__HAL_TIM_SET_COUNTER(&htim17, 0);
+	__HAL_TIM_SET_COUNTER(&htim16, 0);
+	__HAL_TIM_SET_COUNTER(&htim15, 0);
 
-	DWT_Init();
+	__HAL_TIM_CLEAR_FLAG(&htim17, TIM_FLAG_UPDATE);
+	__HAL_TIM_CLEAR_FLAG(&htim16, TIM_FLAG_UPDATE);
+	__HAL_TIM_CLEAR_FLAG(&htim15, TIM_FLAG_UPDATE);
+
+	if(HAL_TIM_Base_Start_IT(&htim17) != HAL_OK) //10KHz, main
+		Error_Handler();
+	if(HAL_TIM_Base_Start_IT(&htim16) != HAL_OK) //1Khz, can response
+			Error_Handler();
+	if(HAL_TIM_Base_Start_IT(&htim15) != HAL_OK) //200Hz, watchdog
+		Error_Handler();
 
 
 
+
+	dupa=2137;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -418,57 +363,7 @@ int main(void)
   while (1)
   {
 	dupa++;
-	dupa2=HAL_GPIO_ReadPin(DIR_GPIO_Port, DIR_Pin);
-	uint32_t start = DWT->CYCCNT;
-	__WFI();
-	cpu_idle_cycles += (DWT->CYCCNT - start);
 
-
-	_can.IR   = FDCAN1->IR;
-	_can.IE   = FDCAN1->IE;
-	_can.ILS  = FDCAN1->ILS;
-	_can.ILE  = FDCAN1->ILE;
-
-	_can.CCCR = FDCAN1->CCCR;
-	_can.NBTP = FDCAN1->NBTP;
-	_can.DBTP = FDCAN1->DBTP;
-	_can.TEST = FDCAN1->TEST;
-	_can.PSR  = FDCAN1->PSR;
-	_can.ECR  = FDCAN1->ECR;
-
-	_can.RXF0S = FDCAN1->RXF0S;
-	_can.RXF1S = FDCAN1->RXF1S;
-	_can.TXBC  = FDCAN1->TXBC;
-	_can.TXFQS = FDCAN1->TXFQS;
-	_can.TXEFS = FDCAN1->TXEFS;
-	_can.TXBRP = FDCAN1->TXBRP;
-	_can.TXBAR = FDCAN1->TXBAR;
-	_can.TXBTO = FDCAN1->TXBTO;
-	_can.TXBCF = FDCAN1->TXBCF;
-
-	_can.GFC   = FDCAN1->RXGFC;
-	_can.SIDFC = 0;
-	_can.XIDFC = 0;
-
-	_can.lec = (_can.PSR & FDCAN_PSR_LEC_Msk) >> FDCAN_PSR_LEC_Pos;
-	_can.rec = (_can.ECR & FDCAN_ECR_REC_Msk) >> FDCAN_ECR_REC_Pos;
-	_can.tec = (_can.ECR & FDCAN_ECR_TEC_Msk) >> FDCAN_ECR_TEC_Pos;
-
-	_can.bo_flag = (_can.PSR & FDCAN_PSR_BO_Msk) ? 1u : 0u;
-	_can.ep_flag = (_can.PSR & FDCAN_PSR_EP_Msk) ? 1u : 0u;
-	_can.ew_flag = (_can.PSR & FDCAN_PSR_EW_Msk) ? 1u : 0u;
-
-	_can.rf0f = (_can.IR & FDCAN_IR_RF0F_Msk) ? 1u : 0u;
-	_can.rf0l = (_can.IR & FDCAN_IR_RF0L_Msk) ? 1u : 0u;
-	_can.rf1f = (_can.IR & FDCAN_IR_RF1F_Msk) ? 1u : 0u;
-	_can.rf1l = (_can.IR & FDCAN_IR_RF1L_Msk) ? 1u : 0u;
-
-	_can.hpm  = (_can.IR & FDCAN_IR_HPM_Msk)  ? 1u : 0u;
-	_can.tc   = (_can.IR & FDCAN_IR_TC_Msk)   ? 1u : 0u;
-	_can.tcf  = (_can.IR & FDCAN_IR_TCF_Msk)  ? 1u : 0u;
-	_can.tefn = (_can.IR & FDCAN_IR_TEFN_Msk) ? 1u : 0u;
-	_can.teff = (_can.IR & FDCAN_IR_TEFF_Msk) ? 1u : 0u;
-	_can.tefl = (_can.IR & FDCAN_IR_TEFL_Msk) ? 1u : 0u;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -544,7 +439,7 @@ static void MX_ADC1_Init(void)
   /** Common config
   */
   hadc1.Instance = ADC1;
-  hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+  hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV4;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc1.Init.GainCompensation = 0;
@@ -576,7 +471,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_92CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
@@ -620,7 +515,7 @@ static void MX_ADC2_Init(void)
   /** Common config
   */
   hadc2.Instance = ADC2;
-  hadc2.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+  hadc2.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV4;
   hadc2.Init.Resolution = ADC_RESOLUTION_12B;
   hadc2.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc2.Init.GainCompensation = 0;
@@ -644,7 +539,7 @@ static void MX_ADC2_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_3;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_92CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
@@ -798,53 +693,6 @@ static void MX_TIM2_Init(void)
 }
 
 /**
-  * @brief TIM8 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_TIM8_Init(void)
-{
-
-  /* USER CODE BEGIN TIM8_Init 0 */
-
-  /* USER CODE END TIM8_Init 0 */
-
-  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
-
-  /* USER CODE BEGIN TIM8_Init 1 */
-
-  /* USER CODE END TIM8_Init 1 */
-  htim8.Instance = TIM8;
-  htim8.Init.Prescaler = 17-1;
-  htim8.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim8.Init.Period = 9999;
-  htim8.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim8.Init.RepetitionCounter = 0;
-  htim8.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&htim8) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  if (HAL_TIM_ConfigClockSource(&htim8, &sClockSourceConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterOutputTrigger2 = TIM_TRGO2_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim8, &sMasterConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN TIM8_Init 2 */
-
-  /* USER CODE END TIM8_Init 2 */
-
-}
-
-/**
   * @brief TIM15 Initialization Function
   * @param None
   * @retval None
@@ -863,7 +711,7 @@ static void MX_TIM15_Init(void)
 
   /* USER CODE END TIM15_Init 1 */
   htim15.Instance = TIM15;
-  htim15.Init.Prescaler = 17-1;
+  htim15.Init.Prescaler = 85-1;
   htim15.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim15.Init.Period = 99;
   htim15.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -906,9 +754,9 @@ static void MX_TIM16_Init(void)
 
   /* USER CODE END TIM16_Init 1 */
   htim16.Instance = TIM16;
-  htim16.Init.Prescaler = 85-1;
+  htim16.Init.Prescaler = 17-1;
   htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim16.Init.Period = 99;
+  htim16.Init.Period = 999;
   htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim16.Init.RepetitionCounter = 0;
   htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -938,9 +786,9 @@ static void MX_TIM17_Init(void)
 
   /* USER CODE END TIM17_Init 1 */
   htim17.Instance = TIM17;
-  htim17.Init.Prescaler = 85-1;
+  htim17.Init.Prescaler = 17-1;
   htim17.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim17.Init.Period = 999;
+  htim17.Init.Period = 99;
   htim17.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim17.Init.RepetitionCounter = 0;
   htim17.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -987,7 +835,6 @@ static void MX_GPIO_Init(void)
   /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
@@ -1019,38 +866,274 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	if(htim->Instance == TIM15) // 10 000Hz
+	if(htim->Instance == TIM17) // 10 000Hz
 	{
 		Interrupt10kHz();
 	}
-	if(htim->Instance == TIM16) // 2 000Hz
+	if(htim->Instance == TIM16 && CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG == 1) // 1Khz
 	{
-		//Interrupt2000Hz();
+		PREPARE_AND_SEND_CAN_RESPONSE_IT();
+		//clear notification flag
+		CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG=0;
 	}
-	if(htim->Instance == TIM17) // 200Hz
+	if(htim->Instance == TIM15) // 200Hz
 	{
 		Interrupt200Hz();
 	}
-	if(htim->Instance == TIM8) // 100Hz, load measurment
-	{
-		uint32_t total = DWT->CYCCNT;
-		uint32_t total_diff = total - last_total;
-		uint32_t idle_diff  = cpu_idle_cycles - last_idle;
-
-		last_total = total;
-		last_idle = cpu_idle_cycles;
-
-		if (total_diff > 0)
-			cpu_load_permille = (1000U * (total_diff - idle_diff)) / total_diff;
-		else
-			cpu_load_permille = 0;
-
-		MCU_LOAD = cpu_load_permille / 10;
-
-		if(MCU_LOAD > MCU_LOAD_MAX)
-			MCU_LOAD_MAX = MCU_LOAD;
-	}
 }
+
+void PREPARE_AND_SEND_CAN_RESPONSE_IT()
+{
+	static uint8_t Can_Phase;
+	uint16_t Battery_Voltage_Buffer;
+	uint16_t Motor_Current_Buffer;
+	int8_t	Duty_Buff=0;
+	int16_t response_duty;
+
+	CAN_TX[0] = SELF_CAN_ID;
+	CAN_TX[1] = 0;
+	CAN_TX[2] = 0;
+	CAN_TX[3] = 0;
+	CAN_TX[4] = 0;
+	CAN_TX[5] = 0;
+	CAN_TX[6] = 0;
+	CAN_TX[7] = 0;
+
+	// Write data to Buffers
+	switch (CAN_RX[1])
+	{
+		case 0x01:	// STATUS FRAME
+			//	Do nothing
+
+			// Configure response length
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_7;
+			//	Send Response
+			CAN_TX[1] = 0x01;
+			CAN_TX[2] = Battery_Voltage * 10;
+			CAN_TX[3] = Actual_Duty;
+			CAN_TX[4] = FET_Temperature;
+			CAN_TX[5] = Motor_Current * 10;
+			CAN_TX[6] = MACHINE_STATE;
+		break;
+		case 0x10:	// SET CAN STANDARD
+			// Write CAN Format to registers
+			CAN_Format = CAN_RX[2];
+
+			// Configure response length
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_5;
+			//	Send Response
+			CAN_TX[1] = 0x10;
+			CAN_TX[2] = CAN_Format;
+			CAN_TX[3] = CAN_Addres_Mask;
+			CAN_TX[4] = CAN_ADDR;
+		break;
+		case 0x11:	// SET CAN ADDRES
+			// Write CAN Address to registers
+			//CAN_Addres_Mask = CAN_RX[2];
+			//CAN_ADDR = CAN_RX[3];
+
+			// Configure response length
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_5;
+			//	Send Response
+			CAN_TX[1] = 0x11;
+			//CAN_TX[2] = CAN_Format;
+			//CAN_TX[3] = CAN_Addres_Mask;
+			//CAN_TX[4] = CAN_ADDR;
+			CAN_TX[2] = 0xFF;
+			CAN_TX[3] = 0xFF;
+			CAN_TX[4] = 0xFF;
+		break;
+		case 0x12:	// SET MOTOR TEMPERATURE LIMIT
+			// Write Temperatures to registers
+			if (CAN_RX[2] != 0xFF)		Motor_Temp_Limit = CAN_RX[2];
+
+
+			// Configure response length
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+			//	Send Response
+			CAN_TX[1] = 0x12;
+			CAN_TX[2] = Motor_Temp_Limit;
+		break;
+		case 0x13:	// SET MOTOR PEAK CURRENT LIMIT
+			// Write Current Limits to registers
+			if (CAN_RX[2] != 0xFF)		Max_Current_Peak = CAN_RX[2];
+
+
+			// Configure response length
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+			//	Send Response
+			CAN_TX[1] = 0x13;
+			CAN_TX[2] = Max_Current_Peak;
+		break;
+		case 0x14:	// SET MOTOR CONSTANT CURRENT LIMIT
+			// Write Current Limits to registers
+			if (CAN_RX[2] != 0xFF)		Max_Current_Continous = CAN_RX[2];
+
+
+			// Configure response length
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+			//	Send Response
+			CAN_TX[1] = 0x14;
+			CAN_TX[2] = Max_Current_Continous;
+		break;
+		case 0x15:	// SET MOTOR MAX ACCELERATION AND DECELERATION
+			// Write Acceleration limits to registers
+			if (CAN_RX[2] != 0xFF)		Max_Acceleration = CAN_RX[2];
+			if (CAN_RX[3] != 0xFF)		Max_Deceleration = CAN_RX[3];
+
+			// Configure response length
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+			//	Send Response
+			CAN_TX[1] = 0x15;
+			CAN_TX[2] = Max_Acceleration;
+			CAN_TX[3] = Max_Deceleration;
+		break;
+		case 0x16:
+			if 		(CAN_RX[2] == 0x01)		REVERSED = TRUE;
+			else if (CAN_RX[2] == 0x00)		REVERSED = FALSE;
+
+			// Configure response length
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+			//	Send Response
+			CAN_TX[1] = 0x16;
+			CAN_TX[2] = REVERSED;
+		break;
+		case 0x1D:	// STORE SETTINGS IN FLASH
+			//Save data in Flash
+
+			// Configure response length
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+			//	Send Response
+			CAN_TX[1] = 0x1D;
+			CAN_TX[2] = 0x1D;
+		break;
+		case 0x1C:	// RESET SETTINGS TO FACTORY DEFAULTS
+			// Load Factory defaults data
+			// Clear Flash memory
+
+			// Configure response length
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+			//	Send Response
+			CAN_TX[1] = 0x1C;
+			CAN_TX[2] = 0x1C;
+		break;
+		case 0x20:	// SET OPERATION MODE
+			//Set Up Operation Mode
+
+			// Configure response length
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+			//	Send Response
+			CAN_TX[1] = 0x20;
+			CAN_TX[2] = 0xA1;	// For Now, run only in standard mode
+		break;
+		case 0x50:	// MOTOR DUTY - STANDARD COMPACT FEEDBACK
+			// Set Motor Duties
+			if (CAN_RX[2] != 0xFF)
+			{
+				if(CAN_RX[2] >= 100)
+					CAN_Duty =(100 - CAN_RX[2]) * 10;
+				else
+					CAN_Duty = CAN_RX[2] * 10;
+			}
+
+			if (MACHINE_STATE != ERROR)
+				MACHINE_STATE = CAN_RX[3];
+
+			//Update State Machine if allowed
+
+			// Configure response length
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_7;
+			//	Send Response
+			response_duty=Actual_Duty;
+			if(response_duty < 0)
+				response_duty = 1000 - Actual_Duty;
+			CAN_TX[1] = 0x50;
+			CAN_TX[2] = Battery_Voltage * 10;
+			CAN_TX[3] = response_duty/10;
+			CAN_TX[4] = FET_Temperature;
+			CAN_TX[5] = Motor_Current * 10;
+			CAN_TX[6] = Motor_Error;
+
+		break;
+		case 0x51: // MOTOR DUTY - 3 FRAME EXTENDED FEEDBACK
+			// Set Motor Duties
+			if (CAN_RX[3] != 0xFF)
+			{
+				if(CAN_RX[2] >= 100)
+					Duty_Buff = 100 - CAN_RX[2];
+				else
+					Duty_Buff = CAN_RX[2];		// Id duty is set to 0xFF Do not update the register
+			}
+			if (MACHINE_STATE != ERROR) 					MACHINE_STATE = CAN_RX[3]; 			// Set up Machine state into Run or Idle
+
+			CAN_Duty = Duty_Buff * 10;
+
+			if(REVERSED == TRUE)
+				CAN_Duty= -CAN_Duty;
+
+
+			// Configure response length
+			//	Send Response
+			if (Can_Phase == 0)
+			{
+				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_8;
+
+				Battery_Voltage_Buffer = Battery_Voltage * 100;
+
+				CAN_TX[1] = 0x51;
+				CAN_TX[2] = Battery_Voltage_Buffer >> 8;
+				CAN_TX[3] = Battery_Voltage_Buffer;
+
+				response_duty=Actual_Duty;
+				if(response_duty < 0)
+					response_duty = 1000 - Actual_Duty;
+
+				if (REVERSED == TRUE)		CAN_TX[4] = -response_duty/10;
+				else 						CAN_TX[4] = response_duty/10;
+
+				CAN_TX[5] = Duty_Buff;
+				CAN_TX[6] = Motor_Temperature;
+				CAN_TX[7] = 0x00;
+			}
+			if (Can_Phase == 1)
+			{
+				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_7;
+				Motor_Current_Buffer = Motor_Current * 100;
+
+				CAN_TX[1] = 0x52;
+				CAN_TX[2] = Motor_Current_Buffer >> 8;
+				CAN_TX[3] = Motor_Current_Buffer;
+				CAN_TX[4] = Motor_Error;
+				CAN_TX[5] = FET_Temperature;
+				CAN_TX[6] = 0x00;
+			}
+			Can_Phase++;
+			Can_Phase = Can_Phase % 2;
+		break;
+		case 0x54: // MOTOR DUTY AND ACCELERATION - STANDARD COMPACT FEEDBACK
+
+		break;
+		case 0x55: // MOTOR DUTY AND ACCELERATION- 3 FRAME EXTENDED FEEDBACK
+
+		break;
+		default:
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_2;
+			CAN_TX[0] = 0xEE;
+			CAN_TX[1] = 0xEE;
+		break;
+
+	}
+	if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0) //todo
+	{
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	}
+	else
+	{
+		CAN_TX_OVERFLOW = 1;
+	}
+
+}
+
 
 static inline void DWT_Init(void)
 {
@@ -1062,268 +1145,36 @@ static inline void DWT_Init(void)
 
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 {
-	static uint8_t Can_Phase;
-	uint16_t Battery_Voltage_Buffer;
-	uint16_t Motor_Current_Buffer;
-	int8_t	Duty_Buff=0;
-	int16_t response_duty;
 
-	HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &CAN_RX_Header, CAN_RX);
-	HAL_FDCAN_ActivateNotification(hfdcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
 	CAN_STATUS_FLAG = 1;
 
 
-	if(CAN_RX[0] == SELF_CAN_ID)
+	if ((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) == 0U) //no new messages in fifo i guess
+		return;
+
+	if (CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG == 1) //didnt work on buffer
+		return;
+
+	while (HAL_FDCAN_GetRxFifoFillLevel(hfdcan, FDCAN_RX_FIFO0) > 0U)
 	{
-		CAN_TX[0] = SELF_CAN_ID;
-		CAN_TX[1] = 0;
-		CAN_TX[2] = 0;
-		CAN_TX[3] = 0;
-		CAN_TX[4] = 0;
-		CAN_TX[5] = 0;
-		CAN_TX[6] = 0;
-		CAN_TX[7] = 0;
-
-		// Write data to Buffers
-		switch (CAN_RX[1])
+		dupa3++;
+		if(CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG == 1)
 		{
-			case 0x01:	// STATUS FRAME
-				//	Do nothing
-
-				// Configure response length
-				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_7;
-				//	Send Response
-				CAN_TX[1] = 0x01;
-				CAN_TX[2] = Battery_Voltage * 10;
-				CAN_TX[3] = Actual_Duty;
-				CAN_TX[4] = FET_Temperature;
-				CAN_TX[5] = Motor_Current * 10;
-				CAN_TX[6] = MACHINE_STATE;
-			break;
-			case 0x10:	// SET CAN STANDARD
-				// Write CAN Format to registers
-				CAN_Format = CAN_RX[2];
-
-				// Configure response length
-				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_5;
-				//	Send Response
-				CAN_TX[1] = 0x10;
-				CAN_TX[2] = CAN_Format;
-				CAN_TX[3] = CAN_Addres_Mask;
-				CAN_TX[4] = CAN_ADDR;
-			break;
-			case 0x11:	// SET CAN ADDRES
-				// Write CAN Address to registers
-				//CAN_Addres_Mask = CAN_RX[2];
-				//CAN_ADDR = CAN_RX[3];
-
-				// Configure response length
-				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_5;
-				//	Send Response
-				CAN_TX[1] = 0x11;
-				//CAN_TX[2] = CAN_Format;
-				//CAN_TX[3] = CAN_Addres_Mask;
-				//CAN_TX[4] = CAN_ADDR;
-				CAN_TX[2] = 0xFF;
-				CAN_TX[3] = 0xFF;
-				CAN_TX[4] = 0xFF;
-			break;
-			case 0x12:	// SET MOTOR TEMPERATURE LIMIT
-				// Write Temperatures to registers
-				if (CAN_RX[2] != 0xFF)		Motor_Temp_Limit = CAN_RX[2];
-
-
-				// Configure response length
-				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
-				//	Send Response
-				CAN_TX[1] = 0x12;
-				CAN_TX[2] = Motor_Temp_Limit;
-			break;
-			case 0x13:	// SET MOTOR PEAK CURRENT LIMIT
-				// Write Current Limits to registers
-				if (CAN_RX[2] != 0xFF)		Max_Current_Peak = CAN_RX[2];
-
-
-				// Configure response length
-				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
-				//	Send Response
-				CAN_TX[1] = 0x13;
-				CAN_TX[2] = Max_Current_Peak;
-			break;
-			case 0x14:	// SET MOTOR CONSTANT CURRENT LIMIT
-				// Write Current Limits to registers
-				if (CAN_RX[2] != 0xFF)		Max_Current_Continous = CAN_RX[2];
-
-
-				// Configure response length
-				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
-				//	Send Response
-				CAN_TX[1] = 0x14;
-				CAN_TX[2] = Max_Current_Continous;
-			break;
-			case 0x15:	// SET MOTOR MAX ACCELERATION AND DECELERATION
-				// Write Acceleration limits to registers
-				if (CAN_RX[2] != 0xFF)		Max_Acceleration = CAN_RX[2];
-				if (CAN_RX[3] != 0xFF)		Max_Deceleration = CAN_RX[3];
-
-				// Configure response length
-				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
-				//	Send Response
-				CAN_TX[1] = 0x15;
-				CAN_TX[2] = Max_Acceleration;
-				CAN_TX[3] = Max_Deceleration;
-			break;
-			case 0x16:
-				if 		(CAN_RX[2] == 0x01)		REVERSED = TRUE;
-				else if (CAN_RX[2] == 0x00)		REVERSED = FALSE;
-
-				// Configure response length
-				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
-				//	Send Response
-				CAN_TX[1] = 0x16;
-				CAN_TX[2] = REVERSED;
-			break;
-			case 0x1D:	// STORE SETTINGS IN FLASH
-				//Save data in Flash
-
-				// Configure response length
-				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
-				//	Send Response
-				CAN_TX[1] = 0x1D;
-				CAN_TX[2] = 0x1D;
-			break;
-			case 0x1C:	// RESET SETTINGS TO FACTORY DEFAULTS
-				// Load Factory defaults data
-				// Clear Flash memory
-
-				// Configure response length
-				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
-				//	Send Response
-				CAN_TX[1] = 0x1C;
-				CAN_TX[2] = 0x1C;
-			break;
-			case 0x20:	// SET OPERATION MODE
-				//Set Up Operation Mode
-
-				// Configure response length
-				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
-				//	Send Response
-				CAN_TX[1] = 0x20;
-				CAN_TX[2] = 0xA1;	// For Now, run only in standard mode
-			break;
-			case 0x50:	// MOTOR DUTY - STANDARD COMPACT FEEDBACK
-				// Set Motor Duties
-				if (CAN_RX[2] != 0xFF)
-				{
-					if(CAN_RX[2] >= 100)
-						CAN_Duty =(100 - CAN_RX[2]) * 10;
-					else
-						CAN_Duty = CAN_RX[2] * 10;
-
-				if (MACHINE_STATE != ERROR)
-					MACHINE_STATE = CAN_RX[3];
-
-				//Update State Machine if allowed
-
-				// Configure response length
-				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_7;
-				//	Send Response
-				response_duty=Actual_Duty;
-				if(response_duty < 0)
-					response_duty = 1000 - Actual_Duty;
-				CAN_TX[1] = 0x50;
-				CAN_TX[2] = Battery_Voltage * 10;
-				CAN_TX[3] = response_duty/10;
-				CAN_TX[4] = FET_Temperature;
-				CAN_TX[5] = Motor_Current * 10;
-				CAN_TX[6] = Motor_Error;
-			break;
-			case 0x51: // MOTOR DUTY - 3 FRAME EXTENDED FEEDBACK
-				// Set Motor Duties
-				if (CAN_RX[3] != 0xFF)
-				{
-					if(CAN_RX[2] >= 100)
-						Duty_Buff = 100 - CAN_RX[2];
-					else
-						Duty_Buff = CAN_RX[2];		// Id duty is set to 0xFF Do not update the register
-				}
-				if (MACHINE_STATE != ERROR) 					MACHINE_STATE = CAN_RX[3]; 			// Set up Machine state into Run or Idle
-
-				CAN_Duty = Duty_Buff * 10;
-
-				if(REVERSED == TRUE)
-					CAN_Duty= -CAN_Duty;
-
-
-				// Configure response length
-				//	Send Response
-				if (Can_Phase == 0)
-				{
-					CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_8;
-				}
-					Battery_Voltage_Buffer = Battery_Voltage * 100;
-
-					CAN_TX[1] = 0x51;
-					CAN_TX[2] = Battery_Voltage_Buffer >> 8;
-					CAN_TX[3] = Battery_Voltage_Buffer;
-
-					response_duty=Actual_Duty;
-					if(response_duty < 0)
-						response_duty = 1000 - Actual_Duty;
-
-					if (REVERSED == TRUE)		CAN_TX[4] = -response_duty/10;
-					else 						CAN_TX[4] = response_duty/10;
-
-					CAN_TX[5] = Duty_Buff;
-					CAN_TX[6] = Motor_Temperature;
-					CAN_TX[7] = 0x00;
-				}
-				if (Can_Phase == 1)
-				{
-					CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_7;
-					Motor_Current_Buffer = Motor_Current * 100;
-
-					CAN_TX[1] = 0x52;
-					CAN_TX[2] = Motor_Current_Buffer >> 8;
-					CAN_TX[3] = Motor_Current_Buffer;
-					CAN_TX[4] = Motor_Error;
-					CAN_TX[5] = FET_Temperature;
-					CAN_TX[6] = 0x00;
-				}
-				Can_Phase++;
-				Can_Phase = Can_Phase % 2;
-			break;
-			case 0x54: // MOTOR DUTY AND ACCELERATION - STANDARD COMPACT FEEDBACK
-
-			break;
-			case 0x55: // MOTOR DUTY AND ACCELERATION- 3 FRAME EXTENDED FEEDBACK
-
-			break;
-			default:
-				CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_2;
-				CAN_TX[0] = 0xEE;
-				CAN_TX[1] = 0xEE;
-			break;
-
+			CAN_RX_OVERFLOW = 1;
 		}
-		if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0) //todo
+		else if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &CAN_RX_Header, CAN_RX) != HAL_OK)
 		{
-			// Prepare response
-			HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+			break;
+		}
+		else if (CAN_RX[0] != SELF_CAN_ID)
+        {
+            continue;
+        }
+		else
+		{
+			CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG = 1;
 		}
 	}
-	else
-	{
-		CAN_TX[0] = 0;
-		CAN_TX[1] = 0;
-		CAN_TX[2] = 0;
-		CAN_TX[3] = 0;
-		CAN_TX[4] = 0;
-		CAN_TX[5] = 0;
-		CAN_TX[6] = 0;
-		CAN_TX[7] = 0;
-	}
-
 	 HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
 }
 
@@ -1577,15 +1428,19 @@ void Set_Motor (uint8_t motor, int16_t velocity)
 	{
 		if(velocity >= 0 )			//	Forward
 		{
+			dupa2=velocity;
+			dupa3=0;
 //			CCR_Value = (velocity * TIM3->ARR) / 1000;
 			TIM2->CCR1 = velocity;
-			HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, GPIO_PIN_RESET);
 		}
 		else if (velocity < 0)		// Reverse
 		{
+			dupa2=-velocity;
+			dupa3=1;
 //			CCR_Value = (-velocity * TIM3->ARR) / 1000;
 			TIM2->CCR1 = -velocity;
-			HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, GPIO_PIN_SET);
 		}
 	}
 
@@ -1593,13 +1448,13 @@ void Set_Motor (uint8_t motor, int16_t velocity)
 	{
 //		CCR_Value = (velocity * TIM3->ARR) / 1000;
 		TIM2->CCR1 = 1000;
-		HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, GPIO_PIN_RESET);
 	}
 	else if (velocity < -1000)		// Reverse
 	{
 //			CCR_Value = (-velocity * TIM3->ARR) / 1000;
 		TIM2->CCR1 = 1000;
-		HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, GPIO_PIN_SET);
 	}
 }
 
@@ -1633,7 +1488,6 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
 	dupa=-1;
-	HAL_Delay(10);
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
   while (1)

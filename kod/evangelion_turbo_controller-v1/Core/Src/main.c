@@ -43,8 +43,8 @@
 
 
 #define CAN_ID_CTRL  60
-#define CAN_ID_DRV1  67
-#define CAN_ID_DRV2  69
+#define CAN_ID_DRV0  67
+#define CAN_ID_DRV1  69
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -317,10 +317,10 @@ int main(void)
 
   CAN_Filter.IdType = FDCAN_STANDARD_ID;
   CAN_Filter.FilterIndex = 0;
-  CAN_Filter.FilterType = FDCAN_FILTER_DUAL;
+  CAN_Filter.FilterType = FDCAN_FILTER_DISABLE;
   CAN_Filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
-  CAN_Filter.FilterID1 = CAN_ID_CTRL;
-  CAN_Filter.FilterID2 = CAN_ID_DRV2;
+  CAN_Filter.FilterID1 = 0;
+  CAN_Filter.FilterID2 = 0;
   HAL_FDCAN_ConfigFilter(&hfdcan1, &CAN_Filter);
 
 
@@ -383,18 +383,22 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  dupa++;
+
 		uint32_t start = DWT->CYCCNT;
 		__WFI();
 		cpu_idle_cycles += (DWT->CYCCNT - start);
 
 
 	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
-	  CAN_TX[0] = CAN_ID_DRV2;
+	  CAN_TX[0] = CAN_ID_DRV0;
 	  CAN_TX[1] = 0x50;
 	  CAN_TX[2] = 50;
 	  CAN_TX[3] = 0x01;
 	  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
 		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	  HAL_Delay(100);
+
 
 	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
 	  CAN_TX[0] = CAN_ID_DRV1;
@@ -403,16 +407,17 @@ int main(void)
 	  CAN_TX[3] = 0x01;
 	  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
 		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
-	  HAL_Delay(500);
-
+	  HAL_Delay(100);
 
 	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
-	  CAN_TX[0] = CAN_ID_DRV2;
+	  CAN_TX[0] = CAN_ID_DRV0;
 	  CAN_TX[1] = 0x50;
 	  CAN_TX[2] = 150;
 	  CAN_TX[3] = 0x01;
 	  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
 		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	  HAL_Delay(100);
+
 
 	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
 	  CAN_TX[0] = CAN_ID_DRV1;
@@ -421,8 +426,7 @@ int main(void)
 	  CAN_TX[3] = 0x01;
 	  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
 		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
-//HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);//todocan
-	  HAL_Delay(500);
+	  HAL_Delay(100);
 
 
     /* USER CODE END WHILE */
