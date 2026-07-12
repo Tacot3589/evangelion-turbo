@@ -607,6 +607,9 @@ Lapse:
 https://lapse.hackclub.com/timelapse/sVqIrzqbEWA-
 (Dinner break, 6.02 to 6.58, i forgot to turn off lapse)
 
+Journal reel:
+https://forge.hackclub.com/reels/146
+
 Imagesss!
 ![img1](journalMedia/07-11_01.jpg)
 ![img2](journalMedia/07-11_02.jpg)
