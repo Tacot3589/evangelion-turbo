@@ -580,14 +580,40 @@ https://lapse.hackclub.com/timelapse/tlmj2piRnfcS
 (I got one break, 8 to 9hr of recording, i forgot to stop lapse, but after short snack break i forgot to turn it back on. I have 13hrs on my work timer ":skulker:")
 
 Imagesss!
-![img1](journalMedia/07-09_01.jpg)
-![img2](journalMedia/07-09_02.jpg)
-![img3](journalMedia/07-09_03.jpg)
-![img4](journalMedia/07-09_04.jpg)
-![img5](journalMedia/07-09_05.jpg)
-![img6](journalMedia/07-09_06.jpg)
-![img7](journalMedia/07-09_07.jpg)
-![img8](journalMedia/07-09_08.jpg)
-![img9](journalMedia/07-09_09.jpg)
-![img10](journalMedia/07-09_10.jpg)
+![img1](journalMedia/07-10_01.jpg)
+![img2](journalMedia/07-10_02.jpg)
+![img3](journalMedia/07-10_03.jpg)
+![img4](journalMedia/07-10_04.jpg)
+![img5](journalMedia/07-10_05.jpg)
+![img6](journalMedia/07-10_06.jpg)
+![img7](journalMedia/07-10_07.jpg)
+![img8](journalMedia/07-10_08.jpg)
+![img9](journalMedia/07-10_09.jpg)
+![img10](journalMedia/07-10_10.jpg)
 **Total time spent: 12 hours**
+
+
+
+# July 11: anode day anode problym
+
+Yeeee!
+I soldered another motor driver... And now one is working flawlewsy and other one got problem with can.
+I get only few messeges and i drop some, while other one with entirely same hardware works. 
+Is there any specialist who knows how to CAN, not CANnot?
+
+But hey! After all i got one can to working and now i somewhat learned it and understand it now!
+
+Lapse:
+https://lapse.hackclub.com/timelapse/sVqIrzqbEWA-
+(Dinner break, 6.02 to 6.58, i forgot to turn off lapse)
+
+Imagesss!
+![img1](journalMedia/07-11_01.jpg)
+![img2](journalMedia/07-11_02.jpg)
+![img3](journalMedia/07-11_03.jpg)
+![img4](journalMedia/07-11_04.jpg)
+![img5](journalMedia/07-11_05.jpg)
+![img6](journalMedia/07-11_06.jpg)
+**Total time spent: 10.3 hours**
+
+

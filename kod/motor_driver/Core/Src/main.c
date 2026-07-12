@@ -95,15 +95,10 @@
 
 
 
-
-
-
-//#define SELF_ID 'L'
-#define SELF_ID 'R'
-
-
-
-
+#define CAN_ID_CTRL  60
+#define CAN_ID_DRV1  67
+#define CAN_ID_DRV2  69
+#define MACHINE_CHOICE 1
 // Error MAP
 //		Bit 0		| 		Bit 1		| 		Bit 2		| 		Bit 3		| 		Bit 4		| 		Bit 5		| 		Bit 6		| 		Bit 7		|
 //  Critical Error	|  LD Over-current	| 	   Not Used		|  FET Temperature	| Motor Temperature	|	SD Over current |	   Not Used		| 	Motor Status	|
@@ -133,6 +128,7 @@ TIM_HandleTypeDef htim17;
 
 /* USER CODE BEGIN PV */
 volatile int32_t dupa=0;
+volatile int32_t dupa2=0;
 
 
 // State Machine
@@ -187,6 +183,8 @@ volatile uint32_t cpu_load_permille = 0;
 volatile uint8_t MCU_LOAD = 0;
 volatile uint8_t MCU_LOAD_MAX = 0;
 
+static uint8_t SELF_CAN_ID;
+
 // OLD Variables
 // Current measurements for debug - to implement in functions
 volatile uint32_t 		CurrentA_Average = 0;
@@ -238,6 +236,56 @@ static inline void DWT_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+typedef struct
+{
+    uint32_t IR;
+    uint32_t IE;
+    uint32_t ILS;
+    uint32_t ILE;
+
+    uint32_t CCCR;
+    uint32_t NBTP;
+    uint32_t DBTP;
+    uint32_t TEST;
+    uint32_t PSR;
+    uint32_t ECR;
+
+    uint32_t RXF0S;
+    uint32_t RXF1S;
+    uint32_t TXBC;
+    uint32_t TXFQS;
+    uint32_t TXEFS;
+    uint32_t TXBRP;
+    uint32_t TXBAR;
+    uint32_t TXBTO;
+    uint32_t TXBCF;
+
+    uint32_t GFC;
+    uint32_t SIDFC;
+    uint32_t XIDFC;
+
+    uint32_t lec;
+    uint32_t rec;
+    uint32_t tec;
+
+    uint32_t bo_flag;
+    uint32_t ep_flag;
+    uint32_t ew_flag;
+
+    uint32_t rf0f;
+    uint32_t rf0l;
+    uint32_t rf1f;
+    uint32_t rf1l;
+
+    uint32_t hpm;
+    uint32_t tc;
+    uint32_t tcf;
+    uint32_t tefn;
+    uint32_t teff;
+    uint32_t tefl;
+} can_dbg_t;
+
+volatile can_dbg_t _can;
 /* USER CODE END 0 */
 
 /**
@@ -280,16 +328,28 @@ int main(void)
   MX_TIM16_Init();
   MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
-
+/*
   CAN_Filter.IdType = FDCAN_STANDARD_ID;
   CAN_Filter.FilterIndex = 0;
   CAN_Filter.FilterType = FDCAN_FILTER_DISABLE;
   CAN_Filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
   CAN_Filter.FilterID1 = 0;
   CAN_Filter.FilterID2 = 0;
+*/
+	if(MACHINE_CHOICE == 1)
+		SELF_CAN_ID = CAN_ID_DRV1;
+	else
+		SELF_CAN_ID = CAN_ID_DRV2;
 
+  CAN_Filter.IdType = FDCAN_STANDARD_ID;
+  CAN_Filter.FilterIndex = 0;
+  CAN_Filter.FilterType = FDCAN_FILTER_RANGE;
+  CAN_Filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+  CAN_Filter.FilterID1 = CAN_ID_CTRL;
+  CAN_Filter.FilterID2 = CAN_ID_DRV2;
+  HAL_FDCAN_ConfigFilter(&hfdcan1, &CAN_Filter);
 
-  CAN_TX_Header.Identifier = 0x0B;
+  CAN_TX_Header.Identifier = SELF_CAN_ID;
   CAN_TX_Header.IdType = FDCAN_STANDARD_ID;
   CAN_TX_Header.TxFrameType = FDCAN_DATA_FRAME;
   CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_8;
@@ -298,6 +358,7 @@ int main(void)
   CAN_TX_Header.MessageMarker = 0;
   CAN_TX_Header.FDFormat = FDCAN_CLASSIC_CAN;
   CAN_TX_Header.BitRateSwitch = FDCAN_BRS_OFF;
+
 
 	if (HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED) != HAL_OK)
 		Error_Handler();
@@ -323,7 +384,6 @@ int main(void)
 
 	TIM2->CCR1 = 0;
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-	HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, 0);
 
 	Battery_constant =  ((Voltage_Resistor_Top + Voltage_Resistor_Bottom) / Voltage_Resistor_Bottom) * Reference_Voltage / 4096;
 	Current_constant =  (Reference_Voltage / 4096.0 / Shunt_Resistor / 10.0) ;
@@ -358,9 +418,57 @@ int main(void)
   while (1)
   {
 	dupa++;
+	dupa2=HAL_GPIO_ReadPin(DIR_GPIO_Port, DIR_Pin);
 	uint32_t start = DWT->CYCCNT;
 	__WFI();
 	cpu_idle_cycles += (DWT->CYCCNT - start);
+
+
+	_can.IR   = FDCAN1->IR;
+	_can.IE   = FDCAN1->IE;
+	_can.ILS  = FDCAN1->ILS;
+	_can.ILE  = FDCAN1->ILE;
+
+	_can.CCCR = FDCAN1->CCCR;
+	_can.NBTP = FDCAN1->NBTP;
+	_can.DBTP = FDCAN1->DBTP;
+	_can.TEST = FDCAN1->TEST;
+	_can.PSR  = FDCAN1->PSR;
+	_can.ECR  = FDCAN1->ECR;
+
+	_can.RXF0S = FDCAN1->RXF0S;
+	_can.RXF1S = FDCAN1->RXF1S;
+	_can.TXBC  = FDCAN1->TXBC;
+	_can.TXFQS = FDCAN1->TXFQS;
+	_can.TXEFS = FDCAN1->TXEFS;
+	_can.TXBRP = FDCAN1->TXBRP;
+	_can.TXBAR = FDCAN1->TXBAR;
+	_can.TXBTO = FDCAN1->TXBTO;
+	_can.TXBCF = FDCAN1->TXBCF;
+
+	_can.GFC   = FDCAN1->RXGFC;
+	_can.SIDFC = 0;
+	_can.XIDFC = 0;
+
+	_can.lec = (_can.PSR & FDCAN_PSR_LEC_Msk) >> FDCAN_PSR_LEC_Pos;
+	_can.rec = (_can.ECR & FDCAN_ECR_REC_Msk) >> FDCAN_ECR_REC_Pos;
+	_can.tec = (_can.ECR & FDCAN_ECR_TEC_Msk) >> FDCAN_ECR_TEC_Pos;
+
+	_can.bo_flag = (_can.PSR & FDCAN_PSR_BO_Msk) ? 1u : 0u;
+	_can.ep_flag = (_can.PSR & FDCAN_PSR_EP_Msk) ? 1u : 0u;
+	_can.ew_flag = (_can.PSR & FDCAN_PSR_EW_Msk) ? 1u : 0u;
+
+	_can.rf0f = (_can.IR & FDCAN_IR_RF0F_Msk) ? 1u : 0u;
+	_can.rf0l = (_can.IR & FDCAN_IR_RF0L_Msk) ? 1u : 0u;
+	_can.rf1f = (_can.IR & FDCAN_IR_RF1F_Msk) ? 1u : 0u;
+	_can.rf1l = (_can.IR & FDCAN_IR_RF1L_Msk) ? 1u : 0u;
+
+	_can.hpm  = (_can.IR & FDCAN_IR_HPM_Msk)  ? 1u : 0u;
+	_can.tc   = (_can.IR & FDCAN_IR_TC_Msk)   ? 1u : 0u;
+	_can.tcf  = (_can.IR & FDCAN_IR_TCF_Msk)  ? 1u : 0u;
+	_can.tefn = (_can.IR & FDCAN_IR_TEFN_Msk) ? 1u : 0u;
+	_can.teff = (_can.IR & FDCAN_IR_TEFF_Msk) ? 1u : 0u;
+	_can.tefl = (_can.IR & FDCAN_IR_TEFL_Msk) ? 1u : 0u;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -619,14 +727,14 @@ static void MX_FDCAN1_Init(void)
   hfdcan1.Init.AutoRetransmission = DISABLE;
   hfdcan1.Init.TransmitPause = DISABLE;
   hfdcan1.Init.ProtocolException = DISABLE;
-  hfdcan1.Init.NominalPrescaler = 34;
+  hfdcan1.Init.NominalPrescaler = 17;
   hfdcan1.Init.NominalSyncJumpWidth = 1;
-  hfdcan1.Init.NominalTimeSeg1 = 2;
-  hfdcan1.Init.NominalTimeSeg2 = 2;
+  hfdcan1.Init.NominalTimeSeg1 = 15;
+  hfdcan1.Init.NominalTimeSeg2 = 4;
   hfdcan1.Init.DataPrescaler = 17;
   hfdcan1.Init.DataSyncJumpWidth = 1;
-  hfdcan1.Init.DataTimeSeg1 = 2;
-  hfdcan1.Init.DataTimeSeg2 = 2;
+  hfdcan1.Init.DataTimeSeg1 = 15;
+  hfdcan1.Init.DataTimeSeg2 = 4;
   hfdcan1.Init.StdFiltersNbr = 0;
   hfdcan1.Init.ExtFiltersNbr = 0;
   hfdcan1.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
@@ -964,9 +1072,10 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 	HAL_FDCAN_ActivateNotification(hfdcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
 	CAN_STATUS_FLAG = 1;
 
-	if(CAN_RX[0] == SELF_ID)
+
+	if(CAN_RX[0] == SELF_CAN_ID)
 	{
-		CAN_TX[0] = SELF_ID;
+		CAN_TX[0] = SELF_CAN_ID;
 		CAN_TX[1] = 0;
 		CAN_TX[2] = 0;
 		CAN_TX[3] = 0;
@@ -1203,6 +1312,19 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 			HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 		}
 	}
+	else
+	{
+		CAN_TX[0] = 0;
+		CAN_TX[1] = 0;
+		CAN_TX[2] = 0;
+		CAN_TX[3] = 0;
+		CAN_TX[4] = 0;
+		CAN_TX[5] = 0;
+		CAN_TX[6] = 0;
+		CAN_TX[7] = 0;
+	}
+
+	 HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
 }
 
 void Interrupt10kHz(void)

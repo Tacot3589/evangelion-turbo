@@ -41,8 +41,10 @@
 #define DMA_HANDLE_UART4 &handle_GPDMA1_Channel4
 #define DMA_HANDLE_UART5 &handle_GPDMA1_Channel5
 
-#define MOTOR_L_ID 'L' 	//0x4C 	76
-#define MOTOR_R_ID 'R'	//0x52 	82
+
+#define CAN_ID_CTRL  60
+#define CAN_ID_DRV1  67
+#define CAN_ID_DRV2  69
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -304,15 +306,25 @@ int main(void)
   MX_TIM17_Init();
   MX_TIM15_Init();
   /* USER CODE BEGIN 2 */
-
+/*
   CAN_Filter.IdType = FDCAN_STANDARD_ID;
   CAN_Filter.FilterIndex = 0;
   CAN_Filter.FilterType = FDCAN_FILTER_DISABLE;
   CAN_Filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
   CAN_Filter.FilterID1 = 0;
   CAN_Filter.FilterID2 = 0;
+*/
 
-  CAN_TX_Header.Identifier = 0x0B;
+  CAN_Filter.IdType = FDCAN_STANDARD_ID;
+  CAN_Filter.FilterIndex = 0;
+  CAN_Filter.FilterType = FDCAN_FILTER_DUAL;
+  CAN_Filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+  CAN_Filter.FilterID1 = CAN_ID_CTRL;
+  CAN_Filter.FilterID2 = CAN_ID_DRV2;
+  HAL_FDCAN_ConfigFilter(&hfdcan1, &CAN_Filter);
+
+
+  CAN_TX_Header.Identifier = CAN_ID_CTRL;
   CAN_TX_Header.IdType = FDCAN_STANDARD_ID;
   CAN_TX_Header.TxFrameType = FDCAN_DATA_FRAME;
   CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_8;
@@ -371,14 +383,13 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		dupa++;
 		uint32_t start = DWT->CYCCNT;
 		__WFI();
 		cpu_idle_cycles += (DWT->CYCCNT - start);
 
 
 	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
-	  CAN_TX[0] = MOTOR_R_ID;
+	  CAN_TX[0] = CAN_ID_DRV2;
 	  CAN_TX[1] = 0x50;
 	  CAN_TX[2] = 50;
 	  CAN_TX[3] = 0x01;
@@ -386,17 +397,17 @@ int main(void)
 		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 
 	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
-	  CAN_TX[0] = MOTOR_L_ID;
+	  CAN_TX[0] = CAN_ID_DRV1;
 	  CAN_TX[1] = 0x50;
 	  CAN_TX[2] = 50;
 	  CAN_TX[3] = 0x01;
 	  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
 		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
-
 	  HAL_Delay(500);
 
+
 	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
-	  CAN_TX[0] = MOTOR_R_ID;
+	  CAN_TX[0] = CAN_ID_DRV2;
 	  CAN_TX[1] = 0x50;
 	  CAN_TX[2] = 150;
 	  CAN_TX[3] = 0x01;
@@ -404,7 +415,7 @@ int main(void)
 		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 
 	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
-	  CAN_TX[0] = MOTOR_L_ID;
+	  CAN_TX[0] = CAN_ID_DRV1;
 	  CAN_TX[1] = 0x50;
 	  CAN_TX[2] = 150;
 	  CAN_TX[3] = 0x01;
@@ -412,6 +423,8 @@ int main(void)
 		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 //HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);//todocan
 	  HAL_Delay(500);
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -630,14 +643,14 @@ static void MX_FDCAN1_Init(void)
   hfdcan1.Init.AutoRetransmission = DISABLE;
   hfdcan1.Init.TransmitPause = DISABLE;
   hfdcan1.Init.ProtocolException = DISABLE;
-  hfdcan1.Init.NominalPrescaler = 34;
+  hfdcan1.Init.NominalPrescaler = 17;
   hfdcan1.Init.NominalSyncJumpWidth = 1;
-  hfdcan1.Init.NominalTimeSeg1 = 2;
-  hfdcan1.Init.NominalTimeSeg2 = 2;
+  hfdcan1.Init.NominalTimeSeg1 = 15;
+  hfdcan1.Init.NominalTimeSeg2 = 4;
   hfdcan1.Init.DataPrescaler = 17;
   hfdcan1.Init.DataSyncJumpWidth = 1;
-  hfdcan1.Init.DataTimeSeg1 = 2;
-  hfdcan1.Init.DataTimeSeg2 = 2;
+  hfdcan1.Init.DataTimeSeg1 = 15;
+  hfdcan1.Init.DataTimeSeg2 = 4;
   hfdcan1.Init.StdFiltersNbr = 0;
   hfdcan1.Init.ExtFiltersNbr = 0;
   hfdcan1.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;

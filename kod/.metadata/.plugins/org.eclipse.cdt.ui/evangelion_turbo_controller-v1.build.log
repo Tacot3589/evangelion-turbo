@@ -1,27 +1,27 @@
-23:41:32 **** Incremental Build of configuration Debug for project evangelion_turbo_controller-v1 ****
+02:16:52 **** Incremental Build of configuration Debug for project evangelion_turbo_controller-v1 ****
 make -j16 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H562xx -c -I../Core/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I../Drivers/CMSIS/Include -Ofast -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c:1381:6: warning: 'BATTLE' defined but not used [-Wunused-function]
- 1381 | void BATTLE()
+../Core/Src/main.c:1394:6: warning: 'BATTLE' defined but not used [-Wunused-function]
+ 1394 | void BATTLE()
       |      ^~~~~~
 ../Core/Src/main.c: In function 'HAL_UARTEx_RxEventCallback':
-../Core/Src/main.c:1577:41: warning: 'Dist' may be used uninitialized [-Wmaybe-uninitialized]
- 1577 |                 window1_Dist[idx1_Dist] = Dist;
+../Core/Src/main.c:1590:41: warning: 'Dist' may be used uninitialized [-Wmaybe-uninitialized]
+ 1590 |                 window1_Dist[idx1_Dist] = Dist;
       |                 ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
-../Core/Src/main.c:1536:18: note: 'Dist' was declared here
- 1536 |         uint16_t Dist, Temp, Amp;
+../Core/Src/main.c:1549:18: note: 'Dist' was declared here
+ 1549 |         uint16_t Dist, Temp, Amp;
       |                  ^~~~
-../Core/Src/main.c:1601:38: warning: 'Temp' may be used uninitialized [-Wmaybe-uninitialized]
- 1601 |                 FrontRight.LidarTemp = Temp;
+../Core/Src/main.c:1614:38: warning: 'Temp' may be used uninitialized [-Wmaybe-uninitialized]
+ 1614 |                 FrontRight.LidarTemp = Temp;
       |                 ~~~~~~~~~~~~~~~~~~~~~^~~~~~
-../Core/Src/main.c:1536:24: note: 'Temp' was declared here
- 1536 |         uint16_t Dist, Temp, Amp;
+../Core/Src/main.c:1549:24: note: 'Temp' was declared here
+ 1549 |         uint16_t Dist, Temp, Amp;
       |                        ^~~~
-../Core/Src/main.c:1578:39: warning: 'Amp' may be used uninitialized [-Wmaybe-uninitialized]
- 1578 |                 window1_Amp[idx1_Amp] = Amp;
+../Core/Src/main.c:1591:39: warning: 'Amp' may be used uninitialized [-Wmaybe-uninitialized]
+ 1591 |                 window1_Amp[idx1_Amp] = Amp;
       |                 ~~~~~~~~~~~~~~~~~~~~~~^~~~~
-../Core/Src/main.c:1536:30: note: 'Amp' was declared here
- 1536 |         uint16_t Dist, Temp, Amp;
+../Core/Src/main.c:1549:30: note: 'Amp' was declared here
+ 1549 |         uint16_t Dist, Temp, Amp;
       |                              ^~~
 arm-none-eabi-gcc -o "evangelion_turbo_controller-v1.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_controller-v1\STM32H562RIVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_controller-v1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: evangelion_turbo_controller-v1.elf
@@ -29,11 +29,11 @@ Finished building target: evangelion_turbo_controller-v1.elf
 arm-none-eabi-size  evangelion_turbo_controller-v1.elf 
 arm-none-eabi-objdump -h -S evangelion_turbo_controller-v1.elf  > "evangelion_turbo_controller-v1.list"
    text	   data	    bss	    dec	    hex	filename
-  50368	     16	   3904	  54288	   d410	evangelion_turbo_controller-v1.elf
+  50456	     16	   3904	  54376	   d468	evangelion_turbo_controller-v1.elf
 Finished building: default.size.stdout
  
 Finished building: evangelion_turbo_controller-v1.list
  
 
-23:41:33 Build Finished. 0 errors, 4 warnings. (took 918ms)
+02:16:54 Build Finished. 0 errors, 4 warnings. (took 1s.270ms)
 
