@@ -639,8 +639,10 @@ from 3.30AM to 4AM i was just clearing up code from testing and "trying to fix" 
 
 Ahh yeee, and i got all line and distance sensors soldered and hooked up!
 
-lapse froze and broke at 12hrs of recording... I realised this after a loooong time lol :skulk:. I started working around 11.30 in the morning and finished about 4.00 at night, with about two one hour break, lets add half an hour for stuff like eating snacks etc...
+lapse froze and broke at 12hrs of recording... I realised this after a loooong time lol :skulk:. I started working around 11.30 in the morning and finished about 4.00 at night, with about two half an hour breaks, lets add another half an hour for stuff like eating snacks and times where i lost focus on main goal, etc...
+Long lapse:
 https://lapse.hackclub.com/timelapse/SSPbA1fPo_17
+2AM lapse:
 https://lapse.hackclub.com/timelapse/Cs3l5lJ24dIN
 
 Imagesss!
@@ -650,7 +652,7 @@ Imagesss!
 ![img4](journalMedia/07-12_04.jpg)
 ![img5](journalMedia/07-12_05.jpg)
 ![img6](journalMedia/07-12_06.jpg)
-**Total time spent: 14 hours**
+**Total time spent: 15 hours**
 
 
 # July 3: Last day before going offline for a week!
