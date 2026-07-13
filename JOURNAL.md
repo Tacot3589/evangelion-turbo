@@ -658,8 +658,9 @@ Imagesss!
 
 # July 3: Last day before going offline for a week!
 
-## ITS FLIPPING WORKS GUYS
-*67676767676767676767676*
+__ITS FLIPPING WORKS GUYS__
+
+_67676767676767676767676_
 
 (code writing, got to fix some minor soldering issues)
 Lapse:
@@ -669,8 +670,10 @@ No images, but reels today!
 https://forge.hackclub.com/reels/147
 https://forge.hackclub.com/reels/148
 
-## HELLFUCKINGYEAH
+__HELLFUCKINGYEAH__
 
-**It is fully autonomus byt the way**
+_It is fully autonomus byt the way_
 
+_nvm hers image, AI is mad at me for not having one_
+![img1](journalMedia/07-13_01.jpg)
 **Total time spent: 1.5 hours**
