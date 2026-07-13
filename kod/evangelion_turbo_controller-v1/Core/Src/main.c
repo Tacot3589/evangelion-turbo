@@ -306,15 +306,11 @@ int main(void)
   MX_TIM17_Init();
   MX_TIM15_Init();
   /* USER CODE BEGIN 2 */
-/*
-  CAN_Filter.IdType = FDCAN_STANDARD_ID;
-  CAN_Filter.FilterIndex = 0;
-  CAN_Filter.FilterType = FDCAN_FILTER_DISABLE;
-  CAN_Filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
-  CAN_Filter.FilterID1 = 0;
-  CAN_Filter.FilterID2 = 0;
-*/
+  	  //INTIT
+	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
+	PLAY_FREQ(actual_init_freq);
 
+	//CAN FILTERS
   CAN_Filter.IdType = FDCAN_STANDARD_ID;
   CAN_Filter.FilterIndex = 0;
   CAN_Filter.FilterType = FDCAN_FILTER_DISABLE;
@@ -323,7 +319,7 @@ int main(void)
   CAN_Filter.FilterID2 = 0;
   HAL_FDCAN_ConfigFilter(&hfdcan1, &CAN_Filter);
 
-
+  //CAN SETTINGS
   CAN_TX_Header.Identifier = CAN_ID_CTRL;
   CAN_TX_Header.IdType = FDCAN_STANDARD_ID;
   CAN_TX_Header.TxFrameType = FDCAN_DATA_FRAME;
@@ -352,17 +348,19 @@ int main(void)
 	HAL_GPIO_WritePin(CAN_EN_GPIO_Port, CAN_EN_Pin, 1);
 
 	//LUNAS
+	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
+	PLAY_FREQ(actual_init_freq);
 	if(Settings.DONT_INITIALIZE_LIDARS == FALSE)
 	{
+		//LIDARS_INIT(&huart1, DMA_HANDLE_UART1, UART1_RX);
 		LIDARS_INIT(&huart2, DMA_HANDLE_UART2, UART2_RX);
+		//LIDARS_INIT(&huart4, DMA_HANDLE_UART4, UART4_RX);
+		LIDARS_INIT(&huart5, DMA_HANDLE_UART5, UART5_RX);
 	}
 
-	//Interrupts
-	HAL_TIM_Base_Start_IT(&htim15); //0.5Hz
-	HAL_TIM_Base_Start_IT(&htim16); //1000Hz
-	HAL_TIM_Base_Start_IT(&htim17); //100Hz
-
 	//ADC
+	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
+	PLAY_FREQ(actual_init_freq);
 	if (HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED) != HAL_OK)
 	  COOKED(ADC_INIT_ERR);
 	HAL_Delay(50);
@@ -370,13 +368,29 @@ int main(void)
 	if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC_BUFFER, 9) != HAL_OK)
 	  COOKED(ADC_INIT_ERR);
 
-
+	//CAN
+	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
+	PLAY_FREQ(actual_init_freq);
 	if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
 		Error_Handler();
 	HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
 	HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 
+	//Performance
+	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
+	PLAY_FREQ(actual_init_freq);
 	DWT_Init();
+
+	//Interrupts
+	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
+	PLAY_FREQ(actual_init_freq);
+	HAL_TIM_Base_Start_IT(&htim15); //0.5Hz
+	HAL_TIM_Base_Start_IT(&htim16); //1000Hz
+	HAL_TIM_Base_Start_IT(&htim17); //100Hz
+
+	PLAY_FREQ(0);
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -385,49 +399,10 @@ int main(void)
   {
 	  dupa++;
 
-		uint32_t start = DWT->CYCCNT;
-		__WFI();
-		cpu_idle_cycles += (DWT->CYCCNT - start);
-
-
-	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
-	  CAN_TX[0] = CAN_ID_DRV0;
-	  CAN_TX[1] = 0x50;
-	  CAN_TX[2] = 50;
-	  CAN_TX[3] = 0x01;
-	  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
-		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
-	  HAL_Delay(500);
-
-
-	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
-	  CAN_TX[0] = CAN_ID_DRV1;
-	  CAN_TX[1] = 0x50;
-	  CAN_TX[2] = 50;
-	  CAN_TX[3] = 0x01;
-	  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
-		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
-	  HAL_Delay(500);
-
-	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
-	  CAN_TX[0] = CAN_ID_DRV0;
-	  CAN_TX[1] = 0x50;
-	  CAN_TX[2] = 150;
-	  CAN_TX[3] = 0x01;
-	  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
-		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
-	  HAL_Delay(500);
-
-
-	  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
-	  CAN_TX[0] = CAN_ID_DRV1;
-	  CAN_TX[1] = 0x50;
-	  CAN_TX[2] = 150;
-	  CAN_TX[3] = 0x01;
-	  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
-		  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
-	  HAL_Delay(500);
-
+	uint32_t start = DWT->CYCCNT;
+	__WFI();
+	cpu_idle_cycles += (DWT->CYCCNT - start);
+	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
 
     /* USER CODE END WHILE */
 
@@ -1222,6 +1197,64 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  GET_LINE_SENSORS();
 	  GET_LAST_SEEN_ROTATIONE();
 	  GET_START_MOD();
+	  //todo
+
+
+	  if(FrontLeft.Distance <= MAX_LIDAR_DISTANCE && FrontRight.Distance <= MAX_LIDAR_DISTANCE)
+	  {
+   		  CAN_TX[0] = CAN_ID_DRV0;
+   		  CAN_TX[1] = 0x50;
+   		  CAN_TX[2] = 0;
+   		  CAN_TX[3] = 0x01;
+   		  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
+   			  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+
+   		  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+   		  CAN_TX[0] = CAN_ID_DRV1;
+   		  CAN_TX[1] = 0x50;
+   		  CAN_TX[2] = 0;
+   		  CAN_TX[3] = 0x01;
+   		  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
+   			  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	  }
+	  else if(lastSeen == LEFT)
+	  {
+		  CAN_TX[0] = CAN_ID_DRV0;
+		  CAN_TX[1] = 0x50;
+		  CAN_TX[2] = 150;
+		  CAN_TX[3] = 0x01;
+		  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
+			  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+
+		  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+		  CAN_TX[0] = CAN_ID_DRV1;
+		  CAN_TX[1] = 0x50;
+		  CAN_TX[2] = 50;
+		  CAN_TX[3] = 0x01;
+		  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
+			  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	  }
+	  else
+	  {
+		  CAN_TX[0] = CAN_ID_DRV0;
+		  CAN_TX[1] = 0x50;
+		  CAN_TX[2] = 50;
+		  CAN_TX[3] = 0x01;
+		  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
+			  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+
+		  CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+		  CAN_TX[0] = CAN_ID_DRV1;
+		  CAN_TX[1] = 0x50;
+		  CAN_TX[2] = 150;
+		  CAN_TX[3] = 0x01;
+		  if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
+			  HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	  }
+
+
+
+
 	  if(Eva.State == IDLE)
 	  {
 		  //BATTLE();
@@ -1232,8 +1265,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  }
 	  else if(Eva.State == BEFORE_ATTACK_TASK)
 	  {
-		  TASK_BEFORE_ATTACK();
+		  //TASK_BEFORE_ATTACK();
 	  }
+
 	}
 
 	if(htim->Instance == TIM17) //100hz everything else
@@ -1387,6 +1421,8 @@ void GET_LAST_SEEN_ROTATIONE()
 void GET_START_MOD()
 {
 	Eva.State = IDLE;
+	if(Settings.ALWAYS_IN_BATTLE)
+		Eva.State = ATTACK;
 
 	if(false)
 	{
@@ -1524,7 +1560,7 @@ void LIDARS_INIT(UART_HandleTypeDef *huart, DMA_HandleTypeDef *dma, uint8_t *RX)
 
 void PLAY_FREQ(uint16_t f_hz)
 {
-	f_hz = f_hz * ENABLE_BUZZER;
+	f_hz = f_hz * DEFAULT_SETTING_ENABLE_BUZZER;
     if (f_hz == 0) {
         __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 0);
         return;
@@ -1613,9 +1649,9 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 		Amp = buffor_Amp[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE - 1) / 2)];
 
 		//Save results
-		FrontRight.Distance = Dist;
-		FrontRight.LidarAmp = Amp;
-		FrontRight.LidarTemp = Temp;
+		BackRight.Distance = Dist;
+		BackRight.LidarAmp = Amp;
+		BackRight.LidarTemp = Temp;
 
 
 		if(HAL_UARTEx_ReceiveToIdle_DMA(&huart1, UART1_RX, 9) != HAL_OK)
@@ -1684,9 +1720,9 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 			Amp = buffor_Amp[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE - 1) / 2)];
 
 			//Save results
-			FrontLeft.Distance = Dist;
-			FrontLeft.LidarAmp = Amp;
-			FrontLeft.LidarTemp = Temp;
+			FrontRight.Distance = Dist;
+			FrontRight.LidarAmp = Amp;
+			FrontRight.LidarTemp = Temp;
 
 
 			if(HAL_UARTEx_ReceiveToIdle_DMA(&huart2, UART2_RX, 9) != HAL_OK)
@@ -1826,9 +1862,9 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 				Amp = buffor_Amp[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE - 1) / 2)];
 
 				//Save results
-				BackRight.Distance = Dist;
-				BackRight.LidarAmp = Amp;
-				BackRight.LidarTemp = Temp;
+				FrontLeft.Distance = Dist;
+				FrontLeft.LidarAmp = Amp;
+				FrontLeft.LidarTemp = Temp;
 
 
 				if(HAL_UARTEx_ReceiveToIdle_DMA(&huart5, UART5_RX, 9) != HAL_OK)
@@ -1874,13 +1910,13 @@ void GET_LINE_SENSORS()
 		FrontLeft.Line = OUT;
 
 	if(FrontRight.RawLineA < WHITE_LINE_TRESCHOLD && FrontRight.RawLineB < WHITE_LINE_TRESCHOLD)
-		FrontRight.Line = OUT;
+		BackRight.Line = OUT;
 
 	if(BackLeft.RawLineA < WHITE_LINE_TRESCHOLD && BackLeft.RawLineB < WHITE_LINE_TRESCHOLD)
 		BackLeft.Line = OUT;
 
 	if(BackRight.RawLineA < WHITE_LINE_TRESCHOLD && BackRight.RawLineB < WHITE_LINE_TRESCHOLD)
-		BackRight.Line = OUT;
+		FrontRight.Line = OUT;
 
 }
 

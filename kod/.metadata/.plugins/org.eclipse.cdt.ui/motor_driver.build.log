@@ -1,4 +1,4 @@
-03:31:05 **** Incremental Build of configuration Debug for project motor_driver ****
+13:30:35 **** Incremental Build of configuration Debug for project motor_driver ****
 make -j16 all 
 arm-none-eabi-size  motor_driver.elf 
    text	   data	    bss	    dec	    hex	filename
@@ -6,5 +6,5 @@ arm-none-eabi-size  motor_driver.elf
 Finished building: default.size.stdout
  
 
-03:31:05 Build Finished. 0 errors, 0 warnings. (took 156ms)
+13:30:35 Build Finished. 0 errors, 0 warnings. (took 150ms)
 

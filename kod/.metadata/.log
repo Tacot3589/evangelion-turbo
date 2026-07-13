@@ -6593,3 +6593,173 @@ localhost:3333: Connection timed out.
 java.lang.Exception: localhost:3333: Connection timed out.
 	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1024)
 	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:853)
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2026-07-13 13:26:24.703
+!MESSAGE Request for monitor: '@"Fail reading CTRL/STAT register. Force reconnect\n"
+@"Fail reading CTRL/STAT register. Force reconnect\n"
+@"Failed to read memory and, additionally, failed to find out where\n"
+@"Fail reading CTRL/STAT register. Force reconnect\n"
+~"\nProgram"
+~" stopped.\n"
+~"0x00000000 in ?? ()\n"
+*stopped,reason="signal-received",signal-name="0",signal-meaning="Signal 0",frame={addr="0x00000000",func="??",args=[],arch="armv8-m.main"},thread-id="1",stopped-threads="all"
+49^error,msg="Unable to read memory."' resulted in an error.
+!SUBENTRY 1 org.eclipse.cdt.dsf.gdb 4 10004 2026-07-13 13:26:24.703
+!MESSAGE Failed to execute MI command:
+-data-read-memory 0xe000ee08 d 1 1 4
+Error message from debugger back end:
+Unable to read memory.
+!STACK 0
+java.lang.Exception: Unable to read memory.
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1024)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:853)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 13:30:04.206
+!MESSAGE Error - No active DSF-Session. tmpSessionId = 39 (contextManager row 121)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 13:30:04.207
+!MESSAGE Existing sessions are:
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 13:30:04.208
+!MESSAGE Error - No active DSF-Session. tmpSessionId = 39 (contextManager row 121)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 13:30:04.208
+!MESSAGE Existing sessions are:
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 5012 2026-07-13 13:55:52.355
+!MESSAGE Error in final launch sequence:
+
+Failed to execute MI command:
+target extended-remote localhost:3333
+
+Error message from debugger back end:
+localhost:3333: Connection timed out.
+!STACK 1
+org.eclipse.core.runtime.CoreException: Failed to execute MI command:
+target extended-remote localhost:3333
+
+Error message from debugger back end:
+localhost:3333: Connection timed out.
+	at org.eclipse.cdt.dsf.concurrent.Query.get(Query.java:112)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugSession(GdbLaunchDelegate.java:252)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugger(GdbLaunchDelegate.java:109)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launch(GdbLaunchDelegate.java:97)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFDelegate.launch(DSFDelegate.java:336)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:805)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:716)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:1054)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$1.run(DebugUIPlugin.java:1257)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+Caused by: java.lang.Exception: localhost:3333: Connection timed out.
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1024)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:853)
+!SUBENTRY 1 org.eclipse.cdt.dsf.gdb 4 10004 2026-07-13 13:55:52.355
+!MESSAGE Failed to execute MI command:
+target extended-remote localhost:3333
+
+Error message from debugger back end:
+localhost:3333: Connection timed out.
+!STACK 0
+java.lang.Exception: localhost:3333: Connection timed out.
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1024)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:853)
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2026-07-13 13:56:28.274
+!MESSAGE Request for monitor: '@"Fail reading CTRL/STAT register. Force reconnect\n"
+~"\nProgram"
+~" stopped.\n"
+~"0x00000000 in ?? ()\n"
+*stopped,reason="signal-received",signal-name="0",signal-meaning="Signal 0",frame={addr="0x00000000",func="??",args=[],arch="armv8-m.main"},thread-id="1",stopped-threads="all"
+49^error,msg="Unable to read memory."' resulted in an error.
+!SUBENTRY 1 org.eclipse.cdt.dsf.gdb 4 10004 2026-07-13 13:56:28.274
+!MESSAGE Failed to execute MI command:
+-data-read-memory 0xe000ee08 d 1 1 4
+Error message from debugger back end:
+Unable to read memory.
+!STACK 0
+java.lang.Exception: Unable to read memory.
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1024)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:853)
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2026-07-13 14:18:39.427
+!MESSAGE Request for monitor: '@"Fail reading CTRL/STAT register. Force reconnect\n"
+@"Fail reading CTRL/STAT register. Force reconnect\n"
+@"Failed to read memory and, additionally, failed to find out where\n"
+@"Fail reading CTRL/STAT register. Force reconnect\n"
+~"\nProgram"
+~" stopped.\n"
+~"0x00000000 in ?? ()\n"
+*stopped,reason="signal-received",signal-name="0",signal-meaning="Signal 0",frame={addr="0x00000000",func="??",args=[],arch="armv8-m.main"},thread-id="1",stopped-threads="all"
+48^error,msg="Unable to read memory."' resulted in an error.
+!SUBENTRY 1 org.eclipse.cdt.dsf.gdb 4 10004 2026-07-13 14:18:39.428
+!MESSAGE Failed to execute MI command:
+-data-read-memory 0xe000ee08 d 1 1 4
+Error message from debugger back end:
+Unable to read memory.
+!STACK 0
+java.lang.Exception: Unable to read memory.
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1024)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:853)
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2026-07-13 14:22:15.617
+!MESSAGE Request for monitor: '@"Polling target STM32H562RIVx.cpu failed, trying to reexamine\n"
+@"[STM32H562RIVx.cpu] Cortex-M33 r0p4 processor detected\n"
+@"[STM32H562RIVx.cpu] target has 8 breakpoints, 4 watchpoints\n"
+@"[STM32H562RIVx.cpu] Examination succeed\n"
+@"Fail reading CTRL/STAT register. Force reconnect\n"
+@"Fail reading CTRL/STAT register. Force reconnect\n"
+@"Failed to read memory and, additionally, failed to find out where\n"
+@"Fail reading CTRL/STAT register. Force reconnect\n"
+@"Fail reading CTRL/STAT register. Force reconnect\n"
+@"Failed to read memory and, additionally, failed to find out where\n"
+@"Fail reading CTRL/STAT register. Force reconnect\n"
+~"\nProgram"
+~" stopped.\n"
+~"0x00000000 in ?? ()\n"
+*stopped,reason="signal-received",signal-name="0",signal-meaning="Signal 0",frame={addr="0x00000000",func="??",args=[],arch="armv8-m.main"},thread-id="1",stopped-threads="all"
+55^error,msg="Unable to read memory."' resulted in an error.
+!SUBENTRY 1 org.eclipse.cdt.dsf.gdb 4 10004 2026-07-13 14:22:15.617
+!MESSAGE Failed to execute MI command:
+-data-read-memory 0xe000ee08 d 1 1 4
+Error message from debugger back end:
+Unable to read memory.
+!STACK 0
+java.lang.Exception: Unable to read memory.
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1024)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:853)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 14:36:48.830
+!MESSAGE Error - No active DSF-Session. tmpSessionId = 49 (contextManager row 121)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 14:36:48.831
+!MESSAGE Existing sessions are:
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 14:36:48.832
+!MESSAGE Error - No active DSF-Session. tmpSessionId = 49 (contextManager row 121)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 14:36:48.833
+!MESSAGE Existing sessions are:
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 14:45:54.452
+!MESSAGE Error - No active DSF-Session. tmpSessionId = 59 (contextManager row 121)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 14:45:54.453
+!MESSAGE Existing sessions are:
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 14:45:54.454
+!MESSAGE Error - No active DSF-Session. tmpSessionId = 59 (contextManager row 121)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 14:45:54.454
+!MESSAGE Existing sessions are:
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 14:53:38.056
+!MESSAGE Error - No active DSF-Session. tmpSessionId = 62 (contextManager row 121)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 14:53:38.056
+!MESSAGE Existing sessions are:
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 14:53:38.058
+!MESSAGE Error - No active DSF-Session. tmpSessionId = 62 (contextManager row 121)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2026-07-13 14:53:38.059
+!MESSAGE Existing sessions are:

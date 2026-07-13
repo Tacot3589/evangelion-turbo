@@ -39,13 +39,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_macro  00020ab5  00000000  00000000  00042318  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   0001e154  00000000  00000000  00062dcd  2**0
+ 18 .debug_line   0001e158  00000000  00000000  00062dcd  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000ddaaf  00000000  00000000  00080f21  2**0
+ 19 .debug_str    000ddaaf  00000000  00000000  00080f25  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000043  00000000  00000000  0015e9d0  2**0
+ 20 .comment      00000043  00000000  00000000  0015e9d4  2**0
                   CONTENTS, READONLY
- 21 .debug_frame  00003518  00000000  00000000  0015ea14  2**2
+ 21 .debug_frame  00003518  00000000  00000000  0015ea18  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -1981,15 +1981,15 @@ __STATIC_FORCEINLINE void __disable_irq(void)
  8000ebe:	e9c0 330e 	strd	r3, r3, [r0, #56]	@ 0x38
   hfdcan1.Init.Mode = FDCAN_MODE_NORMAL;
  8000ec2:	60c3      	str	r3, [r0, #12]
+  hfdcan1.Init.AutoRetransmission = DISABLE;
+ 8000ec4:	8203      	strh	r3, [r0, #16]
   hfdcan1.Init.ProtocolException = DISABLE;
- 8000ec4:	7483      	strb	r3, [r0, #18]
+ 8000ec6:	7483      	strb	r3, [r0, #18]
   hfdcan1.Init.NominalTimeSeg1 = 14;
- 8000ec6:	230e      	movs	r3, #14
- 8000ec8:	61c3      	str	r3, [r0, #28]
+ 8000ec8:	230e      	movs	r3, #14
+ 8000eca:	61c3      	str	r3, [r0, #28]
   hfdcan1.Init.DataTimeSeg1 = 14;
- 8000eca:	62c3      	str	r3, [r0, #44]	@ 0x2c
-  hfdcan1.Init.AutoRetransmission = ENABLE;
- 8000ecc:	8204      	strh	r4, [r0, #16]
+ 8000ecc:	62c3      	str	r3, [r0, #44]	@ 0x2c
   hfdcan1.Init.NominalPrescaler = 20;
  8000ece:	6142      	str	r2, [r0, #20]
   hfdcan1.Init.DataPrescaler = 20;
