@@ -672,7 +672,7 @@ https://forge.hackclub.com/reels/148
 
 __HELLFUCKINGYEAH__
 
-_It is fully autonomus byt the way_
+_It is fully autonomus byt the way... And its only 40% power!_
 
 _nvm hers image, AI is mad at me for not having one_
 ![img1](journalMedia/07-13_01.jpg)
