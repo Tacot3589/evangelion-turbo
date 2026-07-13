@@ -3,23 +3,25 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
-		<item value="CAN_Duty"/>
-		<item value="CCR"/>
-		<item value="CAN_TX"/>
-		<item value="Motor_Control"/>
-		<item value="SET_MOTOR"/>
-		<item value="DIR_P"/>
+		<item value="DING_DING"/>
+		<item value="CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG"/>
 		<item value="TIM2-&gt;CCR2"/>
-		<item value="FET_Temperature "/>
-		<item value="NTC_SEries_resistor"/>
-		<item value="NTC_Nominal_Resistance"/>
-		<item value="FET_Temperature"/>
-		<item value="Motor_Error"/>
-		<item value="CAN_Duty "/>
-		<item value="Actual_Duty"/>
-		<item value="CAN_RX"/>
+		<item value="TIM2-&gt;CCR1"/>
+		<item value="Actual_duty"/>
+		<item value="CAN_TX"/>
+		<item value="CAN_TX_OVERFLOW"/>
+		<item value="CAN_RX_OVERFLOW"/>
+		<item value="dupa2"/>
+		<item value="dupa3 ="/>
+		<item value="dupa ="/>
+		<item value="dupa3="/>
+		<item value="extern"/>
+		<item value="HardFault_Handler"/>
+		<item value="HAL_TIM"/>
 	</list>
 	<list key="replacehistory">
+		<item value="TIM2-&gt;CCR1"/>
+		<item value="TIM2-&gt;CCR2"/>
 		<item value="TASK_BEFORE_ATTACK"/>
 		<item value="BATTERY_CONSTANT"/>
 		<item value="RX"/>

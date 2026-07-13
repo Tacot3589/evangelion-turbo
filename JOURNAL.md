@@ -619,4 +619,38 @@ Imagesss!
 ![img6](journalMedia/07-11_06.jpg)
 **Total time spent: 10.3 hours**
 
+# July 12: It is literally bright outside lol
 
+Today was a big day. Kidding. Just a long day lol.
+From morning to about 7pm i was trying everything to make CAN work. It was warking flawlessly on one PCB and not on other. In the proces i touched +12v onto +3.3v and broke mcu. Good i have bought 4pieces of this exact mcu from ali like a month ago... right!
+WROOOOONG! They were all wrong! I soldered one and for another long fucking work time, without realising was trying to CAN... on like 2AM i realised that this might be beacouse of aliexpress mcu. It didnt even cross my mind, beacuse they looked good!
+When trying to initialize interrupts and timers mcu just stopps working... With light code, without anything, just while-loop there were no problemos my friendos....
+
+So ye, after that i just joinked every mcu i had on my driver, soldering, desoldering, soldering, desoldering, soldering... and then! To my suprise! Last one was just working! one from batch of 4. 25% of working mcu. 75% Dead on arrival.
+Hellye. So it just worked. What about second driver? I had to take serious decision. Desolder mcu from my other robot, and make it unusable or joinked this robot... Yk what i have done. OFC WE ARE DOIN RISKY WAY!
+
+So after soldering and desoldering and cooking this poor PCB work like another one and a holf an hour (remember, this is ufqfpn-48, so very small pads, not so easy to solder) i got everyhitng to work. 
+
+from 3.30AM to 4AM i was just clearing up code from testing and "trying to fix" leftovers. I will remember this night forever lol.
+
+**BBBIG LESSON FOR EVEYRONE:**
+**TRY NO TO BUY IMPORTANT ICs FROM ALIEXPRESS - THEY CAN SCAM YOU**
+*resistor, capacitors, and other easy/passive components are okay, but VERY FUCKING IMPORTANT MCU might not be best idea to aliexpress*
+
+Ahh yeee, and i got all line and distance sensors soldered and hooked up!
+
+lapse froze and broke at 12hrs of recording... I realised this after a loooong time lol :skulk:. I started working around 11.30 in the morning and finished about 4.00 at night, with about two one hour break, lets add half an hour for stuff like eating snacks etc...
+https://lapse.hackclub.com/timelapse/SSPbA1fPo_17
+https://lapse.hackclub.com/timelapse/Cs3l5lJ24dIN
+
+Imagesss!
+![img1](journalMedia/07-12_01.jpg)
+![img2](journalMedia/07-12_02.jpg)
+![img3](journalMedia/07-12_03.jpg)
+![img4](journalMedia/07-12_04.jpg)
+![img5](journalMedia/07-12_05.jpg)
+![img6](journalMedia/07-12_06.jpg)
+**Total time spent: 14 hours**
+
+
+# July 3: Last day before going offline for a week!

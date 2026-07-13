@@ -268,15 +268,15 @@ int main(void)
   MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
 
-
   CAN_Filter.IdType = FDCAN_STANDARD_ID;
   CAN_Filter.FilterIndex = 0;
-  CAN_Filter.FilterType = FDCAN_FILTER_DISABLE;
+  CAN_Filter.FilterType = FDCAN_FILTER_MASK;
   CAN_Filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
   CAN_Filter.FilterID1 = 0;
   CAN_Filter.FilterID2 = 0;
-  if(HAL_FDCAN_ConfigFilter(&hfdcan1, &CAN_Filter) != HAL_OK)
-	  Error_Handler();
+  if (HAL_FDCAN_ConfigFilter(&hfdcan1, &CAN_Filter) != HAL_OK)
+      Error_Handler();
+
 
 	if(MACHINE_CHOICE == 1)
 		SELF_CAN_ID = CAN_ID_DRV1;
@@ -330,11 +330,20 @@ int main(void)
 
 
 	//Initialize CAN
+	CAN_TX[0]=0xff;
+	CAN_TX[1]=0xff;
+	CAN_TX[2]=0xff;
+	CAN_TX[3]=0xff;
+	CAN_TX[4]=0xff;
+	CAN_TX[5]=0xff;
+	CAN_TX[6]=0xff;
+	CAN_TX[7]=0xff;
+
 	if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
 		Error_Handler();
 	dupa=2;
 	HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
-	//HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 
 	//timers
 	__HAL_TIM_SET_COUNTER(&htim17, 0);
@@ -345,14 +354,12 @@ int main(void)
 	__HAL_TIM_CLEAR_FLAG(&htim16, TIM_FLAG_UPDATE);
 	__HAL_TIM_CLEAR_FLAG(&htim15, TIM_FLAG_UPDATE);
 
-	if(HAL_TIM_Base_Start_IT(&htim17) != HAL_OK) //10KHz, main
+	if(HAL_TIM_Base_Start_IT(&htim17) != HAL_OK) //20KHz, main
 		Error_Handler();
-	if(HAL_TIM_Base_Start_IT(&htim16) != HAL_OK) //1Khz, can response
+	if(HAL_TIM_Base_Start_IT(&htim16) != HAL_OK) //10Khz, can response
 			Error_Handler();
 	if(HAL_TIM_Base_Start_IT(&htim15) != HAL_OK) //200Hz, watchdog
 		Error_Handler();
-
-
 
 
 	dupa=2137;
@@ -362,6 +369,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
 	dupa++;
 
     /* USER CODE END WHILE */
@@ -471,7 +479,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_92CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
@@ -539,7 +547,7 @@ static void MX_ADC2_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_3;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_92CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
@@ -619,17 +627,17 @@ static void MX_FDCAN1_Init(void)
   hfdcan1.Init.ClockDivider = FDCAN_CLOCK_DIV1;
   hfdcan1.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
   hfdcan1.Init.Mode = FDCAN_MODE_NORMAL;
-  hfdcan1.Init.AutoRetransmission = DISABLE;
+  hfdcan1.Init.AutoRetransmission = ENABLE;
   hfdcan1.Init.TransmitPause = DISABLE;
   hfdcan1.Init.ProtocolException = DISABLE;
-  hfdcan1.Init.NominalPrescaler = 17;
+  hfdcan1.Init.NominalPrescaler = 20;
   hfdcan1.Init.NominalSyncJumpWidth = 1;
-  hfdcan1.Init.NominalTimeSeg1 = 15;
-  hfdcan1.Init.NominalTimeSeg2 = 4;
-  hfdcan1.Init.DataPrescaler = 17;
+  hfdcan1.Init.NominalTimeSeg1 = 14;
+  hfdcan1.Init.NominalTimeSeg2 = 2;
+  hfdcan1.Init.DataPrescaler = 20;
   hfdcan1.Init.DataSyncJumpWidth = 1;
-  hfdcan1.Init.DataTimeSeg1 = 15;
-  hfdcan1.Init.DataTimeSeg2 = 4;
+  hfdcan1.Init.DataTimeSeg1 = 14;
+  hfdcan1.Init.DataTimeSeg2 = 2;
   hfdcan1.Init.StdFiltersNbr = 0;
   hfdcan1.Init.ExtFiltersNbr = 0;
   hfdcan1.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
@@ -655,6 +663,7 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 0 */
 
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
   TIM_OC_InitTypeDef sConfigOC = {0};
 
@@ -667,6 +676,15 @@ static void MX_TIM2_Init(void)
   htim2.Init.Period = 999;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
   if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
   {
     Error_Handler();
@@ -711,9 +729,9 @@ static void MX_TIM15_Init(void)
 
   /* USER CODE END TIM15_Init 1 */
   htim15.Instance = TIM15;
-  htim15.Init.Prescaler = 85-1;
+  htim15.Init.Prescaler = 850-1;
   htim15.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim15.Init.Period = 99;
+  htim15.Init.Period = 999;
   htim15.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim15.Init.RepetitionCounter = 0;
   htim15.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -754,9 +772,9 @@ static void MX_TIM16_Init(void)
 
   /* USER CODE END TIM16_Init 1 */
   htim16.Instance = TIM16;
-  htim16.Init.Prescaler = 17-1;
+  htim16.Init.Prescaler = 170-1;
   htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim16.Init.Period = 999;
+  htim16.Init.Period = 99;
   htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim16.Init.RepetitionCounter = 0;
   htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -786,7 +804,7 @@ static void MX_TIM17_Init(void)
 
   /* USER CODE END TIM17_Init 1 */
   htim17.Instance = TIM17;
-  htim17.Init.Prescaler = 17-1;
+  htim17.Init.Prescaler = 85-1;
   htim17.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim17.Init.Period = 99;
   htim17.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -866,15 +884,15 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	if(htim->Instance == TIM17) // 10 000Hz
+	if(htim->Instance == TIM17) // 20Khz
 	{
 		Interrupt10kHz();
 	}
-	if(htim->Instance == TIM16 && CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG == 1) // 1Khz
+	if(htim->Instance == TIM16 && CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG == TRUE) // 10Khz
 	{
 		PREPARE_AND_SEND_CAN_RESPONSE_IT();
 		//clear notification flag
-		CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG=0;
+		CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG=FALSE;
 	}
 	if(htim->Instance == TIM15) // 200Hz
 	{
@@ -1147,35 +1165,26 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 {
 
 	CAN_STATUS_FLAG = 1;
-
-
-	if ((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) == 0U) //no new messages in fifo i guess
-		return;
-
-	if (CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG == 1) //didnt work on buffer
-		return;
+	dupa3++;
 
 	while (HAL_FDCAN_GetRxFifoFillLevel(hfdcan, FDCAN_RX_FIFO0) > 0U)
 	{
-		dupa3++;
-		if(CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG == 1)
+		if(CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG == TRUE)
 		{
 			CAN_RX_OVERFLOW = 1;
 		}
-		else if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &CAN_RX_Header, CAN_RX) != HAL_OK)
+		else if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &CAN_RX_Header, CAN_RX) != HAL_OK) //todo
 		{
 			break;
 		}
-		else if (CAN_RX[0] != SELF_CAN_ID)
-        {
-            continue;
-        }
-		else
+		else if (CAN_RX[0] == SELF_CAN_ID)
 		{
-			CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG = 1;
+			CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG = TRUE;
 		}
 	}
-	 HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+
+	HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+	return;
 }
 
 void Interrupt10kHz(void)

@@ -1,4 +1,88 @@
-22:46:56 **** Incremental Build of configuration Debug for project motor_driver ****
+00:37:38 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O3 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/stm32g4xx_hal_msp.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O3 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32g4xx_hal_msp.d" -MT"Core/Src/stm32g4xx_hal_msp.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32g4xx_hal_msp.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/stm32g4xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O3 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32g4xx_it.d" -MT"Core/Src/stm32g4xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32g4xx_it.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:301:39: warning: passing argument 2 of 'HAL_ADC_Start_DMA' from incompatible pointer type [-Wincompatible-pointer-types]
+  301 |         if (HAL_ADC_Start_DMA(&hadc1, ADC1_BUFFER, 2) != HAL_OK)
+      |                                       ^~~~~~~~~~~
+      |                                       |
+      |                                       volatile uint16_t * {aka volatile short unsigned int *}
+In file included from ../Core/Inc/stm32g4xx_hal_conf.h:228,
+                 from ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_adc.h:2242:78: note: expected 'uint32_t *' {aka 'long unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
+ 2242 | HAL_StatusTypeDef       HAL_ADC_Start_DMA(ADC_HandleTypeDef *hadc, uint32_t *pData, uint32_t Length);
+      |                                                                    ~~~~~~~~~~^~~~~
+../Core/Src/main.c:306:39: warning: passing argument 2 of 'HAL_ADC_Start_DMA' from incompatible pointer type [-Wincompatible-pointer-types]
+  306 |         if (HAL_ADC_Start_DMA(&hadc2, ADC2_BUFFER, 1) != HAL_OK)
+      |                                       ^~~~~~~~~~~
+      |                                       |
+      |                                       volatile uint16_t * {aka volatile short unsigned int *}
+../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_adc.h:2242:78: note: expected 'uint32_t *' {aka 'long unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
+ 2242 | HAL_StatusTypeDef       HAL_ADC_Start_DMA(ADC_HandleTypeDef *hadc, uint32_t *pData, uint32_t Length);
+      |                                                                    ~~~~~~~~~~^~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "motor_driver.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\motor_driver\STM32G431KBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_driver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: motor_driver.elf
+ 
+arm-none-eabi-size  motor_driver.elf 
+arm-none-eabi-objdump -h -S motor_driver.elf  > "motor_driver.list"
+   text	   data	    bss	    dec	    hex	filename
+  20056	    104	   2984	  23144	   5a68	motor_driver.elf
+Finished building: default.size.stdout
+ 
+Finished building: motor_driver.list
+ 
+00:37:41 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20056	    104	   2984	  23144	   5a68	motor_driver.elf
+Finished building: default.size.stdout
+ 
+00:43:27 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O3 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/stm32g4xx_hal_msp.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O3 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32g4xx_hal_msp.d" -MT"Core/Src/stm32g4xx_hal_msp.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32g4xx_hal_msp.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/stm32g4xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O3 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32g4xx_it.d" -MT"Core/Src/stm32g4xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32g4xx_it.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:301:39: warning: passing argument 2 of 'HAL_ADC_Start_DMA' from incompatible pointer type [-Wincompatible-pointer-types]
+  301 |         if (HAL_ADC_Start_DMA(&hadc1, ADC1_BUFFER, 2) != HAL_OK)
+      |                                       ^~~~~~~~~~~
+      |                                       |
+      |                                       volatile uint16_t * {aka volatile short unsigned int *}
+In file included from ../Core/Inc/stm32g4xx_hal_conf.h:228,
+                 from ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_adc.h:2242:78: note: expected 'uint32_t *' {aka 'long unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
+ 2242 | HAL_StatusTypeDef       HAL_ADC_Start_DMA(ADC_HandleTypeDef *hadc, uint32_t *pData, uint32_t Length);
+      |                                                                    ~~~~~~~~~~^~~~~
+../Core/Src/main.c:306:39: warning: passing argument 2 of 'HAL_ADC_Start_DMA' from incompatible pointer type [-Wincompatible-pointer-types]
+  306 |         if (HAL_ADC_Start_DMA(&hadc2, ADC2_BUFFER, 1) != HAL_OK)
+      |                                       ^~~~~~~~~~~
+      |                                       |
+      |                                       volatile uint16_t * {aka volatile short unsigned int *}
+../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_adc.h:2242:78: note: expected 'uint32_t *' {aka 'long unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
+ 2242 | HAL_StatusTypeDef       HAL_ADC_Start_DMA(ADC_HandleTypeDef *hadc, uint32_t *pData, uint32_t Length);
+      |                                                                    ~~~~~~~~~~^~~~~
+../Core/Src/main.c:366:3: warning: "/*" within comment [-Wcomment]
+  366 |   /* USER CODE END 2 */
+      |    
+arm-none-eabi-gcc -gdwarf-4 -o "motor_driver.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\motor_driver\STM32G431KBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_driver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: motor_driver.elf
+ 
+arm-none-eabi-size  motor_driver.elf 
+arm-none-eabi-objdump -h -S motor_driver.elf  > "motor_driver.list"
+   text	   data	    bss	    dec	    hex	filename
+  19996	    104	   2984	  23084	   5a2c	motor_driver.elf
+Finished building: default.size.stdout
+ 
+Finished building: motor_driver.list
+ 
+00:49:19 **** Incremental Build of configuration Debug for project motor_driver ****
 make -j16 all 
 arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O3 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
 ../Core/Src/main.c: In function 'main':
@@ -28,15 +112,85 @@ Finished building target: motor_driver.elf
 arm-none-eabi-size  motor_driver.elf 
 arm-none-eabi-objdump -h -S motor_driver.elf  > "motor_driver.list"
    text	   data	    bss	    dec	    hex	filename
-  20168	    104	   2984	  23256	   5ad8	motor_driver.elf
+  20244	    104	   2984	  23332	   5b24	motor_driver.elf
 Finished building: default.size.stdout
  
 Finished building: motor_driver.list
  
-22:46:58 **** Incremental Build of configuration Debug for project motor_driver ****
+01:49:28 **** Incremental Build of configuration Debug for project motor_driver ****
 make -j16 all 
 arm-none-eabi-size  motor_driver.elf 
    text	   data	    bss	    dec	    hex	filename
-  20168	    104	   2984	  23256	   5ad8	motor_driver.elf
+  20244	    104	   2984	  23332	   5b24	motor_driver.elf
+Finished building: default.size.stdout
+ 
+01:49:44 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20244	    104	   2984	  23332	   5b24	motor_driver.elf
+Finished building: default.size.stdout
+ 
+02:03:13 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20244	    104	   2984	  23332	   5b24	motor_driver.elf
+Finished building: default.size.stdout
+ 
+02:49:45 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20244	    104	   2984	  23332	   5b24	motor_driver.elf
+Finished building: default.size.stdout
+ 
+02:50:11 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20244	    104	   2984	  23332	   5b24	motor_driver.elf
+Finished building: default.size.stdout
+ 
+02:54:06 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20244	    104	   2984	  23332	   5b24	motor_driver.elf
+Finished building: default.size.stdout
+ 
+02:54:28 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20244	    104	   2984	  23332	   5b24	motor_driver.elf
+Finished building: default.size.stdout
+ 
+02:55:05 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20244	    104	   2984	  23332	   5b24	motor_driver.elf
+Finished building: default.size.stdout
+ 
+02:55:49 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20244	    104	   2984	  23332	   5b24	motor_driver.elf
+Finished building: default.size.stdout
+ 
+03:06:44 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20244	    104	   2984	  23332	   5b24	motor_driver.elf
+Finished building: default.size.stdout
+ 
+03:31:05 **** Incremental Build of configuration Debug for project motor_driver ****
+make -j16 all 
+arm-none-eabi-size  motor_driver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20244	    104	   2984	  23332	   5b24	motor_driver.elf
 Finished building: default.size.stdout
  

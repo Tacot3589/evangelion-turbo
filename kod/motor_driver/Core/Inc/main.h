@@ -67,8 +67,6 @@ void Error_Handler(void);
 #define CURRENT_GPIO_Port GPIOA
 #define VBAT_Pin GPIO_PIN_0
 #define VBAT_GPIO_Port GPIOB
-#define PWM_Pin GPIO_PIN_15
-#define PWM_GPIO_Port GPIOA
 #define DIR_Pin GPIO_PIN_3
 #define DIR_GPIO_Port GPIOB
 #define nFAULT_Pin GPIO_PIN_6
