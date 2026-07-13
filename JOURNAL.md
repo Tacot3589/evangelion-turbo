@@ -671,4 +671,6 @@ https://forge.hackclub.com/reels/148
 
 ## HELLFUCKINGYEAH
 
+**It is fully autonomus byt the way**
+
 **Total time spent: 1.5 hours**
