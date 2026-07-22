@@ -25,6 +25,12 @@
   </a>
 </p>
 
+<p align="center">
+  <a href="https://www.omc-stepperonline.com/">
+    <img src="./ThanksTo_assets/OMC.png" alt="OMC StepperOnline" height="70">
+  </a>
+</p>
+
 ---
 
 # Evangelion turbo - my biggest project and most complicated robot yet - succesor to Evangelion

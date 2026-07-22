@@ -143,23 +143,6 @@ GenerateClassCluster=0
 DocumentUniqueId=RUGUWERB
 
 [Document7]
-DocumentPath=EPROM.SchDoc
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=7
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=0
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-GenerateClassCluster=0
-DocumentUniqueId=OZAVODDC
-
-[Document8]
 DocumentPath=EPROM.Harness
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -176,7 +159,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document9]
+[Document8]
 DocumentPath=IMU.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -193,7 +176,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=EBABDWAP
 
-[Document10]
+[Document9]
 DocumentPath=IMU.Harness
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -210,7 +193,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document11]
+[Document10]
 DocumentPath=evangelion_turbo_PCB.OutJob
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -227,7 +210,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document12]
+[Document11]
 DocumentPath=evangelion_turbo_PCB.Annotation
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -244,7 +227,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document13]
+[Document12]
 DocumentPath=MCU_2.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -261,7 +244,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=PTZKDYTT
 
-[Document14]
+[Document13]
 DocumentPath=Interface.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -278,7 +261,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=LWYICFVB
 
-[Document15]
+[Document14]
 DocumentPath=Interface.Harness
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -295,7 +278,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document16]
+[Document15]
 DocumentPath=OledAndLed.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -312,7 +295,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=YMVCHLYB
 
-[Document17]
+[Document16]
 DocumentPath=OledAndLed.Harness
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -329,7 +312,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document18]
+[Document17]
 DocumentPath=PWRButton.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -346,7 +329,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=WPHBGWAZ
 
-[Document19]
+[Document18]
 DocumentPath=Sensor_connectors.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -363,7 +346,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=DQHWPFKJ
 
-[Document20]
+[Document19]
 DocumentPath=Sensor_connectors.Harness
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -380,7 +363,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document21]
+[Document20]
 DocumentPath=Start_mod.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -397,7 +380,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=BMZIVYVA
 
-[Document22]
+[Document21]
 DocumentPath=Start_mod.Harness
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -414,7 +397,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document23]
+[Document22]
 DocumentPath=PCB.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -431,7 +414,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=LTTIPNLX
 
-[Document24]
+[Document23]
 DocumentPath=Uart_LowPass_HighFreqFilter.Harness
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -448,7 +431,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document25]
+[Document24]
 DocumentPath=Buzzer.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -465,7 +448,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=XLQDOGCR
 
-[Document26]
+[Document25]
 DocumentPath=..\PCB-kit.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1

@@ -3,23 +3,24 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
-		<item value="Settings.ALWAYS_IN_BATTLE"/>
-		<item value="BATTLE"/>
-		<item value="TIM16"/>
-		<item value="UART5"/>
-		<item value="TIM_CHANNEL"/>
-		<item value="nFautl"/>
-		<item value="TIM15"/>
-		<item value="CAN_TX_OVERFLOW"/>
-		<item value="CAN_TX[1]=0x"/>
-		<item value="CAN_TX"/>
-		<item value="CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_7;"/>
-		<item value="DING_DING"/>
-		<item value="CAN_NEW_MESSEGE_NOTIFICATION_DING_DING_DONG"/>
-		<item value="TIM2-&gt;CCR2"/>
-		<item value="TIM2-&gt;CCR1"/>
+		<item value="BATTERY_CONSTANT"/>
+		<item value="MCU"/>
+		<item value="WATCHDOG()"/>
+		<item value="4"/>
+		<item value="-1"/>
+		<item value="FREQ_STARTING"/>
+		<item value="width()"/>
+		<item value="#if"/>
+		<item value="COLUMNADDR"/>
+		<item value="SSD1306_GEOMETRY"/>
+		<item value="SSD1306_GEOMETRY "/>
+		<item value="Geometry"/>
+		<item value="SSD1306_BUFFER_SIZ"/>
+		<item value="GEOME"/>
+		<item value="ssd1306_UpdateScreen"/>
 	</list>
 	<list key="replacehistory">
+		<item value="init_text_height"/>
 		<item value="TIM2-&gt;CCR1"/>
 		<item value="TIM2-&gt;CCR2"/>
 		<item value="TASK_BEFORE_ATTACK"/>

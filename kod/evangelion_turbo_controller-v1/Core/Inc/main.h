@@ -93,6 +93,10 @@ void Error_Handler(void);
 #define CAN_TX_GPIO_Port GPIOA
 #define BUZZ_PWM_Pin GPIO_PIN_4
 #define BUZZ_PWM_GPIO_Port GPIOB
+#define OLED_SCLB8_Pin GPIO_PIN_8
+#define OLED_SCLB8_GPIO_Port GPIOB
+#define OLED_SDAB9_Pin GPIO_PIN_9
+#define OLED_SDAB9_GPIO_Port GPIOB
 #define START_MOD_IR_2_Pin GPIO_PIN_0
 #define START_MOD_IR_2_GPIO_Port GPIOE
 

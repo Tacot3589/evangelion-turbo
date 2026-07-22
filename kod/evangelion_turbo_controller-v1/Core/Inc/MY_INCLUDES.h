@@ -9,10 +9,6 @@
 #define INC_MY_INCLUDES_H_
 
 
-//OPTIONS
-#define FREQ_STARTING 500
-#define FREQ_STEP_INIT 50
-
 
 //==================================================== OLED
 #define _ssd1306_SetCursor(x, y) ssd1306_SetCursor(y, x)
@@ -39,19 +35,14 @@
 
 //==================================================== SENSORS
 #define MIN_AMP_TRESCHOLD 200
-#define SWITCH_SIDE_LIDARS 0
-#define SWITCH_LIDARS 1 //uart1 is left; uart2 is right normally
-#define MAX_RETRIES_LIDARS_INIT 5
-#define LIDARS_INIT_UART_TIMEOUT 500
+#define MAX_RETRIES_LIDARS_INIT 2
+#define LIDARS_INIT_UART_TIMEOUT 200
 #define LIDARS_FILTERING_ARRAY_SIZE 11
 #define MAX_LIDAR_DISTANCE 40
 #define MIN_LIDAR_DISTANCE 5
 #define ACKNOWLEDGE_LIDAR_DISTANCE 30
-#define INTRO_MIN_DISTANCE_FOR_LAST_SEEN 3
+#define INTRO_MIN_DISTANCE_FOR_LAST_SEEN 5
 #define WHITE_LINE_TRESCHOLD 3700 //white is less
-#define SWITCH_LINE_SENSORS 0
-
-#define IMU_INIT_I2C_TIMEOUT 500
 
 
 //==================================================== START SETUP

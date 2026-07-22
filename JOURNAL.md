@@ -656,7 +656,7 @@ Imagesss!
 **Total time spent: 15 hours**
 
 
-# July 3: Last day before going offline for a week!
+# July 13: Last day before going offline for a week!
 
 __ITS FLIPPING WORKS GUYS__
 
@@ -677,3 +677,16 @@ _It is fully autonomus byt the way... And its only 40% power!_
 _nvm hers image, AI is mad at me for not having one_
 ![img1](journalMedia/07-13_01.jpg)
 **Total time spent: 1.5 hours**
+
+
+
+# July 20: 67
+
+got oled to working ;-;
+i got some problems beacuse my library didnt allow 64x32 oled, but after a lot of tinkering and help of unc google and chatgpt i managed to make it work!
+Also all of my sensors, but one are working!
+
+https://lapse.hackclub.com/timelapse/UPXGVnVu585F
+![img1](journalMedia/07-20_01.jpg)
+**Total time spent: 5.5 hours**
+6767
