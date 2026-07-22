@@ -88,11 +88,14 @@
 #define REVERSE							8		//
 
 
+#define ABS(x) ((x) < 0 ? -(x) : (x))
 
 #define CAN_ID_CTRL  60
 #define CAN_ID_DRV0  67
 #define CAN_ID_DRV1  69
-#define MACHINE_CHOICE 1
+#define MACHINE_CHOICE 0
+
+
 // Error MAP
 //		Bit 0		| 		Bit 1		| 		Bit 2		| 		Bit 3		| 		Bit 4		| 		Bit 5		| 		Bit 6		| 		Bit 7		|
 //  Critical Error	|  LD Over-current	| 	   Not Used		|  FET Temperature	| Motor Temperature	|	SD Over current |	   Not Used		| 	Motor Status	|
@@ -115,6 +118,7 @@ DAC_HandleTypeDef hdac1;
 FDCAN_HandleTypeDef hfdcan1;
 
 TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim8;
 TIM_HandleTypeDef htim15;
 TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
@@ -147,8 +151,8 @@ uint8_t Motor_Temp_Limit;
 uint8_t FET_Temp_Limit;
 uint8_t Max_Current_Peak;
 uint8_t Max_Current_Continous;
-uint8_t Max_Acceleration;
-uint8_t Max_Deceleration;
+uint8_t Max_Acceleration=0;
+uint8_t Max_Deceleration=0;
 
 uint8_t CAN_Acceleration;
 int16_t CAN_Duty;
@@ -180,7 +184,6 @@ static uint8_t SELF_CAN_ID;
 // OLD Variables
 // Current measurements for debug - to implement in functions
 volatile uint32_t 		CurrentA_Average = 0;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -195,6 +198,7 @@ static void MX_TIM2_Init(void);
 static void MX_TIM17_Init(void);
 static void MX_TIM15_Init(void);
 static void MX_TIM16_Init(void);
+static void MX_TIM8_Init(void);
 /* USER CODE BEGIN PFP */
 
 void Interrupt10kHz(void);
@@ -212,6 +216,7 @@ void MovingAverage(uint16_t Measured_Current);
 int16_t Motor_Control(int16_t Duty, uint8_t Motor);
 int16_t OverCurrent_Compensation(int16_t Duty, uint8_t Motor);
 int16_t OverTemp_Compensation(int16_t Duty, uint8_t Motor);
+int16_t Acceleration_Compensation(int16_t Duty, uint8_t Motor);
 uint8_t LDOC_check(uint8_t Motor);
 void EmergencyShutdown(void);
 
@@ -266,6 +271,7 @@ int main(void)
   MX_TIM17_Init();
   MX_TIM15_Init();
   MX_TIM16_Init();
+  MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
 
   CAN_Filter.IdType = FDCAN_STANDARD_ID;
@@ -707,6 +713,53 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 2 */
   HAL_TIM_MspPostInit(&htim2);
+
+}
+
+/**
+  * @brief TIM8 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM8_Init(void)
+{
+
+  /* USER CODE BEGIN TIM8_Init 0 */
+
+  /* USER CODE END TIM8_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM8_Init 1 */
+
+  /* USER CODE END TIM8_Init 1 */
+  htim8.Instance = TIM8;
+  htim8.Init.Prescaler = 17000;
+  htim8.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim8.Init.Period = 65535;
+  htim8.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim8.Init.RepetitionCounter = 0;
+  htim8.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+  if (HAL_TIM_Base_Init(&htim8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim8, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterOutputTrigger2 = TIM_TRGO2_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim8, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM8_Init 2 */
+
+  /* USER CODE END TIM8_Init 2 */
 
 }
 
@@ -1311,7 +1364,7 @@ int16_t Motor_Control(int16_t Duty, uint8_t MOTOR)
 	Duty = OverTemp_Compensation(Duty, MOTOR);
 
 	// Execute Ramp
-
+	Duty = Acceleration_Compensation(Duty, MOTOR);
 	// Apply new Duty to motor
 	Set_Motor(MOTOR, Duty);
 
@@ -1400,6 +1453,46 @@ int16_t OverTemp_Compensation(int16_t Duty, uint8_t Motor)
 	return Duty;
 }
 
+int16_t Acceleration_Compensation(int16_t Duty, uint8_t MOTOR)
+{
+    static int16_t current_duty = 0;
+    static int16_t start_duty = 0;
+    static int16_t target_duty = 0;
+    static int16_t ramp_delta = 0;
+    uint16_t t_ms;
+
+    if(Max_Acceleration == 0)
+    {
+        return Duty;
+    }
+
+    t_ms = __HAL_TIM_GET_COUNTER(&htim8) / 10;
+
+    if(target_duty != Duty)
+    {
+        current_duty = start_duty + (int32_t)ramp_delta * t_ms / Max_Acceleration;
+
+        start_duty = current_duty;
+        target_duty = Duty;
+        ramp_delta = target_duty - start_duty;
+
+        __HAL_TIM_SET_COUNTER(&htim8, 0);
+        HAL_TIM_Base_Start(&htim8);
+
+        return current_duty;
+    }
+
+    if(t_ms >= Max_Acceleration)
+    {
+        HAL_TIM_Base_Stop(&htim8);
+        current_duty = target_duty;
+        return current_duty;
+    }
+
+    current_duty = start_duty + (int32_t)ramp_delta * t_ms / Max_Acceleration;
+
+    return current_duty;
+}
 
 void EmergencyShutdown(void)
 {
@@ -1432,7 +1525,8 @@ uint8_t LDOC_check(uint8_t Motor)
 
 void Set_Motor (uint8_t motor, int16_t velocity)
 {
-//	uint16_t CCR_Value;
+
+	//	uint16_t CCR_Value;
 	if (velocity >= -1000 && velocity <=1000)
 	{
 		if(velocity >= 0 )			//	Forward
@@ -1486,6 +1580,8 @@ void Calculate_Temp (void)
 	}
 	else
 		FET_Temperature = 0;
+
+	Motor_Temperature = FET_Temperature;
 }
 /* USER CODE END 4 */
 

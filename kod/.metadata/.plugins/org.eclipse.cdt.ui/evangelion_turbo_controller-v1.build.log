@@ -1,52 +1,10 @@
-22:18:08 **** Incremental Build of configuration Debug for project evangelion_turbo_controller-v1 ****
+21:42:04 **** Incremental Build of configuration Debug for project evangelion_turbo_controller-v1 ****
 make -j16 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H562xx -c -I../Core/Inc -I../Core/Src -I../Drivers/STM32H5xx_HAL_Driver/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I../Drivers/CMSIS/Include -Ofast -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c: In function 'Error_Handler':
-../Core/Src/main.c:2034:35: warning: passing argument 1 of '_ssd1306_WriteInTheMiddle' makes pointer from integer without a cast [-Wint-conversion]
- 2034 |         _ssd1306_WriteInTheMiddle(ERROR_FLAG, 10, SMALL);
-      |                                   ^~~~~~~~~~
-      |                                   |
-      |                                   int16_t {aka short int}
-../Core/Src/main.c:1977:38: note: expected 'char *' but argument is of type 'int16_t' {aka 'short int'}
- 1977 | void _ssd1306_WriteInTheMiddle(char *text, uint8_t y, uint8_t font)
-      |                                ~~~~~~^~~~
-../Core/Src/main.c: At top level:
-../Core/Src/main.c:1472:6: warning: 'BATTLE' defined but not used [-Wunused-function]
- 1472 | void BATTLE()
-      |      ^~~~~~
-../Core/Src/main.c:1358:6: warning: 'TASK_BEFORE_ATTACK' defined but not used [-Wunused-function]
- 1358 | void TASK_BEFORE_ATTACK()
-      |      ^~~~~~~~~~~~~~~~~~
-../Core/Src/main.c: In function 'HAL_UARTEx_RxEventCallback':
-../Core/Src/main.c:1668:41: warning: 'Dist' may be used uninitialized [-Wmaybe-uninitialized]
- 1668 |                 window1_Dist[idx1_Dist] = Dist;
-      |                 ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
-../Core/Src/main.c:1627:18: note: 'Dist' was declared here
- 1627 |         uint16_t Dist, Temp, Amp;
-      |                  ^~~~
-../Core/Src/main.c:1692:36: warning: 'Temp' may be used uninitialized [-Wmaybe-uninitialized]
- 1692 |                 BackLeft.LidarTemp = Temp;
-      |                 ~~~~~~~~~~~~~~~~~~~^~~~~~
-../Core/Src/main.c:1627:24: note: 'Temp' was declared here
- 1627 |         uint16_t Dist, Temp, Amp;
-      |                        ^~~~
-../Core/Src/main.c:1669:39: warning: 'Amp' may be used uninitialized [-Wmaybe-uninitialized]
- 1669 |                 window1_Amp[idx1_Amp] = Amp;
-      |                 ~~~~~~~~~~~~~~~~~~~~~~^~~~~
-../Core/Src/main.c:1627:30: note: 'Amp' was declared here
- 1627 |         uint16_t Dist, Temp, Amp;
-      |                              ^~~
-arm-none-eabi-gcc -o "evangelion_turbo_controller-v1.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_controller-v1\STM32H562RIVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_controller-v1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: evangelion_turbo_controller-v1.elf
- 
 arm-none-eabi-size  evangelion_turbo_controller-v1.elf 
-arm-none-eabi-objdump -h -S evangelion_turbo_controller-v1.elf  > "evangelion_turbo_controller-v1.list"
    text	   data	    bss	    dec	    hex	filename
-  64368	     36	   4380	  68784	  10cb0	evangelion_turbo_controller-v1.elf
+  63460	     36	   4388	  67884	  1092c	evangelion_turbo_controller-v1.elf
 Finished building: default.size.stdout
  
-Finished building: evangelion_turbo_controller-v1.list
- 
 
-22:18:09 Build Finished. 0 errors, 6 warnings. (took 1s.119ms)
+21:42:05 Build Finished. 0 errors, 0 warnings. (took 151ms)
 

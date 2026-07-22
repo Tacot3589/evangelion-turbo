@@ -35,19 +35,69 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define CAN_SELF_ID 0x0A
-#define CAN_MOTOR_DRIVER_A_ID 0x0B
-#define CAN_MOTOR_DRIVER_B_ID 0x0C
-
 #define DMA_HANDLE_UART1 &handle_GPDMA1_Channel1
 #define DMA_HANDLE_UART2 &handle_GPDMA1_Channel2
 #define DMA_HANDLE_UART4 &handle_GPDMA1_Channel4
 #define DMA_HANDLE_UART5 &handle_GPDMA1_Channel5
 
-
 #define CAN_ID_CTRL  60
 #define CAN_ID_DRV0  67
 #define CAN_ID_DRV1  69
+
+
+//==================================================== WORKING SETUP
+#define MAIN_FREQ 1000
+#define SIDE_FREQ 100
+#define OLED_FREQ 25
+#define true 1
+#define TRUE 1
+#define false 0
+#define FALSE 0
+#define NONE 0
+#define LEFT 1
+#define RIGHT 2
+
+
+//============etc
+#define ABS(x) ((x) < 0 ? -(x) : (x))
+
+
+//option IDs
+#define OPTION_ID_BATTERY 1
+#define OPTION_ID_START_MOD 2
+#define OPTION_ID_LUNA_DIST 3
+#define OPTION_ID_LUNA_AMP 4
+#define OPTION_ID_LINES 6
+#define OPTION_ID_ACCEL 7
+#define OPTION_ID_GYRO 8
+#define OPTION_ID_IMU_PEAK 9
+#define OPTION_ID_SET_MOTS 10
+#define OPTION_ID_DEBUG 11
+#define OPTION_ID_ATTACK_MODE 12
+
+//==================================================== BATTERY
+#define BATTERY_VOLTAGE_COMPENSATION 1
+#define MIN_BATTERY_VOLTAGE_PER_CELL 3.45
+#define Reference_Voltage				3.311		// V
+#define Voltage_Resistor_Top 			91.0		// kOhm
+#define Voltage_Resistor_Bottom  		10.0		// kOhm
+#define ADC_MAX_VALUE					4096
+
+
+//==================================================== OLED
+#define _ssd1306_SetCursor(x, y) ssd1306_SetCursor(y, x)
+#define BIG 1
+#define SMALL 0
+
+#define _ARR_UP '('
+#define _ARR_DOWN '@'
+#define _CHECKBOX_EMPTY '^'
+#define _CHECKBOX_CHECKED '$'
+#define _CHECKBOX_EMPTY_BIG ')'
+#define _CHECKBOX_CHECKED_BIG '\''
+#define _CANCEL '}'
+#define _APPLY '{'
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -143,8 +193,15 @@ typedef struct
 
 typedef struct
 {
+	uint8_t L;
+	uint8_t R;
+} Speed_directional_t;
+
+typedef struct
+{
 	Speed_t Requested;
 	Speed_t Set;
+	Speed_directional_t CAN;
 } MotorSpeed_t;
 
 typedef struct {
@@ -260,8 +317,10 @@ static void GET_LAST_SEEN_ROTATIONE(void);
 static void TASK_BEFORE_ATTACK(void);
 static void LED_BLINK_INTERUPT(void);
 static void SET_MOTORS(int8_t l, int8_t r);
-void _ssd1306_WriteInTheMiddle(char *text, uint8_t y, uint8_t font);
-void _ssd1306_WriteString(char* str, uint8_t font);
+static void _ssd1306_WriteInTheMiddle(char *text, uint8_t y, uint8_t font);
+static void _ssd1306_WriteString(char* str, uint8_t font);
+static void MOTOR_DRIVER_INIT(uint8_t DRV_SELF_ADDRESS);
+static uint8_t ARE_ELEMENTS_EQUAL(const uint8_t *a, const uint8_t *b, uint8_t n);
 static inline void DWT_Init(void);
 /* USER CODE END PFP */
 
@@ -315,7 +374,8 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
-  static uint8_t init_text_height = 12;
+  static uint8_t init_text_height = 0;
+  static uint8_t init_secondary_text_height = 20;
   static uint8_t init_everywhere_delay = 50;
 
 	//INTIT
@@ -333,6 +393,7 @@ int main(void)
 	//CAN FILTERS
 	ssd1306_Clear();
 	_ssd1306_WriteInTheMiddle("CAN", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("initialize", init_secondary_text_height, SMALL);
 	ssd1306_UpdateScreen();
 	HAL_Delay(init_everywhere_delay);
 	CAN_Filter.IdType = FDCAN_STANDARD_ID;
@@ -363,6 +424,7 @@ int main(void)
 
 	lastSeen = LEFT;
 
+
 	//GPIO LED MISC
 	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
 	PLAY_FREQ(actual_init_freq);
@@ -381,11 +443,38 @@ int main(void)
 	PLAY_FREQ(actual_init_freq);
 	if(Settings.DONT_INITIALIZE_LIDARS == FALSE)
 	{
-		LIDARS_INIT(&huart1, DMA_HANDLE_UART1, UART1_RX);
+		ssd1306_Clear();
+		_ssd1306_WriteInTheMiddle("LIDARS", init_text_height, BIG);
+		_ssd1306_WriteInTheMiddle("front right", init_secondary_text_height, SMALL);
+		ssd1306_UpdateScreen();
 		LIDARS_INIT(&huart2, DMA_HANDLE_UART2, UART2_RX);
-		//LIDARS_INIT(&huart4, DMA_HANDLE_UART4, UART4_RX);
+
+		ssd1306_Clear();
+		_ssd1306_WriteInTheMiddle("LIDARS", init_text_height, BIG);
+		_ssd1306_WriteInTheMiddle("front left", init_secondary_text_height, SMALL);
+		ssd1306_UpdateScreen();
 		LIDARS_INIT(&huart5, DMA_HANDLE_UART5, UART5_RX);
+
+		ssd1306_Clear();
+		_ssd1306_WriteInTheMiddle("LIDARS", init_text_height, BIG);
+		_ssd1306_WriteInTheMiddle("back left", init_secondary_text_height, SMALL);
+		ssd1306_UpdateScreen();
+		LIDARS_INIT(&huart1, DMA_HANDLE_UART1, UART1_RX);
+
+		ssd1306_Clear();
+		_ssd1306_WriteInTheMiddle("LIDAR", init_text_height, BIG);
+		_ssd1306_WriteInTheMiddle("back right", init_secondary_text_height, SMALL);
+		ssd1306_UpdateScreen();
+		LIDARS_INIT(&huart4, DMA_HANDLE_UART4, UART4_RX);
+		/*
+		uart1 = back left
+		uart2 = front right
+		uart4 = back right
+		uart5 = front left
+		*/
 	}
+
+
 
 	//ADC
 	ssd1306_Clear();
@@ -404,6 +493,7 @@ int main(void)
 	//CAN
 	ssd1306_Clear();
 	_ssd1306_WriteInTheMiddle("DRVs", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("CAN start", init_secondary_text_height, SMALL);
 	ssd1306_UpdateScreen();
 	HAL_Delay(init_everywhere_delay);
 	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
@@ -413,9 +503,26 @@ int main(void)
 	HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
 	HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 
+	//DRV1
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("DRVs", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("DRV 0 init", init_secondary_text_height, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(init_everywhere_delay);
+	MOTOR_DRIVER_INIT(CAN_ID_DRV0);
+
+	//DRV2
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("DRVs", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("DRV 1 init", init_secondary_text_height, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(init_everywhere_delay);
+	MOTOR_DRIVER_INIT(CAN_ID_DRV1);
+
 	//Performance
 	ssd1306_Clear();
-	_ssd1306_WriteInTheMiddle("BENCH", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("MCU", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("performance", init_secondary_text_height, SMALL);
 	ssd1306_UpdateScreen();
 	HAL_Delay(init_everywhere_delay);
 	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
@@ -425,6 +532,7 @@ int main(void)
 	//Interrupts
 	ssd1306_Clear();
 	_ssd1306_WriteInTheMiddle("ITs", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("start", init_secondary_text_height, SMALL);
 	ssd1306_UpdateScreen();
 	HAL_Delay(init_everywhere_delay);
 	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
@@ -435,7 +543,8 @@ int main(void)
 
 	PLAY_FREQ(0);
 	ssd1306_Clear();
-	_ssd1306_WriteInTheMiddle("EVA++", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("TURBO", 2, SMALL);
+	_ssd1306_WriteInTheMiddle("EVA++", 10, BIG);
 	ssd1306_UpdateScreen();
 
 
@@ -1295,11 +1404,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  GET_START_MOD();
 	  if(Eva.State == IDLE)
 	  {
-		  //BATTLE();
+
 	  }
 	  if(Eva.State == ATTACK)
 	  {
-		  //BATTLE();
+		  BATTLE();
 	  }
 	  else if(Eva.State == BEFORE_ATTACK_TASK)
 	  {
@@ -1414,8 +1523,9 @@ void TASK_BEFORE_ATTACK()
 
 void SET_MOTORS(int8_t l, int8_t r)
 {
+	uint8_t CAN_r, CAN_l;
 
-	if(Settings.DONT_USE_MOTORS)
+	if(Settings.DONT_USE_MOTORS == TRUE)
 		l = r = 0;
 
 	if (SWITCH_MOTORS)
@@ -1433,8 +1543,57 @@ void SET_MOTORS(int8_t l, int8_t r)
 		l = -l;
 	}
 
-	l = l * LEFT_MOTOR_SPEED_MULTIPLIER;
-	r = r * RIGHT_MOTOR_SPEED_MULTIPLIER;
+	l = l * LEFT_MOTOR_VELOCITY_MULTIPLIER;
+	r = r * RIGHT_MOTOR_VELOCITY_MULTIPLIER;
+
+
+	if(l > 100)
+		l=100;
+	else if(l<-100)
+		l=-100;
+
+	if(r>100)
+		r=100;
+	else if(r<-100)
+		r=-100;
+
+
+	/*
+	//convert to canable characters
+	 	 0=0
+	 	 1-100 = forward
+	 	 101-200 = backward
+	*/
+
+	Motors.Set.L = l;
+	Motors.Set.R = r;
+
+	if(l < 0)
+		CAN_l = 100 - l;
+	else
+		CAN_l = l;
+
+	if(r < 0)
+		CAN_r= 100 - r;
+	else
+		CAN_r = r;
+
+	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+	CAN_TX[0]=CAN_ID_DRV0;
+	CAN_TX[1]=0x51;
+	CAN_TX[2]=CAN_l;
+	CAN_TX[3]=0x01;
+	HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+
+	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+	CAN_TX[0]=CAN_ID_DRV1;
+	CAN_TX[1]=0x51;
+	CAN_TX[2]=CAN_r;
+	CAN_TX[3]=0x01;
+	HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+
+	Motors.CAN.L = CAN_l;
+	Motors.CAN.R = CAN_r;
 }
 
 void GET_LAST_SEEN_ROTATIONE()
@@ -1471,7 +1630,20 @@ void GET_START_MOD()
 
 void BATTLE()
 {
-	//67
+	Motors.Requested.L=0;
+	Motors.Requested.R=0;
+
+	if(FrontLeft.Distance < 8)
+		Motors.Requested.L=-100;
+	else if(FrontLeft.Distance < 15)
+		Motors.Requested.L=100;
+
+	if(FrontRight.Distance < 8)
+		Motors.Requested.R = -100;
+	else if(FrontRight.Distance < 15)
+		Motors.Requested.R = 100;
+
+	SET_MOTORS(Motors.Requested.L,Motors.Requested.R);
 }
 
 void COOKED(uint8_t error_code)
@@ -1588,11 +1760,10 @@ void LIDARS_INIT(UART_HandleTypeDef *huart, DMA_HandleTypeDef *dma, uint8_t *RX)
 	__HAL_UART_CLEAR_OREFLAG(huart);
 	huart->ErrorCode = HAL_UART_ERROR_NONE;
 	huart->RxState   = HAL_UART_STATE_READY;
+	huart->gState = HAL_UART_STATE_READY;
 	if(HAL_UARTEx_ReceiveToIdle_DMA(huart, RX, 9) != HAL_OK)
 		COOKED(LIDARS_INIT_ERR);
 	__HAL_DMA_DISABLE_IT(dma, DMA_IT_HT);
-
-
 }
 
 
@@ -1982,7 +2153,7 @@ void _ssd1306_WriteInTheMiddle(char *text, uint8_t y, uint8_t font)
 	if(font == BIG) //max = 6
 	{
 		x = (int)(SSD1306_WIDTH - textSize*11)/2;
-		if(x < -2)
+		if(x < -3)
 		{
 			text="ERo_L";
 			x = 0;
@@ -2019,6 +2190,109 @@ void _ssd1306_WriteString(char* str, uint8_t font)
 		ssd1306_WriteString(str, Font_6x8);
 	}
 }
+
+void MOTOR_DRIVER_INIT(uint8_t DRV_SELF_ADDRESS)
+{
+	uint8_t counter;
+	uint32_t req;
+
+	//set motor temperature limits
+	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+	counter=0;
+	CAN_TX[0] = DRV_SELF_ADDRESS;
+	CAN_TX[1] = 0x12;
+	CAN_TX[2] = MAX_FET_TEMP;
+	while(ARE_ELEMENTS_EQUAL(CAN_TX, CAN_RX, 3) == FALSE)
+	{
+		req = HAL_FDCAN_GetLatestTxFifoQRequestBuffer(&hfdcan1);
+		if (HAL_FDCAN_IsTxBufferMessagePending(&hfdcan1, req))
+		{
+			HAL_FDCAN_AbortTxRequest(&hfdcan1, req);
+		}
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+		if (counter > MAX_RETRIES_DRIVER_INIT)
+		  COOKED(DRV_INIT_ERROR);
+
+		counter++;
+		HAL_Delay(DRIVER_INIT_CAN_TIMEOUT);
+	}
+
+
+	// set motor Current limits
+	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+	counter=0;
+	CAN_TX[0] = DRV_SELF_ADDRESS;
+	CAN_TX[1] = 0x13;
+	CAN_TX[2] = MAX_MOTOR_CURRENT_SHORT;
+	while(ARE_ELEMENTS_EQUAL(CAN_TX, CAN_RX, 3) == FALSE)
+	{
+		req = HAL_FDCAN_GetLatestTxFifoQRequestBuffer(&hfdcan1);
+		if (HAL_FDCAN_IsTxBufferMessagePending(&hfdcan1, req))
+		{
+			HAL_FDCAN_AbortTxRequest(&hfdcan1, req);
+		}
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+		if (counter > MAX_RETRIES_DRIVER_INIT)
+		  COOKED(DRV_INIT_ERROR);
+
+		counter++;
+		HAL_Delay(DRIVER_INIT_CAN_TIMEOUT);
+	}
+
+	// set motor constant current limits
+	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+	counter=0;
+	CAN_TX[0] = DRV_SELF_ADDRESS;
+	CAN_TX[1] = 0x14;
+	CAN_TX[2] = MAX_MOTOR_CURRENT_LONG;
+	while(ARE_ELEMENTS_EQUAL(CAN_TX, CAN_RX, 3) == FALSE)
+	{
+		req = HAL_FDCAN_GetLatestTxFifoQRequestBuffer(&hfdcan1);
+		if (HAL_FDCAN_IsTxBufferMessagePending(&hfdcan1, req))
+		{
+			HAL_FDCAN_AbortTxRequest(&hfdcan1, req);
+		}
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+		if (counter > MAX_RETRIES_DRIVER_INIT)
+		  COOKED(DRV_INIT_ERROR);
+
+		counter++;
+		HAL_Delay(DRIVER_INIT_CAN_TIMEOUT);
+	}
+
+	// set motor max acceleration
+	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+	counter=0;
+	CAN_TX[0] = DRV_SELF_ADDRESS;
+	CAN_TX[1] = 0x15;
+	CAN_TX[2] = MAX_MOTOR_ACCELERATION;
+	CAN_TX[3] = MAX_MOTOR_ACCELERATION;
+	while(ARE_ELEMENTS_EQUAL(CAN_TX, CAN_RX, 4) == FALSE)
+	{
+		req = HAL_FDCAN_GetLatestTxFifoQRequestBuffer(&hfdcan1);
+		if (HAL_FDCAN_IsTxBufferMessagePending(&hfdcan1, req))
+		{
+			HAL_FDCAN_AbortTxRequest(&hfdcan1, req);
+		}
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+		if (counter > MAX_RETRIES_DRIVER_INIT)
+		  COOKED(DRV_INIT_ERROR);
+
+		counter++;
+		HAL_Delay(DRIVER_INIT_CAN_TIMEOUT);
+	}
+}
+
+
+uint8_t ARE_ELEMENTS_EQUAL(const uint8_t *a, const uint8_t *b, uint8_t n)
+{
+    for (uint8_t i = 0; i < n; i++) {
+        if (*(a + i) != *(b + i)) {
+            return false;
+        }
+    }
+    return true;
+}
 /* USER CODE END 4 */
 
 /**
@@ -2029,10 +2303,10 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
 	HAL_GPIO_WritePin(START_LED_RED_GPIO_Port, START_LED_RED_Pin, 1);
-	ssd1306_Clear();
-	_ssd1306_WriteInTheMiddle("error:", 0, SMALL);
-	_ssd1306_WriteInTheMiddle(ERROR_FLAG, 10, SMALL);
-	ssd1306_UpdateScreen();
+	//ssd1306_Clear();
+	//_ssd1306_WriteInTheMiddle("error:", 0, SMALL);
+	//_ssd1306_WriteInTheMiddle(ERROR_FLAG, 10, SMALL);
+	//ssd1306_UpdateScreen();
 	HAL_Delay(10);
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();

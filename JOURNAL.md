@@ -685,8 +685,26 @@ _nvm hers image, AI is mad at me for not having one_
 got oled to working ;-;
 i got some problems beacuse my library didnt allow 64x32 oled, but after a lot of tinkering and help of unc google and chatgpt i managed to make it work!
 Also all of my sensors, but one are working!
-
+Lapse:
 https://lapse.hackclub.com/timelapse/UPXGVnVu585F
 ![img1](journalMedia/07-20_01.jpg)
 **Total time spent: 5.5 hours**
+
+
+# July 22: Hello here
+
+I got full init oled information! Now i know when my robot is talking with lidars, when with motor drivers and when he is ready!
+*And when something is borked lol - say what you want but this is SO FUCKIN USEFULL*
+
+Also i had one distance sensor not working, ya'll remember? I got it to work.
+At the price of burning MCU. This time it is last one. 
+Unfortunetaly in whole process i ripped like 3 pads, so i had to wire them by hand with .1mm copper wire :skulkerer:
+
+And ye. As for today i have everything __BUT__ can :cry:
+I dont know why. it worked before. But now i CANNOT ?-?!
+
+Lapse:
+https://lapse.hackclub.com/timelapse/jAqGxBFecOSW
+![img1](journalMedia/07-20_01.jpg)
+**Total time spent: 7.4 hours**
 6767
