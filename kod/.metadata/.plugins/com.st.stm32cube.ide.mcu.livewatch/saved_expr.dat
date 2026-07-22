@@ -21,3 +21,7 @@ FrontRight
 ADC_BUFFER
 Eva
 MCU_LOAD
+UART_TX
+UART4_RX
+UART5_RX
+Motors

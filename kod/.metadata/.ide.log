@@ -3583,3 +3583,4 @@ java.lang.NullPointerException: Cannot invoke "javax.swing.JTextField.getText()"
 2026-07-22 21:39:45,020 [WARN] IP:2250 - PinAttribute not found: check if there is a RefParameter without a condition.
 2026-07-22 21:39:45,020 [WARN] IP:2250 - PinAttribute not found: check if there is a RefParameter without a condition.
 2026-07-22 21:39:45,020 [WARN] IP:2250 - PinAttribute not found: check if there is a RefParameter without a condition.
+2026-07-22 21:54:29,820 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 
