@@ -705,6 +705,9 @@ I dont know why. it worked before. But now i CANNOT ?-?!
 
 Lapse:
 https://lapse.hackclub.com/timelapse/jAqGxBFecOSW
-![img1](journalMedia/07-20_01.jpg)
+![img1](journalMedia/07-22_01.jpg)
+![img2](journalMedia/07-22_02.jpg)
+![img3](journalMedia/07-22_03.jpg)
+![img4](journalMedia/07-22_04.jpg)
 **Total time spent: 7.4 hours**
 6767
