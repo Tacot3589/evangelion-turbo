@@ -14,8 +14,8 @@
 #define MAX_RETRIES_LIDARS_INIT 			5
 #define LIDARS_INIT_UART_TIMEOUT 			100
 #define LIDARS_FILTERING_ARRAY_SIZE 		11
-#define MAX_LIDAR_DISTANCE 					40
-#define MIN_LIDAR_DISTANCE 					5
+#define MAX_LIDAR_DISTANCE 					30+1
+#define MIN_LIDAR_DISTANCE 					5+1
 #define ACKNOWLEDGE_LIDAR_DISTANCE			30
 #define INTRO_MIN_DISTANCE_FOR_LAST_SEEN	5
 #define WHITE_LINE_TRESCHOLD 				3700 //white is less
@@ -27,7 +27,7 @@
 #define MAX_FET_TEMP 						80
 #define MAX_MOTOR_CURRENT_SHORT 			10
 #define MAX_MOTOR_CURRENT_LONG 				4
-#define MAX_MOTOR_ACCELERATION				0 	//from 0, which is instant, to 250ms which is long
+#define MAX_MOTOR_ACCELERATION				200 		//from 0, which is instant, to 250ms which is long
 #define SWITCH_MOTORS 						FALSE
 #define REVERSE_RIGHT_MOTOR 				FALSE
 #define REVERSE_LEFT_MOTOR 					FALSE
@@ -36,7 +36,8 @@
 
 
 //==================================================== START SETUP
-#define START_WAITING_TIME 					2900
+#define START_WAITING_TIME 					3000
+#define START_WAITING_TIME_HEADROOM			100
 #define ROTATE_BEFORE_TASK_SPEED 			100
 #define GO_TO_LINE_TASK_SPEED 				100
 
@@ -51,13 +52,13 @@
 #define DISABLE_OLED								FALSE
 #define DEFAULT_SETTING_BATTERY_CELL_NO				3
 #define DEFAULT_SETTING_DONT_USE_MOTORS				FALSE
-#define DEFAULT_SETTING_ALWAYS_IN_BATTLE			TRUE
+#define DEFAULT_SETTING_ALWAYS_IN_BATTLE			FALSE
 #define DEFAULT_SETTING_IGNORE_START_MODULE			TRUE
 #define DEFAULT_SETTING_LINE_SENSORS_ALWAYS_IN		FALSE
 #define DEFAULT_SETTING_ENABLE_BUZZER				FALSE
 #define DEFAULT_SETTING_DONT_INITIALIZE_LIDARS		FALSE
 #define DEFAULT_SETTING_ALWAYS_SHOW_OLED			TRUE
-#define DEFAULT_ATTACK_MODE_ID						1
+#define DEFAULT_ATTACK_MODE_ID						0
 
 
 //================================================================================================INIT ERRORS

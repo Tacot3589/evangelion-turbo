@@ -61,16 +61,18 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define START_MOD_IR1_Pin GPIO_PIN_14
 #define START_MOD_IR1_GPIO_Port GPIOC
+#define START_MOD_IR1_EXTI_IRQn EXTI14_IRQn
 #define VBAT_Pin GPIO_PIN_4
 #define VBAT_GPIO_Port GPIOA
-#define START_LED_RED_Pin GPIO_PIN_1
-#define START_LED_RED_GPIO_Port GPIOB
-#define START_LED_GREEN_Pin GPIO_PIN_2
-#define START_LED_GREEN_GPIO_Port GPIOB
-#define START_LED_BLUE_Pin GPIO_PIN_10
-#define START_LED_BLUE_GPIO_Port GPIOB
+#define LED_RED_Pin GPIO_PIN_1
+#define LED_RED_GPIO_Port GPIOB
+#define LED_GREEN_Pin GPIO_PIN_2
+#define LED_GREEN_GPIO_Port GPIOB
+#define LED_BLUE_Pin GPIO_PIN_10
+#define LED_BLUE_GPIO_Port GPIOB
 #define START_MOD_IR3_Pin GPIO_PIN_11
 #define START_MOD_IR3_GPIO_Port GPIOB
+#define START_MOD_IR3_EXTI_IRQn EXTI11_IRQn
 #define JOY5_Pin GPIO_PIN_11
 #define JOY5_GPIO_Port GPIOD
 #define JOY4_Pin GPIO_PIN_12
@@ -99,6 +101,7 @@ void Error_Handler(void);
 #define OLED_SDAB9_GPIO_Port GPIOB
 #define START_MOD_IR_2_Pin GPIO_PIN_0
 #define START_MOD_IR_2_GPIO_Port GPIOE
+#define START_MOD_IR_2_EXTI_IRQn EXTI0_IRQn
 
 /* USER CODE BEGIN Private defines */
 

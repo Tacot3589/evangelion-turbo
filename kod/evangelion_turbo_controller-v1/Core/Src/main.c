@@ -98,6 +98,40 @@
 #define _CANCEL '}'
 #define _APPLY '{'
 
+//=============================================================================================================
+//=============================================================================================================			START MOD CODE
+//=============================================================================================================
+#define RISING 		1
+#define FALLING		2
+#define TIMEOUT		3
+
+#define RC5				1
+#define SIRC			2
+#define UNKNOWN			0
+#define SAVED_STATUS 	5
+
+#define RC5_Short		14224
+#define RC5_Long		28448
+#define	SIRC_Short		9600
+#define SIRC_Long		19200
+#define Margin			2600
+
+// Module Status
+#define STARTUP		1
+#define	PPROGRAMMED	2
+#define	READY		3
+#define	RC5_START	4
+#define SIRC_START	5
+#define	STOP		6
+
+// Led Commands
+#define ON			2
+#define OFF			3
+#define BLINK_SLOW	4
+#define BLINK_FAST	5
+#define TICK		6
+
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -119,24 +153,26 @@ typedef enum {
 typedef enum {
 	STRAIGHT,
 	CURVE,
-	FOLLOW_LINER, //todo MRUGNIJ TYLE RAZY JAKI TRYB PO GUZIKU?
+	FOLLOW_LINER,
+	COUNT,
 } RobotAttackMode_t;
 
 typedef enum
 {
 	IDLE,
+	BEFORE_ATTACK_WAIT,
+	BEFORE_ATTACK_TASK,
 	ATTACK,
-	BEFORE_ATTACK_TASK
 } RobotState_t;
 
 typedef enum {
-	NOTHING,
-	UP_LEFT,
-	UP_RIGHT,
-	DOWN_LEFT,
-	DOWN_RIGHT,
-	CENTER,
-	BUTTON_REBOUNCE,
+	_NOTHING,
+	_UP,
+	_DOWN,
+	_LEFT,
+	_RIGHT,
+	_CENTER,
+	_BUTTON_REBOUNCE,
 } JoystickMode_t;
 
 typedef struct {
@@ -171,7 +207,8 @@ typedef struct {
 	uint16_t CellVoltage;
 	RobotState_t State;
 	Interface_t Interface;
-	uint8_t BattType;
+	uint8_t DriverTemp;
+	uint16_t StartDelayTimer;
 } RobotData_t;
 
 
@@ -224,7 +261,9 @@ I2C_HandleTypeDef hi2c3;
 DMA_HandleTypeDef handle_GPDMA2_Channel1;
 
 TIM_HandleTypeDef htim3;
-TIM_HandleTypeDef htim15;
+TIM_HandleTypeDef htim12;
+TIM_HandleTypeDef htim13;
+TIM_HandleTypeDef htim14;
 TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
 
@@ -285,6 +324,8 @@ volatile uint32_t cpu_load_permille = 0;
 volatile uint8_t MCU_LOAD = 0;
 volatile uint8_t MCU_LOAD_MAX = 0;
 
+//============================		START MOD CODE
+volatile uint8_t Module_State;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -302,8 +343,10 @@ static void MX_USART2_UART_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_TIM16_Init(void);
 static void MX_TIM17_Init(void);
-static void MX_TIM15_Init(void);
 static void MX_I2C1_Init(void);
+static void MX_TIM14_Init(void);
+static void MX_TIM12_Init(void);
+static void MX_TIM13_Init(void);
 /* USER CODE BEGIN PFP */
 static void LIDARS_INIT(UART_HandleTypeDef *huart, DMA_HandleTypeDef *hdma, uint8_t *RX);
 static void PLAY_FREQ(uint16_t f_hz);
@@ -315,13 +358,22 @@ static void BATTLE(void);
 static void WATCHDOG(void);
 static void GET_LAST_SEEN_ROTATIONE(void);
 static void TASK_BEFORE_ATTACK(void);
-static void LED_BLINK_INTERUPT(void);
 static void SET_MOTORS(int8_t l, int8_t r);
 static void _ssd1306_WriteInTheMiddle(char *text, uint8_t y, uint8_t font);
 static void _ssd1306_WriteString(char* str, uint8_t font);
 static void MOTOR_DRIVER_INIT(uint8_t DRV_SELF_ADDRESS);
 static uint8_t ARE_ELEMENTS_EQUAL(const uint8_t *a, const uint8_t *b, uint8_t n);
+static void OLED(void);
 static inline void DWT_Init(void);
+
+//============================		START MOD CODE
+static void Interrupt10Hz(void);
+static void Interrupt(uint8_t Edge);
+static void Received_RC5_Frame(uint8_t Addres, uint8_t Command);
+static void Received_SIRC_Frame(uint8_t Addres, uint8_t Command);
+static uint8_t LED_GREEN_Control(uint8_t Command, uint8_t Data);
+static uint8_t LED_RED_Control(uint8_t Command, uint8_t Data);
+static uint8_t LED_BLUE_Control(uint8_t Command, uint8_t Data);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -337,7 +389,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+    uint8_t Status;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -370,8 +422,10 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM16_Init();
   MX_TIM17_Init();
-  MX_TIM15_Init();
   MX_I2C1_Init();
+  MX_TIM14_Init();
+  MX_TIM12_Init();
+  MX_TIM13_Init();
   /* USER CODE BEGIN 2 */
 
   static uint8_t init_text_height = 0;
@@ -415,7 +469,7 @@ int main(void)
 	CAN_TX_Header.FDFormat = FDCAN_CLASSIC_CAN;
 	CAN_TX_Header.BitRateSwitch = FDCAN_BRS_OFF;
 
-	BATTERY_CONSTANT = ((Voltage_Resistor_Top + Voltage_Resistor_Bottom) / Voltage_Resistor_Bottom) * Reference_Voltage / 4096;
+	BATTERY_CONSTANT = ((Voltage_Resistor_Top + Voltage_Resistor_Bottom) / Voltage_Resistor_Bottom) * Reference_Voltage / 4096 * 100;
 
 	Settings.ALWAYS_IN_BATTLE = DEFAULT_SETTING_ALWAYS_IN_BATTLE;
 	Settings.DONT_INITIALIZE_LIDARS = DEFAULT_SETTING_DONT_INITIALIZE_LIDARS;
@@ -423,16 +477,40 @@ int main(void)
 	Settings.IGNORE_START_MODULE = DEFAULT_SETTING_IGNORE_START_MODULE;
 
 	lastSeen = LEFT;
+	Eva.inBattle = FALSE;
+	Eva.State = IDLE;
+	Eva.AttackMode = DEFAULT_ATTACK_MODE_ID;
+	Eva.StartDelayTimer = 0;
 
 
 	//GPIO LED MISC
 	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
 	PLAY_FREQ(actual_init_freq);
-	HAL_GPIO_WritePin(START_LED_RED_GPIO_Port, START_LED_RED_Pin, 0);
-	HAL_GPIO_WritePin(START_LED_BLUE_GPIO_Port, START_LED_BLUE_Pin, 0);
-	HAL_GPIO_WritePin(START_LED_GREEN_GPIO_Port, START_LED_GREEN_Pin, 1);
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
+	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
 	HAL_GPIO_WritePin(CAN_EN_GPIO_Port, CAN_EN_Pin, 1);
+	HAL_Delay(init_everywhere_delay);
 
+
+
+	//start mode setup
+	//============================		START MOD CODE
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("START", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("MODULE", init_secondary_text_height, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(init_everywhere_delay);
+	//  Signal Power UP
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+	HAL_Delay(250);
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_SET);
+	HAL_Delay(250);
+	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+	HAL_Delay(500);
+	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
 
 	//LUNAS
 	ssd1306_Clear();
@@ -537,10 +615,15 @@ int main(void)
 	HAL_Delay(init_everywhere_delay);
 	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
 	PLAY_FREQ(actual_init_freq);
-	HAL_TIM_Base_Start_IT(&htim15); //0.5Hz
+	HAL_TIM_Base_Start_IT(&htim12); //10Hz start mod
+	HAL_TIM_Base_Start_IT(&htim13); //1Khz start mod
+	HAL_TIM_Base_Start_IT(&htim14); //25Hz oled
 	HAL_TIM_Base_Start_IT(&htim16); //1000Hz
 	HAL_TIM_Base_Start_IT(&htim17); //100Hz
 
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
+	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
 	PLAY_FREQ(0);
 	ssd1306_Clear();
 	_ssd1306_WriteInTheMiddle("TURBO", 2, SMALL);
@@ -669,7 +752,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_3;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_24CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_6CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
@@ -745,6 +828,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_19;
   sConfig.Rank = ADC_REGULAR_RANK_9;
+  sConfig.SamplingTime = ADC_SAMPLETIME_24CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -1015,48 +1099,102 @@ static void MX_TIM3_Init(void)
 }
 
 /**
-  * @brief TIM15 Initialization Function
+  * @brief TIM12 Initialization Function
   * @param None
   * @retval None
   */
-static void MX_TIM15_Init(void)
+static void MX_TIM12_Init(void)
 {
 
-  /* USER CODE BEGIN TIM15_Init 0 */
+  /* USER CODE BEGIN TIM12_Init 0 */
 
-  /* USER CODE END TIM15_Init 0 */
+  /* USER CODE END TIM12_Init 0 */
 
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
 
-  /* USER CODE BEGIN TIM15_Init 1 */
+  /* USER CODE BEGIN TIM12_Init 1 */
 
-  /* USER CODE END TIM15_Init 1 */
-  htim15.Instance = TIM15;
-  htim15.Init.Prescaler = 34000-1;
-  htim15.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim15.Init.Period = 9999;
-  htim15.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim15.Init.RepetitionCounter = 0;
-  htim15.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&htim15) != HAL_OK)
+  /* USER CODE END TIM12_Init 1 */
+  htim12.Instance = TIM12;
+  htim12.Init.Prescaler = 1700-1;
+  htim12.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim12.Init.Period = 9999;
+  htim12.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim12.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim12) != HAL_OK)
   {
     Error_Handler();
   }
   sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  if (HAL_TIM_ConfigClockSource(&htim15, &sClockSourceConfig) != HAL_OK)
+  if (HAL_TIM_ConfigClockSource(&htim12, &sClockSourceConfig) != HAL_OK)
   {
     Error_Handler();
   }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim15, &sMasterConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN TIM15_Init 2 */
+  /* USER CODE BEGIN TIM12_Init 2 */
 
-  /* USER CODE END TIM15_Init 2 */
+  /* USER CODE END TIM12_Init 2 */
+
+}
+
+/**
+  * @brief TIM13 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM13_Init(void)
+{
+
+  /* USER CODE BEGIN TIM13_Init 0 */
+
+  /* USER CODE END TIM13_Init 0 */
+
+  /* USER CODE BEGIN TIM13_Init 1 */
+
+  /* USER CODE END TIM13_Init 1 */
+  htim13.Instance = TIM13;
+  htim13.Init.Prescaler = 170-1;
+  htim13.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim13.Init.Period = 999;
+  htim13.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim13.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim13) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM13_Init 2 */
+
+  /* USER CODE END TIM13_Init 2 */
+
+}
+
+/**
+  * @brief TIM14 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM14_Init(void)
+{
+
+  /* USER CODE BEGIN TIM14_Init 0 */
+
+  /* USER CODE END TIM14_Init 0 */
+
+  /* USER CODE BEGIN TIM14_Init 1 */
+
+  /* USER CODE END TIM14_Init 1 */
+  htim14.Instance = TIM14;
+  htim14.Init.Prescaler = 6800-1;
+  htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim14.Init.Period = 999;
+  htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim14.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim14) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM14_Init 2 */
+
+  /* USER CODE END TIM14_Init 2 */
 
 }
 
@@ -1336,19 +1474,19 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOE_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, START_LED_RED_Pin|START_LED_GREEN_Pin|START_LED_BLUE_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, LED_RED_Pin|LED_GREEN_Pin|LED_BLUE_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(CAN_EN_GPIO_Port, CAN_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : START_MOD_IR1_Pin */
   GPIO_InitStruct.Pin = START_MOD_IR1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(START_MOD_IR1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : START_LED_RED_Pin START_LED_GREEN_Pin START_LED_BLUE_Pin */
-  GPIO_InitStruct.Pin = START_LED_RED_Pin|START_LED_GREEN_Pin|START_LED_BLUE_Pin;
+  /*Configure GPIO pins : LED_RED_Pin LED_GREEN_Pin LED_BLUE_Pin */
+  GPIO_InitStruct.Pin = LED_RED_Pin|LED_GREEN_Pin|LED_BLUE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -1356,20 +1494,20 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : START_MOD_IR3_Pin */
   GPIO_InitStruct.Pin = START_MOD_IR3_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(START_MOD_IR3_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : JOY5_Pin JOY4_Pin */
   GPIO_InitStruct.Pin = JOY5_Pin|JOY4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pins : JOY3_Pin JOY2_Pin JOY1_Pin */
   GPIO_InitStruct.Pin = JOY3_Pin|JOY2_Pin|JOY1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : CAN_EN_Pin */
@@ -1381,9 +1519,19 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : START_MOD_IR_2_Pin */
   GPIO_InitStruct.Pin = START_MOD_IR_2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(START_MOD_IR_2_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI11_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI11_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI14_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI14_IRQn);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
@@ -1393,10 +1541,16 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	if(htim->Instance == TIM16) //0.5Hz leds!
+	//======================================== Start mod code
+	if (htim->Instance == TIM12)
 	{
-		LED_BLINK_INTERUPT();
+		Interrupt10Hz();
 	}
+	if (htim->Instance == TIM13)
+	{
+		Interrupt(TIMEOUT);
+	}
+
 	if(htim->Instance == TIM16) //1000Hz battlee
 	{
 	  GET_LINE_SENSORS();
@@ -1404,15 +1558,19 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  GET_START_MOD();
 	  if(Eva.State == IDLE)
 	  {
-
+		  Eva.StartDelayTimer=0;
 	  }
 	  if(Eva.State == ATTACK)
 	  {
-		  BATTLE();
+		  //BATTLE();
+		  if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
+			  SET_MOTORS(-100,-100);
+		  else if(FrontLeft.Line == IN || FrontRight.Line == IN)
+			  SET_MOTORS(10,10);
 	  }
-	  else if(Eva.State == BEFORE_ATTACK_TASK)
+	  else if(Eva.State == BEFORE_ATTACK_TASK || Eva.State == BEFORE_ATTACK_WAIT)
 	  {
-		  //TASK_BEFORE_ATTACK();
+		  TASK_BEFORE_ATTACK();
 	  }
 
 	}
@@ -1439,84 +1597,101 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		if(MCU_LOAD > MCU_LOAD_MAX)
 			MCU_LOAD_MAX = MCU_LOAD;
 	}
+
+	if(htim->Instance == TIM14)
+	{
+		OLED();
+	}
 }
 
-void LED_BLINK_INTERUPT()
+void OLED()
 {
-	if (FLAG_BLINK_RED == 1)
-		HAL_GPIO_TogglePin(START_LED_RED_GPIO_Port, START_LED_RED_Pin);
-	else
-		HAL_GPIO_WritePin(START_LED_RED_GPIO_Port, START_LED_RED_Pin, 0);
+	ssd1306_Clear();
 
-	if (FLAG_BLINK_BLUE == 1)
-		HAL_GPIO_TogglePin(START_LED_BLUE_GPIO_Port, START_LED_BLUE_Pin);
-	else
-		HAL_GPIO_WritePin(START_LED_BLUE_GPIO_Port, START_LED_BLUE_Pin, 0);
 
-	if (FLAG_BLINK_GREEN == 1)
-		HAL_GPIO_TogglePin(START_LED_GREEN_GPIO_Port, START_LED_GREEN_Pin);
-	else
-		HAL_GPIO_WritePin(START_LED_GREEN_GPIO_Port, START_LED_GREEN_Pin, 0);
+	if(Eva.State == BEFORE_ATTACK_WAIT)
+	{
+		_ssd1306_WriteInTheMiddle("EVA++", 0, BIG);
 
-	FLAG_BLINK_RED = 0;
-	FLAG_BLINK_BLUE = 0;
-	FLAG_BLINK_GREEN = 0;
+		uint16_t TimeToShow = START_WAITING_TIME - Eva.StartDelayTimer - START_WAITING_TIME_HEADROOM;
+		char buf[4];
+		itoa(TimeToShow, buf, 10);
+		_ssd1306_WriteInTheMiddle(buf, 20, SMALL);
+
+	}
+	else
+	{
+		//================================================ Line 1/4
+		_ssd1306_SetCursor(0,0);
+		if(Eva.inBattle == TRUE)
+			_ssd1306_WriteString("ATCK>", SMALL);
+		else
+			_ssd1306_WriteString("IDLE>", SMALL);
+
+		if(Eva.AttackMode == STRAIGHT)
+			_ssd1306_WriteString("STRGH", SMALL);
+		else if(Eva.AttackMode == CURVE)
+			_ssd1306_WriteString("CURVE", SMALL);
+		else if(Eva.AttackMode == FOLLOW_LINER)
+			_ssd1306_WriteString("FOLIN", SMALL);
+
+
+		//================================================ Line 1/4
+		_ssd1306_SetCursor(0,8);
+		if(Eva.Voltage >= 100)
+		{
+			ssd1306_WriteChar(Eva.Voltage / 1000 + '0', Font_6x8);
+			ssd1306_WriteChar((Eva.Voltage / 100) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('.', Font_6x8);
+			ssd1306_WriteChar((Eva.Voltage / 10) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('v', Font_6x8);
+		}
+		else
+		{
+			ssd1306_WriteChar('0', Font_6x8);
+			ssd1306_WriteChar((Eva.Voltage / 100) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('.', Font_6x8);
+			ssd1306_WriteChar((Eva.Voltage / 10) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('v', Font_6x8);
+		}
+		ssd1306_WriteChar(' ', Font_6x8);
+		if(Eva.DriverTemp >= 100)
+		{
+			ssd1306_WriteChar(Eva.DriverTemp / 100 + '0', Font_6x8);
+			ssd1306_WriteChar((Eva.DriverTemp / 10) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar(Eva.DriverTemp % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('C', Font_6x8);
+		}
+		else
+		{
+			ssd1306_WriteChar('0', Font_6x8);
+			ssd1306_WriteChar(Eva.DriverTemp / 10 + '0', Font_6x8);
+			ssd1306_WriteChar(Eva.DriverTemp % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('C', Font_6x8);
+		}
+	}
+
+
+
+
+	ssd1306_UpdateScreen();
 }
 
 
 void TASK_BEFORE_ATTACK()
 {
-	typedef enum {
-		ZERO,
-		START_WAIT_DELAY,
-		INITIAL_ROTATION,
-		GO_TO_THE_EDGE,
-	} Stage_t;
-	static Stage_t taskStage = START_WAIT_DELAY;
-	static uint16_t StartDelayTimer=0;
-
-
-	if(taskStage == ZERO)
+	if(Eva.State == BEFORE_ATTACK_WAIT)
 	{
-		StartDelayTimer=0;
-		taskStage = START_WAIT_DELAY;
+		Eva.StartDelayTimer++;
+		if(Eva.StartDelayTimer > START_WAITING_TIME - START_WAITING_TIME_HEADROOM)
+			Eva.State = BEFORE_ATTACK_TASK;
 	}
 
-	if(taskStage == START_WAIT_DELAY)
+	if(Eva.State == BEFORE_ATTACK_TASK)
 	{
-		StartDelayTimer++;
-		if(StartDelayTimer > START_WAITING_TIME)
-			taskStage = INITIAL_ROTATION;
-	}
-
-	if(taskStage == INITIAL_ROTATION)
-	{
-		if(before_attack_rotation_direction == LEFT)
-		{
-			SET_MOTORS(-ROTATE_BEFORE_TASK_SPEED, ROTATE_BEFORE_TASK_SPEED);
-			if (BackLeft.Distance < ACKNOWLEDGE_LIDAR_DISTANCE)
-			{
-				taskStage = GO_TO_THE_EDGE;
-			}
-		}
-		else
-		{
-			SET_MOTORS(ROTATE_BEFORE_TASK_SPEED, -ROTATE_BEFORE_TASK_SPEED);
-			if (BackRight.Distance < ACKNOWLEDGE_LIDAR_DISTANCE)
-			{
-				taskStage = GO_TO_THE_EDGE;
-			}
-		}
-	}
-
-	if(taskStage == GO_TO_THE_EDGE)
-	{
-		SET_MOTORS(-GO_TO_LINE_TASK_SPEED, -GO_TO_LINE_TASK_SPEED);
-		if(BackLeft.Line == OUT || BackRight.Line == OUT) //reszta? todo
-		{
-			taskStage = ZERO;
+		SET_MOTORS(GO_TO_LINE_TASK_SPEED, GO_TO_LINE_TASK_SPEED);
+		if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
 			Eva.State = ATTACK;
-		}
 	}
 
 }
@@ -1524,6 +1699,7 @@ void TASK_BEFORE_ATTACK()
 void SET_MOTORS(int8_t l, int8_t r)
 {
 	uint8_t CAN_r, CAN_l;
+	static uint8_t WhichFirst = 0;
 
 	if(Settings.DONT_USE_MOTORS == TRUE)
 		l = r = 0;
@@ -1547,15 +1723,15 @@ void SET_MOTORS(int8_t l, int8_t r)
 	r = r * RIGHT_MOTOR_VELOCITY_MULTIPLIER;
 
 
-	if(l > 100)
-		l=100;
-	else if(l<-100)
-		l=-100;
+	if(l > 99)
+		l=99;
+	else if(l<-99)
+		l=-99;
 
-	if(r>100)
-		r=100;
-	else if(r<-100)
-		r=-100;
+	if(r>99)
+		r=99;
+	else if(r<-99)
+		r=-99;
 
 
 	/*
@@ -1578,19 +1754,40 @@ void SET_MOTORS(int8_t l, int8_t r)
 	else
 		CAN_r = r;
 
-	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
-	CAN_TX[0]=CAN_ID_DRV0;
-	CAN_TX[1]=0x51;
-	CAN_TX[2]=CAN_l;
-	CAN_TX[3]=0x01;
-	HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	if(WhichFirst == 1)
+	{
+		WhichFirst=0;
+		CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+		CAN_TX[0]=CAN_ID_DRV0;
+		CAN_TX[1]=0x50;
+		CAN_TX[2]=CAN_l;
+		CAN_TX[3]=0x01;
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 
-	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
-	CAN_TX[0]=CAN_ID_DRV1;
-	CAN_TX[1]=0x51;
-	CAN_TX[2]=CAN_r;
-	CAN_TX[3]=0x01;
-	HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+		CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+		CAN_TX[0]=CAN_ID_DRV1;
+		CAN_TX[1]=0x50;
+		CAN_TX[2]=CAN_r;
+		CAN_TX[3]=0x01;
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	}
+	else
+	{
+		WhichFirst=1;
+		CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+		CAN_TX[0]=CAN_ID_DRV1;
+		CAN_TX[1]=0x50;
+		CAN_TX[2]=CAN_l;
+		CAN_TX[3]=0x01;
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+
+		CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+		CAN_TX[0]=CAN_ID_DRV0;
+		CAN_TX[1]=0x50;
+		CAN_TX[2]=CAN_r;
+		CAN_TX[3]=0x01;
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	}
 
 	Motors.CAN.L = CAN_l;
 	Motors.CAN.R = CAN_r;
@@ -1600,16 +1797,17 @@ void GET_LAST_SEEN_ROTATIONE()
 {
 	if(Eva.State == IDLE)
 	{
-		if(FrontLeft.Distance <= MIN_LIDAR_DISTANCE)
-			lastSeen = LEFT;
-		else if(FrontRight.Distance <= MIN_LIDAR_DISTANCE)
-			lastSeen = RIGHT;
+		if(FrontLeft.Distance < MIN_LIDAR_DISTANCE)
+			before_attack_rotation_direction = lastSeen = LEFT;
+		else if(FrontRight.Distance < MIN_LIDAR_DISTANCE)
+			before_attack_rotation_direction = lastSeen = RIGHT;
+
 	}
 	else
 	{
-		if(FrontLeft.Distance <= MAX_LIDAR_DISTANCE)
+		if(FrontLeft.Distance < MAX_LIDAR_DISTANCE)
 			lastSeen = LEFT;
-		else if(FrontRight.Distance <= MAX_LIDAR_DISTANCE)
+		else if(FrontRight.Distance < MAX_LIDAR_DISTANCE)
 			lastSeen = RIGHT;
 	}
 
@@ -1617,14 +1815,23 @@ void GET_LAST_SEEN_ROTATIONE()
 
 void GET_START_MOD()
 {
-	Eva.State = IDLE;
-	if(Settings.ALWAYS_IN_BATTLE)
-		Eva.State = ATTACK;
+	static uint8_t switched_eva_state = FALSE;
 
-	if(false)
+	if(Settings.ALWAYS_IN_BATTLE)
 	{
-		before_attack_rotation_direction = lastSeen;
-        Eva.State = BEFORE_ATTACK_TASK;
+		Eva.State = ATTACK;
+		Eva.inBattle = TRUE;
+	}
+	if(Eva.inBattle == FALSE)
+	{
+		switched_eva_state = FALSE;
+		Eva.State = IDLE;
+		Eva.StartDelayTimer = 0;
+	}
+	else if(Eva.inBattle && switched_eva_state == FALSE)
+	{
+		Eva.State = BEFORE_ATTACK_WAIT;
+		switched_eva_state = TRUE;
 	}
 }
 
@@ -1633,15 +1840,31 @@ void BATTLE()
 	Motors.Requested.L=0;
 	Motors.Requested.R=0;
 
-	if(FrontLeft.Distance < 8)
+	if(FrontLeft.Distance < MAX_LIDAR_DISTANCE && FrontLeft.Distance < MAX_LIDAR_DISTANCE)
+	{
+		Motors.Requested.L=0;
+		Motors.Requested.R=0;
+	}
+	else if(FrontLeft.Distance < MAX_LIDAR_DISTANCE && FrontLeft.Distance > MAX_LIDAR_DISTANCE)
+	{
 		Motors.Requested.L=-100;
-	else if(FrontLeft.Distance < 15)
+		Motors.Requested.R=100;
+	}
+	else if(FrontLeft.Distance > MAX_LIDAR_DISTANCE && FrontLeft.Distance < MAX_LIDAR_DISTANCE)
+	{
 		Motors.Requested.L=100;
-
-	if(FrontRight.Distance < 8)
-		Motors.Requested.R = -100;
-	else if(FrontRight.Distance < 15)
-		Motors.Requested.R = 100;
+		Motors.Requested.R=-100;
+	}
+	else if(lastSeen == LEFT)
+	{
+		Motors.Requested.L=-100;
+		Motors.Requested.R=100;
+	}
+	else if(lastSeen == RIGHT)
+	{
+		Motors.Requested.L=100;
+		Motors.Requested.R=-100;
+	}
 
 	SET_MOTORS(Motors.Requested.L,Motors.Requested.R);
 }
@@ -2132,10 +2355,83 @@ void GET_LINE_SENSORS()
 
 void WATCHDOG()
 {
+	if(Eva.State == IDLE)
+	{
+		static uint8_t WHICH_DRIVER_TO_ASK = FALSE;
+
+		if(WHICH_DRIVER_TO_ASK == TRUE)
+		{
+			WHICH_DRIVER_TO_ASK = !WHICH_DRIVER_TO_ASK;
+
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+			CAN_TX[0]=CAN_ID_DRV0;
+			CAN_TX[1]=0x50;
+			CAN_TX[2]=0x00;
+			CAN_TX[3]=0x00;
+			HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+		}
+		else
+		{
+			WHICH_DRIVER_TO_ASK = !WHICH_DRIVER_TO_ASK;
+
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+			CAN_TX[0]=CAN_ID_DRV1;
+			CAN_TX[1]=0x50;
+			CAN_TX[2]=0x00;
+			CAN_TX[3]=0x00;
+			HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+		}
+	}
+
+	Eva.DriverTemp = CAN_RX[4];
 	Eva.Voltage = ADC_BUFFER[7] * BATTERY_CONSTANT * BATTERY_VOLTAGE_COMPENSATION;
 	Eva.CellVoltage = Eva.Voltage / 3;
-	if(Eva.CellVoltage < MIN_BATTERY_VOLTAGE_PER_CELL)
+	if(Eva.CellVoltage < MIN_BATTERY_VOLTAGE_PER_CELL*100)
 		FLAG_BLINK_BLUE = 1;
+
+
+	uint8_t Jcenter = !HAL_GPIO_ReadPin(JOY1_GPIO_Port, JOY1_Pin);
+	uint8_t Jup = !HAL_GPIO_ReadPin(JOY2_GPIO_Port, JOY2_Pin);
+	uint8_t Jdown = !HAL_GPIO_ReadPin(JOY4_GPIO_Port, JOY4_Pin);
+	uint8_t Jleft = !HAL_GPIO_ReadPin(JOY3_GPIO_Port, JOY3_Pin);
+	uint8_t Jright = !HAL_GPIO_ReadPin(JOY5_GPIO_Port, JOY5_Pin);
+
+
+	if(!Jcenter && !Jup && !Jdown && !Jleft && !Jright)
+		Eva.Interface.Joystick = _NOTHING;
+
+	if(Eva.Interface.Joystick != _BUTTON_REBOUNCE)
+	{
+		if(Jcenter)
+			Eva.Interface.Joystick=_CENTER;
+		else if(Jup)
+			Eva.Interface.Joystick=_UP;
+		else if(Jleft)
+			Eva.Interface.Joystick=_LEFT;
+		else if(Jdown)
+			Eva.Interface.Joystick=_DOWN;
+		else if(Jright)
+			Eva.Interface.Joystick=_RIGHT;
+		else
+			Eva.Interface.Joystick = _NOTHING;
+	}
+
+
+	if(Eva.Interface.Joystick == _CENTER)
+	{
+		Eva.inBattle = !Eva.inBattle;
+		Eva.Interface.Joystick = _BUTTON_REBOUNCE;
+	}
+	else if(Eva.Interface.Joystick == _LEFT && Eva.State == IDLE)
+	{
+		Eva.AttackMode = (Eva.AttackMode + COUNT - 1) % COUNT;
+		Eva.Interface.Joystick = _BUTTON_REBOUNCE;
+	}
+	else if(Eva.Interface.Joystick == _RIGHT && Eva.State == IDLE)
+	{
+		Eva.AttackMode = (Eva.AttackMode + 1) % COUNT;
+		Eva.Interface.Joystick = _BUTTON_REBOUNCE;
+	}
 }
 
 static inline void DWT_Init(void)
@@ -2293,6 +2589,383 @@ uint8_t ARE_ELEMENTS_EQUAL(const uint8_t *a, const uint8_t *b, uint8_t n)
     }
     return true;
 }
+
+
+
+
+
+//=============================================================================================================
+//=============================================================================================================
+//=============================================================================================================			START MOD CODE
+//=============================================================================================================
+//=============================================================================================================
+
+
+
+
+
+void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
+{
+	Interrupt(RISING);
+}
+void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
+{
+	Interrupt(FALLING);
+}
+
+void Interrupt10Hz(void)
+{
+	LED_BLUE_Control(TICK, 0);
+	LED_RED_Control(TICK, 0);
+	LED_GREEN_Control(TICK, 0);
+}
+
+void Interrupt(uint8_t Edge)
+{
+	static uint8_t 		Last_Edge;
+	static uint8_t 		Bit_Nbr;
+	static uint16_t 	IR_Buffer;
+	static uint8_t		Line_Iddle;
+	static uint8_t		IR_Protocol;
+
+	uint32_t 	Timer; // 16000 is 1us.
+	uint16_t 	shift;
+	uint8_t		Address;
+	uint8_t		Command;
+
+	Timer = TIM12->CNT;
+
+	if (Module_State == RC5_START)
+		IR_Protocol = RC5;
+	else if (Module_State == SIRC_START)
+		IR_Protocol = SIRC;
+
+	if (Edge == TIMEOUT)
+		Line_Iddle = 0;
+
+	else if (Line_Iddle == 0 && Edge == FALLING)
+	{
+		TIM12->CNT = 0;
+		Line_Iddle = 1;
+		Bit_Nbr = 0;
+		IR_Buffer = 0;
+	}
+	else if (Line_Iddle == 0 && Edge == RISING)
+		TIM12->CNT = 0;
+
+// Check if selected protocol
+	else if (IR_Protocol == UNKNOWN)	// Second Interrupt. Protocol yet unknown
+	{
+		if (Last_Edge == FALLING && Edge == RISING && (Timer >= RC5_Short-Margin && Timer <= RC5_Short + Margin))
+			IR_Protocol = RC5;
+
+		else if (Last_Edge == FALLING && Edge == RISING && (Timer >= 2*SIRC_Long - 2*Margin && Timer <= 2*SIRC_Long + 2*Margin))
+		{
+			IR_Protocol = SIRC;
+			TIM12->CNT = 0;
+		}
+		else
+			Line_Iddle = 0; 	// Error - Restart communication
+	}
+
+	else if (IR_Protocol == RC5)
+	{
+		if (Timer >= RC5_Long - Margin && Timer <= RC5_Long + Margin) // Received Bit
+		{
+			TIM12->CNT = 0;
+			// Received 0
+			if (Edge == RISING)
+				Bit_Nbr ++;
+
+			// Received 1
+			else if (Edge == FALLING)
+			{
+				Bit_Nbr ++;
+				shift = 15 - Bit_Nbr;
+				IR_Buffer = IR_Buffer | 0b1 << shift;
+			}
+		}
+
+		else if (Timer >= RC5_Long + Margin)
+			Line_Iddle = 0;
+
+		if (Bit_Nbr == 13)
+		{
+			Line_Iddle = 0;
+			Address = (IR_Buffer >> 8) & 0b00011111;
+			Command = (IR_Buffer >> 2) & 0b00111111;
+			Received_RC5_Frame(Address, Command);
+		}
+	}
+	else if (IR_Protocol == SIRC)
+	{
+		TIM12->CNT = 0;
+		// Begin of Frame
+		if (Edge == RISING && (Timer >= 2*SIRC_Long - 2*Margin && Timer <= 2*SIRC_Long + 2*Margin))
+			Bit_Nbr = 0;
+
+		// Received 1
+		else if (Edge == RISING && (Timer >= SIRC_Long - Margin && Timer <= SIRC_Long + Margin))
+		{
+			Bit_Nbr ++;
+			shift = Bit_Nbr - 1;
+			IR_Buffer = IR_Buffer | 0b1 << shift;
+		}
+
+		// Received 0
+		else if (Edge == RISING && (Timer >= SIRC_Short - Margin && Timer <= SIRC_Short + Margin))
+			Bit_Nbr ++;
+
+		if (Bit_Nbr == 12)
+		{
+			Line_Iddle = 0;
+			Command = IR_Buffer & 0b01111111;
+			Address = (IR_Buffer >> 7)  & 0b00011111;
+			Received_SIRC_Frame(Address, Command);
+		}
+	}
+
+	if (Edge != TIMEOUT)
+		Last_Edge = Edge;
+
+}
+
+void Received_RC5_Frame(uint8_t Addres, uint8_t Command)
+{
+	static uint8_t Dohyo_ID=0;
+
+	uint8_t StartCommand;
+	StartCommand = Command & 0x01;
+
+	if (Addres == 0x0B) // Programming Frame
+	{
+		if (Module_State == STARTUP)
+		{
+			LED_GREEN_Control(BLINK_SLOW, 2);
+			if ((Command >> 1) != Dohyo_ID)
+			{
+				Dohyo_ID = Command >> 1;
+			}
+			Module_State = PPROGRAMMED;
+		}
+		else if (Module_State == PPROGRAMMED)
+		{
+			LED_GREEN_Control(BLINK_FAST, 2);
+			if (Command >> 1 != Dohyo_ID)
+			{
+				Dohyo_ID = Command >> 1;
+			}
+		}
+	}
+	else if (Addres == 0x07) // Command Frame
+	{
+		if (Command >> 1 == Dohyo_ID)
+		{
+			if (StartCommand == 1 && Module_State != STOP && Module_State != RC5_START)
+			{
+				Module_State = RC5_START;
+				Eva.inBattle = TRUE;
+				LED_GREEN_Control(ON, 0);
+			}
+			else if (StartCommand == 0 && Module_State != STOP)
+			{
+				Module_State = STOP;
+				Eva.inBattle = FALSE;
+				LED_GREEN_Control(BLINK_SLOW, 255);
+			}
+		}
+	}
+}
+void Received_SIRC_Frame(uint8_t Addres, uint8_t Command)
+{
+	static uint8_t Dohyo_ID=0;
+
+	// Programming Frame
+	if (Command == 0x7F)
+	{
+		if (Module_State == STARTUP || Module_State == PPROGRAMMED)
+		{
+			Module_State = PPROGRAMMED;
+			Dohyo_ID = Addres;
+			LED_BLUE_Control(BLINK_FAST, 3);
+			LED_RED_Control(BLINK_FAST, 3);
+		}
+
+	}
+	else if(Addres == Dohyo_ID)
+	{
+		if (Command == 0x06 && (Module_State == STARTUP || Module_State == PPROGRAMMED)) // Ready
+		{
+			Module_State = READY;
+			LED_BLUE_Control(BLINK_FAST, 3);
+			LED_RED_Control(ON, 0);
+		}
+		else if (Command == 0x07 && Module_State == READY && Module_State != SIRC_START) // Start
+		{
+			Module_State = SIRC_START;
+			Eva.inBattle = TRUE;
+			LED_BLUE_Control(ON, 0);
+			LED_RED_Control(OFF, 0);
+		}
+		else if (Command == 0x08 && Module_State != STOP) // Stop
+		{
+			Module_State = STOP;
+			Eva.inBattle = FALSE;
+			LED_BLUE_Control(BLINK_SLOW, 255);
+			LED_RED_Control(BLINK_SLOW,	255);
+		}
+	}
+}
+uint8_t LED_GREEN_Control(uint8_t Command, uint8_t Data)
+{
+	static uint8_t LED_Status;
+	static uint8_t LED_Data;
+	static uint8_t Counter;
+
+	if (LED_Status == ON || LED_Status == OFF || ((LED_Status == BLINK_FAST || LED_Status == BLINK_SLOW) && LED_Data == 255))
+	{
+		if (Command == ON)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+			LED_Status = Command;
+		}
+		else if (Command == OFF)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+		}
+		else if (Command == BLINK_SLOW)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 6*Data;
+		}
+		else if (Command == BLINK_FAST)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 2*Data;
+		}
+		Counter = 0;
+	}
+	else if (Command == TICK)
+	{
+		Counter++;
+
+		if (LED_Status == BLINK_FAST)
+			HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+
+		else if (LED_Status == BLINK_SLOW && (Counter % 3 == 0) )
+			HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+
+		if (Counter >= LED_Data && LED_Data < 100)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = OFF;
+		}
+	}
+	return LED_Status;
+}
+uint8_t LED_RED_Control(uint8_t Command, uint8_t Data)
+{
+	static uint8_t LED_Status;
+	static uint8_t LED_Data;
+	static uint8_t Counter;
+
+	if (LED_Status == ON || LED_Status == OFF || ((LED_Status == BLINK_FAST || LED_Status == BLINK_SLOW) && LED_Data == 255))
+	{
+		if (Command == ON)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+			LED_Status = Command;
+		}
+		else if (Command == OFF)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+		}
+		else if (Command == BLINK_SLOW)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 6*Data;
+		}
+		else if (Command == BLINK_FAST)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 2*Data;
+		}
+		Counter = 0;
+	}
+	else if (Command == TICK)
+	{
+		Counter++;
+
+		if (LED_Status == BLINK_FAST)
+			HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+
+		else if (LED_Status == BLINK_SLOW && (Counter % 3 == 0) )
+			HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+
+		if (Counter >= LED_Data && LED_Data < 100)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = OFF;
+		}
+	}
+	return LED_Status;
+}
+uint8_t LED_BLUE_Control(uint8_t Command, uint8_t Data)
+{
+	static uint8_t LED_Status;
+	static uint8_t LED_Data;
+	static uint8_t Counter;
+
+	if (LED_Status == ON || LED_Status == OFF || ((LED_Status == BLINK_FAST || LED_Status == BLINK_SLOW) && LED_Data == 255))
+	{
+		if (Command == ON)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_SET);
+			LED_Status = Command;
+		}
+		else if (Command == OFF)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+		}
+		else if (Command == BLINK_SLOW)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 6*Data;
+		}
+		else if (Command == BLINK_FAST)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 2*Data;
+		}
+		Counter = 0;
+	}
+	else if (Command == TICK)
+	{
+		Counter++;
+
+		if (LED_Status == BLINK_FAST)
+			HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
+
+		else if (LED_Status == BLINK_SLOW && (Counter % 3 == 0) )
+			HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
+
+		if (Counter >= LED_Data && LED_Data < 100)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = OFF;
+		}
+	}
+	return LED_Status;
+}
 /* USER CODE END 4 */
 
 /**
@@ -2302,7 +2975,7 @@ uint8_t ARE_ELEMENTS_EQUAL(const uint8_t *a, const uint8_t *b, uint8_t n)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-	HAL_GPIO_WritePin(START_LED_RED_GPIO_Port, START_LED_RED_Pin, 1);
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
 	//ssd1306_Clear();
 	//_ssd1306_WriteInTheMiddle("error:", 0, SMALL);
 	//_ssd1306_WriteInTheMiddle(ERROR_FLAG, 10, SMALL);

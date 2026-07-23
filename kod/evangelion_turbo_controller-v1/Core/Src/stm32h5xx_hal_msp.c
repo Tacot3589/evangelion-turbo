@@ -548,19 +548,47 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* htim_pwm)
   */
 void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
 {
-  if(htim_base->Instance==TIM15)
+  if(htim_base->Instance==TIM12)
   {
-    /* USER CODE BEGIN TIM15_MspInit 0 */
+    /* USER CODE BEGIN TIM12_MspInit 0 */
 
-    /* USER CODE END TIM15_MspInit 0 */
+    /* USER CODE END TIM12_MspInit 0 */
     /* Peripheral clock enable */
-    __HAL_RCC_TIM15_CLK_ENABLE();
-    /* TIM15 interrupt Init */
-    HAL_NVIC_SetPriority(TIM15_IRQn, 0, 0);
-    HAL_NVIC_EnableIRQ(TIM15_IRQn);
-    /* USER CODE BEGIN TIM15_MspInit 1 */
+    __HAL_RCC_TIM12_CLK_ENABLE();
+    /* TIM12 interrupt Init */
+    HAL_NVIC_SetPriority(TIM12_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(TIM12_IRQn);
+    /* USER CODE BEGIN TIM12_MspInit 1 */
 
-    /* USER CODE END TIM15_MspInit 1 */
+    /* USER CODE END TIM12_MspInit 1 */
+  }
+  else if(htim_base->Instance==TIM13)
+  {
+    /* USER CODE BEGIN TIM13_MspInit 0 */
+
+    /* USER CODE END TIM13_MspInit 0 */
+    /* Peripheral clock enable */
+    __HAL_RCC_TIM13_CLK_ENABLE();
+    /* TIM13 interrupt Init */
+    HAL_NVIC_SetPriority(TIM13_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(TIM13_IRQn);
+    /* USER CODE BEGIN TIM13_MspInit 1 */
+
+    /* USER CODE END TIM13_MspInit 1 */
+  }
+  else if(htim_base->Instance==TIM14)
+  {
+    /* USER CODE BEGIN TIM14_MspInit 0 */
+
+    /* USER CODE END TIM14_MspInit 0 */
+    /* Peripheral clock enable */
+    __HAL_RCC_TIM14_CLK_ENABLE();
+    /* TIM14 interrupt Init */
+    HAL_NVIC_SetPriority(TIM14_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(TIM14_IRQn);
+    /* USER CODE BEGIN TIM14_MspInit 1 */
+
+    /* USER CODE END TIM14_MspInit 1 */
   }
   else if(htim_base->Instance==TIM16)
   {
@@ -649,19 +677,47 @@ void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef* htim_pwm)
   */
 void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* htim_base)
 {
-  if(htim_base->Instance==TIM15)
+  if(htim_base->Instance==TIM12)
   {
-    /* USER CODE BEGIN TIM15_MspDeInit 0 */
+    /* USER CODE BEGIN TIM12_MspDeInit 0 */
 
-    /* USER CODE END TIM15_MspDeInit 0 */
+    /* USER CODE END TIM12_MspDeInit 0 */
     /* Peripheral clock disable */
-    __HAL_RCC_TIM15_CLK_DISABLE();
+    __HAL_RCC_TIM12_CLK_DISABLE();
 
-    /* TIM15 interrupt DeInit */
-    HAL_NVIC_DisableIRQ(TIM15_IRQn);
-    /* USER CODE BEGIN TIM15_MspDeInit 1 */
+    /* TIM12 interrupt DeInit */
+    HAL_NVIC_DisableIRQ(TIM12_IRQn);
+    /* USER CODE BEGIN TIM12_MspDeInit 1 */
 
-    /* USER CODE END TIM15_MspDeInit 1 */
+    /* USER CODE END TIM12_MspDeInit 1 */
+  }
+  else if(htim_base->Instance==TIM13)
+  {
+    /* USER CODE BEGIN TIM13_MspDeInit 0 */
+
+    /* USER CODE END TIM13_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_TIM13_CLK_DISABLE();
+
+    /* TIM13 interrupt DeInit */
+    HAL_NVIC_DisableIRQ(TIM13_IRQn);
+    /* USER CODE BEGIN TIM13_MspDeInit 1 */
+
+    /* USER CODE END TIM13_MspDeInit 1 */
+  }
+  else if(htim_base->Instance==TIM14)
+  {
+    /* USER CODE BEGIN TIM14_MspDeInit 0 */
+
+    /* USER CODE END TIM14_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_TIM14_CLK_DISABLE();
+
+    /* TIM14 interrupt DeInit */
+    HAL_NVIC_DisableIRQ(TIM14_IRQn);
+    /* USER CODE BEGIN TIM14_MspDeInit 1 */
+
+    /* USER CODE END TIM14_MspDeInit 1 */
   }
   else if(htim_base->Instance==TIM16)
   {

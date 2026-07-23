@@ -168,9 +168,9 @@ void PREPARE_AND_SEND_CAN_RESPONSE_IT()
  80002ea:	2cff      	cmp	r4, #255	@ 0xff
  80002ec:	f000 818c 	beq.w	8000608 <PREPARE_AND_SEND_CAN_RESPONSE_IT+0x3f0>
 			{
-				if(CAN_RX[2] >= 100)
+				if(CAN_RX[2] > 100)
  80002f0:	7880      	ldrb	r0, [r0, #2]
- 80002f2:	2863      	cmp	r0, #99	@ 0x63
+ 80002f2:	2864      	cmp	r0, #100	@ 0x64
  80002f4:	f240 81ad 	bls.w	8000652 <PREPARE_AND_SEND_CAN_RESPONSE_IT+0x43a>
 					Duty_Buff = 100 - CAN_RX[2];
  80002f8:	f1c0 0064 	rsb	r0, r0, #100	@ 0x64
@@ -627,8 +627,8 @@ void PREPARE_AND_SEND_CAN_RESPONSE_IT()
  8000574:	7882      	ldrb	r2, [r0, #2]
  8000576:	2aff      	cmp	r2, #255	@ 0xff
  8000578:	d008      	beq.n	800058c <PREPARE_AND_SEND_CAN_RESPONSE_IT+0x374>
-				if(CAN_RX[2] >= 100)
- 800057a:	2a63      	cmp	r2, #99	@ 0x63
+				if(CAN_RX[2] > 100)
+ 800057a:	2a64      	cmp	r2, #100	@ 0x64
 					CAN_Duty =(100 - CAN_RX[2]) * 10;
  800057c:	bf88      	it	hi
  800057e:	f1c2 0264 	rsbhi	r2, r2, #100	@ 0x64

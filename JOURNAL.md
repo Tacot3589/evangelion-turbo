@@ -710,4 +710,31 @@ https://lapse.hackclub.com/timelapse/jAqGxBFecOSW
 ![img3](journalMedia/07-22_03.jpg)
 ![img4](journalMedia/07-22_04.jpg)
 **Total time spent: 7.4 hours**
-6767
+
+
+
+
+
+# July 22: LOOKS SOOO FLIPPIN DOPE!
+
+YAY! I got it from not working to working again! Replacing mainboard connector with new ones was the thing to do!
+Now my drivers work!
+
+Also i made ui and all of the nice cool stuff, like undervoltage protection!
+My battery voltage redouts wasnt working so i just joinked it, removed protection diode and it is working like a bliss now looool
+
+And yup, i had to solder some pads wiht 0.04mm (human hair is freakin 0.1mm bytheway) copper wire, beacuse i ripped like 6 od 7 padssss
+
+It is miracle. I didnt believe it would work anymore.
+More coding more coding, i also got to write whole START MODULE operations, like wait for signal, read signal, when signal set start_flag to TRUE, etcetra.
+
+Aaalsoo some calculations. I have exactly 200MS to stop before going extinc!
+
+Lapse:
+https://lapse.hackclub.com/timelapse/-6MXYkGq6m6p
+![img1](journalMedia/07-23_01.jpg)
+![img2](journalMedia/07-23_02.jpg)
+![img3](journalMedia/07-23_03.jpg)
+![img4](journalMedia/07-23_04.jpg)
+![img5](journalMedia/07-23_05.jpg)
+**Total time spent: 6 hours**
