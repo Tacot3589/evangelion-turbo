@@ -737,4 +737,5 @@ https://lapse.hackclub.com/timelapse/-6MXYkGq6m6p
 ![img3](journalMedia/07-23_03.jpg)
 ![img4](journalMedia/07-23_04.jpg)
 ![img5](journalMedia/07-23_05.jpg)
+![img6](journalMedia/07-23_06.jpg)
 **Total time spent: 6 hours**

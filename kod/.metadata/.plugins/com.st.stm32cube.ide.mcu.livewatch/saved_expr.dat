@@ -25,3 +25,4 @@ UART_TX
 UART4_RX
 UART5_RX
 Motors
+Battery_Voltage

@@ -3,23 +3,24 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
-		<item value="accele"/>
-		<item value="dupa"/>
-		<item value="dupa2"/>
-		<item value="GET_START_MOD"/>
-		<item value="Settings.ALWAYS_IN_BATTLE"/>
-		<item value="BATTLE"/>
-		<item value="SET_MOTORS"/>
-		<item value="tim17"/>
+		<item value="BATTLE()"/>
+		<item value="if(Eva.In"/>
+		<item value="Eva.inBattle"/>
 		<item value="TIM17"/>
-		<item value="Settings.DONT_USE_MOTORS"/>
-		<item value="DEFAULT_SETTING_DONT_USE_MOTORS"/>
-		<item value="DEFAULT_SETTING_DONT_USE_MOTORS&#x09;"/>
-		<item value="FET_temperature"/>
-		<item value="FET_TEMP"/>
-		<item value="Motor_Temperature"/>
+		<item value="TASK_BEFORE_ATTACK"/>
+		<item value="Eva.state"/>
+		<item value="Eva.startDelayTimer"/>
+		<item value="Eva.StartDelayTimer"/>
+		<item value="OLED()"/>
+		<item value="WATCHDOG"/>
+		<item value="Eva.state = IDLE"/>
+		<item value="Eva.InBa"/>
+		<item value="StartDelayTimer"/>
+		<item value="before_attack_rotation_direction"/>
+		<item value="TASK_BEFORE_ATTACK()"/>
 	</list>
 	<list key="replacehistory">
+		<item value="Eva.inBattle"/>
 		<item value="init_text_height"/>
 		<item value="TIM2-&gt;CCR1"/>
 		<item value="TIM2-&gt;CCR2"/>
