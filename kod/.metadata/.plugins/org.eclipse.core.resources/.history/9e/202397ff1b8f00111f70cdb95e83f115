@@ -1618,30 +1618,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
 }
 
-
-void STRAIGHT_ATTACK()
-{
-	Motors.Requested.L = 0;
-	Motors.Requested.R = 0;
-	static uint16_t ComeBackLinerTimer=10;
-
-	if(ComeBackLinerTimer != 10)
-	if(FrontLeft.Line == OUT)
-	{
-		Motors.Requested.L = -100;
-		Motors.Requested.R = -100;
-	}
-}
-
-
-before_attack_rotation_direction
-void CURVE_ATTACK(){}
-void FOLLOWLINER_ATTACK(){}
-void STRAIGHT_ATTACK(){}
-
-
-
-
 void OLED()
 {
 	ssd1306_Clear();

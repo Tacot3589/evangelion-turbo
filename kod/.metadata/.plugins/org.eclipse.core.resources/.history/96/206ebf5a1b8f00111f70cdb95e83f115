@@ -354,9 +354,7 @@ static void COOKED(uint8_t error_code);
 static void SORT(uint16_t *array, uint8_t length);
 static void GET_LINE_SENSORS(void);
 static void GET_START_MOD(void);
-static void STRAIGHT_ATTACK(void);
-static void CURVE_ATTACK(void);
-static void FOLLOWLINER_ATTACK(void);
+static void BATTLE(void);
 static void WATCHDOG(void);
 static void GET_LAST_SEEN_ROTATIONE(void);
 static void TASK_BEFORE_ATTACK(void);
@@ -1564,23 +1562,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  }
 	  if(Eva.State == ATTACK)
 	  {
-		  if(Eva.AttackMode == STRAIGHT)
-		  {
-			  STRAIGHT_ATTACK();
-		  }
-		  else if(Eva.AttackMode == CURVE)
-		  {
-			  CURVE_ATTACK();
-		  }
-		  else if(Eva.AttackMode == FOLLOW_LINER)
-		  {
-			  FOLLOWLINER_ATTACK();
-		  }
-		  else
-		  {
-			  STRAIGHT_ATTACK();
-		  }
-
+		  //BATTLE();
+		  if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
+			  SET_MOTORS(-100,-100);
+		  else if(FrontLeft.Line == IN || FrontRight.Line == IN)
+			  SET_MOTORS(10,10);
 	  }
 	  else if(Eva.State == BEFORE_ATTACK_TASK || Eva.State == BEFORE_ATTACK_WAIT)
 	  {
@@ -1617,30 +1603,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		OLED();
 	}
 }
-
-
-void STRAIGHT_ATTACK()
-{
-	Motors.Requested.L = 0;
-	Motors.Requested.R = 0;
-	static uint16_t ComeBackLinerTimer=10;
-
-	if(ComeBackLinerTimer != 10)
-	if(FrontLeft.Line == OUT)
-	{
-		Motors.Requested.L = -100;
-		Motors.Requested.R = -100;
-	}
-}
-
-
-before_attack_rotation_direction
-void CURVE_ATTACK(){}
-void FOLLOWLINER_ATTACK(){}
-void STRAIGHT_ATTACK(){}
-
-
-
 
 void OLED()
 {
