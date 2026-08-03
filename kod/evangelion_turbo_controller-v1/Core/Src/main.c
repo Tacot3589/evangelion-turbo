@@ -1623,21 +1623,42 @@ void STRAIGHT_ATTACK()
 {
 	Motors.Requested.L = 0;
 	Motors.Requested.R = 0;
-	static uint16_t ComeBackLinerTimer=10;
+	static uint16_t ComeBackLinerTimer=UINT16_MAX;
 
-	if(ComeBackLinerTimer != 10)
-	if(FrontLeft.Line == OUT)
+	if(ComeBackLinerTimer < LINE_COMEBACK_TIME)
 	{
-		Motors.Requested.L = -100;
-		Motors.Requested.R = -100;
+		ComeBackLinerTimer++;
+		Motors.Requested.L = -ATTACK_STRAIGHT_ATTACK_SPEED;
+		Motors.Requested.R = -ATTACK_STRAIGHT_ATTACK_SPEED;
 	}
+	else if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
+	{
+		ComeBackLinerTimer = 0;
+		Motors.Requested.L = -ATTACK_STRAIGHT_ATTACK_SPEED;
+		Motors.Requested.R = -ATTACK_STRAIGHT_ATTACK_SPEED;
+	}
+	else if(FrontLeft.Distance <= MAX_LIDAR_DISTANCE && FrontRight.Distance <= MAX_LIDAR_DISTANCE)
+	{
+		Motors.Requested.L = ATTACK_STRAIGHT_ATTACK_SPEED;
+		Motors.Requested.R = ATTACK_STRAIGHT_ATTACK_SPEED;
+	}
+	else if(lastSeen == LEFT)
+	{
+		Motors.Requested.L = -SEARCH_STRAIGHT_ATTACK_SPEED;
+		Motors.Requested.R = SEARCH_STRAIGHT_ATTACK_SPEED;
+	}
+	else if(lastSeen == RIGHT)
+	{
+		Motors.Requested.L = SEARCH_STRAIGHT_ATTACK_SPEED;
+		Motors.Requested.R = -SEARCH_STRAIGHT_ATTACK_SPEED;
+	}
+
+	SET_MOTORS(Motors.Requested.L, Motors.Requested.R);
 }
 
 
-before_attack_rotation_direction
 void CURVE_ATTACK(){}
 void FOLLOWLINER_ATTACK(){}
-void STRAIGHT_ATTACK(){}
 
 
 
@@ -1674,7 +1695,7 @@ void OLED()
 			_ssd1306_WriteString("FOLIN", SMALL);
 
 
-		//================================================ Line 1/4
+		//================================================ Line 2/4
 		_ssd1306_SetCursor(0,8);
 		if(Eva.Voltage >= 100)
 		{
@@ -1709,7 +1730,67 @@ void OLED()
 		}
 	}
 
+	//================================================ Line 3/4
+	_ssd1306_SetCursor(0,16);
+	//========================BACK RIGHT
+	ssd1306_WriteChar('L', Font_6x8);
+	if(BackRight.Line == IN)
+		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
+	else
+		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
+	ssd1306_WriteChar('D', Font_6x8);
+	if(BackRight.Distance > MAX_LIDAR_DISTANCE)
+		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
+	else
+		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
 
+	ssd1306_WriteChar(' ', Font_6x8);
+
+
+	//========================BACK LEFT
+	ssd1306_WriteChar('L', Font_6x8);
+	if(BackLeft.Line == IN)
+		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
+	else
+		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
+	ssd1306_WriteChar('D', Font_6x8);
+	if(BackLeft.Distance > MAX_LIDAR_DISTANCE)
+		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
+	else
+		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
+
+	ssd1306_WriteChar(' ', Font_6x8);
+
+	//================================================ Line 4/4
+	_ssd1306_SetCursor(0,24);
+	//========================BACK RIGHT
+	ssd1306_WriteChar('L', Font_6x8);
+	if(FrontRight.Line == IN)
+		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
+	else
+		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
+	ssd1306_WriteChar('D', Font_6x8);
+	if(FrontRight.Distance > MAX_LIDAR_DISTANCE)
+		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
+	else
+		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
+
+	ssd1306_WriteChar(' ', Font_6x8);
+
+
+	//========================BACK LEFT
+	ssd1306_WriteChar('L', Font_6x8);
+	if(FrontLeft.Line == IN)
+		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
+	else
+		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
+	ssd1306_WriteChar('D', Font_6x8);
+	if(FrontLeft.Distance > MAX_LIDAR_DISTANCE)
+		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
+	else
+		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
+
+	ssd1306_WriteChar(' ', Font_6x8);
 
 
 	ssd1306_UpdateScreen();
@@ -1871,40 +1952,6 @@ void GET_START_MOD()
 		Eva.State = BEFORE_ATTACK_WAIT;
 		switched_eva_state = TRUE;
 	}
-}
-
-void BATTLE()
-{
-	Motors.Requested.L=0;
-	Motors.Requested.R=0;
-
-	if(FrontLeft.Distance < MAX_LIDAR_DISTANCE && FrontLeft.Distance < MAX_LIDAR_DISTANCE)
-	{
-		Motors.Requested.L=0;
-		Motors.Requested.R=0;
-	}
-	else if(FrontLeft.Distance < MAX_LIDAR_DISTANCE && FrontLeft.Distance > MAX_LIDAR_DISTANCE)
-	{
-		Motors.Requested.L=-100;
-		Motors.Requested.R=100;
-	}
-	else if(FrontLeft.Distance > MAX_LIDAR_DISTANCE && FrontLeft.Distance < MAX_LIDAR_DISTANCE)
-	{
-		Motors.Requested.L=100;
-		Motors.Requested.R=-100;
-	}
-	else if(lastSeen == LEFT)
-	{
-		Motors.Requested.L=-100;
-		Motors.Requested.R=100;
-	}
-	else if(lastSeen == RIGHT)
-	{
-		Motors.Requested.L=100;
-		Motors.Requested.R=-100;
-	}
-
-	SET_MOTORS(Motors.Requested.L,Motors.Requested.R);
 }
 
 void COOKED(uint8_t error_code)
