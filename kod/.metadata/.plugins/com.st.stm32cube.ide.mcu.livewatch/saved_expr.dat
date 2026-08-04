@@ -26,3 +26,5 @@ UART4_RX
 UART5_RX
 Motors
 Battery_Voltage
+Dohyo_ID
+Module_State

@@ -1,0 +1,3257 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Main program body
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2026 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+#include "stdlib.h"
+#include "MY_INCLUDES.h"
+
+#include "fonts.h"
+#include "ssd1306.h"
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+
+/* USER CODE END PTD */
+
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+#define DMA_HANDLE_UART1 &handle_GPDMA1_Channel1
+#define DMA_HANDLE_UART2 &handle_GPDMA1_Channel2
+#define DMA_HANDLE_UART4 &handle_GPDMA1_Channel4
+#define DMA_HANDLE_UART5 &handle_GPDMA1_Channel5
+
+#define CAN_ID_CTRL  60
+#define CAN_ID_DRV0  67
+#define CAN_ID_DRV1  69
+
+
+//==================================================== WORKING SETUP
+#define MAIN_FREQ 1000
+#define SIDE_FREQ 100
+#define OLED_FREQ 25
+#define true 1
+#define TRUE 1
+#define false 0
+#define FALSE 0
+#define NONE 0
+#define LEFT 1
+#define RIGHT 2
+
+
+//============etc
+#define ABS(x) ((x) < 0 ? -(x) : (x))
+
+
+//option IDs
+#define OPTION_ID_BATTERY 1
+#define OPTION_ID_START_MOD 2
+#define OPTION_ID_LUNA_DIST 3
+#define OPTION_ID_LUNA_AMP 4
+#define OPTION_ID_LINES 6
+#define OPTION_ID_ACCEL 7
+#define OPTION_ID_GYRO 8
+#define OPTION_ID_IMU_PEAK 9
+#define OPTION_ID_SET_MOTS 10
+#define OPTION_ID_DEBUG 11
+#define OPTION_ID_ATTACK_MODE 12
+
+//==================================================== BATTERY
+#define BATTERY_VOLTAGE_COMPENSATION 1
+#define MIN_BATTERY_VOLTAGE_PER_CELL 3.45
+#define Reference_Voltage				3.311		// V
+#define Voltage_Resistor_Top 			91.0		// kOhm
+#define Voltage_Resistor_Bottom  		10.0		// kOhm
+#define ADC_MAX_VALUE					4096
+
+
+//==================================================== OLED
+#define _ssd1306_SetCursor(x, y) ssd1306_SetCursor(y, x)
+#define BIG 1
+#define SMALL 0
+
+#define _ARR_UP '('
+#define _ARR_DOWN '@'
+#define _CHECKBOX_EMPTY '^'
+#define _CHECKBOX_CHECKED '$'
+#define _CHECKBOX_EMPTY_BIG ')'
+#define _CHECKBOX_CHECKED_BIG '\''
+#define _CANCEL '}'
+#define _APPLY '{'
+
+//=============================================================================================================
+//=============================================================================================================			START MOD CODE
+//=============================================================================================================
+#define RISING 		1
+#define FALLING		2
+#define TIMEOUT		3
+
+#define RC5				1
+#define SIRC			2
+#define UNKNOWN			0
+#define SAVED_STATUS 	5
+
+#define RC5_Short   889      // 889 us
+#define RC5_Long    1778     // 1778 us
+#define SIRC_Short  600+50      // 600 us
+#define SIRC_Long   1200+50     // 1200 us
+#define Margin      300
+
+// Module Status
+#define STARTUP		1
+#define	PPROGRAMMED	2
+#define	READY		3
+#define	RC5_START	4
+#define SIRC_START	5
+#define	STOP		6
+
+// Led Commands
+#define ON			2
+#define OFF			3
+#define BLINK_SLOW	4
+#define BLINK_FAST	5
+#define TICK		6
+
+
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+typedef struct {
+	uint8_t DONT_USE_MOTORS;
+	uint8_t ALWAYS_IN_BATTLE;
+	uint8_t IGNORE_START_MODULE;
+	uint8_t LINE_SENSORS_ALWAYS_IN;
+	uint8_t IGNORE_ACCEL;
+	uint8_t DONT_INITIALIZE_LIDARS;
+} Settings_t;
+
+typedef enum {
+	IN,
+	OUT
+} LineState_t;
+
+typedef enum {
+	STRAIGHT,
+	CURVE,
+	FOLLOW_LINER,
+	FOLLOW_ATTACKER,
+	COUNT,
+} RobotAttackMode_t;
+
+typedef enum
+{
+	IDLE,
+	BEFORE_ATTACK_WAIT,
+	BEFORE_ATTACK_TASK,
+	AFTER_TASK_LINE_ALIGMENT,
+	AFTER_TASK_OPTIONAL_ROTATION_OR_ALIGMENT,
+	ATTACK,
+} RobotState_t;
+
+typedef enum {
+	_NOTHING,
+	_UP,
+	_DOWN,
+	_LEFT,
+	_RIGHT,
+	_CENTER,
+	_BUTTON_REBOUNCE,
+} JoystickMode_t;
+
+typedef struct {
+	LineState_t Line;
+	uint16_t RawLineA;
+	uint16_t RawLineB;
+    uint16_t Distance;
+    uint16_t LidarAmp;
+    uint16_t LidarTemp;
+} SensorData_t;
+
+typedef struct {
+	uint8_t Switch1;
+	uint8_t Switch2;
+	uint8_t Switch3;
+	JoystickMode_t Joystick;
+	uint8_t MenuOption;
+} Interface_t;
+
+typedef struct
+{
+	int16_t x;
+	int16_t y;
+	int16_t z;
+	int16_t peak;
+} Vector_t;
+
+typedef struct {
+	uint8_t inBattle;
+	RobotAttackMode_t AttackMode;
+	uint16_t Voltage;
+	uint16_t CellVoltage;
+	RobotState_t State;
+	Interface_t Interface;
+	uint8_t DriverTemp;
+	uint16_t StartDelayTimer;
+} RobotData_t;
+
+
+typedef struct {
+	uint8_t CurrentAddres;
+	uint8_t Started;
+	uint8_t StartedViaInterface;
+	uint8_t StartedViaSwitch;
+	uint16_t Delay;
+	uint16_t VolatileDelayTimer;
+} StartModData_t;
+
+
+typedef struct
+{
+	int8_t L;
+	int8_t R;
+} Speed_t;
+
+typedef struct
+{
+	uint8_t L;
+	uint8_t R;
+} Speed_directional_t;
+
+typedef struct
+{
+	Speed_t Requested;
+	Speed_t Set;
+	Speed_directional_t CAN;
+} MotorSpeed_t;
+
+typedef struct {
+    const char *name;
+    uint8_t id;
+} MenuOption_t;
+
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+ADC_HandleTypeDef hadc1;
+DMA_NodeTypeDef Node_GPDMA2_Channel0;
+DMA_QListTypeDef List_GPDMA2_Channel0;
+DMA_HandleTypeDef handle_GPDMA2_Channel0;
+
+FDCAN_HandleTypeDef hfdcan1;
+
+I2C_HandleTypeDef hi2c1;
+I2C_HandleTypeDef hi2c3;
+DMA_HandleTypeDef handle_GPDMA2_Channel1;
+
+TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim12;
+TIM_HandleTypeDef htim13;
+TIM_HandleTypeDef htim14;
+TIM_HandleTypeDef htim15;
+TIM_HandleTypeDef htim16;
+TIM_HandleTypeDef htim17;
+
+UART_HandleTypeDef huart4;
+UART_HandleTypeDef huart5;
+UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart2;
+DMA_HandleTypeDef handle_GPDMA1_Channel4;
+DMA_HandleTypeDef handle_GPDMA1_Channel5;
+DMA_HandleTypeDef handle_GPDMA1_Channel1;
+DMA_HandleTypeDef handle_GPDMA1_Channel2;
+
+/* USER CODE BEGIN PV */
+//CAN
+FDCAN_RxHeaderTypeDef 		CAN_RX_Header; 		//CAN Bus Transmit Header
+FDCAN_TxHeaderTypeDef 		CAN_TX_Header; 		//CAN Bus Receive Header
+uint8_t                     CAN_TX[8];
+uint8_t                     CAN_RX[8];
+FDCAN_FilterTypeDef 		CAN_Filter;
+
+volatile int32_t dupa=0;
+volatile int32_t dupa2=0;
+uint16_t actual_init_freq=FREQ_STARTING;
+int16_t ERROR_FLAG=0;
+
+//sensors
+uint8_t  UART1_RX[9];
+uint8_t  UART2_RX[9];
+uint8_t  UART4_RX[9];
+uint8_t  UART5_RX[9];
+uint8_t  UART_TX[9];
+
+SensorData_t FrontLeft={0};
+SensorData_t FrontRight={0};
+SensorData_t BackLeft={0};
+SensorData_t BackRight={0};
+RobotData_t Eva={0};
+MotorSpeed_t Motors={0};
+StartModData_t StartMod={0};
+Settings_t Settings={0};
+
+uint8_t lastSeen = LEFT;
+uint8_t before_attack_rotation_direction = LEFT;
+
+volatile uint16_t ADC_BUFFER[9];
+float BATTERY_CONSTANT;
+
+
+//performance!
+static uint32_t last_total = 0;
+static uint32_t last_idle = 0;
+volatile uint32_t cpu_idle_cycles = 0;
+volatile uint32_t cpu_load_permille = 0;
+volatile uint8_t MCU_LOAD = 0;
+volatile uint8_t MCU_LOAD_MAX = 0;
+
+//============================		START MOD CODE
+uint8_t Module_State = STARTUP;
+static uint8_t Dohyo_ID=0;
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_GPDMA1_Init(void);
+static void MX_GPDMA2_Init(void);
+static void MX_ADC1_Init(void);
+static void MX_FDCAN1_Init(void);
+static void MX_I2C3_Init(void);
+static void MX_TIM3_Init(void);
+static void MX_UART4_Init(void);
+static void MX_UART5_Init(void);
+static void MX_USART2_UART_Init(void);
+static void MX_USART1_UART_Init(void);
+static void MX_TIM16_Init(void);
+static void MX_TIM17_Init(void);
+static void MX_I2C1_Init(void);
+static void MX_TIM14_Init(void);
+static void MX_TIM12_Init(void);
+static void MX_TIM13_Init(void);
+static void MX_TIM15_Init(void);
+/* USER CODE BEGIN PFP */
+static void LIDARS_INIT(UART_HandleTypeDef *huart, DMA_HandleTypeDef *hdma, uint8_t *RX);
+static void PLAY_FREQ(uint16_t f_hz);
+static void COOKED(uint8_t error_code);
+static void SORT(uint16_t *array, uint8_t length);
+static void GET_LINE_SENSORS(void);
+static void GET_START_MOD(void);
+static void STRAIGHT_ATTACK(void);
+static void CURVE_ATTACK(void);
+static void FOLLOWLINER_ATTACK(void);
+static void FOLLOW_ATTACKER_ATTACK(void);
+static void WATCHDOG(void);
+static void GET_LAST_SEEN_ROTATIONE(void);
+static void TASK_BEFORE_ATTACK(void);
+static void SET_MOTORS(int8_t l, int8_t r);
+static void _ssd1306_WriteInTheMiddle(char *text, uint8_t y, uint8_t font);
+static void _ssd1306_WriteString(char* str, uint8_t font);
+static void MOTOR_DRIVER_INIT(uint8_t DRV_SELF_ADDRESS);
+static uint8_t ARE_ELEMENTS_EQUAL(const uint8_t *a, const uint8_t *b, uint8_t n);
+static void OLED(void);
+static inline void DWT_Init(void);
+
+//============================		START MOD CODE
+static void Interrupt10Hz(void);
+static void Interrupt(uint8_t Edge);
+static void Received_RC5_Frame(uint8_t Addres, uint8_t Command);
+static void Received_SIRC_Frame(uint8_t Addres, uint8_t Command);
+static uint8_t LED_GREEN_Control(uint8_t Command, uint8_t Data);
+static uint8_t LED_RED_Control(uint8_t Command, uint8_t Data);
+static uint8_t LED_BLUE_Control(uint8_t Command, uint8_t Data);
+/* USER CODE END PFP */
+
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
+
+/* USER CODE END 0 */
+
+/**
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+
+  /* USER CODE BEGIN 1 */
+    uint8_t Status;
+    Eva.AttackMode = DEFAULT_ATTACK_MODE_ID;
+
+  /* USER CODE END 1 */
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
+  HAL_Delay(100);
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_GPDMA1_Init();
+  MX_GPDMA2_Init();
+  MX_ADC1_Init();
+  MX_FDCAN1_Init();
+  MX_I2C3_Init();
+  MX_TIM3_Init();
+  MX_UART4_Init();
+  MX_UART5_Init();
+  MX_USART2_UART_Init();
+  MX_USART1_UART_Init();
+  MX_TIM16_Init();
+  MX_TIM17_Init();
+  MX_I2C1_Init();
+  MX_TIM14_Init();
+  MX_TIM12_Init();
+  MX_TIM13_Init();
+  MX_TIM15_Init();
+  /* USER CODE BEGIN 2 */
+
+  static uint8_t init_text_height = 0;
+  static uint8_t init_secondary_text_height = 20;
+  static uint8_t init_everywhere_delay = 50;
+
+	//INTIT
+	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
+	PLAY_FREQ(actual_init_freq);
+	if(ssd1306_Init()==0)
+		Error_Handler();
+	ssd1306_Clear();
+	ssd1306_SetColor(White);
+	ssd1306_Fill();
+	ssd1306_UpdateScreen();
+	HAL_Delay(init_everywhere_delay);
+
+
+	//CAN FILTERS
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("CAN", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("initialize", init_secondary_text_height, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(init_everywhere_delay);
+	CAN_Filter.IdType = FDCAN_STANDARD_ID;
+	CAN_Filter.FilterIndex = 0;
+	CAN_Filter.FilterType = FDCAN_FILTER_DISABLE;
+	CAN_Filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+	CAN_Filter.FilterID1 = 0;
+	CAN_Filter.FilterID2 = 0;
+	HAL_FDCAN_ConfigFilter(&hfdcan1, &CAN_Filter);
+
+	//CAN SETTINGS
+	CAN_TX_Header.Identifier = CAN_ID_CTRL;
+	CAN_TX_Header.IdType = FDCAN_STANDARD_ID;
+	CAN_TX_Header.TxFrameType = FDCAN_DATA_FRAME;
+	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_8;
+	CAN_TX_Header.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
+	CAN_TX_Header.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
+	CAN_TX_Header.MessageMarker = 0;
+	CAN_TX_Header.FDFormat = FDCAN_CLASSIC_CAN;
+	CAN_TX_Header.BitRateSwitch = FDCAN_BRS_OFF;
+
+	BATTERY_CONSTANT = ((Voltage_Resistor_Top + Voltage_Resistor_Bottom) / Voltage_Resistor_Bottom) * Reference_Voltage / 4096 * 100;
+
+	Settings.ALWAYS_IN_BATTLE = DEFAULT_SETTING_ALWAYS_IN_BATTLE;
+	Settings.DONT_INITIALIZE_LIDARS = DEFAULT_SETTING_DONT_INITIALIZE_LIDARS;
+	Settings.DONT_USE_MOTORS = DEFAULT_SETTING_DONT_USE_MOTORS;
+	Settings.IGNORE_START_MODULE = DEFAULT_SETTING_IGNORE_START_MODULE;
+
+	lastSeen = LEFT;
+	Eva.inBattle = FALSE;
+	Eva.State = IDLE;
+	Eva.AttackMode = DEFAULT_ATTACK_MODE_ID;
+	Eva.StartDelayTimer = 0;
+
+
+	//GPIO LED MISC
+	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
+	PLAY_FREQ(actual_init_freq);
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
+	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
+	HAL_GPIO_WritePin(CAN_EN_GPIO_Port, CAN_EN_Pin, 1);
+	HAL_Delay(init_everywhere_delay);
+
+
+
+	//start mode setup
+	//============================		START MOD CODE
+    Module_State = STARTUP;
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("START", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("MODULE", init_secondary_text_height, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(init_everywhere_delay);
+	//  Signal Power UP
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+	HAL_Delay(125);
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_SET);
+	HAL_Delay(125);
+	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+	HAL_Delay(250);
+	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+
+	//LUNAS
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("LIDARS", init_text_height, BIG);
+	ssd1306_UpdateScreen();
+	HAL_Delay(init_everywhere_delay);
+	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
+	PLAY_FREQ(actual_init_freq);
+	if(Settings.DONT_INITIALIZE_LIDARS == FALSE)
+	{
+		ssd1306_Clear();
+		_ssd1306_WriteInTheMiddle("LIDARS", init_text_height, BIG);
+		_ssd1306_WriteInTheMiddle("front right", init_secondary_text_height, SMALL);
+		ssd1306_UpdateScreen();
+		LIDARS_INIT(&huart2, DMA_HANDLE_UART2, UART2_RX);
+
+		ssd1306_Clear();
+		_ssd1306_WriteInTheMiddle("LIDARS", init_text_height, BIG);
+		_ssd1306_WriteInTheMiddle("front left", init_secondary_text_height, SMALL);
+		ssd1306_UpdateScreen();
+		LIDARS_INIT(&huart5, DMA_HANDLE_UART5, UART5_RX);
+
+		ssd1306_Clear();
+		_ssd1306_WriteInTheMiddle("LIDARS", init_text_height, BIG);
+		_ssd1306_WriteInTheMiddle("back left", init_secondary_text_height, SMALL);
+		ssd1306_UpdateScreen();
+		LIDARS_INIT(&huart1, DMA_HANDLE_UART1, UART1_RX);
+
+		ssd1306_Clear();
+		_ssd1306_WriteInTheMiddle("LIDAR", init_text_height, BIG);
+		_ssd1306_WriteInTheMiddle("back right", init_secondary_text_height, SMALL);
+		ssd1306_UpdateScreen();
+		LIDARS_INIT(&huart4, DMA_HANDLE_UART4, UART4_RX);
+		/*
+		uart1 = back left
+		uart2 = front right
+		uart4 = back right
+		uart5 = front left
+		*/
+	}
+
+
+
+	//ADC
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("ADCs", init_text_height, BIG);
+	ssd1306_UpdateScreen();
+	HAL_Delay(init_everywhere_delay);
+	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
+	PLAY_FREQ(actual_init_freq);
+	if (HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED) != HAL_OK)
+	  COOKED(ADC_INIT_ERR);
+	HAL_Delay(50);
+
+	if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC_BUFFER, 9) != HAL_OK)
+	  COOKED(ADC_INIT_ERR);
+
+	//CAN
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("DRVs", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("CAN start", init_secondary_text_height, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(init_everywhere_delay);
+	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
+	PLAY_FREQ(actual_init_freq);
+	if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
+		Error_Handler();
+	HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+	HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+
+	//DRV1
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("DRVs", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("DRV 0 init", init_secondary_text_height, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(init_everywhere_delay);
+	MOTOR_DRIVER_INIT(CAN_ID_DRV0);
+
+	//DRV2
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("DRVs", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("DRV 1 init", init_secondary_text_height, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(init_everywhere_delay);
+	MOTOR_DRIVER_INIT(CAN_ID_DRV1);
+
+	//Performance
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("MCU", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("performance", init_secondary_text_height, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(init_everywhere_delay);
+	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
+	PLAY_FREQ(actual_init_freq);
+	DWT_Init();
+
+	//Interrupts
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("ITs", init_text_height, BIG);
+	_ssd1306_WriteInTheMiddle("start", init_secondary_text_height, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(init_everywhere_delay);
+	actual_init_freq = actual_init_freq + FREQ_STEP_INIT;
+	PLAY_FREQ(actual_init_freq);
+	HAL_TIM_Base_Start_IT(&htim12); //10Hz start mod
+	HAL_TIM_Base_Start_IT(&htim13); //1Khz start mod
+	HAL_TIM_Base_Start_IT(&htim14); //25Hz oled
+	HAL_TIM_Base_Start_IT(&htim16); //1000Hz
+	HAL_TIM_Base_Start_IT(&htim17); //100Hz
+	HAL_TIM_Base_Start_IT(&htim15); // START_MOD
+
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
+	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
+	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+	PLAY_FREQ(0);
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("TURBO", 2, SMALL);
+	_ssd1306_WriteInTheMiddle("EVA++", 10, BIG);
+	ssd1306_UpdateScreen();
+
+
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+	  dupa2=TIM15->CNT;
+	uint32_t start = DWT->CYCCNT;
+	__WFI();
+	cpu_idle_cycles += (DWT->CYCCNT - start);
+	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
+  }
+  /* USER CODE END 3 */
+}
+
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+  /** Configure the main internal regulator output voltage
+  */
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+
+  while(!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}
+
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV1;
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLL1_SOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLM = 4;
+  RCC_OscInitStruct.PLL.PLLN = 21;
+  RCC_OscInitStruct.PLL.PLLP = 2;
+  RCC_OscInitStruct.PLL.PLLQ = 2;
+  RCC_OscInitStruct.PLL.PLLR = 2;
+  RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1_VCIRANGE_3;
+  RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1_VCORANGE_WIDE;
+  RCC_OscInitStruct.PLL.PLLFRACN = 2048;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2
+                              |RCC_CLOCKTYPE_PCLK3;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB3CLKDivider = RCC_HCLK_DIV1;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure the programming delay
+  */
+  __HAL_FLASH_SET_PROGRAM_DELAY(FLASH_PROGRAMMING_DELAY_2);
+}
+
+/**
+  * @brief ADC1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_ADC1_Init(void)
+{
+
+  /* USER CODE BEGIN ADC1_Init 0 */
+
+  /* USER CODE END ADC1_Init 0 */
+
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN ADC1_Init 1 */
+
+  /* USER CODE END ADC1_Init 1 */
+
+  /** Common config
+  */
+  hadc1.Instance = ADC1;
+  hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV4;
+  hadc1.Init.Resolution = ADC_RESOLUTION_12B;
+  hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
+  hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  hadc1.Init.LowPowerAutoWait = DISABLE;
+  hadc1.Init.ContinuousConvMode = ENABLE;
+  hadc1.Init.NbrOfConversion = 9;
+  hadc1.Init.DiscontinuousConvMode = DISABLE;
+  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc1.Init.DMAContinuousRequests = ENABLE;
+  hadc1.Init.SamplingMode = ADC_SAMPLING_MODE_NORMAL;
+  hadc1.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
+  hadc1.Init.OversamplingMode = DISABLE;
+  if (HAL_ADC_Init(&hadc1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_3;
+  sConfig.Rank = ADC_REGULAR_RANK_1;
+  sConfig.SamplingTime = ADC_SAMPLETIME_6CYCLES_5;
+  sConfig.SingleDiff = ADC_SINGLE_ENDED;
+  sConfig.OffsetNumber = ADC_OFFSET_NONE;
+  sConfig.Offset = 0;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_7;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_8;
+  sConfig.Rank = ADC_REGULAR_RANK_3;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_10;
+  sConfig.Rank = ADC_REGULAR_RANK_4;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_11;
+  sConfig.Rank = ADC_REGULAR_RANK_5;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_12;
+  sConfig.Rank = ADC_REGULAR_RANK_6;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_13;
+  sConfig.Rank = ADC_REGULAR_RANK_7;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_18;
+  sConfig.Rank = ADC_REGULAR_RANK_8;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_19;
+  sConfig.Rank = ADC_REGULAR_RANK_9;
+  sConfig.SamplingTime = ADC_SAMPLETIME_24CYCLES_5;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN ADC1_Init 2 */
+
+  /* USER CODE END ADC1_Init 2 */
+
+}
+
+/**
+  * @brief FDCAN1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_FDCAN1_Init(void)
+{
+
+  /* USER CODE BEGIN FDCAN1_Init 0 */
+
+  /* USER CODE END FDCAN1_Init 0 */
+
+  /* USER CODE BEGIN FDCAN1_Init 1 */
+
+  /* USER CODE END FDCAN1_Init 1 */
+  hfdcan1.Instance = FDCAN1;
+  hfdcan1.Init.ClockDivider = FDCAN_CLOCK_DIV1;
+  hfdcan1.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
+  hfdcan1.Init.Mode = FDCAN_MODE_NORMAL;
+  hfdcan1.Init.AutoRetransmission = ENABLE;
+  hfdcan1.Init.TransmitPause = DISABLE;
+  hfdcan1.Init.ProtocolException = DISABLE;
+  hfdcan1.Init.NominalPrescaler = 20;
+  hfdcan1.Init.NominalSyncJumpWidth = 1;
+  hfdcan1.Init.NominalTimeSeg1 = 14;
+  hfdcan1.Init.NominalTimeSeg2 = 2;
+  hfdcan1.Init.DataPrescaler = 20;
+  hfdcan1.Init.DataSyncJumpWidth = 1;
+  hfdcan1.Init.DataTimeSeg1 = 14;
+  hfdcan1.Init.DataTimeSeg2 = 2;
+  hfdcan1.Init.StdFiltersNbr = 1;
+  hfdcan1.Init.ExtFiltersNbr = 0;
+  hfdcan1.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
+  if (HAL_FDCAN_Init(&hfdcan1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN FDCAN1_Init 2 */
+
+  /* USER CODE END FDCAN1_Init 2 */
+
+}
+
+/**
+  * @brief GPDMA1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPDMA1_Init(void)
+{
+
+  /* USER CODE BEGIN GPDMA1_Init 0 */
+
+  /* USER CODE END GPDMA1_Init 0 */
+
+  /* Peripheral clock enable */
+  __HAL_RCC_GPDMA1_CLK_ENABLE();
+
+  /* GPDMA1 interrupt Init */
+    HAL_NVIC_SetPriority(GPDMA1_Channel1_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(GPDMA1_Channel1_IRQn);
+    HAL_NVIC_SetPriority(GPDMA1_Channel2_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(GPDMA1_Channel2_IRQn);
+    HAL_NVIC_SetPriority(GPDMA1_Channel4_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(GPDMA1_Channel4_IRQn);
+    HAL_NVIC_SetPriority(GPDMA1_Channel5_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(GPDMA1_Channel5_IRQn);
+
+  /* USER CODE BEGIN GPDMA1_Init 1 */
+
+  /* USER CODE END GPDMA1_Init 1 */
+  /* USER CODE BEGIN GPDMA1_Init 2 */
+
+  /* USER CODE END GPDMA1_Init 2 */
+
+}
+
+/**
+  * @brief GPDMA2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPDMA2_Init(void)
+{
+
+  /* USER CODE BEGIN GPDMA2_Init 0 */
+
+  /* USER CODE END GPDMA2_Init 0 */
+
+  /* Peripheral clock enable */
+  __HAL_RCC_GPDMA2_CLK_ENABLE();
+
+  /* GPDMA2 interrupt Init */
+    HAL_NVIC_SetPriority(GPDMA2_Channel0_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(GPDMA2_Channel0_IRQn);
+    HAL_NVIC_SetPriority(GPDMA2_Channel1_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(GPDMA2_Channel1_IRQn);
+
+  /* USER CODE BEGIN GPDMA2_Init 1 */
+
+  /* USER CODE END GPDMA2_Init 1 */
+  /* USER CODE BEGIN GPDMA2_Init 2 */
+
+  /* USER CODE END GPDMA2_Init 2 */
+
+}
+
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.Timing = 0x10802D9B;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Analogue filter
+  */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Digital filter
+  */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief I2C3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C3_Init(void)
+{
+
+  /* USER CODE BEGIN I2C3_Init 0 */
+
+  /* USER CODE END I2C3_Init 0 */
+
+  /* USER CODE BEGIN I2C3_Init 1 */
+
+  /* USER CODE END I2C3_Init 1 */
+  hi2c3.Instance = I2C3;
+  hi2c3.Init.Timing = 0x00802172;
+  hi2c3.Init.OwnAddress1 = 0;
+  hi2c3.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c3.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c3.Init.OwnAddress2 = 0;
+  hi2c3.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c3.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c3.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Analogue filter
+  */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c3, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Digital filter
+  */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c3, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** I2C Fast mode Plus enable
+  */
+  if (HAL_I2CEx_ConfigFastModePlus(&hi2c3, I2C_FASTMODEPLUS_ENABLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C3_Init 2 */
+
+  /* USER CODE END I2C3_Init 2 */
+
+}
+
+/**
+  * @brief TIM3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM3_Init(void)
+{
+
+  /* USER CODE BEGIN TIM3_Init 0 */
+
+  /* USER CODE END TIM3_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM3_Init 1 */
+
+  /* USER CODE END TIM3_Init 1 */
+  htim3.Instance = TIM3;
+  htim3.Init.Prescaler = 0;
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim3.Init.Period = 65535;
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_PWM_Init(&htim3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM3_Init 2 */
+
+  /* USER CODE END TIM3_Init 2 */
+  HAL_TIM_MspPostInit(&htim3);
+
+}
+
+/**
+  * @brief TIM12 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM12_Init(void)
+{
+
+  /* USER CODE BEGIN TIM12_Init 0 */
+
+  /* USER CODE END TIM12_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+
+  /* USER CODE BEGIN TIM12_Init 1 */
+
+  /* USER CODE END TIM12_Init 1 */
+  htim12.Instance = TIM12;
+  htim12.Init.Prescaler = 1700-1;
+  htim12.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim12.Init.Period = 4999;
+  htim12.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim12.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim12) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim12, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM12_Init 2 */
+
+  /* USER CODE END TIM12_Init 2 */
+
+}
+
+/**
+  * @brief TIM13 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM13_Init(void)
+{
+
+  /* USER CODE BEGIN TIM13_Init 0 */
+
+  /* USER CODE END TIM13_Init 0 */
+
+  /* USER CODE BEGIN TIM13_Init 1 */
+
+  /* USER CODE END TIM13_Init 1 */
+  htim13.Instance = TIM13;
+  htim13.Init.Prescaler = 170-1;
+  htim13.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim13.Init.Period = 999;
+  htim13.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim13.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim13) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM13_Init 2 */
+
+  /* USER CODE END TIM13_Init 2 */
+
+}
+
+/**
+  * @brief TIM14 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM14_Init(void)
+{
+
+  /* USER CODE BEGIN TIM14_Init 0 */
+
+  /* USER CODE END TIM14_Init 0 */
+
+  /* USER CODE BEGIN TIM14_Init 1 */
+
+  /* USER CODE END TIM14_Init 1 */
+  htim14.Instance = TIM14;
+  htim14.Init.Prescaler = 6800-1;
+  htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim14.Init.Period = 999;
+  htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim14.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim14) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM14_Init 2 */
+
+  /* USER CODE END TIM14_Init 2 */
+
+}
+
+/**
+  * @brief TIM15 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM15_Init(void)
+{
+
+  /* USER CODE BEGIN TIM15_Init 0 */
+
+  /* USER CODE END TIM15_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM15_Init 1 */
+
+  /* USER CODE END TIM15_Init 1 */
+  htim15.Instance = TIM15;
+  htim15.Init.Prescaler = 170-1;
+  htim15.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim15.Init.Period = 65535;
+  htim15.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim15.Init.RepetitionCounter = 0;
+  htim15.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim15) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim15, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim15, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM15_Init 2 */
+
+  /* USER CODE END TIM15_Init 2 */
+
+}
+
+/**
+  * @brief TIM16 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM16_Init(void)
+{
+
+  /* USER CODE BEGIN TIM16_Init 0 */
+
+  /* USER CODE END TIM16_Init 0 */
+
+  /* USER CODE BEGIN TIM16_Init 1 */
+
+  /* USER CODE END TIM16_Init 1 */
+  htim16.Instance = TIM16;
+  htim16.Init.Prescaler = 170-1;
+  htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim16.Init.Period = 999;
+  htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim16.Init.RepetitionCounter = 0;
+  htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim16) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM16_Init 2 */
+
+  /* USER CODE END TIM16_Init 2 */
+
+}
+
+/**
+  * @brief TIM17 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM17_Init(void)
+{
+
+  /* USER CODE BEGIN TIM17_Init 0 */
+
+  /* USER CODE END TIM17_Init 0 */
+
+  /* USER CODE BEGIN TIM17_Init 1 */
+
+  /* USER CODE END TIM17_Init 1 */
+  htim17.Instance = TIM17;
+  htim17.Init.Prescaler = 1700-1;
+  htim17.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim17.Init.Period = 999;
+  htim17.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim17.Init.RepetitionCounter = 0;
+  htim17.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim17) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM17_Init 2 */
+
+  /* USER CODE END TIM17_Init 2 */
+
+}
+
+/**
+  * @brief UART4 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_UART4_Init(void)
+{
+
+  /* USER CODE BEGIN UART4_Init 0 */
+
+  /* USER CODE END UART4_Init 0 */
+
+  /* USER CODE BEGIN UART4_Init 1 */
+
+  /* USER CODE END UART4_Init 1 */
+  huart4.Instance = UART4;
+  huart4.Init.BaudRate = 115200;
+  huart4.Init.WordLength = UART_WORDLENGTH_8B;
+  huart4.Init.StopBits = UART_STOPBITS_1;
+  huart4.Init.Parity = UART_PARITY_NONE;
+  huart4.Init.Mode = UART_MODE_TX_RX;
+  huart4.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart4.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart4.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart4.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  huart4.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetTxFifoThreshold(&huart4, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetRxFifoThreshold(&huart4, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_DisableFifoMode(&huart4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN UART4_Init 2 */
+
+  /* USER CODE END UART4_Init 2 */
+
+}
+
+/**
+  * @brief UART5 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_UART5_Init(void)
+{
+
+  /* USER CODE BEGIN UART5_Init 0 */
+
+  /* USER CODE END UART5_Init 0 */
+
+  /* USER CODE BEGIN UART5_Init 1 */
+
+  /* USER CODE END UART5_Init 1 */
+  huart5.Instance = UART5;
+  huart5.Init.BaudRate = 115200;
+  huart5.Init.WordLength = UART_WORDLENGTH_8B;
+  huart5.Init.StopBits = UART_STOPBITS_1;
+  huart5.Init.Parity = UART_PARITY_NONE;
+  huart5.Init.Mode = UART_MODE_TX_RX;
+  huart5.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart5.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart5.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart5.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  huart5.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart5) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetTxFifoThreshold(&huart5, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetRxFifoThreshold(&huart5, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_DisableFifoMode(&huart5) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN UART5_Init 2 */
+
+  /* USER CODE END UART5_Init 2 */
+
+}
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart1.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetTxFifoThreshold(&huart1, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetRxFifoThreshold(&huart1, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_DisableFifoMode(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 115200;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart2.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetTxFifoThreshold(&huart2, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetRxFifoThreshold(&huart2, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_DisableFifoMode(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+
+  /* USER CODE END MX_GPIO_Init_1 */
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
+  __HAL_RCC_GPIOE_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, LED_RED_Pin|LED_GREEN_Pin|LED_BLUE_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(CAN_EN_GPIO_Port, CAN_EN_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : START_MOD_IR1_Pin */
+  GPIO_InitStruct.Pin = START_MOD_IR1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(START_MOD_IR1_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LED_RED_Pin LED_GREEN_Pin LED_BLUE_Pin */
+  GPIO_InitStruct.Pin = LED_RED_Pin|LED_GREEN_Pin|LED_BLUE_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : START_MOD_IR3_Pin */
+  GPIO_InitStruct.Pin = START_MOD_IR3_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(START_MOD_IR3_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : JOY5_Pin JOY4_Pin */
+  GPIO_InitStruct.Pin = JOY5_Pin|JOY4_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : JOY3_Pin JOY2_Pin JOY1_Pin */
+  GPIO_InitStruct.Pin = JOY3_Pin|JOY2_Pin|JOY1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : CAN_EN_Pin */
+  GPIO_InitStruct.Pin = CAN_EN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(CAN_EN_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : START_MOD_IR_2_Pin */
+  GPIO_InitStruct.Pin = START_MOD_IR_2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(START_MOD_IR_2_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI11_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI11_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI14_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI14_IRQn);
+
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+
+  /* USER CODE END MX_GPIO_Init_2 */
+}
+
+/* USER CODE BEGIN 4 */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	//======================================== Start mod code
+	if (htim->Instance == TIM12)
+	{
+		Interrupt10Hz();
+	}
+	if (htim->Instance == TIM15)
+	{
+		Interrupt(TIMEOUT);
+	}
+
+	if(htim->Instance == TIM16) //1000Hz battlee
+	{
+	  GET_LINE_SENSORS();
+	  GET_LAST_SEEN_ROTATIONE();
+	  GET_START_MOD();
+	  if(Eva.State == IDLE)
+	  {
+		  Eva.StartDelayTimer=0;
+	  }
+	  if(Eva.State == ATTACK)
+	  {
+
+		  if(Eva.AttackMode == STRAIGHT)
+		  {
+			  STRAIGHT_ATTACK();
+		  }
+		  else if(Eva.AttackMode == CURVE)
+		  {
+			  CURVE_ATTACK();
+		  }
+		  else if(Eva.AttackMode == FOLLOW_LINER)
+		  {
+			  FOLLOWLINER_ATTACK();
+		  }
+		  else if(Eva.AttackMode == FOLLOW_ATTACKER)
+		  {
+			  FOLLOW_ATTACKER_ATTACK();
+		  }
+		  else
+		  {
+			  STRAIGHT_ATTACK();
+		  }
+
+	  }
+	  else
+	  {
+		  TASK_BEFORE_ATTACK();
+	  }
+
+	}
+
+	if(htim->Instance == TIM17) //100hz everything else
+	{
+	   WATCHDOG();
+
+	   //LOAD
+		uint32_t total = DWT->CYCCNT;
+		uint32_t total_diff = total - last_total;
+		uint32_t idle_diff  = cpu_idle_cycles - last_idle;
+
+		last_total = total;
+		last_idle = cpu_idle_cycles;
+
+		if (total_diff > 0)
+			cpu_load_permille = (1000U * (total_diff - idle_diff)) / total_diff;
+		else
+			cpu_load_permille = 0;
+
+		MCU_LOAD = cpu_load_permille / 10;
+
+		if(MCU_LOAD > MCU_LOAD_MAX)
+			MCU_LOAD_MAX = MCU_LOAD;
+	}
+
+	if(htim->Instance == TIM14)
+	{
+		OLED();
+	}
+}
+
+
+void STRAIGHT_ATTACK()
+{
+	static uint16_t ComeBackLinerTimer=UINT16_MAX;
+
+	if(ComeBackLinerTimer < LINE_COMEBACK_TIME)
+	{
+		ComeBackLinerTimer++;
+		SET_MOTORS(-ATTACK_STRAIGHT_ATTACK_SPEED,-ATTACK_STRAIGHT_ATTACK_SPEED);
+	}
+	else if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
+	{
+		ComeBackLinerTimer = 0;
+		SET_MOTORS(-ATTACK_STRAIGHT_ATTACK_SPEED,-ATTACK_STRAIGHT_ATTACK_SPEED);
+	}
+	else if(FrontLeft.Distance <= MIN_LIDAR_DISTANCE && FrontRight.Distance <= MIN_LIDAR_DISTANCE)
+	{
+		SET_MOTORS(100,100);
+	}
+	else if(FrontLeft.Distance <= MAX_LIDAR_DISTANCE && FrontRight.Distance <= MAX_LIDAR_DISTANCE)
+	{
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED);
+	}
+	else if(lastSeen == LEFT)
+	{
+		SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED, SEARCH_STRAIGHT_ATTACK_SPEED);
+	}
+	else if(lastSeen == RIGHT)
+	{
+		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, -SEARCH_STRAIGHT_ATTACK_SPEED);
+	}
+	else
+	{
+		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, -SEARCH_STRAIGHT_ATTACK_SPEED);
+	}
+}
+
+
+void CURVE_ATTACK()
+{
+
+
+}
+
+void FOLLOWLINER_ATTACK()
+{
+	if(before_attack_rotation_direction == RIGHT)
+	{
+		if(FrontLeft.Line == IN)
+		{
+			SET_MOTORS(25,100);
+		}
+		else if(FrontLeft.Line == OUT)
+		{
+			SET_MOTORS(100,25);
+		}
+	}
+
+	else if(before_attack_rotation_direction == LEFT)
+	{
+		if(FrontRight.Line == IN)
+		{
+			SET_MOTORS(100,25);
+		}
+		else if(FrontRight.Line == OUT)
+		{
+			SET_MOTORS(25,100);
+		}
+	}
+
+}
+void FOLLOW_ATTACKER_ATTACK()
+{
+
+}
+
+
+
+void OLED()
+{
+	ssd1306_Clear();
+
+
+	if(Eva.State == BEFORE_ATTACK_WAIT)
+	{
+		_ssd1306_WriteInTheMiddle("EVA++", 0, BIG);
+
+		uint16_t TimeToShow = START_WAITING_TIME - Eva.StartDelayTimer - START_WAITING_TIME_HEADROOM;
+		char buf[4];
+		itoa(TimeToShow, buf, 10);
+		_ssd1306_WriteInTheMiddle(buf, 20, SMALL);
+
+	}
+	else
+	{
+		//================================================ Line 1/4
+		_ssd1306_SetCursor(0,0);
+		if(Eva.inBattle == TRUE)
+			_ssd1306_WriteString("ATCK>", SMALL);
+		else
+			_ssd1306_WriteString("IDLE>", SMALL);
+
+		if(Eva.AttackMode == STRAIGHT)
+			_ssd1306_WriteString("STRGH", SMALL);
+		else if(Eva.AttackMode == CURVE)
+			_ssd1306_WriteString("CURVE", SMALL);
+		else if(Eva.AttackMode == FOLLOW_LINER)
+			_ssd1306_WriteString("FOLIN", SMALL);
+		else if(Eva.AttackMode == FOLLOW_ATTACKER)
+			_ssd1306_WriteString("FLATK", SMALL);
+
+
+		//================================================ Line 2/4
+		_ssd1306_SetCursor(0,8);
+		if(Eva.Voltage >= 100)
+		{
+			ssd1306_WriteChar(Eva.Voltage / 1000 + '0', Font_6x8);
+			ssd1306_WriteChar((Eva.Voltage / 100) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('.', Font_6x8);
+			ssd1306_WriteChar((Eva.Voltage / 10) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('v', Font_6x8);
+		}
+		else
+		{
+			ssd1306_WriteChar('0', Font_6x8);
+			ssd1306_WriteChar((Eva.Voltage / 100) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('.', Font_6x8);
+			ssd1306_WriteChar((Eva.Voltage / 10) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('v', Font_6x8);
+		}
+		ssd1306_WriteChar(' ', Font_6x8);
+		if(Eva.DriverTemp >= 100)
+		{
+			ssd1306_WriteChar(Eva.DriverTemp / 100 + '0', Font_6x8);
+			ssd1306_WriteChar((Eva.DriverTemp / 10) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar(Eva.DriverTemp % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('C', Font_6x8);
+		}
+		else
+		{
+			ssd1306_WriteChar('0', Font_6x8);
+			ssd1306_WriteChar(Eva.DriverTemp / 10 + '0', Font_6x8);
+			ssd1306_WriteChar(Eva.DriverTemp % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('C', Font_6x8);
+		}
+
+		//================================================ Line 3/4
+		_ssd1306_SetCursor(0,16);
+		//========================BACK RIGHT
+		ssd1306_WriteChar('L', Font_6x8);
+		if(BackRight.Line == IN)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+		ssd1306_WriteChar('D', Font_6x8);
+		if(BackRight.Distance > MAX_LIDAR_DISTANCE)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+
+		ssd1306_WriteChar(' ', Font_6x8);
+
+
+		//========================BACK LEFT
+		ssd1306_WriteChar('L', Font_6x8);
+		if(BackLeft.Line == IN)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+		ssd1306_WriteChar('D', Font_6x8);
+		if(BackLeft.Distance > MAX_LIDAR_DISTANCE)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+
+		ssd1306_WriteChar(' ', Font_6x8);
+
+		//================================================ Line 4/4
+		_ssd1306_SetCursor(0,23);
+		//========================BACK RIGHT
+		ssd1306_WriteChar('L', Font_6x8);
+		if(FrontRight.Line == IN)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+		ssd1306_WriteChar('D', Font_6x8);
+		if(FrontRight.Distance > MAX_LIDAR_DISTANCE)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+
+		ssd1306_WriteChar(' ', Font_6x8);
+
+
+		//========================BACK LEFT
+		ssd1306_WriteChar('L', Font_6x8);
+		if(FrontLeft.Line == IN)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+		ssd1306_WriteChar('D', Font_6x8);
+		if(FrontLeft.Distance > MAX_LIDAR_DISTANCE)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+
+		ssd1306_WriteChar(' ', Font_6x8);
+	}
+
+	ssd1306_UpdateScreen();
+}
+
+
+void TASK_BEFORE_ATTACK()
+{
+	static uint16_t Counter=0;
+
+	if(Eva.State == BEFORE_ATTACK_WAIT)
+	{
+		Eva.StartDelayTimer++;
+		if(Eva.StartDelayTimer > START_WAITING_TIME - START_WAITING_TIME_HEADROOM)
+			Eva.State = BEFORE_ATTACK_TASK;
+	}
+	else if(Eva.State == BEFORE_ATTACK_TASK)
+	{
+		SET_MOTORS(GO_TO_LINE_TASK_SPEED, GO_TO_LINE_TASK_SPEED);
+		if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
+		{
+			Eva.State = AFTER_TASK_LINE_ALIGMENT;
+
+		}
+	}
+	else if(Eva.State == AFTER_TASK_LINE_ALIGMENT)
+	{
+		if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
+		{
+			SET_MOTORS(-GO_TO_LINE_TASK_SPEED, -GO_TO_LINE_TASK_SPEED);
+		}
+		else
+		{
+			Eva.State = AFTER_TASK_OPTIONAL_ROTATION_OR_ALIGMENT;
+			Counter=0;
+		}
+
+	}
+	else if(Eva.State == AFTER_TASK_OPTIONAL_ROTATION_OR_ALIGMENT)
+	{
+		if(Eva.AttackMode == STRAIGHT)
+		{
+			if(before_attack_rotation_direction == RIGHT)
+				SET_MOTORS(AFTER_TASK_ALIGMENT_SPEED, -AFTER_TASK_ALIGMENT_SPEED);
+			else
+				SET_MOTORS(-AFTER_TASK_ALIGMENT_SPEED, AFTER_TASK_ALIGMENT_SPEED);
+
+			Counter++;
+			if(Counter >= AFTER_TASK_ROTATION_TIME)
+			{
+				Eva.State = ATTACK;
+				Counter=0;
+			}
+		}
+		else if(Eva.AttackMode == FOLLOW_LINER || Eva.AttackMode == FOLLOW_ATTACKER)
+		{
+			if(before_attack_rotation_direction == RIGHT)
+			{
+				if(FrontLeft.Line == OUT && BackLeft.Line == OUT)
+					Eva.State = ATTACK;
+				else if(FrontLeft.Line == IN && BackLeft.Line == IN && FrontRight.Line == IN && BackRight.Line == IN)
+					SET_MOTORS(AFTER_TASK_ALIGMENT_SPEED, AFTER_TASK_ALIGMENT_SPEED/3);
+				else if(FrontLeft.Line == OUT && FrontRight.Line == OUT)
+					SET_MOTORS(AFTER_TASK_ALIGMENT_SPEED, -AFTER_TASK_ALIGMENT_SPEED);
+				else
+					SET_MOTORS(AFTER_TASK_ALIGMENT_SPEED, 0);
+			}
+			else if(before_attack_rotation_direction == LEFT)
+			{
+				if(FrontRight.Line == OUT && BackRight.Line == OUT)
+					Eva.State = ATTACK;
+				else if(FrontLeft.Line == IN && BackLeft.Line == IN && FrontRight.Line == IN && BackRight.Line == IN)
+					SET_MOTORS(AFTER_TASK_ALIGMENT_SPEED/3, AFTER_TASK_ALIGMENT_SPEED);
+				else if(FrontLeft.Line == OUT && FrontRight.Line == OUT)
+					SET_MOTORS(-AFTER_TASK_ALIGMENT_SPEED, AFTER_TASK_ALIGMENT_SPEED);
+				else
+					SET_MOTORS(0, AFTER_TASK_ALIGMENT_SPEED);
+			}
+		}
+		else
+		{
+			Eva.State = ATTACK;
+		}
+	}
+
+}
+
+void SET_MOTORS(int8_t l, int8_t r)
+{
+	uint8_t CAN_r, CAN_l;
+	static uint8_t WhichFirst = 0;
+
+	if(Settings.DONT_USE_MOTORS == TRUE)
+		l = r = 0;
+
+	if (SWITCH_MOTORS)
+	{
+	    int8_t tmp = l;
+	    l = r;
+	    r = tmp;
+	}
+	if(REVERSE_RIGHT_MOTOR)
+	{
+		r = -r;
+	}
+	if(REVERSE_LEFT_MOTOR)
+	{
+		l = -l;
+	}
+
+	l = l * LEFT_MOTOR_VELOCITY_MULTIPLIER;
+	r = r * RIGHT_MOTOR_VELOCITY_MULTIPLIER;
+
+
+	if(l > 99)
+		l=99;
+	else if(l<-99)
+		l=-99;
+
+	if(r>99)
+		r=99;
+	else if(r<-99)
+		r=-99;
+
+
+	/*
+	//convert to canable characters
+	 	 0=0
+	 	 1-100 = forward
+	 	 101-200 = backward
+	*/
+
+	Motors.Set.L = l;
+	Motors.Set.R = r;
+
+	if(l < 0)
+		CAN_l = 100 - l;
+	else
+		CAN_l = l;
+
+	if(r < 0)
+		CAN_r= 100 - r;
+	else
+		CAN_r = r;
+
+	if(WhichFirst == 1)
+	{
+		WhichFirst=0;
+		CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+		CAN_TX[0]=CAN_ID_DRV0;
+		CAN_TX[1]=0x50;
+		CAN_TX[2]=CAN_l;
+		CAN_TX[3]=0x01;
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+
+		CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+		CAN_TX[0]=CAN_ID_DRV1;
+		CAN_TX[1]=0x50;
+		CAN_TX[2]=CAN_r;
+		CAN_TX[3]=0x01;
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	}
+	else
+	{
+		WhichFirst=1;
+		CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+		CAN_TX[0]=CAN_ID_DRV1;
+		CAN_TX[1]=0x50;
+		CAN_TX[2]=CAN_r;
+		CAN_TX[3]=0x01;
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+
+		CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+		CAN_TX[0]=CAN_ID_DRV0;
+		CAN_TX[1]=0x50;
+		CAN_TX[2]=CAN_l;
+		CAN_TX[3]=0x01;
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	}
+
+	Motors.CAN.L = CAN_l;
+	Motors.CAN.R = CAN_r;
+}
+
+void GET_LAST_SEEN_ROTATIONE()
+{
+	if(Eva.State == IDLE)
+	{
+		if(FrontLeft.Distance < MIN_LIDAR_DISTANCE)
+			before_attack_rotation_direction = lastSeen = LEFT;
+		else if(FrontRight.Distance < MIN_LIDAR_DISTANCE)
+			before_attack_rotation_direction = lastSeen = RIGHT;
+
+	}
+	else
+	{
+		if(FrontLeft.Distance < MAX_LIDAR_DISTANCE)
+			lastSeen = LEFT;
+		else if(FrontRight.Distance < MAX_LIDAR_DISTANCE)
+			lastSeen = RIGHT;
+	}
+
+}
+
+void GET_START_MOD()
+{
+	static uint8_t switched_eva_state = FALSE;
+
+	if(Settings.ALWAYS_IN_BATTLE)
+	{
+		Eva.State = ATTACK;
+		Eva.inBattle = TRUE;
+	}
+	if(Eva.inBattle == FALSE)
+	{
+		switched_eva_state = FALSE;
+		Eva.State = IDLE;
+		Eva.StartDelayTimer = 0;
+	}
+	else if(Eva.inBattle && switched_eva_state == FALSE)
+	{
+		Eva.State = BEFORE_ATTACK_WAIT;
+		switched_eva_state = TRUE;
+	}
+}
+
+void COOKED(uint8_t error_code)
+//error flag codes less than 200 has priority and HALT
+{
+	  //TODO buzzer?
+	  if(error_code < 200)
+	  {
+		  ERROR_FLAG = error_code;
+		  Error_Handler();
+	  }
+	  else
+	  {
+		  ERROR_FLAG = error_code;
+	  }
+}
+
+void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
+{
+
+	HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &CAN_RX_Header, CAN_RX);
+	HAL_FDCAN_ActivateNotification(hfdcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+}
+
+
+void LIDARS_INIT(UART_HandleTypeDef *huart, DMA_HandleTypeDef *dma, uint8_t *RX)
+{
+	uint8_t counter=0;
+
+	//LIDARS OFF
+	UART_TX[0] = 0x5A;
+	UART_TX[1] = 0x05;
+	UART_TX[2] = 0x07;
+	UART_TX[3] = 0x00;
+	UART_TX[4] = (UART_TX[0] + UART_TX[1] + UART_TX[2] + UART_TX[3]) % 0x100;
+	counter=0;
+	while(true)
+	{
+		HAL_UART_Transmit(huart, UART_TX, 5, LIDARS_INIT_UART_TIMEOUT);
+		HAL_UART_Receive(huart, RX, 5, LIDARS_INIT_UART_TIMEOUT);
+
+		if(RX[0] == UART_TX[0] && RX[1] == UART_TX[1] && RX[2] == UART_TX[2])
+			break;
+		if(counter >= MAX_RETRIES_LIDARS_INIT)
+			COOKED(LIDARS_INIT_ERR);
+		counter++;
+	}
+	counter=0;
+	HAL_Delay(50);
+
+
+	//LIDARS SET 250Hz
+	UART_TX[0] = 0x5A;
+	UART_TX[1] = 0x06;
+	UART_TX[2] = 0x03;
+	UART_TX[3] = 0xFA;
+	UART_TX[4] = 0x00;
+	UART_TX[5] = (UART_TX[0] + UART_TX[1] + UART_TX[2] + UART_TX[3]) % 0x100;
+	counter=0;
+	while(true)
+	{
+		HAL_UART_Transmit(huart, UART_TX, 6, LIDARS_INIT_UART_TIMEOUT);
+		HAL_UART_Receive(huart, RX, 6, LIDARS_INIT_UART_TIMEOUT);
+
+		if(RX[0] == UART_TX[0] && RX[1] == UART_TX[1] && RX[2] == UART_TX[2])
+			break;
+		if(counter >= MAX_RETRIES_LIDARS_INIT)
+			COOKED(LIDARS_INIT_ERR);
+		counter++;
+	}
+	counter=0;
+	HAL_Delay(50);
+
+
+
+	//LIDARS ON
+	UART_TX[0] = 0x5A;
+	UART_TX[1] = 0x05;
+	UART_TX[2] = 0x07;
+	UART_TX[3] = 0x01;
+	UART_TX[4] = (UART_TX[0] + UART_TX[1] + UART_TX[2] + UART_TX[3]) % 0x100;
+	counter=0;
+	while(true)
+	{
+		HAL_UART_Transmit(huart, UART_TX, 5, LIDARS_INIT_UART_TIMEOUT);
+		HAL_UART_Receive(huart, RX, 5, LIDARS_INIT_UART_TIMEOUT);
+
+		if(RX[0] == UART_TX[0] && RX[1] == UART_TX[1] && RX[2] == UART_TX[2])
+			break;
+		if(counter >= MAX_RETRIES_LIDARS_INIT)
+			COOKED(LIDARS_INIT_ERR);
+		counter++;
+	}
+	HAL_Delay(50);
+
+
+	counter=0;
+	while(true)
+	{
+
+		if(huart->RxState == HAL_UART_STATE_READY && huart->gState == HAL_UART_STATE_READY && huart->ErrorCode == HAL_UART_ERROR_NONE)
+			break;
+		else if(counter >= MAX_RETRIES_LIDARS_INIT)
+			COOKED(LIDARS_INIT_ERR);
+
+		HAL_Delay(LIDARS_INIT_UART_TIMEOUT);
+		counter++;
+	}
+
+	HAL_Delay(50);
+
+
+	HAL_UART_AbortReceive(huart);
+	__HAL_UART_CLEAR_OREFLAG(huart);
+	huart->ErrorCode = HAL_UART_ERROR_NONE;
+	huart->RxState   = HAL_UART_STATE_READY;
+	huart->gState = HAL_UART_STATE_READY;
+	if(HAL_UARTEx_ReceiveToIdle_DMA(huart, RX, 9) != HAL_OK)
+		COOKED(LIDARS_INIT_ERR);
+	__HAL_DMA_DISABLE_IT(dma, DMA_IT_HT);
+}
+
+
+void PLAY_FREQ(uint16_t f_hz)
+{
+	f_hz = f_hz * DEFAULT_SETTING_ENABLE_BUZZER;
+    if (f_hz == 0) {
+        __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 0);
+        return;
+    }
+
+    // Stały PSC=169 -> licznik 1 MHz (TIMCLK 170 MHz / (169+1))
+    __HAL_TIM_SET_PRESCALER(&htim3, 169);
+
+    uint32_t arr = 1000000UL / f_hz;            // okres w tickach 1 MHz
+    if (arr == 0) arr = 1;                      // minimalna wartość
+    arr -= 1;                                   // rejestrowo
+
+    __HAL_TIM_DISABLE(&htim3);
+    __HAL_TIM_SET_AUTORELOAD(&htim3, (uint16_t)arr);
+    __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, (uint16_t)(((arr + 1U) >> 1)));
+    __HAL_TIM_SET_COUNTER(&htim3, 0);
+    __HAL_TIM_ENABLE(&htim3);
+    HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+}
+
+
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+	uint16_t buffor_Dist[LIDARS_FILTERING_ARRAY_SIZE];
+	uint16_t buffor_Amp[LIDARS_FILTERING_ARRAY_SIZE];
+	uint16_t Dist, Temp, Amp;
+	uint8_t j, k;
+
+	if(huart->Instance == USART1)
+	{
+		for (int i = 1; i < 10; i++)
+		{
+			if (UART1_RX[(i-1)% 9] == 0x59 && UART1_RX[i%9] == 0x59)
+			{
+				//DISTANCE
+				j = (i + 1) % 9;
+				k = (i + 2) % 9;
+				Dist = UART1_RX[j] + (UART1_RX[k] << 8);
+
+
+				//AMPERAGE
+				j = (i + 3) % 9;
+				k = (i + 4) % 9;
+				Amp = UART1_RX[j] + (UART1_RX[k] << 8);
+
+				//TEMPERATURE
+				j = (i + 5) % 9;
+				k = (i + 6) % 9;
+				Temp = UART1_RX[j] + (UART1_RX[k] << 8);
+
+				if(Amp < MIN_AMP_TRESCHOLD)
+				{
+					Dist = 65000;
+				}
+
+				break;
+			}
+		}
+
+		//=====MEDIAN FILTERING
+		static uint16_t window1_Dist[LIDARS_FILTERING_ARRAY_SIZE];
+		static uint16_t window1_Amp[LIDARS_FILTERING_ARRAY_SIZE];
+		static uint8_t idx1_Dist = 0;
+		static uint8_t idx1_Amp = 0;
+
+		//Wstaw nowe wartosci
+		window1_Dist[idx1_Dist] = Dist;
+		window1_Amp[idx1_Amp] = Amp;
+
+		//Przesun indeksy cyklicznie
+		idx1_Dist = (idx1_Dist + 1) % LIDARS_FILTERING_ARRAY_SIZE;
+		idx1_Amp = (idx1_Amp + 1) % LIDARS_FILTERING_ARRAY_SIZE;
+
+		//Kopiuj i sortuj w jednej petli
+		for (int i = 0; i < LIDARS_FILTERING_ARRAY_SIZE; i++) {
+			buffor_Dist[i] = window1_Dist[i];
+			buffor_Amp[i] = window1_Amp[i];
+		}
+
+		//Sortuj osobno
+		SORT(buffor_Dist, LIDARS_FILTERING_ARRAY_SIZE);
+		SORT(buffor_Amp, LIDARS_FILTERING_ARRAY_SIZE);
+
+		//Wyciagnij mediany
+		Dist = buffor_Dist[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE - 1) / 2)];
+		Amp = buffor_Amp[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE - 1) / 2)];
+
+		//Save results
+		BackLeft.Distance = Dist;
+		BackLeft.LidarAmp = Amp;
+		BackLeft.LidarTemp = Temp;
+
+
+		if(HAL_UARTEx_ReceiveToIdle_DMA(&huart1, UART1_RX, 9) != HAL_OK)
+			COOKED(LIDARS_INIT_ERR);
+		__HAL_DMA_DISABLE_IT(DMA_HANDLE_UART1, DMA_IT_HT);
+	}
+
+
+	if(huart->Instance == USART2)
+		{
+			for (int i = 1; i < 10; i++)
+			{
+				if (UART2_RX[(i-1)% 9] == 0x59 && UART2_RX[i%9] == 0x59)
+				{
+					//DISTANCE
+					j = (i + 1) % 9;
+					k = (i + 2) % 9;
+					Dist = UART2_RX[j] + (UART2_RX[k] << 8);
+
+
+					//AMPERAGE
+					j = (i + 3) % 9;
+					k = (i + 4) % 9;
+					Amp = UART2_RX[j] + (UART2_RX[k] << 8);
+
+					//TEMPERATURE
+					j = (i + 5) % 9;
+					k = (i + 6) % 9;
+					Temp = UART2_RX[j] + (UART2_RX[k] << 8);
+
+					if(Amp < MIN_AMP_TRESCHOLD)
+					{
+						Dist = 65000;
+					}
+
+					break;
+				}
+			}
+
+			//=====MEDIAN FILTERING
+			static uint16_t window2_Dist[LIDARS_FILTERING_ARRAY_SIZE];
+			static uint16_t window2_Amp[LIDARS_FILTERING_ARRAY_SIZE];
+			static uint8_t idx2_Dist = 0;
+			static uint8_t idx2_Amp = 0;
+
+			//Wstaw nowe wartosci
+			window2_Dist[idx2_Dist] = Dist;
+			window2_Amp[idx2_Amp] = Amp;
+
+			//Przesun indeksy cyklicznie
+			idx2_Dist = (idx2_Dist + 1) % LIDARS_FILTERING_ARRAY_SIZE;
+			idx2_Amp = (idx2_Amp + 1) % LIDARS_FILTERING_ARRAY_SIZE;
+
+			//Kopiuj i sortuj w jednej petli
+			for (int i = 0; i < LIDARS_FILTERING_ARRAY_SIZE; i++) {
+				buffor_Dist[i] = window2_Dist[i];
+				buffor_Amp[i] = window2_Amp[i];
+			}
+
+			//Sortuj osobno
+			SORT(buffor_Dist, LIDARS_FILTERING_ARRAY_SIZE);
+			SORT(buffor_Amp, LIDARS_FILTERING_ARRAY_SIZE);
+
+			//Wyciagnij mediany
+			Dist = buffor_Dist[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE - 1) / 2)];
+			Amp = buffor_Amp[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE - 1) / 2)];
+
+			//Save results
+			FrontRight.Distance = Dist;
+			FrontRight.LidarAmp = Amp;
+			FrontRight.LidarTemp = Temp;
+
+
+			if(HAL_UARTEx_ReceiveToIdle_DMA(&huart2, UART2_RX, 9) != HAL_OK)
+				COOKED(LIDARS_INIT_ERR);
+			__HAL_DMA_DISABLE_IT(DMA_HANDLE_UART2, DMA_IT_HT);
+		}
+
+
+	if(huart->Instance == UART4)
+			{
+				for (int i = 1; i < 10; i++)
+				{
+					if (UART4_RX[(i-1)% 9] == 0x59 && UART4_RX[i%9] == 0x59)
+					{
+						//DISTANCE
+						j = (i + 1) % 9;
+						k = (i + 2) % 9;
+						Dist = UART4_RX[j] + (UART4_RX[k] << 8);
+
+
+						//AMPERAGE
+						j = (i + 3) % 9;
+						k = (i + 4) % 9;
+						Amp = UART4_RX[j] + (UART4_RX[k] << 8);
+
+						//TEMPERATURE
+						j = (i + 5) % 9;
+						k = (i + 6) % 9;
+						Temp = UART4_RX[j] + (UART4_RX[k] << 8);
+
+						if(Amp < MIN_AMP_TRESCHOLD)
+						{
+							Dist = 65000;
+						}
+
+						break;
+					}
+				}
+
+				//=====MEDIAN FILTERING
+				static uint16_t window4_Dist[LIDARS_FILTERING_ARRAY_SIZE];
+				static uint16_t window4_Amp[LIDARS_FILTERING_ARRAY_SIZE];
+				static uint8_t idx4_Dist = 0;
+				static uint8_t idx4_Amp = 0;
+
+				//Wstaw nowe wartosci
+				window4_Dist[idx4_Dist] = Dist;
+				window4_Amp[idx4_Amp] = Amp;
+
+				//Przesun indeksy cyklicznie
+				idx4_Dist = (idx4_Dist + 1) % LIDARS_FILTERING_ARRAY_SIZE;
+				idx4_Amp = (idx4_Amp + 1) % LIDARS_FILTERING_ARRAY_SIZE;
+
+				//Kopiuj i sortuj w jednej petli
+				for (int i = 0; i < LIDARS_FILTERING_ARRAY_SIZE; i++) {
+					buffor_Dist[i] = window4_Dist[i];
+					buffor_Amp[i] = window4_Amp[i];
+				}
+
+				//Sortuj osobno
+				SORT(buffor_Dist, LIDARS_FILTERING_ARRAY_SIZE);
+				SORT(buffor_Amp, LIDARS_FILTERING_ARRAY_SIZE);
+
+				//Wyciagnij mediany
+				Dist = buffor_Dist[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE - 1) / 2)];
+				Amp = buffor_Amp[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE - 1) / 2)];
+
+				//Save results
+				BackRight.Distance = Dist;
+				BackRight.LidarAmp = Amp;
+				BackRight.LidarTemp = Temp;
+
+
+				if(HAL_UARTEx_ReceiveToIdle_DMA(&huart4, UART4_RX, 9) != HAL_OK)
+					COOKED(LIDARS_INIT_ERR);
+				__HAL_DMA_DISABLE_IT(DMA_HANDLE_UART4, DMA_IT_HT);
+			}
+
+
+	if(huart->Instance == UART5)
+			{
+				for (int i = 1; i < 10; i++)
+				{
+					if (UART5_RX[(i-1)% 9] == 0x59 && UART5_RX[i%9] == 0x59)
+					{
+						//DISTANCE
+						j = (i + 1) % 9;
+						k = (i + 2) % 9;
+						Dist = UART5_RX[j] + (UART5_RX[k] << 8);
+
+
+						//AMPERAGE
+						j = (i + 3) % 9;
+						k = (i + 4) % 9;
+						Amp = UART5_RX[j] + (UART5_RX[k] << 8);
+
+						//TEMPERATURE
+						j = (i + 5) % 9;
+						k = (i + 6) % 9;
+						Temp = UART5_RX[j] + (UART5_RX[k] << 8);
+
+						if(Amp < MIN_AMP_TRESCHOLD)
+						{
+							Dist = 65000;
+						}
+
+						break;
+					}
+				}
+
+				//=====MEDIAN FILTERING
+				static uint16_t window5_Dist[LIDARS_FILTERING_ARRAY_SIZE];
+				static uint16_t window5_Amp[LIDARS_FILTERING_ARRAY_SIZE];
+				static uint8_t idx5_Dist = 0;
+				static uint8_t idx5_Amp = 0;
+
+				//Wstaw nowe wartosci
+				window5_Dist[idx5_Dist] = Dist;
+				window5_Amp[idx5_Amp] = Amp;
+
+				//Przesun indeksy cyklicznie
+				idx5_Dist = (idx5_Dist + 1) % LIDARS_FILTERING_ARRAY_SIZE;
+				idx5_Amp = (idx5_Amp + 1) % LIDARS_FILTERING_ARRAY_SIZE;
+
+				//Kopiuj i sortuj w jednej petli
+				for (int i = 0; i < LIDARS_FILTERING_ARRAY_SIZE; i++) {
+					buffor_Dist[i] = window5_Dist[i];
+					buffor_Amp[i] = window5_Amp[i];
+				}
+
+				//Sortuj osobno
+				SORT(buffor_Dist, LIDARS_FILTERING_ARRAY_SIZE);
+				SORT(buffor_Amp, LIDARS_FILTERING_ARRAY_SIZE);
+
+				//Wyciagnij mediany
+				Dist = buffor_Dist[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE - 1) / 2)];
+				Amp = buffor_Amp[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE - 1) / 2)];
+
+				//Save results
+				FrontLeft.Distance = Dist;
+				FrontLeft.LidarAmp = Amp;
+				FrontLeft.LidarTemp = Temp;
+
+
+				if(HAL_UARTEx_ReceiveToIdle_DMA(&huart5, UART5_RX, 9) != HAL_OK)
+					COOKED(LIDARS_INIT_ERR);
+				__HAL_DMA_DISABLE_IT(DMA_HANDLE_UART5, DMA_IT_HT);
+			}
+
+}
+
+
+void SORT(uint16_t *array, uint8_t length) {
+    for (int i = 0; i < length - 1; i++) {
+        for (int j = 0; j < length - 1 - i; j++) {
+            if (array[j] > array[j + 1]) {
+                uint16_t temp = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = temp;
+            }
+        }
+    }
+}
+
+
+void GET_LINE_SENSORS()
+{
+	FrontLeft.Line = IN;
+	FrontLeft.RawLineA = ADC_BUFFER[0];
+	FrontLeft.RawLineB = ADC_BUFFER[8];
+
+	FrontRight.Line = IN;
+	FrontRight.RawLineA = ADC_BUFFER[5];
+	FrontRight.RawLineB = ADC_BUFFER[6];
+
+	BackLeft.Line = IN;
+	BackLeft.RawLineA = ADC_BUFFER[1];
+	BackLeft.RawLineB = ADC_BUFFER[2];
+
+	BackRight.Line = IN;
+	BackRight.RawLineA = ADC_BUFFER[3];
+	BackRight.RawLineB = ADC_BUFFER[4];
+
+	if(FrontLeft.RawLineA < WHITE_LINE_TRESCHOLD && FrontLeft.RawLineB < WHITE_LINE_TRESCHOLD)
+		FrontLeft.Line = OUT;
+
+	if(FrontRight.RawLineA < WHITE_LINE_TRESCHOLD && FrontRight.RawLineB < WHITE_LINE_TRESCHOLD)
+		FrontRight.Line = OUT;
+
+	if(BackLeft.RawLineA < WHITE_LINE_TRESCHOLD && BackLeft.RawLineB < WHITE_LINE_TRESCHOLD)
+		BackLeft.Line = OUT;
+
+	if(BackRight.RawLineA < WHITE_LINE_TRESCHOLD && BackRight.RawLineB < WHITE_LINE_TRESCHOLD)
+		BackRight.Line = OUT;
+
+}
+
+
+void WATCHDOG()
+{
+	if(Eva.State == IDLE)
+	{
+		static uint8_t WHICH_DRIVER_TO_ASK = FALSE;
+
+		if(WHICH_DRIVER_TO_ASK == TRUE)
+		{
+			WHICH_DRIVER_TO_ASK = !WHICH_DRIVER_TO_ASK;
+
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+			CAN_TX[0]=CAN_ID_DRV0;
+			CAN_TX[1]=0x50;
+			CAN_TX[2]=0x00;
+			CAN_TX[3]=0x00;
+			HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+		}
+		else
+		{
+			WHICH_DRIVER_TO_ASK = !WHICH_DRIVER_TO_ASK;
+
+			CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+			CAN_TX[0]=CAN_ID_DRV1;
+			CAN_TX[1]=0x50;
+			CAN_TX[2]=0x00;
+			CAN_TX[3]=0x00;
+			HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+		}
+	}
+
+	Eva.DriverTemp = CAN_RX[4];
+	Eva.Voltage = ADC_BUFFER[7] * BATTERY_CONSTANT * BATTERY_VOLTAGE_COMPENSATION;
+	Eva.CellVoltage = Eva.Voltage / 3;
+
+
+	uint8_t Jcenter = !HAL_GPIO_ReadPin(JOY1_GPIO_Port, JOY1_Pin);
+	uint8_t Jup = !HAL_GPIO_ReadPin(JOY2_GPIO_Port, JOY2_Pin);
+	uint8_t Jdown = !HAL_GPIO_ReadPin(JOY4_GPIO_Port, JOY4_Pin);
+	uint8_t Jleft = !HAL_GPIO_ReadPin(JOY3_GPIO_Port, JOY3_Pin);
+	uint8_t Jright = !HAL_GPIO_ReadPin(JOY5_GPIO_Port, JOY5_Pin);
+
+
+	if(!Jcenter && !Jup && !Jdown && !Jleft && !Jright)
+		Eva.Interface.Joystick = _NOTHING;
+
+	if(Eva.Interface.Joystick != _BUTTON_REBOUNCE)
+	{
+		if(Jcenter)
+			Eva.Interface.Joystick=_CENTER;
+		else if(Jup)
+			Eva.Interface.Joystick=_UP;
+		else if(Jleft)
+			Eva.Interface.Joystick=_LEFT;
+		else if(Jdown)
+			Eva.Interface.Joystick=_DOWN;
+		else if(Jright)
+			Eva.Interface.Joystick=_RIGHT;
+		else
+			Eva.Interface.Joystick = _NOTHING;
+	}
+
+
+	if(Eva.Interface.Joystick == _CENTER)
+	{
+		Eva.inBattle = !Eva.inBattle;
+		Eva.Interface.Joystick = _BUTTON_REBOUNCE;
+	}
+	else if(Eva.Interface.Joystick == _LEFT && Eva.State == IDLE)
+	{
+		Eva.AttackMode = (Eva.AttackMode + COUNT - 1) % COUNT;
+		Eva.Interface.Joystick = _BUTTON_REBOUNCE;
+	}
+	else if(Eva.Interface.Joystick == _RIGHT && Eva.State == IDLE)
+	{
+		Eva.AttackMode = (Eva.AttackMode + 1) % COUNT;
+		Eva.Interface.Joystick = _BUTTON_REBOUNCE;
+	}
+}
+
+static inline void DWT_Init(void)
+{
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+    DWT->CYCCNT = 0;
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+}
+
+void _ssd1306_WriteInTheMiddle(char *text, uint8_t y, uint8_t font)
+{
+	int8_t x;
+	uint8_t textSize = strlen(text);
+
+	if(font == BIG) //max = 6
+	{
+		x = (int)(SSD1306_WIDTH - textSize*11)/2;
+		if(x < -3)
+		{
+			text="ERo_L";
+			x = 0;
+		}
+		else if(x < 0)
+			x = 0;
+		_ssd1306_SetCursor(x, y);
+		ssd1306_WriteString(text, Font_11x18);
+	}
+	else if(font == SMALL) //max = 11
+	{
+		x = (int)(SSD1306_WIDTH - textSize*6)/2;
+		if(x < -2)
+		{
+			text="ERo_L";
+			x = 0;
+		}
+		else if(x < 0)
+			x = 0;
+		_ssd1306_SetCursor(x, y);
+		ssd1306_WriteString(text, Font_6x8);
+	}
+
+}
+
+void _ssd1306_WriteString(char* str, uint8_t font)
+{
+	if(font == BIG)
+	{
+		ssd1306_WriteString(str, Font_11x18);
+	}
+	else if(font == SMALL)
+	{
+		ssd1306_WriteString(str, Font_6x8);
+	}
+}
+
+void MOTOR_DRIVER_INIT(uint8_t DRV_SELF_ADDRESS)
+{
+	uint8_t counter;
+	uint32_t req;
+
+	//set motor temperature limits
+	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+	counter=0;
+	CAN_TX[0] = DRV_SELF_ADDRESS;
+	CAN_TX[1] = 0x12;
+	CAN_TX[2] = MAX_FET_TEMP;
+	while(ARE_ELEMENTS_EQUAL(CAN_TX, CAN_RX, 3) == FALSE)
+	{
+		req = HAL_FDCAN_GetLatestTxFifoQRequestBuffer(&hfdcan1);
+		if (HAL_FDCAN_IsTxBufferMessagePending(&hfdcan1, req))
+		{
+			HAL_FDCAN_AbortTxRequest(&hfdcan1, req);
+		}
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+		if (counter > MAX_RETRIES_DRIVER_INIT)
+		  COOKED(DRV_INIT_ERROR);
+
+		counter++;
+		HAL_Delay(DRIVER_INIT_CAN_TIMEOUT);
+	}
+
+
+	// set motor Current limits
+	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+	counter=0;
+	CAN_TX[0] = DRV_SELF_ADDRESS;
+	CAN_TX[1] = 0x13;
+	CAN_TX[2] = MAX_MOTOR_CURRENT_SHORT;
+	while(ARE_ELEMENTS_EQUAL(CAN_TX, CAN_RX, 3) == FALSE)
+	{
+		req = HAL_FDCAN_GetLatestTxFifoQRequestBuffer(&hfdcan1);
+		if (HAL_FDCAN_IsTxBufferMessagePending(&hfdcan1, req))
+		{
+			HAL_FDCAN_AbortTxRequest(&hfdcan1, req);
+		}
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+		if (counter > MAX_RETRIES_DRIVER_INIT)
+		  COOKED(DRV_INIT_ERROR);
+
+		counter++;
+		HAL_Delay(DRIVER_INIT_CAN_TIMEOUT);
+	}
+
+	// set motor constant current limits
+	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_3;
+	counter=0;
+	CAN_TX[0] = DRV_SELF_ADDRESS;
+	CAN_TX[1] = 0x14;
+	CAN_TX[2] = MAX_MOTOR_CURRENT_LONG;
+	while(ARE_ELEMENTS_EQUAL(CAN_TX, CAN_RX, 3) == FALSE)
+	{
+		req = HAL_FDCAN_GetLatestTxFifoQRequestBuffer(&hfdcan1);
+		if (HAL_FDCAN_IsTxBufferMessagePending(&hfdcan1, req))
+		{
+			HAL_FDCAN_AbortTxRequest(&hfdcan1, req);
+		}
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+		if (counter > MAX_RETRIES_DRIVER_INIT)
+		  COOKED(DRV_INIT_ERROR);
+
+		counter++;
+		HAL_Delay(DRIVER_INIT_CAN_TIMEOUT);
+	}
+
+	// set motor max acceleration
+	CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+	counter=0;
+	CAN_TX[0] = DRV_SELF_ADDRESS;
+	CAN_TX[1] = 0x15;
+	CAN_TX[2] = MAX_MOTOR_ACCELERATION;
+	CAN_TX[3] = MAX_MOTOR_ACCELERATION;
+	while(ARE_ELEMENTS_EQUAL(CAN_TX, CAN_RX, 4) == FALSE)
+	{
+		req = HAL_FDCAN_GetLatestTxFifoQRequestBuffer(&hfdcan1);
+		if (HAL_FDCAN_IsTxBufferMessagePending(&hfdcan1, req))
+		{
+			HAL_FDCAN_AbortTxRequest(&hfdcan1, req);
+		}
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+		if (counter > MAX_RETRIES_DRIVER_INIT)
+		  COOKED(DRV_INIT_ERROR);
+
+		counter++;
+		HAL_Delay(DRIVER_INIT_CAN_TIMEOUT);
+	}
+}
+
+
+uint8_t ARE_ELEMENTS_EQUAL(const uint8_t *a, const uint8_t *b, uint8_t n)
+{
+    for (uint8_t i = 0; i < n; i++) {
+        if (*(a + i) != *(b + i)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+
+
+
+//=============================================================================================================
+//=============================================================================================================
+//=============================================================================================================			START MOD CODE
+//=============================================================================================================
+//=============================================================================================================
+
+
+
+
+
+void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
+{
+	if (GPIO_Pin == START_MOD_IR3_Pin)
+	{
+		dupa++;
+		Interrupt(RISING);
+	}
+}
+void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
+{
+	if (GPIO_Pin == START_MOD_IR3_Pin)
+	{
+		dupa++;
+		Interrupt(FALLING);
+	}
+}
+
+void Interrupt10Hz(void)
+{
+	LED_BLUE_Control(TICK, 0);
+	LED_RED_Control(TICK, 0);
+	LED_GREEN_Control(TICK, 0);
+}
+
+void Interrupt(uint8_t Edge)
+{
+	static uint8_t 		Last_Edge;
+	static uint8_t 		Bit_Nbr;
+	static uint16_t 	IR_Buffer;
+	static uint8_t		Line_Iddle;
+	static uint8_t		IR_Protocol;
+
+	uint32_t 	Timer; // 10ticks = 1uS
+	uint16_t 	shift;
+	uint8_t		Address;
+	uint8_t		Command;
+
+	Timer = TIM15->CNT;
+
+	if (Module_State == RC5_START)
+		IR_Protocol = RC5;
+	else if (Module_State == SIRC_START)
+		IR_Protocol = SIRC;
+
+	if (Edge == TIMEOUT)
+	{
+	    Line_Iddle = 0;
+	    Bit_Nbr = 0;
+	    IR_Buffer = 0;
+	    IR_Protocol = UNKNOWN;
+	}
+
+	else if (Line_Iddle == 0 && Edge == FALLING)
+	{
+		TIM15->CNT = 0;
+		Line_Iddle = 1;
+		Bit_Nbr = 0;
+		IR_Buffer = 0;
+	}
+	else if (Line_Iddle == 0 && Edge == RISING)
+		TIM15->CNT = 0;
+
+// Check if selected protocol
+	else if (IR_Protocol == UNKNOWN)	// Second Interrupt. Protocol yet unknown
+	{
+		if (Last_Edge == FALLING && Edge == RISING && (Timer >= RC5_Short-Margin && Timer <= RC5_Short + Margin))
+			IR_Protocol = RC5;
+
+		else if (Last_Edge == FALLING && Edge == RISING && (Timer >= 2*SIRC_Long - 2*Margin && Timer <= 2*SIRC_Long + 2*Margin))
+		{
+			IR_Protocol = SIRC;
+			TIM15->CNT = 0;
+		}
+		else
+			Line_Iddle = 0; 	// Error - Restart communication
+	}
+
+	else if (IR_Protocol == RC5)
+	{
+		if (Timer >= RC5_Long - Margin && Timer <= RC5_Long + Margin) // Received Bit
+		{
+			TIM15->CNT = 0;
+			// Received 0
+			if (Edge == RISING)
+				Bit_Nbr ++;
+
+			// Received 1
+			else if (Edge == FALLING)
+			{
+				Bit_Nbr ++;
+				shift = 15 - Bit_Nbr;
+				IR_Buffer = IR_Buffer | 0b1 << shift;
+			}
+		}
+
+		else if (Timer >= RC5_Long + Margin)
+			Line_Iddle = 0;
+
+		if (Bit_Nbr == 13)
+		{
+			Line_Iddle = 0;
+			Address = (IR_Buffer >> 8) & 0b00011111;
+			Command = (IR_Buffer >> 2) & 0b00111111;
+			Received_RC5_Frame(Address, Command);
+		}
+	}
+	else if (IR_Protocol == SIRC)
+	{
+		TIM15->CNT = 0;
+		// Begin of Frame
+		if (Edge == RISING && (Timer >= 2*SIRC_Long - 2*Margin && Timer <= 2*SIRC_Long + 2*Margin))
+			Bit_Nbr = 0;
+
+		// Received 1
+		else if (Edge == RISING && (Timer >= SIRC_Long - Margin && Timer <= SIRC_Long + Margin))
+		{
+			Bit_Nbr ++;
+			shift = Bit_Nbr - 1;
+			IR_Buffer = IR_Buffer | 0b1 << shift;
+		}
+
+		// Received 0
+		else if (Edge == RISING && (Timer >= SIRC_Short - Margin && Timer <= SIRC_Short + Margin))
+			Bit_Nbr ++;
+
+		if (Bit_Nbr == 12)
+		{
+			Line_Iddle = 0;
+			Command = IR_Buffer & 0b01111111;
+			Address = (IR_Buffer >> 7)  & 0b00011111;
+			Received_SIRC_Frame(Address, Command);
+		}
+
+	}
+
+	if (Edge != TIMEOUT)
+		Last_Edge = Edge;
+
+}
+
+void Received_RC5_Frame(uint8_t Addres, uint8_t Command)
+{
+	uint8_t StartCommand;
+	StartCommand = Command & 0x01;
+
+	if (Addres == 0x0B) // Programming Frame
+	{
+		if (Module_State == STARTUP)
+		{
+			LED_GREEN_Control(BLINK_SLOW, 2);
+			if ((Command >> 1) != Dohyo_ID)
+			{
+				Dohyo_ID = Command >> 1;
+			}
+			Module_State = PPROGRAMMED;
+		}
+		else if (Module_State == PPROGRAMMED)
+		{
+			LED_GREEN_Control(BLINK_FAST, 2);
+			if ((Command >> 1) != Dohyo_ID)
+			{
+				Dohyo_ID = Command >> 1;
+			}
+		}
+	}
+	else if (Addres == 0x07) // Command Frame
+	{
+		if ((Command >> 1) == Dohyo_ID)
+		{
+			if (StartCommand == 1 && Module_State != STOP && Module_State != RC5_START)
+			{
+				Module_State = RC5_START;
+				Eva.inBattle = TRUE;
+				LED_GREEN_Control(ON, 0);
+			}
+			else if (StartCommand == 0 && Module_State != STOP)
+			{
+				//Module_State = STOP;
+				Module_State = STARTUP;
+				Eva.inBattle = FALSE;
+				LED_GREEN_Control(BLINK_SLOW, 3);
+			}
+		}
+	}
+}
+void Received_SIRC_Frame(uint8_t Addres, uint8_t Command)
+{
+	// Programming Frame
+	if (Command == 0x7F)
+	{
+		if (Module_State == STARTUP || Module_State == PPROGRAMMED)
+		{
+			Module_State = PPROGRAMMED;
+			Dohyo_ID = Addres;
+			LED_BLUE_Control(BLINK_FAST, 3);
+			LED_RED_Control(BLINK_FAST, 3);
+		}
+
+	}
+	else if(Addres == Dohyo_ID)
+	{
+		if (Command == 0x06 && (Module_State == STARTUP || Module_State == PPROGRAMMED)) // Ready
+		{
+			Module_State = READY;
+			LED_BLUE_Control(BLINK_FAST, 3);
+			LED_RED_Control(ON, 0);
+		}
+		else if (Command == 0x07 && Module_State == READY && Module_State != SIRC_START) // Start
+		{
+			Module_State = SIRC_START;
+			Eva.inBattle = TRUE;
+			LED_BLUE_Control(ON, 0);
+			LED_RED_Control(OFF, 0);
+		}
+		else if (Command == 0x08 && Module_State != STOP) // Stop
+		{
+			//Module_State = STOP;
+			Module_State = STARTUP;
+			Eva.inBattle = FALSE;
+			LED_BLUE_Control(BLINK_SLOW, 3);
+			LED_RED_Control(BLINK_SLOW,	3);
+		}
+	}
+}
+uint8_t LED_GREEN_Control(uint8_t Command, uint8_t Data)
+{
+	static uint8_t LED_Status = OFF;
+	static uint8_t LED_Data;
+	static uint8_t Counter;
+
+	if (LED_Status == ON || LED_Status == OFF || ((LED_Status == BLINK_FAST || LED_Status == BLINK_SLOW) && LED_Data == 255))
+	{
+		if (Command == ON)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+			LED_Status = Command;
+		}
+		else if (Command == OFF)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+		}
+		else if (Command == BLINK_SLOW)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 6*Data;
+		}
+		else if (Command == BLINK_FAST)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 2*Data;
+		}
+		Counter = 0;
+	}
+	else if (Command == TICK)
+	{
+		Counter++;
+
+		if (LED_Status == BLINK_FAST)
+			HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+
+		else if (LED_Status == BLINK_SLOW && (Counter % 3 == 0) )
+			HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+
+		if (Counter >= LED_Data && LED_Data < 100)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = OFF;
+		}
+	}
+	return LED_Status;
+}
+uint8_t LED_RED_Control(uint8_t Command, uint8_t Data)
+{
+	static uint8_t LED_Status = OFF;
+	static uint8_t LED_Data;
+	static uint8_t Counter;
+
+	if (LED_Status == ON || LED_Status == OFF || ((LED_Status == BLINK_FAST || LED_Status == BLINK_SLOW) && LED_Data == 255))
+	{
+		if (Command == ON)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+			LED_Status = Command;
+		}
+		else if (Command == OFF)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+		}
+		else if (Command == BLINK_SLOW)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 6*Data;
+		}
+		else if (Command == BLINK_FAST)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 2*Data;
+		}
+		Counter = 0;
+	}
+	else if (Command == TICK)
+	{
+		Counter++;
+
+		if (LED_Status == BLINK_FAST)
+			HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+
+		else if (LED_Status == BLINK_SLOW && (Counter % 3 == 0) )
+			HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+
+		if (Counter >= LED_Data && LED_Data < 100)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = OFF;
+		}
+	}
+	return LED_Status;
+}
+uint8_t LED_BLUE_Control(uint8_t Command, uint8_t Data)
+{
+	static uint8_t LED_Status = OFF;
+	static uint8_t LED_Data;
+	static uint8_t Counter;
+
+	if (LED_Status == ON || LED_Status == OFF || ((LED_Status == BLINK_FAST || LED_Status == BLINK_SLOW) && LED_Data == 255))
+	{
+		if (Command == ON)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_SET);
+			LED_Status = Command;
+		}
+		else if (Command == OFF)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+		}
+		else if (Command == BLINK_SLOW)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 6*Data;
+		}
+		else if (Command == BLINK_FAST)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 2*Data;
+		}
+		Counter = 0;
+	}
+	else if (Command == TICK)
+	{
+		Counter++;
+
+		if (LED_Status == BLINK_FAST)
+			HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
+
+		else if (LED_Status == BLINK_SLOW && (Counter % 3 == 0) )
+			HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
+
+		if (Counter >= LED_Data && LED_Data < 100)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = OFF;
+		}
+	}
+	return LED_Status;
+}
+/* USER CODE END 4 */
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
+	//ssd1306_Clear();
+	//_ssd1306_WriteInTheMiddle("error:", 0, SMALL);
+	//_ssd1306_WriteInTheMiddle(ERROR_FLAG, 10, SMALL);
+	//ssd1306_UpdateScreen();
+	HAL_Delay(10);
+  /* User can add his own implementation to report the HAL error return state */
+  __disable_irq();
+  while (1)
+  {
+  }
+  /* USER CODE END Error_Handler_Debug */
+}
+#ifdef USE_FULL_ASSERT
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+void assert_failed(uint8_t *file, uint32_t line)
+{
+  /* USER CODE BEGIN 6 */
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* USER CODE END 6 */
+}
+#endif /* USE_FULL_ASSERT */

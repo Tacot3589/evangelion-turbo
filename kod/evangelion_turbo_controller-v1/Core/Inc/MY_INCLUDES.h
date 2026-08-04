@@ -14,8 +14,8 @@
 #define MAX_RETRIES_LIDARS_INIT 			5
 #define LIDARS_INIT_UART_TIMEOUT 			100
 #define LIDARS_FILTERING_ARRAY_SIZE 		11
-#define MAX_LIDAR_DISTANCE 					60
-#define MIN_LIDAR_DISTANCE 					5
+#define MAX_LIDAR_DISTANCE 					40
+#define MIN_LIDAR_DISTANCE 					15
 #define ACKNOWLEDGE_LIDAR_DISTANCE			30
 #define INTRO_MIN_DISTANCE_FOR_LAST_SEEN	5
 #define WHITE_LINE_TRESCHOLD 				3700 //white is less
@@ -36,13 +36,23 @@
 #define RIGHT_MOTOR_VELOCITY_MULTIPLIER 	1
 
 
-//==================================================== START SETUP
+//==================================================== ATTACK MODES SETTINGS AND TASK QUESTIONS
 #define START_WAITING_TIME 					3000
 #define START_WAITING_TIME_HEADROOM			100
-#define ROTATE_BEFORE_TASK_SPEED 			50
+
 #define GO_TO_LINE_TASK_SPEED 				30
+#define AFTER_TASK_ALIGMENT_SPEED 			50
+#define AFTER_TASK_ROTATION_TIME			1000
+
+//============================================= STRAIGHT ATTACK
 #define SEARCH_STRAIGHT_ATTACK_SPEED		30
 #define ATTACK_STRAIGHT_ATTACK_SPEED		50
+
+//============================================= FOLLOW LINER and ATTACKER
+#define FOLLOW_LINER_KP  25.0f
+#define FOLLOW_LINER_KD  8.0f
+#define FOLLOW_LINER_BASE_SPEED  50
+#define FOLLOW_LINER_OUT_LIMIT  50.0f
 
 
 
@@ -56,12 +66,12 @@
 #define DEFAULT_SETTING_BATTERY_CELL_NO				3
 #define DEFAULT_SETTING_DONT_USE_MOTORS				FALSE
 #define DEFAULT_SETTING_ALWAYS_IN_BATTLE			FALSE
-#define DEFAULT_SETTING_IGNORE_START_MODULE			TRUE
+#define DEFAULT_SETTING_IGNORE_START_MODULE			FALSE
 #define DEFAULT_SETTING_LINE_SENSORS_ALWAYS_IN		FALSE
 #define DEFAULT_SETTING_ENABLE_BUZZER				FALSE
 #define DEFAULT_SETTING_DONT_INITIALIZE_LIDARS		FALSE
 #define DEFAULT_SETTING_ALWAYS_SHOW_OLED			TRUE
-#define DEFAULT_ATTACK_MODE_ID						0
+#define DEFAULT_ATTACK_MODE_ID						2
 
 
 //================================================================================================INIT ERRORS

@@ -69,6 +69,7 @@ void USART1_IRQHandler(void);
 void USART2_IRQHandler(void);
 void UART4_IRQHandler(void);
 void UART5_IRQHandler(void);
+void TIM15_IRQHandler(void);
 void TIM16_IRQHandler(void);
 void TIM17_IRQHandler(void);
 void I2C3_EV_IRQHandler(void);

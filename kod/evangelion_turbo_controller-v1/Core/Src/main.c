@@ -110,11 +110,11 @@
 #define UNKNOWN			0
 #define SAVED_STATUS 	5
 
-#define RC5_Short		14224
-#define RC5_Long		28448
-#define	SIRC_Short		9600
-#define SIRC_Long		19200
-#define Margin			2600
+#define RC5_Short   889      // 889 us
+#define RC5_Long    1778     // 1778 us
+#define SIRC_Short  600+50      // 600 us
+#define SIRC_Long   1200+50     // 1200 us
+#define Margin      300
 
 // Module Status
 #define STARTUP		1
@@ -154,6 +154,7 @@ typedef enum {
 	STRAIGHT,
 	CURVE,
 	FOLLOW_LINER,
+	FOLLOW_ATTACKER,
 	COUNT,
 } RobotAttackMode_t;
 
@@ -162,6 +163,8 @@ typedef enum
 	IDLE,
 	BEFORE_ATTACK_WAIT,
 	BEFORE_ATTACK_TASK,
+	AFTER_TASK_LINE_ALIGMENT,
+	AFTER_TASK_OPTIONAL_ROTATION_OR_ALIGMENT,
 	ATTACK,
 } RobotState_t;
 
@@ -264,6 +267,7 @@ TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim12;
 TIM_HandleTypeDef htim13;
 TIM_HandleTypeDef htim14;
+TIM_HandleTypeDef htim15;
 TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
 
@@ -311,10 +315,6 @@ uint8_t before_attack_rotation_direction = LEFT;
 volatile uint16_t ADC_BUFFER[9];
 float BATTERY_CONSTANT;
 
-uint8_t FLAG_BLINK_RED = 0;
-uint8_t FLAG_BLINK_BLUE = 0;
-uint8_t FLAG_BLINK_GREEN = 0;
-
 
 //performance!
 static uint32_t last_total = 0;
@@ -325,7 +325,8 @@ volatile uint8_t MCU_LOAD = 0;
 volatile uint8_t MCU_LOAD_MAX = 0;
 
 //============================		START MOD CODE
-volatile uint8_t Module_State;
+uint8_t Module_State = STARTUP;
+static uint8_t Dohyo_ID=0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -347,6 +348,7 @@ static void MX_I2C1_Init(void);
 static void MX_TIM14_Init(void);
 static void MX_TIM12_Init(void);
 static void MX_TIM13_Init(void);
+static void MX_TIM15_Init(void);
 /* USER CODE BEGIN PFP */
 static void LIDARS_INIT(UART_HandleTypeDef *huart, DMA_HandleTypeDef *hdma, uint8_t *RX);
 static void PLAY_FREQ(uint16_t f_hz);
@@ -357,6 +359,7 @@ static void GET_START_MOD(void);
 static void STRAIGHT_ATTACK(void);
 static void CURVE_ATTACK(void);
 static void FOLLOWLINER_ATTACK(void);
+static void FOLLOW_ATTACKER_ATTACK(void);
 static void WATCHDOG(void);
 static void GET_LAST_SEEN_ROTATIONE(void);
 static void TASK_BEFORE_ATTACK(void);
@@ -392,6 +395,8 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
     uint8_t Status;
+    Eva.AttackMode = DEFAULT_ATTACK_MODE_ID;
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -428,6 +433,7 @@ int main(void)
   MX_TIM14_Init();
   MX_TIM12_Init();
   MX_TIM13_Init();
+  MX_TIM15_Init();
   /* USER CODE BEGIN 2 */
 
   static uint8_t init_text_height = 0;
@@ -498,6 +504,7 @@ int main(void)
 
 	//start mode setup
 	//============================		START MOD CODE
+    Module_State = STARTUP;
 	ssd1306_Clear();
 	_ssd1306_WriteInTheMiddle("START", init_text_height, BIG);
 	_ssd1306_WriteInTheMiddle("MODULE", init_secondary_text_height, SMALL);
@@ -505,13 +512,13 @@ int main(void)
 	HAL_Delay(init_everywhere_delay);
 	//  Signal Power UP
 	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
-	HAL_Delay(250);
+	HAL_Delay(125);
 	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_SET);
-	HAL_Delay(250);
+	HAL_Delay(125);
 	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
-	HAL_Delay(500);
+	HAL_Delay(250);
 	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
 
 	//LUNAS
@@ -622,6 +629,7 @@ int main(void)
 	HAL_TIM_Base_Start_IT(&htim14); //25Hz oled
 	HAL_TIM_Base_Start_IT(&htim16); //1000Hz
 	HAL_TIM_Base_Start_IT(&htim17); //100Hz
+	HAL_TIM_Base_Start_IT(&htim15); // START_MOD
 
 	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
 	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
@@ -639,7 +647,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  dupa++;
+	  dupa2=TIM15->CNT;
 	uint32_t start = DWT->CYCCNT;
 	__WFI();
 	cpu_idle_cycles += (DWT->CYCCNT - start);
@@ -1120,7 +1128,7 @@ static void MX_TIM12_Init(void)
   htim12.Instance = TIM12;
   htim12.Init.Prescaler = 1700-1;
   htim12.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim12.Init.Period = 9999;
+  htim12.Init.Period = 4999;
   htim12.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim12.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim12) != HAL_OK)
@@ -1197,6 +1205,52 @@ static void MX_TIM14_Init(void)
   /* USER CODE BEGIN TIM14_Init 2 */
 
   /* USER CODE END TIM14_Init 2 */
+
+}
+
+/**
+  * @brief TIM15 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM15_Init(void)
+{
+
+  /* USER CODE BEGIN TIM15_Init 0 */
+
+  /* USER CODE END TIM15_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM15_Init 1 */
+
+  /* USER CODE END TIM15_Init 1 */
+  htim15.Instance = TIM15;
+  htim15.Init.Prescaler = 170-1;
+  htim15.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim15.Init.Period = 65535;
+  htim15.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim15.Init.RepetitionCounter = 0;
+  htim15.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim15) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim15, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim15, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM15_Init 2 */
+
+  /* USER CODE END TIM15_Init 2 */
 
 }
 
@@ -1548,7 +1602,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	{
 		Interrupt10Hz();
 	}
-	if (htim->Instance == TIM13)
+	if (htim->Instance == TIM15)
 	{
 		Interrupt(TIMEOUT);
 	}
@@ -1564,6 +1618,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  }
 	  if(Eva.State == ATTACK)
 	  {
+
 		  if(Eva.AttackMode == STRAIGHT)
 		  {
 			  STRAIGHT_ATTACK();
@@ -1576,13 +1631,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		  {
 			  FOLLOWLINER_ATTACK();
 		  }
+		  else if(Eva.AttackMode == FOLLOW_ATTACKER)
+		  {
+			  FOLLOW_ATTACKER_ATTACK();
+		  }
 		  else
 		  {
 			  STRAIGHT_ATTACK();
 		  }
 
 	  }
-	  else if(Eva.State == BEFORE_ATTACK_TASK || Eva.State == BEFORE_ATTACK_WAIT)
+	  else
 	  {
 		  TASK_BEFORE_ATTACK();
 	  }
@@ -1621,45 +1680,89 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 void STRAIGHT_ATTACK()
 {
-	Motors.Requested.L = 0;
-	Motors.Requested.R = 0;
 	static uint16_t ComeBackLinerTimer=UINT16_MAX;
 
 	if(ComeBackLinerTimer < LINE_COMEBACK_TIME)
 	{
 		ComeBackLinerTimer++;
-		Motors.Requested.L = -ATTACK_STRAIGHT_ATTACK_SPEED;
-		Motors.Requested.R = -ATTACK_STRAIGHT_ATTACK_SPEED;
+		SET_MOTORS(-ATTACK_STRAIGHT_ATTACK_SPEED,-ATTACK_STRAIGHT_ATTACK_SPEED);
 	}
 	else if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
 	{
 		ComeBackLinerTimer = 0;
-		Motors.Requested.L = -ATTACK_STRAIGHT_ATTACK_SPEED;
-		Motors.Requested.R = -ATTACK_STRAIGHT_ATTACK_SPEED;
+		SET_MOTORS(-ATTACK_STRAIGHT_ATTACK_SPEED,-ATTACK_STRAIGHT_ATTACK_SPEED);
+	}
+	else if(FrontLeft.Distance <= MIN_LIDAR_DISTANCE && FrontRight.Distance <= MIN_LIDAR_DISTANCE)
+	{
+		SET_MOTORS(100,100);
 	}
 	else if(FrontLeft.Distance <= MAX_LIDAR_DISTANCE && FrontRight.Distance <= MAX_LIDAR_DISTANCE)
 	{
-		Motors.Requested.L = ATTACK_STRAIGHT_ATTACK_SPEED;
-		Motors.Requested.R = ATTACK_STRAIGHT_ATTACK_SPEED;
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED);
 	}
 	else if(lastSeen == LEFT)
 	{
-		Motors.Requested.L = -SEARCH_STRAIGHT_ATTACK_SPEED;
-		Motors.Requested.R = SEARCH_STRAIGHT_ATTACK_SPEED;
+		SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED, SEARCH_STRAIGHT_ATTACK_SPEED);
 	}
 	else if(lastSeen == RIGHT)
 	{
-		Motors.Requested.L = SEARCH_STRAIGHT_ATTACK_SPEED;
-		Motors.Requested.R = -SEARCH_STRAIGHT_ATTACK_SPEED;
+		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, -SEARCH_STRAIGHT_ATTACK_SPEED);
 	}
-
-	SET_MOTORS(Motors.Requested.L, Motors.Requested.R);
+	else
+	{
+		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, -SEARCH_STRAIGHT_ATTACK_SPEED);
+	}
 }
 
 
-void CURVE_ATTACK(){}
-void FOLLOWLINER_ATTACK(){}
+void CURVE_ATTACK()
+{
 
+
+}
+
+void FOLLOWLINER_ATTACK()
+{
+    static float prev_error = 0.0f;
+
+    float error = 0.0f;
+
+    if(before_attack_rotation_direction == RIGHT)
+    {
+        if(FrontLeft.Line == IN)       error = -1.0f;
+        else if(FrontLeft.Line == OUT) error =  1.0f;
+        else                           error =  0.0f;
+    }
+    else if(before_attack_rotation_direction == LEFT)
+    {
+        if(FrontRight.Line == IN)       error =  1.0f;
+        else if(FrontRight.Line == OUT) error = -1.0f;
+        else                            error =  0.0f;
+    }
+
+    float derivative = error - prev_error;
+    float turn = FOLLOW_LINER_KP * error + FOLLOW_LINER_KD * derivative;
+
+    if(turn > FOLLOW_LINER_OUT_LIMIT) turn = FOLLOW_LINER_OUT_LIMIT;
+    if(turn < -FOLLOW_LINER_OUT_LIMIT) turn = -FOLLOW_LINER_OUT_LIMIT;
+
+    prev_error = error;
+
+    int16_t left_pwm  = (int16_t)(FOLLOW_LINER_BASE_SPEED - turn);
+    int16_t right_pwm = (int16_t)(FOLLOW_LINER_BASE_SPEED + turn);
+
+    if(left_pwm < 0) left_pwm = 0;
+    else if(left_pwm > 100) left_pwm = 100;
+    if(right_pwm < 0) right_pwm = 0;
+    else if(right_pwm > 100) right_pwm = 100;
+
+    SET_MOTORS(left_pwm, right_pwm);
+}
+
+void FOLLOW_ATTACKER_ATTACK()
+{
+
+}
 
 
 
@@ -1693,6 +1796,8 @@ void OLED()
 			_ssd1306_WriteString("CURVE", SMALL);
 		else if(Eva.AttackMode == FOLLOW_LINER)
 			_ssd1306_WriteString("FOLIN", SMALL);
+		else if(Eva.AttackMode == FOLLOW_ATTACKER)
+			_ssd1306_WriteString("FLATK", SMALL);
 
 
 		//================================================ Line 2/4
@@ -1728,70 +1833,69 @@ void OLED()
 			ssd1306_WriteChar(Eva.DriverTemp % 10 + '0', Font_6x8);
 			ssd1306_WriteChar('C', Font_6x8);
 		}
+
+		//================================================ Line 3/4
+		_ssd1306_SetCursor(0,16);
+		//========================BACK RIGHT
+		ssd1306_WriteChar('L', Font_6x8);
+		if(BackRight.Line == IN)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+		ssd1306_WriteChar('D', Font_6x8);
+		if(BackRight.Distance > MAX_LIDAR_DISTANCE)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+
+		ssd1306_WriteChar(' ', Font_6x8);
+
+
+		//========================BACK LEFT
+		ssd1306_WriteChar('L', Font_6x8);
+		if(BackLeft.Line == IN)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+		ssd1306_WriteChar('D', Font_6x8);
+		if(BackLeft.Distance > MAX_LIDAR_DISTANCE)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+
+		ssd1306_WriteChar(' ', Font_6x8);
+
+		//================================================ Line 4/4
+		_ssd1306_SetCursor(0,23);
+		//========================BACK RIGHT
+		ssd1306_WriteChar('L', Font_6x8);
+		if(FrontRight.Line == IN)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+		ssd1306_WriteChar('D', Font_6x8);
+		if(FrontRight.Distance > MAX_LIDAR_DISTANCE)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+
+		ssd1306_WriteChar(' ', Font_6x8);
+
+
+		//========================BACK LEFT
+		ssd1306_WriteChar('L', Font_6x8);
+		if(FrontLeft.Line == IN)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+		ssd1306_WriteChar('D', Font_6x8);
+		if(FrontLeft.Distance > MAX_LIDAR_DISTANCE)
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+
+		ssd1306_WriteChar(' ', Font_6x8);
 	}
-
-	//================================================ Line 3/4
-	_ssd1306_SetCursor(0,16);
-	//========================BACK RIGHT
-	ssd1306_WriteChar('L', Font_6x8);
-	if(BackRight.Line == IN)
-		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
-	else
-		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
-	ssd1306_WriteChar('D', Font_6x8);
-	if(BackRight.Distance > MAX_LIDAR_DISTANCE)
-		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
-	else
-		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
-
-	ssd1306_WriteChar(' ', Font_6x8);
-
-
-	//========================BACK LEFT
-	ssd1306_WriteChar('L', Font_6x8);
-	if(BackLeft.Line == IN)
-		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
-	else
-		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
-	ssd1306_WriteChar('D', Font_6x8);
-	if(BackLeft.Distance > MAX_LIDAR_DISTANCE)
-		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
-	else
-		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
-
-	ssd1306_WriteChar(' ', Font_6x8);
-
-	//================================================ Line 4/4
-	_ssd1306_SetCursor(0,24);
-	//========================BACK RIGHT
-	ssd1306_WriteChar('L', Font_6x8);
-	if(FrontRight.Line == IN)
-		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
-	else
-		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
-	ssd1306_WriteChar('D', Font_6x8);
-	if(FrontRight.Distance > MAX_LIDAR_DISTANCE)
-		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
-	else
-		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
-
-	ssd1306_WriteChar(' ', Font_6x8);
-
-
-	//========================BACK LEFT
-	ssd1306_WriteChar('L', Font_6x8);
-	if(FrontLeft.Line == IN)
-		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
-	else
-		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
-	ssd1306_WriteChar('D', Font_6x8);
-	if(FrontLeft.Distance > MAX_LIDAR_DISTANCE)
-		ssd1306_WriteChar(_CHECKBOX_EMPTY_BIG, Font_6x8);
-	else
-		ssd1306_WriteChar(_CHECKBOX_CHECKED_BIG, Font_6x8);
-
-	ssd1306_WriteChar(' ', Font_6x8);
-
 
 	ssd1306_UpdateScreen();
 }
@@ -1799,18 +1903,81 @@ void OLED()
 
 void TASK_BEFORE_ATTACK()
 {
+	static uint16_t Counter=0;
+
 	if(Eva.State == BEFORE_ATTACK_WAIT)
 	{
 		Eva.StartDelayTimer++;
 		if(Eva.StartDelayTimer > START_WAITING_TIME - START_WAITING_TIME_HEADROOM)
 			Eva.State = BEFORE_ATTACK_TASK;
 	}
-
-	if(Eva.State == BEFORE_ATTACK_TASK)
+	else if(Eva.State == BEFORE_ATTACK_TASK)
 	{
 		SET_MOTORS(GO_TO_LINE_TASK_SPEED, GO_TO_LINE_TASK_SPEED);
 		if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
+		{
+			Eva.State = AFTER_TASK_LINE_ALIGMENT;
+
+		}
+	}
+	else if(Eva.State == AFTER_TASK_LINE_ALIGMENT)
+	{
+		if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
+		{
+			SET_MOTORS(-GO_TO_LINE_TASK_SPEED, -GO_TO_LINE_TASK_SPEED);
+		}
+		else
+		{
+			Eva.State = AFTER_TASK_OPTIONAL_ROTATION_OR_ALIGMENT;
+			Counter=0;
+		}
+
+	}
+	else if(Eva.State == AFTER_TASK_OPTIONAL_ROTATION_OR_ALIGMENT)
+	{
+		if(Eva.AttackMode == STRAIGHT)
+		{
+			if(before_attack_rotation_direction == RIGHT)
+				SET_MOTORS(AFTER_TASK_ALIGMENT_SPEED, -AFTER_TASK_ALIGMENT_SPEED);
+			else
+				SET_MOTORS(-AFTER_TASK_ALIGMENT_SPEED, AFTER_TASK_ALIGMENT_SPEED);
+
+			Counter++;
+			if(Counter >= AFTER_TASK_ROTATION_TIME)
+			{
+				Eva.State = ATTACK;
+				Counter=0;
+			}
+		}
+		else if(Eva.AttackMode == FOLLOW_LINER || Eva.AttackMode == FOLLOW_ATTACKER)
+		{
+			if(before_attack_rotation_direction == RIGHT)
+			{
+				if(FrontLeft.Line == OUT && BackLeft.Line == OUT)
+					Eva.State = ATTACK;
+				else if(FrontLeft.Line == IN && BackLeft.Line == IN && FrontRight.Line == IN && BackRight.Line == IN)
+					SET_MOTORS(AFTER_TASK_ALIGMENT_SPEED, AFTER_TASK_ALIGMENT_SPEED/3);
+				else if(FrontLeft.Line == OUT && FrontRight.Line == OUT)
+					SET_MOTORS(AFTER_TASK_ALIGMENT_SPEED, -AFTER_TASK_ALIGMENT_SPEED);
+				else
+					SET_MOTORS(AFTER_TASK_ALIGMENT_SPEED, 0);
+			}
+			else if(before_attack_rotation_direction == LEFT)
+			{
+				if(FrontRight.Line == OUT && BackRight.Line == OUT)
+					Eva.State = ATTACK;
+				else if(FrontLeft.Line == IN && BackLeft.Line == IN && FrontRight.Line == IN && BackRight.Line == IN)
+					SET_MOTORS(AFTER_TASK_ALIGMENT_SPEED/3, AFTER_TASK_ALIGMENT_SPEED);
+				else if(FrontLeft.Line == OUT && FrontRight.Line == OUT)
+					SET_MOTORS(-AFTER_TASK_ALIGMENT_SPEED, AFTER_TASK_ALIGMENT_SPEED);
+				else
+					SET_MOTORS(0, AFTER_TASK_ALIGMENT_SPEED);
+			}
+		}
+		else
+		{
 			Eva.State = ATTACK;
+		}
 	}
 
 }
@@ -1896,14 +2063,14 @@ void SET_MOTORS(int8_t l, int8_t r)
 		CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
 		CAN_TX[0]=CAN_ID_DRV1;
 		CAN_TX[1]=0x50;
-		CAN_TX[2]=CAN_l;
+		CAN_TX[2]=CAN_r;
 		CAN_TX[3]=0x01;
 		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 
 		CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
 		CAN_TX[0]=CAN_ID_DRV0;
 		CAN_TX[1]=0x50;
-		CAN_TX[2]=CAN_r;
+		CAN_TX[2]=CAN_l;
 		CAN_TX[3]=0x01;
 		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
 	}
@@ -2427,13 +2594,13 @@ void GET_LINE_SENSORS()
 		FrontLeft.Line = OUT;
 
 	if(FrontRight.RawLineA < WHITE_LINE_TRESCHOLD && FrontRight.RawLineB < WHITE_LINE_TRESCHOLD)
-		BackRight.Line = OUT;
+		FrontRight.Line = OUT;
 
 	if(BackLeft.RawLineA < WHITE_LINE_TRESCHOLD && BackLeft.RawLineB < WHITE_LINE_TRESCHOLD)
 		BackLeft.Line = OUT;
 
 	if(BackRight.RawLineA < WHITE_LINE_TRESCHOLD && BackRight.RawLineB < WHITE_LINE_TRESCHOLD)
-		FrontRight.Line = OUT;
+		BackRight.Line = OUT;
 
 }
 
@@ -2471,8 +2638,6 @@ void WATCHDOG()
 	Eva.DriverTemp = CAN_RX[4];
 	Eva.Voltage = ADC_BUFFER[7] * BATTERY_CONSTANT * BATTERY_VOLTAGE_COMPENSATION;
 	Eva.CellVoltage = Eva.Voltage / 3;
-	if(Eva.CellVoltage < MIN_BATTERY_VOLTAGE_PER_CELL*100)
-		FLAG_BLINK_BLUE = 1;
 
 
 	uint8_t Jcenter = !HAL_GPIO_ReadPin(JOY1_GPIO_Port, JOY1_Pin);
@@ -2691,11 +2856,19 @@ uint8_t ARE_ELEMENTS_EQUAL(const uint8_t *a, const uint8_t *b, uint8_t n)
 
 void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 {
-	Interrupt(RISING);
+	if (GPIO_Pin == START_MOD_IR3_Pin)
+	{
+		dupa++;
+		Interrupt(RISING);
+	}
 }
 void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 {
-	Interrupt(FALLING);
+	if (GPIO_Pin == START_MOD_IR3_Pin)
+	{
+		dupa++;
+		Interrupt(FALLING);
+	}
 }
 
 void Interrupt10Hz(void)
@@ -2713,12 +2886,12 @@ void Interrupt(uint8_t Edge)
 	static uint8_t		Line_Iddle;
 	static uint8_t		IR_Protocol;
 
-	uint32_t 	Timer; // 16000 is 1us.
+	uint32_t 	Timer; // 10ticks = 1uS
 	uint16_t 	shift;
 	uint8_t		Address;
 	uint8_t		Command;
 
-	Timer = TIM12->CNT;
+	Timer = TIM15->CNT;
 
 	if (Module_State == RC5_START)
 		IR_Protocol = RC5;
@@ -2726,17 +2899,22 @@ void Interrupt(uint8_t Edge)
 		IR_Protocol = SIRC;
 
 	if (Edge == TIMEOUT)
-		Line_Iddle = 0;
+	{
+	    Line_Iddle = 0;
+	    Bit_Nbr = 0;
+	    IR_Buffer = 0;
+	    IR_Protocol = UNKNOWN;
+	}
 
 	else if (Line_Iddle == 0 && Edge == FALLING)
 	{
-		TIM12->CNT = 0;
+		TIM15->CNT = 0;
 		Line_Iddle = 1;
 		Bit_Nbr = 0;
 		IR_Buffer = 0;
 	}
 	else if (Line_Iddle == 0 && Edge == RISING)
-		TIM12->CNT = 0;
+		TIM15->CNT = 0;
 
 // Check if selected protocol
 	else if (IR_Protocol == UNKNOWN)	// Second Interrupt. Protocol yet unknown
@@ -2747,7 +2925,7 @@ void Interrupt(uint8_t Edge)
 		else if (Last_Edge == FALLING && Edge == RISING && (Timer >= 2*SIRC_Long - 2*Margin && Timer <= 2*SIRC_Long + 2*Margin))
 		{
 			IR_Protocol = SIRC;
-			TIM12->CNT = 0;
+			TIM15->CNT = 0;
 		}
 		else
 			Line_Iddle = 0; 	// Error - Restart communication
@@ -2757,7 +2935,7 @@ void Interrupt(uint8_t Edge)
 	{
 		if (Timer >= RC5_Long - Margin && Timer <= RC5_Long + Margin) // Received Bit
 		{
-			TIM12->CNT = 0;
+			TIM15->CNT = 0;
 			// Received 0
 			if (Edge == RISING)
 				Bit_Nbr ++;
@@ -2784,7 +2962,7 @@ void Interrupt(uint8_t Edge)
 	}
 	else if (IR_Protocol == SIRC)
 	{
-		TIM12->CNT = 0;
+		TIM15->CNT = 0;
 		// Begin of Frame
 		if (Edge == RISING && (Timer >= 2*SIRC_Long - 2*Margin && Timer <= 2*SIRC_Long + 2*Margin))
 			Bit_Nbr = 0;
@@ -2808,6 +2986,7 @@ void Interrupt(uint8_t Edge)
 			Address = (IR_Buffer >> 7)  & 0b00011111;
 			Received_SIRC_Frame(Address, Command);
 		}
+
 	}
 
 	if (Edge != TIMEOUT)
@@ -2817,8 +2996,6 @@ void Interrupt(uint8_t Edge)
 
 void Received_RC5_Frame(uint8_t Addres, uint8_t Command)
 {
-	static uint8_t Dohyo_ID=0;
-
 	uint8_t StartCommand;
 	StartCommand = Command & 0x01;
 
@@ -2836,7 +3013,7 @@ void Received_RC5_Frame(uint8_t Addres, uint8_t Command)
 		else if (Module_State == PPROGRAMMED)
 		{
 			LED_GREEN_Control(BLINK_FAST, 2);
-			if (Command >> 1 != Dohyo_ID)
+			if ((Command >> 1) != Dohyo_ID)
 			{
 				Dohyo_ID = Command >> 1;
 			}
@@ -2844,7 +3021,7 @@ void Received_RC5_Frame(uint8_t Addres, uint8_t Command)
 	}
 	else if (Addres == 0x07) // Command Frame
 	{
-		if (Command >> 1 == Dohyo_ID)
+		if ((Command >> 1) == Dohyo_ID)
 		{
 			if (StartCommand == 1 && Module_State != STOP && Module_State != RC5_START)
 			{
@@ -2854,17 +3031,16 @@ void Received_RC5_Frame(uint8_t Addres, uint8_t Command)
 			}
 			else if (StartCommand == 0 && Module_State != STOP)
 			{
-				Module_State = STOP;
+				//Module_State = STOP;
+				Module_State = STARTUP;
 				Eva.inBattle = FALSE;
-				LED_GREEN_Control(BLINK_SLOW, 255);
+				LED_GREEN_Control(BLINK_SLOW, 3);
 			}
 		}
 	}
 }
 void Received_SIRC_Frame(uint8_t Addres, uint8_t Command)
 {
-	static uint8_t Dohyo_ID=0;
-
 	// Programming Frame
 	if (Command == 0x7F)
 	{
@@ -2894,16 +3070,17 @@ void Received_SIRC_Frame(uint8_t Addres, uint8_t Command)
 		}
 		else if (Command == 0x08 && Module_State != STOP) // Stop
 		{
-			Module_State = STOP;
+			//Module_State = STOP;
+			Module_State = STARTUP;
 			Eva.inBattle = FALSE;
-			LED_BLUE_Control(BLINK_SLOW, 255);
-			LED_RED_Control(BLINK_SLOW,	255);
+			LED_BLUE_Control(BLINK_SLOW, 3);
+			LED_RED_Control(BLINK_SLOW,	3);
 		}
 	}
 }
 uint8_t LED_GREEN_Control(uint8_t Command, uint8_t Data)
 {
-	static uint8_t LED_Status;
+	static uint8_t LED_Status = OFF;
 	static uint8_t LED_Data;
 	static uint8_t Counter;
 
@@ -2953,7 +3130,7 @@ uint8_t LED_GREEN_Control(uint8_t Command, uint8_t Data)
 }
 uint8_t LED_RED_Control(uint8_t Command, uint8_t Data)
 {
-	static uint8_t LED_Status;
+	static uint8_t LED_Status = OFF;
 	static uint8_t LED_Data;
 	static uint8_t Counter;
 
@@ -3003,7 +3180,7 @@ uint8_t LED_RED_Control(uint8_t Command, uint8_t Data)
 }
 uint8_t LED_BLUE_Control(uint8_t Command, uint8_t Data)
 {
-	static uint8_t LED_Status;
+	static uint8_t LED_Status = OFF;
 	static uint8_t LED_Data;
 	static uint8_t Counter;
 

@@ -3,23 +3,24 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
-		<item value="BATTLE()"/>
-		<item value="if(Eva.In"/>
-		<item value="Eva.inBattle"/>
-		<item value="TIM17"/>
-		<item value="TASK_BEFORE_ATTACK"/>
-		<item value="Eva.state"/>
-		<item value="Eva.startDelayTimer"/>
-		<item value="Eva.StartDelayTimer"/>
-		<item value="OLED()"/>
-		<item value="WATCHDOG"/>
-		<item value="Eva.state = IDLE"/>
-		<item value="Eva.InBa"/>
-		<item value="StartDelayTimer"/>
-		<item value="before_attack_rotation_direction"/>
+		<item value="FOLLOW_LINER"/>
+		<item value="STRAIGHT"/>
+		<item value="STRAIGHT_ATTACK"/>
+		<item value="ATTACK"/>
 		<item value="TASK_BEFORE_ATTACK()"/>
+		<item value="LINE_ALI"/>
+		<item value="BEFORE_ATTACK"/>
+		<item value="Eva.state"/>
+		<item value="TASK_VEFORE"/>
+		<item value="before_attack_rotation_direction"/>
+		<item value="AFTER_TASK_LINE_ALIGMENT"/>
+		<item value="STOP"/>
+		<item value="SIRC_Long"/>
+		<item value="Margin"/>
+		<item value="TIM14"/>
 	</list>
 	<list key="replacehistory">
+		<item value="TIM15"/>
 		<item value="Eva.inBattle"/>
 		<item value="init_text_height"/>
 		<item value="TIM2-&gt;CCR1"/>

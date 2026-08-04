@@ -712,9 +712,6 @@ https://lapse.hackclub.com/timelapse/jAqGxBFecOSW
 **Total time spent: 7.4 hours**
 
 
-
-
-
 # July 22: LOOKS SOOO FLIPPIN DOPE!
 
 YAY! I got it from not working to working again! Replacing mainboard connector with new ones was the thing to do!
@@ -739,3 +736,24 @@ https://lapse.hackclub.com/timelapse/-6MXYkGq6m6p
 ![img5](journalMedia/07-23_05.jpg)
 ![img6](journalMedia/07-23_06.jpg)
 **Total time spent: 6 hours**
+
+
+# August 04: Finnaly got my hands on start remote!
+
+Comeback after long breakkkk! HELLYE!
+Yesterday i borrowed start remote from out robotics club!
+Without it i could propelly test IR receiver functionality. I had som shienienigans problems, but after long debuging and talking with chat, changing timer settings and SIRC/CR5 timeframes worked.
+After that i changed a lil bit my rims, so i could cast them again. Ones i made before arent bad, but they are a little bit off center, which makes be angryyyyyy
+
+so yeee! Coming after that i programed starting sequence, as rulebook require.
+Remember guys to not use any HAL_Delay or SLEEP functions, if you are working mainly on interrupts, beacuse they will break your cede lol.
+Literally. They will render it unusableee.. Why? Beacuse MCU tries to do his job at working out all of your functions event and interrupts, when YOINK! NAH MEN - you gotta wait for SLEEP(67) miliseconds, lol
+And everything breaks!
+
+Lapse:
+https://lapse.hackclub.com/timelapse/j1nPhS0W8PA5
+![img1](journalMedia/08-24_01.jpg)
+![img2](journalMedia/08-24_02.jpg)
+![img3](journalMedia/08-24_03.jpg)
+![img4](journalMedia/08-24_04.jpg)
+**Total time spent: 4.9 hours**
