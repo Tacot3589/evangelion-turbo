@@ -1,0 +1,17 @@
+../Core/Src/main.c:1990:6:SET_MOTORS	6
+../Core/Src/main.c:1681:6:STRAIGHT_ATTACK	9
+../Core/Src/main.c:2699:6:_ssd1306_WriteInTheMiddle.constprop	2
+../Core/Src/main.c:2699:6:_ssd1306_WriteInTheMiddle.constprop	2
+../Core/Src/main.c:3186:9:LED_BLUE_Control.isra	14
+../Core/Src/main.c:3136:9:LED_RED_Control.isra	14
+../Core/Src/main.c:3086:9:LED_GREEN_Control.isra	14
+../Core/Src/main.c:1598:6:HAL_TIM_PeriodElapsedCallback	87
+../Core/Src/main.c:2144:6:HAL_FDCAN_RxFifo0Callback	1
+../Core/Src/main.c:2862:6:HAL_GPIO_EXTI_Rising_Callback	42
+../Core/Src/main.c:2870:6:HAL_GPIO_EXTI_Falling_Callback	33
+../Core/Src/main.c:3242:6:Error_Handler	1
+../Core/Src/main.c:2152:6:LIDARS_INIT	17
+../Core/Src/main.c:2745:6:MOTOR_DRIVER_INIT	23
+../Core/Src/main.c:2274:6:HAL_UARTEx_RxEventCallback	308
+../Core/Src/main.c:666:6:SystemClock_Config	3
+../Core/Src/main.c:393:5:main	50

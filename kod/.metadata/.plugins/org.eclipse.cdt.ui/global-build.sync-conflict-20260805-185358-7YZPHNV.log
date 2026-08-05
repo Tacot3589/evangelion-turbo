@@ -1,0 +1,37 @@
+20:46:29 **** Incremental Build of configuration Debug for project evangelion_turbo_controller-v1 ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H562xx -c -I../Core/Inc -I../Core/Src -I../Drivers/STM32H5xx_HAL_Driver/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I../Drivers/CMSIS/Include -Ofast -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:397:13: warning: unused variable 'Status' [-Wunused-variable]
+  397 |     uint8_t Status;
+      |             ^~~~~~
+../Core/Src/main.c: In function 'HAL_UARTEx_RxEventCallback':
+../Core/Src/main.c:2319:41: warning: 'Dist' may be used uninitialized [-Wmaybe-uninitialized]
+ 2319 |                 window1_Dist[idx1_Dist] = Dist;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+../Core/Src/main.c:2278:18: note: 'Dist' was declared here
+ 2278 |         uint16_t Dist, Temp, Amp;
+      |                  ^~~~
+../Core/Src/main.c:2343:36: warning: 'Temp' may be used uninitialized [-Wmaybe-uninitialized]
+ 2343 |                 BackLeft.LidarTemp = Temp;
+      |                 ~~~~~~~~~~~~~~~~~~~^~~~~~
+../Core/Src/main.c:2278:24: note: 'Temp' was declared here
+ 2278 |         uint16_t Dist, Temp, Amp;
+      |                        ^~~~
+../Core/Src/main.c:2320:39: warning: 'Amp' may be used uninitialized [-Wmaybe-uninitialized]
+ 2320 |                 window1_Amp[idx1_Amp] = Amp;
+      |                 ~~~~~~~~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c:2278:30: note: 'Amp' was declared here
+ 2278 |         uint16_t Dist, Temp, Amp;
+      |                              ^~~
+arm-none-eabi-gcc -o "evangelion_turbo_controller-v1.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_controller-v1\STM32H562RIVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_controller-v1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_controller-v1.elf
+ 
+arm-none-eabi-size  evangelion_turbo_controller-v1.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_controller-v1.elf  > "evangelion_turbo_controller-v1.list"
+   text	   data	    bss	    dec	    hex	filename
+  68652	     40	   4640	  73332	  11e74	evangelion_turbo_controller-v1.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_controller-v1.list
+ 

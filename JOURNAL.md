@@ -777,4 +777,5 @@ So guys... Wish me luck at the "RoboRAVE Word Championship 2025"!
 Lapse:
 https://lapse.hackclub.com/timelapse/Y0BkItvrs7Am
 ![img1](journalMedia/08-05_01.jpg)
+![img2](journalMedia/08-05_02.jpg)
 **Total time spent: 3 hours**
