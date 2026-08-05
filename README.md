@@ -68,13 +68,13 @@ Sumo robot build by me! Designed for RoboRave competition 2026
 ## Main controller (4 layer PCB):
 <p align="center">
   <a>
-    <img src="./media/PCB1.jpg" alt="PCB1" width=100%>
+    <img src="./media/PCB1.jpg" alt="PCB1" width=40%>
   </a>
   <a>
-    <img src="./media/PCB2.jpg" alt="PCB2" width=100%>
+    <img src="./media/PCB2.jpg" alt="PCB2" width=40%>
   </a>
     <a>
-    <img src="./media/PCB3.jpg" alt="PCB3" width=100%>
+    <img src="./media/PCB3.jpg" alt="PCB3" width=40%>
   </a>
 </p>
 
