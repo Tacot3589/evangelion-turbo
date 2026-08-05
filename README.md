@@ -60,21 +60,33 @@ Sumo robot build by me! Designed for RoboRave competition 2026
 # Photos and images:
 
 ## 3D Model:
-![ET1](media/ET1.jpg)
-![ET2](media/ET2.jpg)
-![ET3](media/ET3.jpg)
-![ET4](media/ET4.jpg)
+<p align="center">
+  <a>
+    <img src="./media/ET1.jpg" alt="ET1" width=50%>
+  </a>
+  <a>
+    <img src="./media/ET2.jpg" alt="ET2" width=50%>
+  </a>
+</p>
+<p align="center">
+  <a>
+    <img src="./media/ET3.jpg" alt="ET3" width=50%>
+  </a>
+  <a>
+    <img src="./media/ET4.jpg" alt="ET4" width=50%>
+  </a>
+</p>
 
 ## Main controller (4 layer PCB):
 <p align="center">
   <a>
-    <img src="./media/PCB1.jpg" alt="PCB1" width=40%>
+    <img src="./media/PCB1.jpg" alt="PCB1" width=33%>
   </a>
   <a>
-    <img src="./media/PCB2.jpg" alt="PCB2" width=40%>
+    <img src="./media/PCB2.jpg" alt="PCB2" width=33%>
   </a>
     <a>
-    <img src="./media/PCB3.jpg" alt="PCB3" width=40%>
+    <img src="./media/PCB3.jpg" alt="PCB3" width=33%>
   </a>
 </p>
 
