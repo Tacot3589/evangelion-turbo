@@ -99,7 +99,7 @@ Sumo robot build by me! Designed for RoboRave competition 2026
     <img src="./media/PCB6.jpg" alt="PCB6" width=30%>
   </a>
     <a>
-    <img src="./media/PCB7.jpg" alt="PCB7" width=30%>
+    <img src="./media/PCB6.jpg" alt="PCB6" width=30%>
   </a>
 </p>
 ## Image of actual robot:
@@ -108,10 +108,10 @@ Sumo robot build by me! Designed for RoboRave competition 2026
 ## Prototyping:
 <p align="center">
   <a>
-    <img src="./media/Prot1.jpg" alt="Prototype 1" width=60%>
+    <img src="./media/Prot1.jpg" alt="Prototype 1" width=80%>
   </a>
   <a>
-    <img src="./media/Prot2.jpg" alt="Prototype 2" width=30%>
+    <img src="./media/Prot2.jpg" alt="Prototype 2" width=10%>
   </a>
 </p>
 
