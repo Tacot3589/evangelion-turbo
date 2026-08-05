@@ -62,18 +62,18 @@ Sumo robot build by me! Designed for RoboRave competition 2026
 ## 3D Model:
 <p align="center">
   <a>
-    <img src="./media/ET1.jpg" alt="ET1" width=40%>
+    <img src="./media/ET1.jpg" alt="ET1" width=45%>
   </a>
   <a>
-    <img src="./media/ET2.jpg" alt="ET2" width=40%>
+    <img src="./media/ET2.jpg" alt="ET2" width=45%>
   </a>
 </p>
 <p align="center">
   <a>
-    <img src="./media/ET3.jpg" alt="ET3" width=40%>
+    <img src="./media/ET3.jpg" alt="ET3" width=45%>
   </a>
   <a>
-    <img src="./media/ET4.jpg" alt="ET4" width=40%>
+    <img src="./media/ET4.jpg" alt="ET4" width=45%>
   </a>
 </p>
 
@@ -91,16 +91,29 @@ Sumo robot build by me! Designed for RoboRave competition 2026
 </p>
 
 ## Motor driver (4 layer PCB):
-![PCB4](media/PCB4.jpg)
-![PCB5](media/PCB5.jpg)
-![PCB6](media/PCB6.jpg)
-
+<p align="center">
+  <a>
+    <img src="./media/PCB5.jpg" alt="PCB5" width=30%>
+  </a>
+  <a>
+    <img src="./media/PCB6.jpg" alt="PCB6" width=30%>
+  </a>
+    <a>
+    <img src="./media/PCB7.jpg" alt="PCB7" width=30%>
+  </a>
+</p>
 ## Image of actual robot:
 ![Robot image](media/Robot1.jpg)
 
 ## Prototyping:
-![Prototype1](media/Prot1.jpg)
-![Prototype2](media/Prot2.jpg)
+<p align="center">
+  <a>
+    <img src="./media/Prot1.jpg" alt="Prototype 1" width=45%>
+  </a>
+  <a>
+    <img src="./media/Prot2.jpg" alt="Prototype 2" width=45%>
+  </a>
+</p>
 
 
 # Rough BOM:
