@@ -75,10 +75,12 @@ Sumo robot build by me! Designed for RoboRave competition 2026
 ![PCB5](media/PCB5.jpg)
 ![PCB6](media/PCB6.jpg)
 
-## Last prototype:
+## Image of actual robot:
+![Robot image](media/Robot1.jpg)
+
+## Prototyping:
 ![Prototype1](media/Prot1.jpg)
 ![Prototype2](media/Prot2.jpg)
-![Prototype3](media/Prot3.jpg)
 
 
 # Rough BOM:
