@@ -26,9 +26,9 @@
 #define MAX_RETRIES_DRIVER_INIT 			5
 #define DRIVER_INIT_CAN_TIMEOUT 			100
 #define MAX_FET_TEMP 						80
-#define MAX_MOTOR_CURRENT_SHORT 			10
-#define MAX_MOTOR_CURRENT_LONG 				4
-#define MAX_MOTOR_ACCELERATION				200 		//from 0, which is instant, to 250ms which is long
+#define MAX_MOTOR_CURRENT_SHORT 			16
+#define MAX_MOTOR_CURRENT_LONG 				8
+#define MAX_MOTOR_ACCELERATION				30		//from 0, which is instant, to 250ms which is long
 #define SWITCH_MOTORS 						FALSE
 #define REVERSE_RIGHT_MOTOR 				FALSE
 #define REVERSE_LEFT_MOTOR 					FALSE
@@ -42,7 +42,7 @@
 
 #define GO_TO_LINE_TASK_SPEED 				30
 #define AFTER_TASK_ALIGMENT_SPEED 			50
-#define AFTER_TASK_ROTATION_TIME			1000
+#define AFTER_TASK_ROTATION_TIME			65
 
 //============================================= STRAIGHT ATTACK
 #define SEARCH_STRAIGHT_ATTACK_SPEED		30
@@ -50,10 +50,10 @@
 
 //============================================= FOLLOW LINER and ATTACKER
 #define FOLLOW_LINER_KP  25.0f
-#define FOLLOW_LINER_KD  8.0f
+#define FOLLOW_LINER_KD  1.0f
 #define FOLLOW_LINER_BASE_SPEED  50
-#define FOLLOW_LINER_OUT_LIMIT  50.0f
-
+#define FOLLOW_LINER_OUT_LIMIT  50
+#define FOLLOW_LINER_MIN_VELOCITY 20
 
 
 //==================================================== BUZZER
@@ -71,7 +71,7 @@
 #define DEFAULT_SETTING_ENABLE_BUZZER				FALSE
 #define DEFAULT_SETTING_DONT_INITIALIZE_LIDARS		FALSE
 #define DEFAULT_SETTING_ALWAYS_SHOW_OLED			TRUE
-#define DEFAULT_ATTACK_MODE_ID						2
+#define DEFAULT_ATTACK_MODE_ID						0
 
 
 //================================================================================================INIT ERRORS

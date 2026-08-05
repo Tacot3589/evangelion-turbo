@@ -1700,6 +1700,14 @@ void STRAIGHT_ATTACK()
 	{
 		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED);
 	}
+	else if(FrontLeft.Distance <= MAX_LIDAR_DISTANCE && FrontRight.Distance > MAX_LIDAR_DISTANCE)
+	{
+		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED);
+	}
+	else if(FrontLeft.Distance > MAX_LIDAR_DISTANCE && FrontRight.Distance <= MAX_LIDAR_DISTANCE)
+	{
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, SEARCH_STRAIGHT_ATTACK_SPEED);
+	}
 	else if(lastSeen == LEFT)
 	{
 		SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED, SEARCH_STRAIGHT_ATTACK_SPEED);
@@ -1710,7 +1718,7 @@ void STRAIGHT_ATTACK()
 	}
 	else
 	{
-		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, -SEARCH_STRAIGHT_ATTACK_SPEED);
+		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, 0);
 	}
 }
 
@@ -1724,40 +1732,81 @@ void CURVE_ATTACK()
 void FOLLOWLINER_ATTACK()
 {
     static float prev_error = 0.0f;
-
     float error = 0.0f;
 
+    if(FrontLeft.Line == OUT && FrontRight.Line == OUT)
+        {
+            prev_error = 0.0f; // Resetujemy błąd PID, by po powrocie nie miał skoków
+
+            if(before_attack_rotation_direction == RIGHT)
+            {
+                // Kierunek z jakiego zaatakowaliśmy (prawo), uciekamy obracając się szybko do środka
+                SET_MOTORS(FOLLOW_LINER_BASE_SPEED/3, -FOLLOW_LINER_BASE_SPEED);
+            }
+            else // LEFT
+            {
+                // Uciekamy w drugą stronę
+                SET_MOTORS(-FOLLOW_LINER_BASE_SPEED, FOLLOW_LINER_BASE_SPEED/3);
+            }
+            return; // Zakończ funkcję, pomijamy całkowicie liczenie PID!
+        }
+
+    // KIERUNEK PRAWO: Robot śledzi linię po swojej LEWEJ stronie
     if(before_attack_rotation_direction == RIGHT)
-    {
-        if(FrontLeft.Line == IN)       error = -1.0f;
-        else if(FrontLeft.Line == OUT) error =  1.0f;
-        else                           error =  0.0f;
-    }
-    else if(before_attack_rotation_direction == LEFT)
-    {
-        if(FrontRight.Line == IN)       error =  1.0f;
-        else if(FrontRight.Line == OUT) error = -1.0f;
-        else                            error =  0.0f;
-    }
+        {
+            // Spłaszczone wagi -> mniejsze skoki pochodnej!
+            if(FrontLeft.Line == OUT)
+                error -= 1.2f;  // Delikatniejsza, ale skuteczna reakcja na linię
+            else
+                error += 0.4f;  // Płynny łuk po czarnym
+
+            if(BackLeft.Line == OUT)
+                error += 0.8f;  // Kontra dla tyłu
+            else
+                error -= 0.2f;
+        }
+        // KIERUNEK LEWO: Śledzenie po prawej stronie robota
+        else if(before_attack_rotation_direction == LEFT)
+        {
+            if(FrontRight.Line == OUT)
+                error += 1.2f;
+            else
+                error -= 0.4f;
+
+            if(BackRight.Line == OUT)
+                error -= 0.8f;
+            else
+                error += 0.2f;
+        }
 
     float derivative = error - prev_error;
     float turn = FOLLOW_LINER_KP * error + FOLLOW_LINER_KD * derivative;
 
-    if(turn > FOLLOW_LINER_OUT_LIMIT) turn = FOLLOW_LINER_OUT_LIMIT;
-    if(turn < -FOLLOW_LINER_OUT_LIMIT) turn = -FOLLOW_LINER_OUT_LIMIT;
+    // Limitowanie maksymalnego skrętu
+    if(turn > FOLLOW_LINER_OUT_LIMIT)
+        turn = FOLLOW_LINER_OUT_LIMIT;
+    else if(turn < -FOLLOW_LINER_OUT_LIMIT)
+        turn = -FOLLOW_LINER_OUT_LIMIT;
 
     prev_error = error;
 
     int16_t left_pwm  = (int16_t)(FOLLOW_LINER_BASE_SPEED - turn);
     int16_t right_pwm = (int16_t)(FOLLOW_LINER_BASE_SPEED + turn);
 
-    if(left_pwm < 0) left_pwm = 0;
-    else if(left_pwm > 100) left_pwm = 100;
-    if(right_pwm < 0) right_pwm = 0;
-    else if(right_pwm > 100) right_pwm = 100;
+    // Limitowanie prędkości kół
+    if(left_pwm < FOLLOW_LINER_MIN_VELOCITY)
+        left_pwm = FOLLOW_LINER_MIN_VELOCITY;
+    else if(left_pwm > 100)
+        left_pwm = 100;
+
+    if(right_pwm < FOLLOW_LINER_MIN_VELOCITY)
+        right_pwm = FOLLOW_LINER_MIN_VELOCITY;
+    else if(right_pwm > 100)
+        right_pwm = 100;
 
     SET_MOTORS(left_pwm, right_pwm);
 }
+
 
 void FOLLOW_ATTACKER_ATTACK()
 {

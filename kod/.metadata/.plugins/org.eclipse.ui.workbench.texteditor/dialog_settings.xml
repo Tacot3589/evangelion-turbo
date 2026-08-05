@@ -3,6 +3,7 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
+		<item value="OLED"/>
 		<item value="FOLLOW_LINER"/>
 		<item value="STRAIGHT"/>
 		<item value="STRAIGHT_ATTACK"/>
@@ -17,7 +18,6 @@
 		<item value="STOP"/>
 		<item value="SIRC_Long"/>
 		<item value="Margin"/>
-		<item value="TIM14"/>
 	</list>
 	<list key="replacehistory">
 		<item value="TIM15"/>

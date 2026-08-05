@@ -1,0 +1,114 @@
+/*
+ * MY_INCLUDES.h
+ *
+ *  Created on: Jun 26, 2026
+ *      Author: szymo
+ */
+
+#ifndef INC_MY_INCLUDES_H_
+#define INC_MY_INCLUDES_H_
+
+
+//==================================================== SENSORS
+#define MIN_AMP_TRESCHOLD 					200
+#define MAX_RETRIES_LIDARS_INIT 			5
+#define LIDARS_INIT_UART_TIMEOUT 			100
+#define LIDARS_FILTERING_ARRAY_SIZE 		11
+#define MAX_LIDAR_DISTANCE 					40
+#define MIN_LIDAR_DISTANCE 					15
+#define ACKNOWLEDGE_LIDAR_DISTANCE			30
+#define INTRO_MIN_DISTANCE_FOR_LAST_SEEN	5
+#define WHITE_LINE_TRESCHOLD 				3700 //white is less
+#define LINE_COMEBACK_TIME					500
+
+
+//==================================================== MOTR DRIVERs
+#define MAX_RETRIES_DRIVER_INIT 			5
+#define DRIVER_INIT_CAN_TIMEOUT 			100
+#define MAX_FET_TEMP 						80
+#define MAX_MOTOR_CURRENT_SHORT 			10
+#define MAX_MOTOR_CURRENT_LONG 				4
+#define MAX_MOTOR_ACCELERATION				30		//from 0, which is instant, to 250ms which is long
+#define SWITCH_MOTORS 						FALSE
+#define REVERSE_RIGHT_MOTOR 				FALSE
+#define REVERSE_LEFT_MOTOR 					FALSE
+#define LEFT_MOTOR_VELOCITY_MULTIPLIER 		1
+#define RIGHT_MOTOR_VELOCITY_MULTIPLIER 	1
+
+
+//==================================================== ATTACK MODES SETTINGS AND TASK QUESTIONS
+#define START_WAITING_TIME 					3000
+#define START_WAITING_TIME_HEADROOM			100
+
+#define GO_TO_LINE_TASK_SPEED 				30
+#define AFTER_TASK_ALIGMENT_SPEED 			50
+#define AFTER_TASK_ROTATION_TIME			65
+
+//============================================= STRAIGHT ATTACK
+#define SEARCH_STRAIGHT_ATTACK_SPEED		30
+#define ATTACK_STRAIGHT_ATTACK_SPEED		50
+
+//============================================= FOLLOW LINER and ATTACKER
+#define FOLLOW_LINER_KP  20.0f
+#define FOLLOW_LINER_KD  0.0f
+#define FOLLOW_LINER_BASE_SPEED  30
+#define FOLLOW_LINER_OUT_LIMIT  30
+#define FOLLOW_LINER_MIN_VELOCITY 0
+
+
+//==================================================== BUZZER
+#define FREQ_STARTING 			300
+#define FREQ_STEP_INIT			75
+
+
+//==================================================== SETTINGS
+#define DISABLE_OLED								FALSE
+#define DEFAULT_SETTING_BATTERY_CELL_NO				3
+#define DEFAULT_SETTING_DONT_USE_MOTORS				FALSE
+#define DEFAULT_SETTING_ALWAYS_IN_BATTLE			FALSE
+#define DEFAULT_SETTING_IGNORE_START_MODULE			FALSE
+#define DEFAULT_SETTING_LINE_SENSORS_ALWAYS_IN		FALSE
+#define DEFAULT_SETTING_ENABLE_BUZZER				FALSE
+#define DEFAULT_SETTING_DONT_INITIALIZE_LIDARS		FALSE
+#define DEFAULT_SETTING_ALWAYS_SHOW_OLED			TRUE
+#define DEFAULT_ATTACK_MODE_ID						0
+
+
+//================================================================================================INIT ERRORS
+//================================================================================================INIT ERRORS
+//================================================================================================INIT ERRORS
+#define START_SIGNAL_AT_STARTUP 1
+
+#define TIM1_INIT_ERR 2
+#define TIM2_INIT_ERR 3
+#define TIM3_INIT_ERR 4
+#define TIM4_INIT_ERR 5
+
+#define ADC_INIT_ERR 6
+
+#define BATTLE_TIM_INIT_ERR 10
+#define WATCHDOG_TIM_INIT_ERR 11
+#define OLED_TIM_INIT_ERR 12
+#define LIDARS_INIT_ERR 13
+#define DRV_INIT_ERROR 16
+
+
+
+#define START_MOD_UART_CONNECTION_COOKED 24
+
+
+//===================================
+#define START_DELAY_IN_USE 200
+
+//===================================BAD_ERRORS >200, no HALT of mcu
+#define OLED_INIT_ERR 201
+#define LOW_BATTERY_VOLTAGE 200
+
+//==================================================== ERROR FLAGS
+//<200 init error flags
+//==200 start delay
+//>200 error, veery bad error
+//in separate file
+
+
+#endif /* INC_MY_INCLUDES_H_ */

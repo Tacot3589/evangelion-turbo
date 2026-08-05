@@ -752,8 +752,29 @@ And everything breaks!
 
 Lapse:
 https://lapse.hackclub.com/timelapse/j1nPhS0W8PA5
-![img1](journalMedia/08-24_01.jpg)
-![img2](journalMedia/08-24_02.jpg)
-![img3](journalMedia/08-24_03.jpg)
-![img4](journalMedia/08-24_04.jpg)
+![img1](journalMedia/08-04_01.jpg)
+![img2](journalMedia/08-04_02.jpg)
+![img3](journalMedia/08-04_03.jpg)
+![img4](journalMedia/08-04_04.jpg)
 **Total time spent: 4.9 hours**
+
+
+
+# August 05: Last day of work before competition...
+
+Last day...
+Today i got rims which i designed yesterday, from my brother and casted them. Ofc they didnt hardened yet, but they will be ready for championship!
+
+I have wrote attack sequences and all of that. I wanted to add one attack mode, in which robot just go into circles on the edge of the dohyo, to suprise opponent and gain high ground...
+But after all i suck at line following, so no-good. I lost it all lol. No line following for me :)
+Problem may be that i for that i can only use 2 sensor, one on the front and one on the back, which may be not enought for smoooth line following experience.
+
+Maybe i will rock it at the beggining of the championship, if i will have some time for minor fixes and additions like that!
+So guys... Wish me luck at the "RoboRAVE Word Championship 2025"!
+
+*ah yes, also i added proper photos to readme! Im more than these prototype-shit photos lol*
+
+Lapse:
+https://lapse.hackclub.com/timelapse/Y0BkItvrs7Am
+![img1](journalMedia/08-05_01.jpg)
+**Total time spent: 3 hours**
