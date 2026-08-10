@@ -10,16 +10,17 @@
 
 
 //==================================================== SENSORS
-#define MIN_AMP_TRESCHOLD 					200
-#define MAX_RETRIES_LIDARS_INIT 			5
-#define LIDARS_INIT_UART_TIMEOUT 			100
-#define LIDARS_FILTERING_ARRAY_SIZE 		11
-#define MAX_LIDAR_DISTANCE 					40
-#define MIN_LIDAR_DISTANCE 					15
-#define ACKNOWLEDGE_LIDAR_DISTANCE			30
-#define INTRO_MIN_DISTANCE_FOR_LAST_SEEN	5
-#define WHITE_LINE_TRESCHOLD 				3700 //white is less
-#define LINE_COMEBACK_TIME					500
+#define MIN_AMP_TRESCHOLD 						200
+#define MAX_RETRIES_LIDARS_INIT 				5
+#define LIDARS_INIT_UART_TIMEOUT 				100
+#define LIDARS_FILTERING_ARRAY_SIZE_FRONT		5
+#define LIDARS_FILTERING_ARRAY_SIZE_BACK		11
+#define MAX_LIDAR_DISTANCE 						50
+#define MIN_LIDAR_DISTANCE 						15
+#define INTRO_MIN_DISTANCE_FOR_LAST_SEEN		5
+#define WHITE_LINE_TRESCHOLD_FOR_BLACK_DOHYO	3700 //white is less
+#define BLACK_LINE_TRESCHOLD_FOR_WHITE_DOHYO	3000 //black is more
+#define LINE_COMEBACK_TIME						500
 
 
 //==================================================== MOTR DRIVERs
@@ -28,32 +29,42 @@
 #define MAX_FET_TEMP 						80
 #define MAX_MOTOR_CURRENT_SHORT 			16
 #define MAX_MOTOR_CURRENT_LONG 				8
-#define MAX_MOTOR_ACCELERATION				30		//from 0, which is instant, to 250ms which is long
+#define MAX_MOTOR_ACCELERATION				0	//from 0, which is instant, to 250ms which is long
 #define SWITCH_MOTORS 						FALSE
 #define REVERSE_RIGHT_MOTOR 				FALSE
 #define REVERSE_LEFT_MOTOR 					FALSE
 #define LEFT_MOTOR_VELOCITY_MULTIPLIER 		1
-#define RIGHT_MOTOR_VELOCITY_MULTIPLIER 	1
+#define RIGHT_MOTOR_VELOCITY_MULTIPLIER 	0.94
+#define MAX_MOTOR_ACCELERATION_NOT_DECELERATION_BY_CONTROLLER	1000
 
 
 //==================================================== ATTACK MODES SETTINGS AND TASK QUESTIONS
-#define START_WAITING_TIME 					3000
+#define START_WAITING_TIME 					500 //3000
 #define START_WAITING_TIME_HEADROOM			100
 
-#define GO_TO_LINE_TASK_SPEED 				30
-#define AFTER_TASK_ALIGMENT_SPEED 			50
-#define AFTER_TASK_ROTATION_TIME			65
+#define GO_TO_LINE_TASK_SPEED 				35
+#define AFTER_TASK_ALIGMENT_SPEED 			100
+#define AFTER_TASK_ROTATION_TIME			50
+
 
 //============================================= STRAIGHT ATTACK
-#define SEARCH_STRAIGHT_ATTACK_SPEED		30
-#define ATTACK_STRAIGHT_ATTACK_SPEED		50
+#define SEARCH_STRAIGHT_ATTACK_SPEED		50
+#define ATTACK_STRAIGHT_ATTACK_SPEED		70
+
+
+//============================================= CURVE ATTACK
+#define CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER 70
+#define CURVE_ATTACK_SEARCH_SPEED_FASTER 60
+#define CURVE_ATTACK_SEARCH_SPEED_SLOWER 30
+
 
 //============================================= FOLLOW LINER and ATTACKER
-#define FOLLOW_LINER_KP  25.0f
-#define FOLLOW_LINER_KD  1.0f
-#define FOLLOW_LINER_BASE_SPEED  50
-#define FOLLOW_LINER_OUT_LIMIT  50
-#define FOLLOW_LINER_MIN_VELOCITY 20
+#define FOLLOW_LINER_BOTH_OUT_FASTER_SPEED 60
+#define FOLLOW_LINER_BOTH_OUT_SLOWER_SPEED 40
+#define FOLLOW_LINER_BOTH_IN_FASTER_SPEED 60
+#define FOLLOW_LINER_BOTH_IN_SLOWER_SPEED 40
+#define FOLLOW_LINER_FRONT_OUT_BACK_IN_FASTER 40
+#define FOLLOW_LINER_FRONT_OUT_BACK_IN_SLOWER 20
 
 
 //==================================================== BUZZER
@@ -72,6 +83,8 @@
 #define DEFAULT_SETTING_DONT_INITIALIZE_LIDARS		FALSE
 #define DEFAULT_SETTING_ALWAYS_SHOW_OLED			TRUE
 #define DEFAULT_ATTACK_MODE_ID						0
+#define DEFAULT_RING_COLOR_IS_WHITE					TRUE
+#define SPECIAL_STARTING_SEQUENCE					TRUE
 
 
 //================================================================================================INIT ERRORS

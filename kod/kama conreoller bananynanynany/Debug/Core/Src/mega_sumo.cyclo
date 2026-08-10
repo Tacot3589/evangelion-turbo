@@ -1,0 +1,3 @@
+../Core/Src/mega_sumo.c:34:6:MEGA_Battle	36
+../Core/Src/mega_sumo.c:183:9:MEGA_StartParameters	2
+../Core/Src/mega_sumo.c:206:6:MEGA_PreStartParameters	3

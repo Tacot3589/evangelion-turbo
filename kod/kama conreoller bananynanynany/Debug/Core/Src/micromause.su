@@ -1,0 +1,12 @@
+../Core/Src/micromause.c:59:6:MazeScan	4	static
+../Core/Src/micromause.c:64:6:MICRO_mause	8	static
+../Core/Src/micromause.c:122:9:Execute_Move_And_Turn	24	static
+../Core/Src/micromause.c:189:6:Mouse_State_Machine	8	static
+../Core/Src/micromause.c:229:9:drive_distance	32	static
+../Core/Src/micromause.c:289:9:wait_before_start	24	static
+../Core/Src/micromause.c:307:9:reverse_time	24	static
+../Core/Src/micromause.c:325:9:rotate_robot	24	static
+../Core/Src/micromause.c:380:9:target_reached	24	static
+../Core/Src/micromause.c:401:7:normalize_angle	16	static
+../Core/Src/micromause.c:408:23:limit	16	static
+../Core/Src/micromause.c:474:6:Start_Rotate	24	static

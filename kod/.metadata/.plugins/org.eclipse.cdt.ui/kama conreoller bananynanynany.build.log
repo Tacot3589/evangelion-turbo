@@ -1,0 +1,22 @@
+20:39:27 **** Incremental Build of configuration Debug for project kama conreoller bananynanynany ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/sumo.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/sumo.d" -MT"Core/Src/sumo.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/sumo.o"
+../Core/Src/sumo.c: In function 'pd_regulation':
+../Core/Src/sumo.c:237:9: warning: implicit declaration of function 'SET_MOTOR'; did you mean 'LEFT_MOTOR'? [-Wimplicit-function-declaration]
+  237 |         SET_MOTOR(motor_speed, - motor_speed);
+      |         ^~~~~~~~~
+      |         LEFT_MOTOR
+arm-none-eabi-gcc -u _printf_float -gdwarf-4 -o "kama conreoller bananynanynany.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\kama conreoller bananynanynany\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="kama conreoller bananynanynany.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: kama conreoller bananynanynany.elf
+ 
+arm-none-eabi-size  kama\ conreoller\ bananynanynany.elf 
+arm-none-eabi-objdump -h -S kama\ conreoller\ bananynanynany.elf  > "kama conreoller bananynanynany.list"
+   text	   data	    bss	    dec	    hex	filename
+ 103584	    532	   6020	 110136	  1ae38	kama conreoller bananynanynany.elf
+Finished building: default.size.stdout
+ 
+Finished building: kama conreoller bananynanynany.list
+ 
+
+20:39:28 Build Finished. 0 errors, 1 warnings. (took 1s.23ms)
+

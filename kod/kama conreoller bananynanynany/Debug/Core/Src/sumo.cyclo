@@ -1,0 +1,4 @@
+../Core/Src/sumo.c:35:6:SUMO_Battle	1
+../Core/Src/sumo.c:192:9:SUMO_StartParameters	3
+../Core/Src/sumo.c:220:6:SUMO_PreStartParameters	3
+../Core/Src/sumo.c:228:6:pd_regulation	3

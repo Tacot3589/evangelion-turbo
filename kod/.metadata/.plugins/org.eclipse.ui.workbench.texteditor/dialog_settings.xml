@@ -3,21 +3,21 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
+		<item value="Acceleration_Compensation_R"/>
+		<item value="TIM8"/>
+		<item value="Acceleration_Compensation"/>
+		<item value="TIM17"/>
+		<item value="BATTLE"/>
+		<item value="SET_MOTOR"/>
+		<item value="acce"/>
+		<item value="BLACK_LINE_TRESCHOLD_FOR_WHITE_DOHYO"/>
+		<item value="WHITE_LINE_TRESCHOLD_FOR_BLACK_DOHYO"/>
+		<item value="Amp"/>
 		<item value="OLED"/>
 		<item value="FOLLOW_LINER"/>
 		<item value="STRAIGHT"/>
 		<item value="STRAIGHT_ATTACK"/>
 		<item value="ATTACK"/>
-		<item value="TASK_BEFORE_ATTACK()"/>
-		<item value="LINE_ALI"/>
-		<item value="BEFORE_ATTACK"/>
-		<item value="Eva.state"/>
-		<item value="TASK_VEFORE"/>
-		<item value="before_attack_rotation_direction"/>
-		<item value="AFTER_TASK_LINE_ALIGMENT"/>
-		<item value="STOP"/>
-		<item value="SIRC_Long"/>
-		<item value="Margin"/>
 	</list>
 	<list key="replacehistory">
 		<item value="TIM15"/>
