@@ -162,8 +162,8 @@ typedef enum
 	IDLE,
 	BEFORE_ATTACK_WAIT,
 	BEFORE_ATTACK_TASK,
-	AFTER_TASK_LINE_ALIGMENT,
-	AFTER_TASK_OPTIONAL_ROTATION_OR_ALIGMENT,
+	AFTER_TASK_RAM_QUCKIE,
+	AFTER_TASK_RAM_CHILL,
 	ATTACK,
 } RobotState_t;
 
@@ -328,6 +328,7 @@ volatile uint8_t MCU_LOAD_MAX = 0;
 //============================		START MOD CODE
 uint8_t Module_State = STARTUP;
 static uint8_t Dohyo_ID=0;
+uint8_t MAX_ACCELERATION=0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -367,6 +368,7 @@ static void WATCHDOG(void);
 static void GET_LAST_SEEN_ROTATIONE(void);
 static void TASK_BEFORE_ATTACK(void);
 static void SET_MOTORS(int8_t l, int8_t r);
+static void SET_RAW_MOTORS(int8_t l, int8_t r);
 static void _ssd1306_WriteInTheMiddle(char *text, uint8_t y, uint8_t font);
 static void _ssd1306_WriteString(char* str, uint8_t font);
 static void MOTOR_DRIVER_INIT(uint8_t DRV_SELF_ADDRESS);
@@ -400,6 +402,7 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
     Eva.AttackMode = DEFAULT_ATTACK_MODE_ID;
+    MAX_ACCELERATION = MAX_MOTOR_ACCELERATION_NOT_DECELERATION_BY_CONTROLLER;
 
   /* USER CODE END 1 */
 
@@ -1701,7 +1704,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  }
 	  else if(Eva.State == ATTACK)
 	  {
-
 		  if(Eva.AttackMode == STRAIGHT)
 		  {
 			  STRAIGHT_ATTACK();
@@ -1722,7 +1724,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		  {
 			  STRAIGHT_ATTACK();
 		  }
-
 	  }
 	  else
 	  {
@@ -1772,7 +1773,7 @@ void STRAIGHT_ATTACK()
 	if(ComeBackLinerTimer < LINE_COMEBACK_TIME)
 	{
 		ComeBackLinerTimer++;
-		SET_MOTORS(-ATTACK_STRAIGHT_ATTACK_SPEED,-ATTACK_STRAIGHT_ATTACK_SPEED);
+		SET_MOTORS(-LINE_COMEBACK_VELOCITY,-LINE_COMEBACK_VELOCITY);
 		if(BackLeft.Line == OUT)
 		{
 			ComeBackLinerTimer=UINT16_MAX;
@@ -1789,14 +1790,14 @@ void STRAIGHT_ATTACK()
 	else if(GoForwardLineAttention < LINE_COMEBACK_TIME)
 	{
 		if(BackLineOutGoDirection == LEFT)
-			SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, SEARCH_STRAIGHT_ATTACK_SPEED);
+			SET_MOTORS(LINE_COMEBACK_VELOCITY, LINE_COMEBACK_VELOCITY*0.75);
 		else //if(BackLineOutGoDirection == LEFT)
-			SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED);
+			SET_MOTORS(LINE_COMEBACK_VELOCITY*0.75, ATTACK_STRAIGHT_ATTACK_SPEED);
 	}
 	else if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
 	{
 		ComeBackLinerTimer = 0;
-		SET_MOTORS(-ATTACK_STRAIGHT_ATTACK_SPEED,-ATTACK_STRAIGHT_ATTACK_SPEED);
+		SET_MOTORS(-LINE_COMEBACK_VELOCITY,-LINE_COMEBACK_VELOCITY);
 	}
 	else if(FrontLeft.Distance <= MIN_LIDAR_DISTANCE && FrontRight.Distance <= MIN_LIDAR_DISTANCE)
 	{
@@ -1808,19 +1809,19 @@ void STRAIGHT_ATTACK()
 	}
 	else if(FrontLeft.Distance <= MAX_LIDAR_DISTANCE && FrontRight.Distance > MAX_LIDAR_DISTANCE)
 	{
-		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED);
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED*0.9, ATTACK_STRAIGHT_ATTACK_SPEED);
 	}
 	else if(FrontLeft.Distance > MAX_LIDAR_DISTANCE && FrontRight.Distance <= MAX_LIDAR_DISTANCE)
 	{
-		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, SEARCH_STRAIGHT_ATTACK_SPEED);
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED*0.9);
 	}
 	else if(lastSeen == LEFT)
 	{
-		SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED, SEARCH_STRAIGHT_ATTACK_SPEED);
+		SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED/3, SEARCH_STRAIGHT_ATTACK_SPEED);
 	}
 	else if(lastSeen == RIGHT)
 	{
-		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, -SEARCH_STRAIGHT_ATTACK_SPEED);
+		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, -SEARCH_STRAIGHT_ATTACK_SPEED/3);
 	}
 	else
 	{
@@ -1835,11 +1836,10 @@ void CURVE_ATTACK() //todo
 	static uint16_t GoForwardLineAttention=UINT16_MAX;
 	static uint16_t BackLineOutGoDirection=LEFT;
 
-
 	if(ComeBackLinerTimer < LINE_COMEBACK_TIME)
 	{
 		ComeBackLinerTimer++;
-		SET_MOTORS(-ATTACK_STRAIGHT_ATTACK_SPEED,-ATTACK_STRAIGHT_ATTACK_SPEED);
+		SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED,-SEARCH_STRAIGHT_ATTACK_SPEED);
 		if(BackLeft.Line == OUT)
 		{
 			ComeBackLinerTimer=UINT16_MAX;
@@ -1856,9 +1856,14 @@ void CURVE_ATTACK() //todo
 	else if(GoForwardLineAttention < LINE_COMEBACK_TIME)
 	{
 		if(BackLineOutGoDirection == LEFT)
-			SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, SEARCH_STRAIGHT_ATTACK_SPEED);
+			SET_MOTORS(LINE_COMEBACK_VELOCITY, LINE_COMEBACK_VELOCITY*0.75);
 		else //if(BackLineOutGoDirection == LEFT)
-			SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED);
+			SET_MOTORS(LINE_COMEBACK_VELOCITY*0.75, LINE_COMEBACK_VELOCITY);
+	}
+	else if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
+	{
+		ComeBackLinerTimer = 0;
+		SET_MOTORS(-LINE_COMEBACK_VELOCITY,-LINE_COMEBACK_VELOCITY);
 	}
 	else if(FrontLeft.Distance <= MIN_LIDAR_DISTANCE && FrontRight.Distance <= MIN_LIDAR_DISTANCE)
 	{
@@ -2118,37 +2123,42 @@ void TASK_BEFORE_ATTACK()
 		}
 		else if(Eva.State == BEFORE_ATTACK_TASK)
 		{
-			SET_MOTORS(GO_TO_LINE_TASK_SPEED, GO_TO_LINE_TASK_SPEED);
-			if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
+			SET_MOTORS(-GO_TO_LINE_TASK_SPEED, -GO_TO_LINE_TASK_SPEED);
+			if(BackLeft.Line == OUT || BackRight.Line == OUT)
 			{
-				Eva.State = AFTER_TASK_LINE_ALIGMENT;
+				//SET_RAW_MOTORS(100,100);
+				Eva.State = AFTER_TASK_RAM_QUCKIE;
+				Counter=0;
 
 			}
 		}
-		else if(Eva.State == AFTER_TASK_LINE_ALIGMENT)
+		else if(Eva.State == AFTER_TASK_RAM_QUCKIE)
 		{
-			if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
+			if(BackLeft.Line == IN && BackRight.Line == IN)
 			{
-				SET_MOTORS(-GO_TO_LINE_TASK_SPEED, -GO_TO_LINE_TASK_SPEED);
+				Eva.State = AFTER_TASK_RAM_CHILL ;
+				Counter=0;
+			}
+			else if(BackLeft.Line == OUT)
+			{
+				SET_MOTORS(100,75);
+			}
+			else if(BackRight.Line == OUT)
+			{
+				SET_MOTORS(75,100);
 			}
 			else
 			{
-				Eva.State = AFTER_TASK_OPTIONAL_ROTATION_OR_ALIGMENT;
-				Counter=0;
+				SET_MOTORS(100,100);
 			}
-
 		}
-		else if(Eva.State == AFTER_TASK_OPTIONAL_ROTATION_OR_ALIGMENT)
+		else if(Eva.State == AFTER_TASK_RAM_CHILL)
 		{
-			if(Eva.AttackMode == STRAIGHT)
+			if(Eva.AttackMode == STRAIGHT || Eva.AttackMode == CURVE)
 			{
-				if(before_attack_rotation_direction == RIGHT)
-					SET_MOTORS(AFTER_TASK_ALIGMENT_SPEED, -AFTER_TASK_ALIGMENT_SPEED);
-				else
-					SET_MOTORS(-AFTER_TASK_ALIGMENT_SPEED, AFTER_TASK_ALIGMENT_SPEED);
-
+				SET_MOTORS(100,100);
 				Counter++;
-				if(Counter >= AFTER_TASK_ROTATION_TIME)
+				if(Counter > STARTING_ROAM_TIME_CHILL)
 				{
 					Eva.State = ATTACK;
 					Counter=0;
@@ -2156,27 +2166,71 @@ void TASK_BEFORE_ATTACK()
 			}
 			else if(Eva.AttackMode == FOLLOW_LINER || Eva.AttackMode == FOLLOW_ATTACKER)
 			{
-				if(before_attack_rotation_direction == RIGHT)
+				if(before_attack_rotation_direction == LEFT)
 				{
+					// --- CEL: Wyrównanie LEWEGO boku do krawędzi (OUT to biała linia) ---
+
 					if(FrontLeft.Line == OUT && BackLeft.Line == OUT)
+					{
+						// Oba lewe czujniki widzą linię - jesteśmy ustawieni idealnie bokiem
+						SET_RAW_MOTORS(0, 0); // Opcjonalne zatrzymanie przed atakiem (stabilizacja)
 						Eva.State = ATTACK;
-					else if(FrontLeft.Line == IN && BackLeft.Line == IN && FrontRight.Line == IN && BackRight.Line == IN)
-						SET_MOTORS(AFTER_TASK_ALIGMENT_SPEED, AFTER_TASK_ALIGMENT_SPEED/3);
+					}
 					else if(FrontLeft.Line == OUT && FrontRight.Line == OUT)
-						SET_MOTORS(AFTER_TASK_ALIGMENT_SPEED, -AFTER_TASK_ALIGMENT_SPEED);
+					{
+						// Robot wjechał w linię centralnie przodem - ostry obrót w prawo (w miejscu), by ustawić się bokiem
+						SET_RAW_MOTORS(AFTER_TASK_ALIGMENT_SPEED, -AFTER_TASK_ALIGMENT_SPEED);
+					}
+					else if(FrontLeft.Line == OUT)
+					{
+						// Tylko lewy PRZÓD jest na linii. Robot jest za bardzo skręcony w lewo.
+						// Napędzamy lewe koło, prawe stop. Robot "zarzuca" tyłem w lewo (do linii), a przodem ucieka w prawo.
+						SET_RAW_MOTORS(AFTER_TASK_ALIGMENT_SPEED, 0);
+					}
+					else if(BackLeft.Line == OUT)
+					{
+						// Tylko lewy TYŁ jest na linii. Robot jest za bardzo skręcony w prawo.
+						// Napędzamy prawe koło, lewe stop. Robot dociąga przód do lewej strony.
+						SET_RAW_MOTORS(0, AFTER_TASK_ALIGMENT_SPEED);
+					}
 					else
-						SET_MOTORS(AFTER_TASK_ALIGMENT_SPEED, 0);
+					{
+						// Wszystkie czujniki IN (wewnątrz ringu) - jedziemy prosto, żeby znaleźć linię
+						SET_RAW_MOTORS(AFTER_TASK_ALIGMENT_SPEED, AFTER_TASK_ALIGMENT_SPEED);
+					}
 				}
-				else if(before_attack_rotation_direction == LEFT)
+				else if(before_attack_rotation_direction == RIGHT)
 				{
+					// --- CEL: Wyrównanie PRAWEGO boku do krawędzi (OUT to biała linia) ---
+
 					if(FrontRight.Line == OUT && BackRight.Line == OUT)
+					{
+						// Oba prawe czujniki widzą linię - idealnie bokiem
+						SET_RAW_MOTORS(0, 0);
 						Eva.State = ATTACK;
-					else if(FrontLeft.Line == IN && BackLeft.Line == IN && FrontRight.Line == IN && BackRight.Line == IN)
-						SET_MOTORS(AFTER_TASK_ALIGMENT_SPEED/3, AFTER_TASK_ALIGMENT_SPEED);
+					}
 					else if(FrontLeft.Line == OUT && FrontRight.Line == OUT)
-						SET_MOTORS(-AFTER_TASK_ALIGMENT_SPEED, AFTER_TASK_ALIGMENT_SPEED);
+					{
+						// Robot wjechał w linię centralnie przodem - ostry obrót w lewo (w miejscu)
+						SET_RAW_MOTORS(-AFTER_TASK_ALIGMENT_SPEED, AFTER_TASK_ALIGMENT_SPEED);
+					}
+					else if(FrontRight.Line == OUT)
+					{
+						// Tylko prawy PRZÓD jest na linii.
+						// Napędzamy prawe koło, lewe stop. Dociągamy prawy tył do krawędzi.
+						SET_RAW_MOTORS(0, AFTER_TASK_ALIGMENT_SPEED);
+					}
+					else if(BackRight.Line == OUT)
+					{
+						// Tylko prawy TYŁ jest na linii.
+						// Napędzamy lewe koło, prawe stop. Dociągamy prawy przód do krawędzi.
+						SET_RAW_MOTORS(AFTER_TASK_ALIGMENT_SPEED, 0);
+					}
 					else
-						SET_MOTORS(0, AFTER_TASK_ALIGMENT_SPEED);
+					{
+						// Wszystkie czujniki IN (wewnątrz ringu) - jedziemy prosto
+						SET_RAW_MOTORS(AFTER_TASK_ALIGMENT_SPEED, AFTER_TASK_ALIGMENT_SPEED);
+					}
 				}
 			}
 			else
@@ -2293,17 +2347,116 @@ void SET_MOTORS(int8_t l, int8_t r)
 	Motors.CAN.R = CAN_r;
 }
 
+void SET_RAW_MOTORS(int8_t l, int8_t r)
+{
+	uint8_t CAN_r, CAN_l;
+	static uint8_t WhichFirst = 0;
+
+	if (SWITCH_MOTORS)
+	{
+	    int8_t tmp = l;
+	    l = r;
+	    r = tmp;
+	}
+	if(REVERSE_RIGHT_MOTOR)
+	{
+		r = -r;
+	}
+	if(REVERSE_LEFT_MOTOR)
+	{
+		l = -l;
+	}
+
+	Motors.Requested.L = l;
+	Motors.Requested.R = r;
+	if(Settings.DONT_USE_MOTORS == TRUE)
+		l = r = 0;
+
+	l = l * LEFT_MOTOR_VELOCITY_MULTIPLIER;
+	r = r * RIGHT_MOTOR_VELOCITY_MULTIPLIER;
+
+
+	if(l > 99)
+		l=99;
+	else if(l<-99)
+		l=-99;
+
+	if(r>99)
+		r=99;
+	else if(r<-99)
+		r=-99;
+
+
+	/*
+	//convert to canable characters
+	 	 0=0
+	 	 1-100 = forward
+	 	 101-200 = backward
+	*/
+
+	Motors.Set.L = l;
+	Motors.Set.R = r;
+
+	if(l < 0)
+		CAN_l = 100 - l;
+	else
+		CAN_l = l;
+
+	if(r < 0)
+		CAN_r= 100 - r;
+	else
+		CAN_r = r;
+
+	if(WhichFirst == 1)
+	{
+		WhichFirst=0;
+		CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+		CAN_TX[0]=CAN_ID_DRV0;
+		CAN_TX[1]=0x50;
+		CAN_TX[2]=CAN_l;
+		CAN_TX[3]=0x01;
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+
+		CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+		CAN_TX[0]=CAN_ID_DRV1;
+		CAN_TX[1]=0x50;
+		CAN_TX[2]=CAN_r;
+		CAN_TX[3]=0x01;
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	}
+	else
+	{
+		WhichFirst=1;
+		CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+		CAN_TX[0]=CAN_ID_DRV1;
+		CAN_TX[1]=0x50;
+		CAN_TX[2]=CAN_r;
+		CAN_TX[3]=0x01;
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+
+		CAN_TX_Header.DataLength = FDCAN_DLC_BYTES_4;
+		CAN_TX[0]=CAN_ID_DRV0;
+		CAN_TX[1]=0x50;
+		CAN_TX[2]=CAN_l;
+		CAN_TX[3]=0x01;
+		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN_TX_Header, CAN_TX);
+	}
+
+	Motors.CAN.L = CAN_l;
+	Motors.CAN.R = CAN_r;
+}
+
 void GET_LAST_SEEN_ROTATIONE()
 {
 	if(Eva.State == IDLE)
 	{
-		if(FrontLeft.Distance < MIN_LIDAR_DISTANCE)
+		if(BackLeft.Distance < MIN_LIDAR_DISTANCE)
 			before_attack_rotation_direction = lastSeen = LEFT;
-		else if(FrontRight.Distance < MIN_LIDAR_DISTANCE)
+		else if(BackRight.Distance < MIN_LIDAR_DISTANCE)
 			before_attack_rotation_direction = lastSeen = RIGHT;
 
 	}
-	else
+	else if(Eva.State == ATTACK)
 	{
 		if(FrontLeft.Distance < MAX_LIDAR_DISTANCE)
 			lastSeen = LEFT;
@@ -2509,9 +2662,17 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) //TODO
 				k = (i + 6) % 9;
 				Temp = UART1_RX[j] + (UART1_RX[k] << 8);
 
-				if(Amp < MIN_AMP_TRESCHOLD)
+				if(Dist < MIN_LIDAR_AMP_DIST && Amp > MIN_LIDAR_AMP_DIST_AMP)
+				{
+					Dist=Dist;
+				}
+				else if(Amp < MIN_AMP_TRESCHOLD)
 				{
 					Dist = 65000;
+				}
+				else
+				{
+					Dist=Dist;
 				}
 
 				break;
@@ -2580,9 +2741,17 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) //TODO
 					k = (i + 6) % 9;
 					Temp = UART2_RX[j] + (UART2_RX[k] << 8);
 
-					if(Amp < MIN_AMP_TRESCHOLD)
+					if(Dist < MIN_LIDAR_AMP_DIST && Amp > MIN_LIDAR_AMP_DIST_AMP)
+					{
+						Dist=Dist;
+					}
+					else if(Amp < MIN_AMP_TRESCHOLD)
 					{
 						Dist = 65000;
+					}
+					else
+					{
+						Dist=Dist;
 					}
 
 					break;
@@ -2651,9 +2820,17 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) //TODO
 						k = (i + 6) % 9;
 						Temp = UART4_RX[j] + (UART4_RX[k] << 8);
 
-						if(Amp < MIN_AMP_TRESCHOLD)
+						if(Dist < MIN_LIDAR_AMP_DIST && Amp > MIN_LIDAR_AMP_DIST_AMP)
+						{
+							Dist=Dist;
+						}
+						else if(Amp < MIN_AMP_TRESCHOLD)
 						{
 							Dist = 65000;
+						}
+						else
+						{
+							Dist=Dist;
 						}
 
 						break;
@@ -2722,9 +2899,17 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) //TODO
 						k = (i + 6) % 9;
 						Temp = UART5_RX[j] + (UART5_RX[k] << 8);
 
-						if(Amp < MIN_AMP_TRESCHOLD)
+						if(Dist < MIN_LIDAR_AMP_DIST && Amp > MIN_LIDAR_AMP_DIST_AMP)
+						{
+							Dist=Dist;
+						}
+						else if(Amp < MIN_AMP_TRESCHOLD)
 						{
 							Dist = 65000;
+						}
+						else
+						{
+							Dist=Dist;
 						}
 
 						break;

@@ -3,10 +3,11 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
+		<item value="TIM17"/>
+		<item value="before_attack_rotation_direction"/>
 		<item value="Acceleration_Compensation_R"/>
 		<item value="TIM8"/>
 		<item value="Acceleration_Compensation"/>
-		<item value="TIM17"/>
 		<item value="BATTLE"/>
 		<item value="SET_MOTOR"/>
 		<item value="acce"/>
@@ -17,7 +18,6 @@
 		<item value="FOLLOW_LINER"/>
 		<item value="STRAIGHT"/>
 		<item value="STRAIGHT_ATTACK"/>
-		<item value="ATTACK"/>
 	</list>
 	<list key="replacehistory">
 		<item value="TIM15"/>

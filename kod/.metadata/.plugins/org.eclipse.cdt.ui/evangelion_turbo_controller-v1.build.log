@@ -1,37 +1,37 @@
-15:42:36 **** Incremental Build of configuration Debug for project evangelion_turbo_controller-v1 ****
+14:43:42 **** Incremental Build of configuration Debug for project evangelion_turbo_controller-v1 ****
 make -j8 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H562xx -c -I../Core/Inc -I../Core/Src -I../Drivers/STM32H5xx_HAL_Driver/Inc -I../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I../Drivers/CMSIS/Include -Ofast -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
 ../Core/Src/main.c: In function 'FOLLOWLINER_ATTACK':
-../Core/Src/main.c:1928:11: warning: 'FRONT' may be used uninitialized [-Wmaybe-uninitialized]
- 1928 |         if(FRONT == OUT && BACK == OUT)
+../Core/Src/main.c:1916:11: warning: 'FRONT' may be used uninitialized [-Wmaybe-uninitialized]
+ 1916 |         if(FRONT == OUT && BACK == OUT)
       |           ^
-../Core/Src/main.c:1912:17: note: 'FRONT' was declared here
- 1912 |         uint8_t FRONT;
+../Core/Src/main.c:1900:17: note: 'FRONT' was declared here
+ 1900 |         uint8_t FRONT;
       |                 ^~~~~
-../Core/Src/main.c:1928:25: warning: 'BACK' may be used uninitialized [-Wmaybe-uninitialized]
- 1928 |         if(FRONT == OUT && BACK == OUT)
+../Core/Src/main.c:1916:25: warning: 'BACK' may be used uninitialized [-Wmaybe-uninitialized]
+ 1916 |         if(FRONT == OUT && BACK == OUT)
       |            ~~~~~~~~~~~~~^~~~~~~~~~~~~~
-../Core/Src/main.c:1913:17: note: 'BACK' was declared here
- 1913 |         uint8_t BACK;
+../Core/Src/main.c:1901:17: note: 'BACK' was declared here
+ 1901 |         uint8_t BACK;
       |                 ^~~~
 ../Core/Src/main.c: In function 'HAL_UARTEx_RxEventCallback':
-../Core/Src/main.c:2545:41: warning: 'Dist' may be used uninitialized [-Wmaybe-uninitialized]
- 2545 |                 window1_Dist[idx1_Dist] = Dist;
+../Core/Src/main.c:2689:41: warning: 'Dist' may be used uninitialized [-Wmaybe-uninitialized]
+ 2689 |                 window1_Dist[idx1_Dist] = Dist;
       |                 ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
-../Core/Src/main.c:2504:18: note: 'Dist' was declared here
- 2504 |         uint16_t Dist, Temp, Amp;
+../Core/Src/main.c:2640:18: note: 'Dist' was declared here
+ 2640 |         uint16_t Dist, Temp, Amp;
       |                  ^~~~
-../Core/Src/main.c:2569:36: warning: 'Temp' may be used uninitialized [-Wmaybe-uninitialized]
- 2569 |                 BackLeft.LidarTemp = Temp;
+../Core/Src/main.c:2713:36: warning: 'Temp' may be used uninitialized [-Wmaybe-uninitialized]
+ 2713 |                 BackLeft.LidarTemp = Temp;
       |                 ~~~~~~~~~~~~~~~~~~~^~~~~~
-../Core/Src/main.c:2504:24: note: 'Temp' was declared here
- 2504 |         uint16_t Dist, Temp, Amp;
+../Core/Src/main.c:2640:24: note: 'Temp' was declared here
+ 2640 |         uint16_t Dist, Temp, Amp;
       |                        ^~~~
-../Core/Src/main.c:2546:39: warning: 'Amp' may be used uninitialized [-Wmaybe-uninitialized]
- 2546 |                 window1_Amp[idx1_Amp] = Amp;
+../Core/Src/main.c:2690:39: warning: 'Amp' may be used uninitialized [-Wmaybe-uninitialized]
+ 2690 |                 window1_Amp[idx1_Amp] = Amp;
       |                 ~~~~~~~~~~~~~~~~~~~~~~^~~~~
-../Core/Src/main.c:2504:30: note: 'Amp' was declared here
- 2504 |         uint16_t Dist, Temp, Amp;
+../Core/Src/main.c:2640:30: note: 'Amp' was declared here
+ 2640 |         uint16_t Dist, Temp, Amp;
       |                              ^~~
 arm-none-eabi-gcc -o "evangelion_turbo_controller-v1.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_controller-v1\STM32H562RIVX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_controller-v1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: evangelion_turbo_controller-v1.elf
@@ -39,11 +39,11 @@ Finished building target: evangelion_turbo_controller-v1.elf
 arm-none-eabi-size  evangelion_turbo_controller-v1.elf 
 arm-none-eabi-objdump -h -S evangelion_turbo_controller-v1.elf  > "evangelion_turbo_controller-v1.list"
    text	   data	    bss	    dec	    hex	filename
-  69728	     40	   4752	  74520	  12318	evangelion_turbo_controller-v1.elf
+  74200	     44	   4740	  78984	  13488	evangelion_turbo_controller-v1.elf
 Finished building: default.size.stdout
  
 Finished building: evangelion_turbo_controller-v1.list
  
 
-15:42:38 Build Finished. 0 errors, 5 warnings. (took 2s.284ms)
+14:43:45 Build Finished. 0 errors, 5 warnings. (took 3s.224ms)
 
