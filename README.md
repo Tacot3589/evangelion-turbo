@@ -160,7 +160,8 @@ This project uses:
 
 ## First competition of this robot!
 <p align="center">
-  <a>
+  <a href="https://roborave-osaka.org/wc2026_en/">
     <img src="./media/RoboRave.jpg" alt="PCB5" width=75%>
   </a>
 </p>
+
