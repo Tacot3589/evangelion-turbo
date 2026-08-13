@@ -49,13 +49,17 @@ Sumo robot build by me! Designed for RoboRave competition 2026
 - two high power brushed DC motors
 
 #### Pros:
- - not tested yet, still in development
+ - powerfull motors
+ - Capable motors drivers
+ - Fast sensors
+ - Capable MCU
 
 #### Cons:
-- not tested yet, still in development
+ - In the first version, the IMU refused to function (messed up SCL and SDA in I2C)
+ - The mighty torque of the motors caused the front to rise, thereby troubling the sensors :(
 
 #### Accomplishments:
- - not tested yet, still in development
+ - "RoboRave Robotics Championship 2026 Osaka"
 
 # Photos and images:
 
@@ -127,7 +131,7 @@ Sumo robot build by me! Designed for RoboRave competition 2026
 | main controller PCB | 1 |
 | motor driver PCB | 1 |
 | rised IR receiver PCB | 2 |
-| metal 3D printed parts | *a lot* |
+| metal 3D printed parts | *A great many* |
 | laser cut 1mm and 2mm parts | 3 |
 | CNC cut front wedge | 1 |
 | *patience* | *more than a lot* |
@@ -135,9 +139,11 @@ Sumo robot build by me! Designed for RoboRave competition 2026
 | silicone for wheel, shore 10A | 0.5Kg |
 
 
-## *PS. Please - dont copy my work. Watch it, rewiev it, learn from in, take notes - but dont just change a few things and rebuild it. Do better! Make your own better version! Beat me at the next competition!!!*
+## A Most Earnest Plea Unto the Reader
+Please - dont copy my work. Watch it, rewiev it, learn from in, take notes - but dont just change a few things and rebuild it. Do better! Make your own better version! Beat me at the next competition!!!*
 *This project is out here to **inspire** you, not to be copy and pasted!*
 
+__Fear not. The files are there.__
 If you want to take a look:
  - 3D files are in the "3DP" folder
  - Board gerber files are in the "altiumik/*name of the PCB, for example "Riser_IR_receiver_PCB"*/Project Outputs *blah blah blag*" You will find them, dont worry
