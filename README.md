@@ -144,7 +144,7 @@ If you want to take a look:
  - Wiring? Everything is written on the PCBs. If you need more, take a look at the PCB files in "altiumik" folder
 
 
-## Little inside
+## Little insight
 ### What is it?
 It is an miniSUMO robot! 10x10cm max dimensions, 1kg max weight! Battle range is called "dohyo". Most often it is black circle with 5cm white outline - rarely it have inversed colors. Two sumo robots fight! Main target is to push your opponent off the dohyo! Stronger motors, sharper and harder front wedge, faster sensor wins!
 ### Why have i build this?
