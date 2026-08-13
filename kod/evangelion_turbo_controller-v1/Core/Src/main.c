@@ -1773,7 +1773,7 @@ void STRAIGHT_ATTACK()
 	if(ComeBackLinerTimer < LINE_COMEBACK_TIME)
 	{
 		ComeBackLinerTimer++;
-		SET_MOTORS(-LINE_COMEBACK_VELOCITY,-LINE_COMEBACK_VELOCITY);
+		SET_RAW_MOTORS(-LINE_COMEBACK_VELOCITY,-LINE_COMEBACK_VELOCITY);
 		if(BackLeft.Line == OUT)
 		{
 			ComeBackLinerTimer=UINT16_MAX;
@@ -1789,15 +1789,16 @@ void STRAIGHT_ATTACK()
 	}
 	else if(GoForwardLineAttention < LINE_COMEBACK_TIME)
 	{
+		GoForwardLineAttention++;
 		if(BackLineOutGoDirection == LEFT)
-			SET_MOTORS(LINE_COMEBACK_VELOCITY, LINE_COMEBACK_VELOCITY*0.75);
+			SET_RAW_MOTORS(LINE_COMEBACK_VELOCITY*0.9, LINE_COMEBACK_VELOCITY);
 		else //if(BackLineOutGoDirection == LEFT)
-			SET_MOTORS(LINE_COMEBACK_VELOCITY*0.75, ATTACK_STRAIGHT_ATTACK_SPEED);
+			SET_RAW_MOTORS(LINE_COMEBACK_VELOCITY, LINE_COMEBACK_VELOCITY*0.9);
 	}
 	else if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
 	{
 		ComeBackLinerTimer = 0;
-		SET_MOTORS(-LINE_COMEBACK_VELOCITY,-LINE_COMEBACK_VELOCITY);
+		SET_RAW_MOTORS(-LINE_COMEBACK_VELOCITY,-LINE_COMEBACK_VELOCITY);
 	}
 	else if(FrontLeft.Distance <= MIN_LIDAR_DISTANCE && FrontRight.Distance <= MIN_LIDAR_DISTANCE)
 	{
@@ -1839,7 +1840,7 @@ void CURVE_ATTACK() //todo
 	if(ComeBackLinerTimer < LINE_COMEBACK_TIME)
 	{
 		ComeBackLinerTimer++;
-		SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED,-SEARCH_STRAIGHT_ATTACK_SPEED);
+		SET_RAW_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED,-SEARCH_STRAIGHT_ATTACK_SPEED);
 		if(BackLeft.Line == OUT)
 		{
 			ComeBackLinerTimer=UINT16_MAX;
@@ -1855,15 +1856,16 @@ void CURVE_ATTACK() //todo
 	}
 	else if(GoForwardLineAttention < LINE_COMEBACK_TIME)
 	{
+		GoForwardLineAttention++;
 		if(BackLineOutGoDirection == LEFT)
-			SET_MOTORS(LINE_COMEBACK_VELOCITY, LINE_COMEBACK_VELOCITY*0.75);
+			SET_RAW_MOTORS(LINE_COMEBACK_VELOCITY*0.9, LINE_COMEBACK_VELOCITY);
 		else //if(BackLineOutGoDirection == LEFT)
-			SET_MOTORS(LINE_COMEBACK_VELOCITY*0.75, LINE_COMEBACK_VELOCITY);
+			SET_RAW_MOTORS(LINE_COMEBACK_VELOCITY, LINE_COMEBACK_VELOCITY*0.9);
 	}
 	else if(FrontLeft.Line == OUT || FrontRight.Line == OUT)
 	{
 		ComeBackLinerTimer = 0;
-		SET_MOTORS(-LINE_COMEBACK_VELOCITY,-LINE_COMEBACK_VELOCITY);
+		SET_RAW_MOTORS(-LINE_COMEBACK_VELOCITY,-LINE_COMEBACK_VELOCITY);
 	}
 	else if(FrontLeft.Distance <= MIN_LIDAR_DISTANCE && FrontRight.Distance <= MIN_LIDAR_DISTANCE)
 	{
@@ -1895,51 +1897,74 @@ void CURVE_ATTACK() //todo
 	}
 }
 
-void FOLLOWLINER_ATTACK()
+void FOLLOWLINER_ATTACK(void)
 {
-	uint8_t FRONT;
-	uint8_t BACK;
-	static int8_t Inside, Outside;
+    uint8_t Front;
+    uint8_t Back;
 
-	if(before_attack_rotation_direction == LEFT)
-	{
-		FRONT = FrontRight.Line;
-		BACK = BackRight.Line;
-	}
-	else if(before_attack_rotation_direction == RIGHT)
-	{
-		FRONT = FrontLeft.Line;
-		BACK = BackLeft.Line;
-	}
+    int16_t Inside;
+    int16_t Outside;
 
+    if(before_attack_rotation_direction == LEFT)
+    {
+        if(FrontLeft.Line == OUT && FrontRight.Line == OUT)
+        {
+        	SET_MOTORS(100, -100);
+        }
+        else
+        {
+            Front = FrontLeft.Line;
+            Back  = BackLeft.Line;
+        }
+    }
+    else //if(before_attack_rotation_direction == RIGHT)
+    {
+        if(FrontLeft.Line == OUT && FrontRight.Line == OUT)
+        {
+        	SET_MOTORS(-100, 100);
+        }
+        else
+        {
+            Front = FrontRight.Line;
+            Back  = BackRight.Line;
+        }
+    }
 
-	if(FRONT == OUT && BACK == OUT)
-	{
-		Outside = FOLLOW_LINER_BOTH_OUT_FASTER_SPEED;
-		Inside = FOLLOW_LINER_BOTH_OUT_SLOWER_SPEED;
-	}
-	else if(FRONT == IN && BACK == OUT)
-	{
-		Outside = FOLLOW_LINER_FRONT_OUT_BACK_IN_FASTER;
-		Inside = FOLLOW_LINER_FRONT_OUT_BACK_IN_SLOWER;
-	}
-	else //if(FRONT == IN && BACK == IN)
-	{
-		Outside = FOLLOW_LINER_BOTH_IN_SLOWER_SPEED;
-		Inside = FOLLOW_LINER_BOTH_IN_FASTER_SPEED;
-	}
+    if(Front == OUT && Back == OUT)
+    {
+        // Cały bok jest na zewnątrz.
+        Outside = FOLLOW_LINER_FASTER;
+        Inside  = FOLLOW_LINER_SLOWER*0.8;
+    }
+    else if(Front == OUT && Back == IN)
+    {
+        // Przód jest bardziej na zewnątrz niż tył.
+        Outside = FOLLOW_LINER_FASTER;
+        Inside  = 10;
+    }
+    else if(Front == IN && Back == OUT)
+    {
+        // Tył jest bardziej na zewnątrz niż przód.
+        // Korekcja musi być przeciwna.
+        Outside = FOLLOW_LINER_SLOWER;
+        Inside  = FOLLOW_LINER_FASTER;
+    }
+    else // Front == IN && Back == IN
+    {
+        // Cały robot uciekł do środka ringu.
+        Outside = FOLLOW_LINER_SLOWER;
+        Inside  = FOLLOW_LINER_FASTER;
+    }
 
-
-	if(before_attack_rotation_direction == LEFT)
-	{
-		SET_MOTORS(Inside, Outside);
-	}
-	else if(before_attack_rotation_direction == RIGHT)
-	{
-		SET_MOTORS(Outside, Inside);
-	}
+    if(before_attack_rotation_direction == LEFT)
+    {
+        SET_MOTORS(Outside, Inside);
+    }
+    else
+    {
+        SET_MOTORS(Inside, Outside);
+    }
 }
-
 
 void FOLLOW_ATTACKER_ATTACK() //todo
 {
@@ -1951,7 +1976,7 @@ void FOLLOW_ATTACKER_ATTACK() //todo
 
 	if(before_attack_rotation_direction == LEFT)
 	{
-		if(BackLeft.Distance <= MAX_LIDAR_DISTANCE)
+		if(BackLeft.Distance <= LIDAR_DIST_FOR_LINE_FOLLOWER_ATCK_PLS_BE_BACK)
 		{
 			STAGE = ATTACK;
 			lastSeen = LEFT;
@@ -1959,7 +1984,7 @@ void FOLLOW_ATTACKER_ATTACK() //todo
 	}
 	else //if(before_attack_rotation_direction == RIGHT)
 	{
-		if(BackRight.Distance <= MAX_LIDAR_DISTANCE)
+		if(BackRight.Distance <= LIDAR_DIST_FOR_LINE_FOLLOWER_ATCK_PLS_BE_BACK)
 		{
 			STAGE = ATTACK;
 			lastSeen = RIGHT;
@@ -2168,68 +2193,26 @@ void TASK_BEFORE_ATTACK()
 			{
 				if(before_attack_rotation_direction == LEFT)
 				{
-					// --- CEL: Wyrównanie LEWEGO boku do krawędzi (OUT to biała linia) ---
-
-					if(FrontLeft.Line == OUT && BackLeft.Line == OUT)
+					if (FrontLeft.Line == OUT && BackLeft.Line == IN)
 					{
-						// Oba lewe czujniki widzą linię - jesteśmy ustawieni idealnie bokiem
-						SET_RAW_MOTORS(0, 0); // Opcjonalne zatrzymanie przed atakiem (stabilizacja)
+						SET_RAW_MOTORS(0, 0);
 						Eva.State = ATTACK;
-					}
-					else if(FrontLeft.Line == OUT && FrontRight.Line == OUT)
-					{
-						// Robot wjechał w linię centralnie przodem - ostry obrót w prawo (w miejscu), by ustawić się bokiem
-						SET_RAW_MOTORS(AFTER_TASK_ALIGMENT_SPEED, -AFTER_TASK_ALIGMENT_SPEED);
-					}
-					else if(FrontLeft.Line == OUT)
-					{
-						// Tylko lewy PRZÓD jest na linii. Robot jest za bardzo skręcony w lewo.
-						// Napędzamy lewe koło, prawe stop. Robot "zarzuca" tyłem w lewo (do linii), a przodem ucieka w prawo.
-						SET_RAW_MOTORS(AFTER_TASK_ALIGMENT_SPEED, 0);
-					}
-					else if(BackLeft.Line == OUT)
-					{
-						// Tylko lewy TYŁ jest na linii. Robot jest za bardzo skręcony w prawo.
-						// Napędzamy prawe koło, lewe stop. Robot dociąga przód do lewej strony.
-						SET_RAW_MOTORS(0, AFTER_TASK_ALIGMENT_SPEED);
 					}
 					else
 					{
-						// Wszystkie czujniki IN (wewnątrz ringu) - jedziemy prosto, żeby znaleźć linię
-						SET_RAW_MOTORS(AFTER_TASK_ALIGMENT_SPEED, AFTER_TASK_ALIGMENT_SPEED);
+						SET_RAW_MOTORS(-AFTER_TASK_ALIGMENT_SPEED, -10);
 					}
 				}
 				else if(before_attack_rotation_direction == RIGHT)
 				{
-					// --- CEL: Wyrównanie PRAWEGO boku do krawędzi (OUT to biała linia) ---
-
-					if(FrontRight.Line == OUT && BackRight.Line == OUT)
+					if (FrontRight.Line == OUT && BackRight.Line == IN)
 					{
-						// Oba prawe czujniki widzą linię - idealnie bokiem
 						SET_RAW_MOTORS(0, 0);
 						Eva.State = ATTACK;
 					}
-					else if(FrontLeft.Line == OUT && FrontRight.Line == OUT)
-					{
-						// Robot wjechał w linię centralnie przodem - ostry obrót w lewo (w miejscu)
-						SET_RAW_MOTORS(-AFTER_TASK_ALIGMENT_SPEED, AFTER_TASK_ALIGMENT_SPEED);
-					}
-					else if(FrontRight.Line == OUT)
-					{
-						// Tylko prawy PRZÓD jest na linii.
-						// Napędzamy prawe koło, lewe stop. Dociągamy prawy tył do krawędzi.
-						SET_RAW_MOTORS(0, AFTER_TASK_ALIGMENT_SPEED);
-					}
-					else if(BackRight.Line == OUT)
-					{
-						// Tylko prawy TYŁ jest na linii.
-						// Napędzamy lewe koło, prawe stop. Dociągamy prawy przód do krawędzi.
-						SET_RAW_MOTORS(AFTER_TASK_ALIGMENT_SPEED, 0);
-					}
 					else
 					{
-						// Wszystkie czujniki IN (wewnątrz ringu) - jedziemy prosto
-						SET_RAW_MOTORS(AFTER_TASK_ALIGMENT_SPEED, AFTER_TASK_ALIGMENT_SPEED);
+						SET_RAW_MOTORS(-10,-AFTER_TASK_ALIGMENT_SPEED);
 					}
 				}
 			}
