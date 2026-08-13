@@ -143,8 +143,15 @@ If you want to take a look:
  - Board gerber files are in the "altiumik/*name of the PCB, for example "Riser_IR_receiver_PCB"*/Project Outputs *blah blah blag*" You will find them, dont worry
  - Wiring? Everything is written on the PCBs. If you need more, take a look at the PCB files in "altiumik" folder
 
-## Credits
 
+## Little inside
+### What is it?
+It is an miniSUMO robot! 10x10cm max dimensions, 1kg max weight! Battle range is called "dohyo". Most often it is black circle with 5cm white outline - rarely it have inversed colors. Two sumo robots fight! Main target is to push your opponent off the dohyo! Stronger motors, sharper and harder front wedge, faster sensor wins!
+### Why have i build this?
+This is my hobby lol! I just likes this! I like electronics, PCB designing, mechanical engineering, material engineering... ALL OF THIS IS SOO COOL!
+
+
+## Credits
 This project uses:
 - [Altium Designer](https://www.altium.com/altium-designer) - routing PCB
 - [Autodesk inventor](https://www.autodesk.com/products/inventor/overview) - designing all of the parts and assembliess
