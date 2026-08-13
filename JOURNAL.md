@@ -779,3 +779,65 @@ https://lapse.hackclub.com/timelapse/Y0BkItvrs7Am
 ![img1](journalMedia/08-05_01.jpg)
 ![img2](journalMedia/08-05_02.jpg)
 **Total time spent: 3 hours**
+
+
+# August 10: Night before competition
+
+Today i made all of the check before competition.
+I didnt know it before, byt dohyo at RoboRave have reversed color -> i had to reprogram line sensors.
+Alsooo they sent everyone an email at 2AM, that they changed rules and starting sequence...
+I HAD TO FUCKING REPROGRAM THIS SEQUENCE AT NIGHT BROSSS.
+
+Also i spent like 4hr at sharpeping my front plow. I hope it will be better than these guys sharp knifes!
+
+![img1](journalMedia/08-10_01.jpg)
+**Total time spent: 6 hours**
+
+
+# August 11: First competition day!
+
+Im fucking furious and not in the same time lol.
+Today i spent full day testing and fixing robot. I was supposed to have more than half of planned fights, but organisation was so cooked, that i didnt had even one fight lol.
+
+I had so much problem w ith line sensors. They were cooked. After a lot of testing i found out, that when line sensors is far from ground plane it dont sense any received ground, same as on black - while sensors is over white it sense all of the emited light. Main poroblem is that i have short robot and My front constantly go up, beacuse of my freakin powerfull motors!
+
+Main idea to fix it was to add accelerataion curve. Instead of going FULL POWER FOR MOTORS i changed into give them little bit more than before, until hits 100% PWM. Not they work okayish!
+
+After that i fixed some attack code, got all of the values for velocities, max speed, distances etcetra.
+And that was it for a full day!
+
+In the night i tried to make line follower mode work at faster speeds but with none success... The main problem is that i have not enough line sensors, so it is just borked. At the beggining i tried to do PID tuning, but pid with one digital sensor isnt really pid LOL. It is just a D i think.
+
+So i sticked with normal ELSEIF statements and i managed to somewhat use Front as well as Back line sensor. 
+After all it was too borked to use it safely in a competition, so i didnt use it at all.
+
+![img1](journalMedia/08-11_01.jpg)
+**Total time spent: 12.3 hours**
+
+
+# August 12: Competition date!
+
+Competition dayyy!
+
+I got some fights! As yesterday we arrived there like 3hrs before start of the competition, so about 8AM and stayed there till 6PM.
+Thanks to that i got pleeeeenty of time for actual testing. Thanks to my friend (WHO ACTUALLY GOT 1ST PLACE AT WHOLE COMPETITION!!! CONGRATS MANIEK!) i discovered that my distance sensors arent working propelly.
+
+I had to lessen filtration and add some IFs. I changed AMP treschold little bit down and added statment, when distance is lower than about 10CM, then i dont care about AMP... AMP is strenght of received IR signal. This is why these sensors dont costs 5bucks lol. They work like a charm <3
+
+With some robot to test against I perfected values to attack and curve attack.
+
+Reels from fight!:
+https://forge.hackclub.com/reels/170
+https://forge.hackclub.com/reels/171
+
+*Guys, i pushed out FUCKIN 3KG ROBOT while my weight was 850G only LOL*
+
+After all of the fights i reached my conclusion that:
+    - My plow wasnt as hard as i wanted, and my opponets plows were sometimes sharper
+    - I want a little bit more distance sensors in future robots
+    - Overall it is a great robot!
+
+*Also quick readme update with certificate!*
+
+![img1](journalMedia/08-12_01.jpg)
+**Total time spent: 6.4 hours**

@@ -150,3 +150,10 @@ This project uses:
 - [Autodesk inventor](https://www.autodesk.com/products/inventor/overview) - designing all of the parts and assembliess
 - [stm32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html) - programming the MCU
 - [Hack Club Forge](https://forge.hackclub.com/projects/232) - yea, it is my project :)
+
+## First competition of this robot!
+<p align="center">
+  <a>
+    <img src="./media/RoboRave.jpg" alt="PCB5" width=75%>
+  </a>
+</p>
