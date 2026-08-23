@@ -1,109 +1,109 @@
-Comment,Description,Designator,Footprint,LibRef,Quantity
-A looot of 3D printer parts,Preferably metal 3D printed,,,,1
-Front wedge blackened,as hard as you can. CNC steel + blackening,,,,1
-steel Front and back - 1mm,laser cutting,,,,1
-Ceiling - 2mm steel,added cute laser marks :),,,,1
-4 layer PCB - main controller,,,,,1
-4 layer PCB - motor driver,,,,,2
-2 layer PCB - ir receiver,,,,,1
-2 layer PCB - line sensors,,,,,4
-A looooot of M3 M2.5 M2 screws,get a kit - will be cheaper lol,,,,1
-Silicone shore 10A - 0.5Kg,for squishy and grippy wheeeeels,,,,1
-lipo 2s 550mAh battery,get it goin!,,,,2
-pololu 37D with 19.4:1 gearboxes,you can get knockoffs from ali cheaper,,,,2
-some RS380 dc motors,to power everything up,,,,2
-Tfluna tof sensors,quick tof sensors - about 30 buck per piece,,,,4
-Patience,priceless,,,,1
-STM32 st-link v2,it costs about 3 bucks on ali - get one to program this thing,,,,1
-TSOP57438TT1,Integrated Circuit,IC1,TSOP57438TT1,TSOP57438TT1,1
-FTM-102-02-L-DV,Connector,J1,FTM-102-XX-Y-DV,FTM-102-02-L-DV,1
-1uF,MLCC Capacitor,C1 C2 C5 C6 C7 C13 C14 C30 C36 C38 C40 C42 C44 C45 C46 C47 C48 C52 C54 C55 C58 C59 C62 C64 C65 C68,C 0402,Capacitor,26
-100nF,MLCC Capacitor,C8 C10 C11 C12 C16 C17 C18 C19 C29 C31 C35A C35B C35C C35D C35E C35F C35G C35H C37 C39 C41 C43 C53 C56 C57 C60 C61 C63 C66 C67 C69,C 0402,Capacitor,31
-10pF,MLCC Capacitor,C21 C22 C25A C25B C25C C25D C70A C70B C70C C70D,C 0402,Capacitor,10
-TL8B0336M020C (33uF tantalum cap),Capacitor Polarised,C23,CAPPC3528X100N,TL8B0336M020C,1
-22uF,MLCC Capacitor,C24,C 0805,Capacitor,1
-10uF,MLCC Capacitor,C26,C 0805,Capacitor,1
-22uF 16V,MLCC Capacitor,C27 C32,C 0805,Capacitor,2
-10uF 16v,MLCC Capacitor,C28 C34,C 0805,Capacitor,2
-2.2uF,MLCC Capacitor,C49,C 0603,Capacitor,1
-4.7uF,MLCC Capacitor,C50,C 0603,Capacitor,1
-,Zener Diode sod523,D1 D2,SOD523,BZX585,2
-BAS5202VH6327XTSA1,Schottky Diode,D3,SODFL1608X59N,BAS5202VH6327XTSA1,1
-BAV199W-7,Diode,D4,SOT65P210X110-3N,BAV199W-7,1
-1N4148WT-7,Diode,D5 D9 D10 D11,1N4148WT7,1N4148WT-7,4
-LED BLUE,,D6 D_5V,LED 0603 BLUE,LED BLUE,2
-LED RED,,D7 D_VCC,LED 0603 RED,LED RED,2
-LED GREEN,,D8 D_3.3V,LED 0603 GREEN,LED GREEN,2
-DF53-4S-0.6H,Connector,DIST1 DIST3 DIST4 DST2 FAN1 LIN2 LINE1 LINE3 LINE4 MAIN_DR1 MAIN_DR2 PROG_DR1 PROG_DR2,DF534S06H,DF53-4S-0.6H,13
-4 PIN,,DR1 DR2 PROG,BM04B-SRSS-TB,4 PIN,3
-banana_plug,banana plug for high current scenarios,GND VCC,Banana plug 2mm-smol,banana_plug,2
-STM32H562RIV6,Integrated Circuit,IC1,QFN40P800X800X100-69N-D,STM32H562RIV6,1
-AZ1117CR2-3.3TRG1,Integrated Circuit,IC2,AZ1117CR33TRG1,AZ1117CR2-3.3TRG1,1
-AP63203WU-7,Integrated Circuit,IC3,AP63203WU7,AP63203WU-7,1
-AT24C02D-MAHM-E,Integrated Circuit,IC4,SON50P300X200X60-9N,AT24C02D-MAHM-E,1
-LSM6DSV320XTR,Integrated Circuit,IC5,LSM6DSV16BXTR,LSM6DSV320XTR,1
-TCAN1042VDRBTQ1,Integrated Circuit,IC6,SON65P300X300X100-9N-D,TCAN1042VDRBTQ1,1
-TSOP57438TT1,Integrated Circuit,IC7,TSOP57438TT1,TSOP57438TT1,1
-NOPE,Resistor,J1 J2,ERJ1GNF1000C,ERJ1GNJ103C,2
-MLE-102-01-G-DV,Connector,J3 J4,MLE10201GDV - ir receiver,MLE-102-01-G-DV,2
-22uH,General pourpouse inductor,L1,L 0805,Inductor,1
-Buzzer,,M1,HCT5020A,HCT5020A,1
-oled flex 0.96,,OLED1,oled flex 0.96,oled flex 0.96,1
-P mos power,,Q1 Q2,dfn33,P mos power,2
-Model,General Pourpouse Mosfet,Q3,SOT323,N Mosfet,1
-Model,General Pourpouse Mosfet,Q4,SOT23-3,N Mosfet,1
-10k,General pourpouse resistor,R1 R2 R4 R7 R9 R12 R17 R19 R21 R23 R24 R25 R26 R27 R32,R 0402,Resistor,15
-47K,General pourpouse resistor,R3,R 0402,Resistor,1
-1K,General pourpouse resistor,R5A R5B R5C R5D R5E R5F R5G R5H R22 R34,R 0402,Resistor,10
-470R,General pourpouse resistor,R6,R 0402,Resistor,1
-4.7K,General pourpouse resistor,R10 R11 R15 R16,R 0402,Resistor,4
-330R,General pourpouse resistor,R18 R35 R36 R37,R 0402,Resistor,4
-91k,General pourpouse resistor,R20,R 0402,Resistor,1
-4K7,General pourpouse resistor,R28 R30 R31,R 0402,Resistor,3
-390K,General pourpouse resistor,R29,R 0402,Resistor,1
-2.1K,General pourpouse resistor,R33,R 0402,Resistor,1
-30R,General pourpouse resistor,R38A R38B R38C R38D R39A R39B R39C R39D,R 0402,Resistor,8
-SKRHABE010,Switch,S1,SKRHABE010,SKRHABE010,1
-EG1271A,Switch,S2,EG1271,EG1271A,1
-US3200005Z,Crystal or Oscillator,Y1,US3200005Z,US3200005Z,1
-LED GREEN,,3.3V,LED 0603 GREEN,LED GREEN,2
-LED BLUE,,5V,LED 0603 BLUE,LED BLUE,2
-100nF 100V,MLCC Capacitor,C1,C 0805,Capacitor,2
-1uF 50V,MLCC Capacitor,C2,C 0805,Capacitor,2
-100nF 50V,MLCC Capacitor,C3,C 0402,Capacitor,2
-22uF,MLCC Capacitor,C4,C 0805,Capacitor,2
-100nF,MLCC Capacitor,C5 C18 C25 C29 C30 C33,C 0402,Capacitor,12
-10pF,MLCC Capacitor,C6 C7 C9 C26 C27,C 0402,Capacitor,10
-1nF,MLCC Capacitor,C8,C 0402,Capacitor,2
-1uF,MLCC Capacitor,C10 C11 C12 C17 C31 C32 C34,C 0402,Capacitor,14
-10uF 16v,MLCC Capacitor,C13,C 0805,Capacitor,2
-22uF 16V,MLCC Capacitor,C14 C20,C 0805,Capacitor,4
-10uF,MLCC Capacitor,C15,C 0805,Capacitor,2
-TL8B0336M020C (33uF tantalum cap),Capacitor Polarised,C16,CAPPC3528X100N,TL8B0336M020C,2
-,Zener Diode sod523,D1 D2,SOD523,BZX585,4
-BAV199W-7,Diode,D5,SOT65P210X110-3N,BAV199W-7,2
-BAS5202VH6327XTSA1,Schottky Diode,D6,SODFL1608X59N,BAS5202VH6327XTSA1,2
-banana_plug,banana plug for high current scenarios,GND MTA MTB VCC,Banana plug 3mm half,banana_plug,8
-DRV8702QRHBRQ1,Integrated Circuit,IC1,QFN50P500X500X90-33N-D,DRV8702QRHBRQ1,2
-AZ1117CR2-3.3TRG1,Integrated Circuit,IC2,AZ1117CR33TRG1,AZ1117CR2-3.3TRG1,2
-AP63203WU-7,Integrated Circuit,IC3,AP63203WU7,AP63203WU-7,2
-STM32G431K6U3,Integrated Circuit,IC4,QFN50P500X500X60-33N-D,STM32G431K6U3,2
-TCAN1042VDRBTQ1,Integrated Circuit,IC5,SON65P300X300X100-9N-D,TCAN1042VDRBTQ1,2
-22uH,General pourpouse inductor,L1,L 0805,Inductor,2
-DF53-4S-0.6H,Connector,MAIN PROG,DF534S06H,DF53-4S-0.6H,4
-N mos power,N-Mosfet DFN 5x6,Q1 Q2 Q3 Q4,DFN33,Power MOSFET,8
-P mos power,,Q5 Q6,dfn33,P mos power,4
-120R,General pourpouse resistor,R1,R 0402,Resistor,2
-1k,General pourpouse resistor,R2 R3 R14,R 0402,Resistor,6
-470R,General pourpouse resistor,R4 R5,R 0402,Resistor,4
-20mR,General pourpouse resistor,R6,R 2512,Resistor,2
-10k,General pourpouse resistor,R7 R8 R9 R12 R15 R16 R17 R24 R25 R27,R 0402,Resistor,20
-47K,General pourpouse resistor,R10,R 0402,Resistor,2
-91k,General pourpouse resistor,R11,R 0402,Resistor,2
-2.1K,General pourpouse resistor,R13,R 0402,Resistor,2
-100k,General pourpouse resistor,R21,R 0402,Resistor,2
-NTC 10k,General pourpouse resistor,R26,R 0603,Resistor,2
-LED RED,,VCC,LED 0603 RED,LED RED,2
-US3200005Z,Crystal or Oscillator,Y1,US3200005Z,US3200005Z,2
-1M/1000K/as big as you can find,Breadboard resistor,,,,5
-100nF/1uF,Breadboard capacitor mlcc,,,,5
+Comment,Description,Designator,Footprint,LibRef,Quantity,Example part link (major components only)
+A looot of 3D printer parts,Preferably metal 3D printed,,,,1,"Order by yourself, for example, via PCBWay"
+Front wedge blackened,as hard as you can. CNC steel + blackening,,,,1,"Order by yourself, for example, via PCBWay"
+steel Front and back - 1mm,laser cutting,,,,1,"Order by yourself, for example, via PCBWay"
+Ceiling - 2mm steel,added cute laser marks :),,,,1,"Order by yourself, for example, via PCBWay"
+4 layer PCB - main controller,,,,,1,"Order by yourself, for example, via PCBWay"
+4 layer PCB - motor driver,,,,,2,"Order by yourself, for example, via PCBWay"
+2 layer PCB - ir receiver,,,,,1,"Order by yourself, for example, via PCBWay"
+2 layer PCB - line sensors,,,,,4,"Order by yourself, for example, via PCBWay"
+A looooot of M3 M2.5 M2 screws,get a kit - will be cheaper lol,,,,1,"Order by yourself, Aliexpres is pretty good and cheap for this stuff. Amazon also works"
+Silicone shore 10A - 0.5Kg,for squishy and grippy wheeeeels,,,,1,"Like any silicone, rubber or latex will work, lol. Get one from Amazon"
+lipo 3s 450mAh battery,get it goin!,,,,2,https://www.racedayquads.com/products/tattu-450mah-3s-75c-lipo-battery-xt30-long-type
+pololu 37D with 19.4:1 gearboxes,you can get knockoffs from ali cheaper,,,,2,https://www.pololu.com/product/4741
+some RS380 dc motors,to power everything up,,,,2,https://www.aliexpress.com/item/1005012061086477.html?spm=a2g0o.productlist.main.3.5ed42a71kNlV6p&algo_pvid=f507564f-d61d-412e-9436-c6d1a66bfbf2&algo_exp_id=f507564f-d61d-412e-9436-c6d1a66bfbf2-2&pdp_ext_f=%7B%22order%22%3A%222%22%2C%22eval%22%3A%221%22%2C%22fromPage%22%3A%22search%22%7D&pdp_npi=6%40dis%21TWD%2171.18%2171.18%21%21%2114.50%2114.50%21%40214131cd17875038606608665e100f%2112000057409265100%21sea%21TW%210%21ABX%211%210%21n_tag%3A-29910%3Bd%3Ae451a71%3Bm03_new_user%3A-29895&curPageLogUid=sVZiq3anDUVm&utparam-url=scene%3Asearch%7Cquery_from%3A%7Cx_object_id%3A1005012061086477%7C_p_origin_prod%3A
+Tfluna tof sensors,quick tof sensors - about 30 buck per piece,,,,4,https://www.amazon.com/Benewake-TF-Luna-Ranging-Compatible-Raspberry/dp/B0DKCSF8C5
+Patience,priceless,,,,1,A looot
+STM32 st-link v2,it costs about 3 bucks on ali - get one to program this thing,,,,1,https://www.aliexpress.com/item/1005009246421297.html?spm=a2g0o.productlist.main.4.634d7d60YaKoGs&aem_p4p_detail=202608230951598811524256193920000924443&algo_pvid=ba83d0da-fefc-47ca-9f00-e6ea90b54d70&algo_exp_id=ba83d0da-fefc-47ca-9f00-e6ea90b54d70-3&pdp_ext_f=%7B%22order%22%3A%22438%22%2C%22eval%22%3A%221%22%2C%22fromPage%22%3A%22search%22%7D&pdp_npi=6%40dis%21TWD%2148.11%2148.11%21%21%219.80%219.80%21%400be71e1917875039194342891e0f01%2112000048460065636%21sea%21TW%210%21ABX%211%210%21n_tag%3A-29910%3Bd%3Ae451a71%3Bm03_new_user%3A-29895&curPageLogUid=WTBzfEx3DPnn&utparam-url=scene%3Asearch%7Cquery_from%3A%7Cx_object_id%3A1005009246421297%7C_p_origin_prod%3A&search_p4p_id=202608230951598811524256193920000924443_1
+TSOP57438TT1,Integrated Circuit,IC1,TSOP57438TT1,TSOP57438TT1,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+FTM-102-02-L-DV,Connector,J1,FTM-102-XX-Y-DV,FTM-102-02-L-DV,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+1uF,MLCC Capacitor,C1 C2 C5 C6 C7 C13 C14 C30 C36 C38 C40 C42 C44 C45 C46 C47 C48 C52 C54 C55 C58 C59 C62 C64 C65 C68,C 0402,Capacitor,26,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+100nF,MLCC Capacitor,C8 C10 C11 C12 C16 C17 C18 C19 C29 C31 C35A C35B C35C C35D C35E C35F C35G C35H C37 C39 C41 C43 C53 C56 C57 C60 C61 C63 C66 C67 C69,C 0402,Capacitor,31,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+10pF,MLCC Capacitor,C21 C22 C25A C25B C25C C25D C70A C70B C70C C70D,C 0402,Capacitor,10,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+TL8B0336M020C (33uF tantalum cap),Capacitor Polarised,C23,CAPPC3528X100N,TL8B0336M020C,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+22uF,MLCC Capacitor,C24,C 0805,Capacitor,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+10uF,MLCC Capacitor,C26,C 0805,Capacitor,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+22uF 16V,MLCC Capacitor,C27 C32,C 0805,Capacitor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+10uF 16v,MLCC Capacitor,C28 C34,C 0805,Capacitor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+2.2uF,MLCC Capacitor,C49,C 0603,Capacitor,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+4.7uF,MLCC Capacitor,C50,C 0603,Capacitor,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+,Zener Diode sod523,D1 D2,SOD523,BZX585,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+BAS5202VH6327XTSA1,Schottky Diode,D3,SODFL1608X59N,BAS5202VH6327XTSA1,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+BAV199W-7,Diode,D4,SOT65P210X110-3N,BAV199W-7,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+1N4148WT-7,Diode,D5 D9 D10 D11,1N4148WT7,1N4148WT-7,4,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+LED BLUE,,D6 D_5V,LED 0603 BLUE,LED BLUE,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+LED RED,,D7 D_VCC,LED 0603 RED,LED RED,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+LED GREEN,,D8 D_3.3V,LED 0603 GREEN,LED GREEN,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+DF53-4S-0.6H,Connector,DIST1 DIST3 DIST4 DST2 FAN1 LIN2 LINE1 LINE3 LINE4 MAIN_DR1 MAIN_DR2 PROG_DR1 PROG_DR2,DF534S06H,DF53-4S-0.6H,13,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+4 PIN,,DR1 DR2 PROG,BM04B-SRSS-TB,4 PIN,3,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+banana_plug,banana plug for high current scenarios,GND VCC,Banana plug 2mm-smol,banana_plug,2,Aliexpress or amazon guys
+STM32H562RIV6,Integrated Circuit,IC1,QFN40P800X800X100-69N-D,STM32H562RIV6,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+AZ1117CR2-3.3TRG1,Integrated Circuit,IC2,AZ1117CR33TRG1,AZ1117CR2-3.3TRG1,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+AP63203WU-7,Integrated Circuit,IC3,AP63203WU7,AP63203WU-7,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+AT24C02D-MAHM-E,Integrated Circuit,IC4,SON50P300X200X60-9N,AT24C02D-MAHM-E,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+LSM6DSV320XTR,Integrated Circuit,IC5,LSM6DSV16BXTR,LSM6DSV320XTR,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+TCAN1042VDRBTQ1,Integrated Circuit,IC6,SON65P300X300X100-9N-D,TCAN1042VDRBTQ1,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+TSOP57438TT1,Integrated Circuit,IC7,TSOP57438TT1,TSOP57438TT1,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+NOPE,Resistor,J1 J2,ERJ1GNF1000C,ERJ1GNJ103C,2,
+MLE-102-01-G-DV,Connector,J3 J4,MLE10201GDV - ir receiver,MLE-102-01-G-DV,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+22uH,General pourpouse inductor,L1,L 0805,Inductor,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+Buzzer,,M1,HCT5020A,HCT5020A,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+oled flex 0.96,,OLED1,oled flex 0.96,oled flex 0.96,1,https://www.aliexpress.com/item/1005012808166804.html?spm=a2g0o.productlist.main.3.27e0dGIjdGIjeB&algo_pvid=d2f1ada4-5c42-4692-85ec-57a2befd9f6a&algo_exp_id=d2f1ada4-5c42-4692-85ec-57a2befd9f6a-2&pdp_ext_f=%7B%22order%22%3A%224%22%2C%22eval%22%3A%221%22%2C%22fromPage%22%3A%22search%22%7D&pdp_npi=6%40dis%21TWD%2145.50%2132.31%21%21%211.38%210.98%21%402141396c17875040343163373e0ecb%2112000059375757582%21sea%21TW%210%21ABX%211%210%21n_tag%3A-29910%3Bd%3Ae451a71%3Bm03_new_user%3A-29895&curPageLogUid=72tuneL2vCGw&utparam-url=scene%3Asearch%7Cquery_from%3A%7Cx_object_id%3A1005012808166804%7C_p_origin_prod%3A
+P mos power,,Q1 Q2,dfn33,P mos power,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+Model,General Pourpouse Mosfet,Q3,SOT323,N Mosfet,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+Model,General Pourpouse Mosfet,Q4,SOT23-3,N Mosfet,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+10k,General pourpouse resistor,R1 R2 R4 R7 R9 R12 R17 R19 R21 R23 R24 R25 R26 R27 R32,R 0402,Resistor,15,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+47K,General pourpouse resistor,R3,R 0402,Resistor,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+1K,General pourpouse resistor,R5A R5B R5C R5D R5E R5F R5G R5H R22 R34,R 0402,Resistor,10,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+470R,General pourpouse resistor,R6,R 0402,Resistor,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+4.7K,General pourpouse resistor,R10 R11 R15 R16,R 0402,Resistor,4,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+330R,General pourpouse resistor,R18 R35 R36 R37,R 0402,Resistor,4,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+91k,General pourpouse resistor,R20,R 0402,Resistor,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+4K7,General pourpouse resistor,R28 R30 R31,R 0402,Resistor,3,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+390K,General pourpouse resistor,R29,R 0402,Resistor,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+2.1K,General pourpouse resistor,R33,R 0402,Resistor,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+30R,General pourpouse resistor,R38A R38B R38C R38D R39A R39B R39C R39D,R 0402,Resistor,8,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+SKRHABE010,Switch,S1,SKRHABE010,SKRHABE010,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+EG1271A,Switch,S2,EG1271,EG1271A,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+US3200005Z,Crystal or Oscillator,Y1,US3200005Z,US3200005Z,1,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+LED GREEN,,3.3V,LED 0603 GREEN,LED GREEN,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+LED BLUE,,5V,LED 0603 BLUE,LED BLUE,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+100nF 100V,MLCC Capacitor,C1,C 0805,Capacitor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+1uF 50V,MLCC Capacitor,C2,C 0805,Capacitor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+100nF 50V,MLCC Capacitor,C3,C 0402,Capacitor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+22uF,MLCC Capacitor,C4,C 0805,Capacitor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+100nF,MLCC Capacitor,C5 C18 C25 C29 C30 C33,C 0402,Capacitor,12,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+10pF,MLCC Capacitor,C6 C7 C9 C26 C27,C 0402,Capacitor,10,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+1nF,MLCC Capacitor,C8,C 0402,Capacitor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+1uF,MLCC Capacitor,C10 C11 C12 C17 C31 C32 C34,C 0402,Capacitor,14,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+10uF 16v,MLCC Capacitor,C13,C 0805,Capacitor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+22uF 16V,MLCC Capacitor,C14 C20,C 0805,Capacitor,4,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+10uF,MLCC Capacitor,C15,C 0805,Capacitor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+TL8B0336M020C (33uF tantalum cap),Capacitor Polarised,C16,CAPPC3528X100N,TL8B0336M020C,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+,Zener Diode sod523,D1 D2,SOD523,BZX585,4,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+BAV199W-7,Diode,D5,SOT65P210X110-3N,BAV199W-7,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+BAS5202VH6327XTSA1,Schottky Diode,D6,SODFL1608X59N,BAS5202VH6327XTSA1,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+banana_plug,banana plug for high current scenarios,GND MTA MTB VCC,Banana plug 3mm half,banana_plug,8,Aliexpress or amazon guys
+DRV8702QRHBRQ1,Integrated Circuit,IC1,QFN50P500X500X90-33N-D,DRV8702QRHBRQ1,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+AZ1117CR2-3.3TRG1,Integrated Circuit,IC2,AZ1117CR33TRG1,AZ1117CR2-3.3TRG1,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+AP63203WU-7,Integrated Circuit,IC3,AP63203WU7,AP63203WU-7,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+STM32G431K6U3,Integrated Circuit,IC4,QFN50P500X500X60-33N-D,STM32G431K6U3,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+TCAN1042VDRBTQ1,Integrated Circuit,IC5,SON65P300X300X100-9N-D,TCAN1042VDRBTQ1,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+22uH,General pourpouse inductor,L1,L 0805,Inductor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+DF53-4S-0.6H,Connector,MAIN PROG,DF534S06H,DF53-4S-0.6H,4,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+N mos power,N-Mosfet DFN 5x6,Q1 Q2 Q3 Q4,DFN33,Power MOSFET,8,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+P mos power,,Q5 Q6,dfn33,P mos power,4,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+120R,General pourpouse resistor,R1,R 0402,Resistor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+1k,General pourpouse resistor,R2 R3 R14,R 0402,Resistor,6,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+470R,General pourpouse resistor,R4 R5,R 0402,Resistor,4,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+20mR,General pourpouse resistor,R6,R 2512,Resistor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+10k,General pourpouse resistor,R7 R8 R9 R12 R15 R16 R17 R24 R25 R27,R 0402,Resistor,20,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+47K,General pourpouse resistor,R10,R 0402,Resistor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+91k,General pourpouse resistor,R11,R 0402,Resistor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+2.1K,General pourpouse resistor,R13,R 0402,Resistor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+100k,General pourpouse resistor,R21,R 0402,Resistor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+NTC 10k,General pourpouse resistor,R26,R 0603,Resistor,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+LED RED,,VCC,LED 0603 RED,LED RED,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+US3200005Z,Crystal or Oscillator,Y1,US3200005Z,US3200005Z,2,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+1M/1000K/as big as you can find,Breadboard resistor,,,,5,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
+100nF/1uF,Breadboard capacitor mlcc,,,,5,"Get it from your nearest microcomponents seller. Ex. DigiKey, mouser, ls componenc, farnell…"
