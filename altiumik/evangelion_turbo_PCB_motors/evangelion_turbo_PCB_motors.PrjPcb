@@ -1,9 +1,9 @@
 ﻿[Design]
 Version=1.0
 HierarchyMode=2
-ChannelRoomNamingStyle=0
+ChannelRoomNamingStyle=4
 ReleasesFolder=
-ChannelDesignatorFormatString=$Component_$RoomName
+ChannelDesignatorFormatString=$Component$ChannelAlpha
 ChannelRoomLevelSeperator=_
 OpenOutputs=1
 ArchiveProject=0
@@ -109,23 +109,6 @@ GenerateClassCluster=0
 DocumentUniqueId=UNKSOZXP
 
 [Document5]
-DocumentPath=MotorDriver.SchDoc
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=2
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=0
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-GenerateClassCluster=0
-DocumentUniqueId=LFGZTMSX
-
-[Document6]
 DocumentPath=PowerSupply.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -142,7 +125,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=IQPZAPRL
 
-[Document7]
+[Document6]
 DocumentPath=MCU.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -159,14 +142,14 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=JHAZYVRX
 
-[Document8]
-DocumentPath=PCB_Motors.PcbDoc
+[Document7]
+DocumentPath=DigitalSensors.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
 AnnotateSuffix=
 AnnotateScope=All
-AnnotateOrder=-1
+AnnotateOrder=6
 DoLibraryUpdate=1
 DoDatabaseUpdate=1
 ClassGenCCAutoEnabled=1
@@ -174,7 +157,41 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=XGEWHHHG
+DocumentUniqueId=BHPJQWLN
+
+[Document8]
+DocumentPath=LowPassFilter_for_ADCs.SchDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=7
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=QEVRJRPN
+
+[Document9]
+DocumentPath=MotorDriver8701.SchDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=8
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=FWLNKVXK
 
 [GeneratedDocument1]
 DocumentPath=Project Outputs for evangelion_turbo_PCB_motors\PCB_Motors.EXTREP
