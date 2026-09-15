@@ -22162,3 +22162,4 @@
 2026-09-15 13:06:34,302 [WARN] IP:2250 - MinOscClkPeriodsCCU not found: check if there is a RefParameter without a condition.
 2026-09-15 13:06:34,302 [WARN] IP:2250 - TimeQuantaPerBitTimeCCU not found: check if there is a RefParameter without a condition.
 2026-09-15 13:06:34,302 [WARN] IP:2250 - WatchdogStartValueCCU not found: check if there is a RefParameter without a condition.
+2026-09-15 17:23:34,647 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 
