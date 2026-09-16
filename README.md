@@ -151,6 +151,9 @@ If you want to take a look:
 
 
 ## Little insights
+### Who am I?
+At the time of starting this project, I am a **16-year-old high school student** based in Poland, enrolled in an advanced mathematics, physics, and English program. I am highly active in my school community and our robotics club. My core passions are engineering, robotics, and electronics, and I am aiming to pursue a degree in Electrical Engineering in the future. (**If you represent a university and like my work, feel free to reach out!**). When I step away from the workbench, I love spending my time windsurfing and sailing.
+*Constact mail (no spam, please): szymon_fili@proton.me*
 ### What is it?
 It is an miniSUMO robot! 10x10cm max dimensions, 1kg max weight! Battle range is called "dohyo". Most often it is black circle with 5cm white outline - rarely it have inversed colors. Two sumo robots fight! Main target is to push your opponent off the dohyo! Stronger motors, sharper and harder front wedge, faster sensor wins!
 ### Why have i build this?
