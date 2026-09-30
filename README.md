@@ -156,6 +156,7 @@ At the time of starting this project, I am a **16-year-old high school student**
 *Constact mail (no spam, please): szymon_fili@proton.me*
 ### What is it?
 It is an miniSUMO robot! 10x10cm max dimensions, 1kg max weight! Battle range is called "dohyo". Most often it is black circle with 5cm white outline - rarely it have inversed colors. Two sumo robots fight! Main target is to push your opponent off the dohyo! Stronger motors, sharper and harder front wedge, faster sensor wins!
+In the ./JOURNAL.md file you can check out whole pipeline of designing and building "Turbo Evangelion Plusu Plusu"!
 ### Why have i build this?
 This is my hobby lol! I just likes this! I like electronics, PCB designing, mechanical engineering, material engineering... ALL OF THIS IS SOO COOL!
 
