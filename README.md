@@ -109,7 +109,7 @@ Sumo robot build by me! Designed for RoboRave competition 2026
 
 ## Image of actual robot:
 ![Robot image](media/Robot1.jpg)
-![Robot image](media/Robot2.jpg)
+![Robot image](media/Pieces.jpg)
 
 ## Prototyping:
 <p align="center">
