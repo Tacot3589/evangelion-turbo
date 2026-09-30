@@ -1,0 +1,239 @@
+/*
+ * sumo.c
+ *
+ *  Created on: Apr 2, 2025
+ *      Author: SKYNET
+ */
+#include "main.h"
+#include "micromause.h"
+
+#define RUSH_TIME (active_PARAM_config->Rush_Time)
+
+extern uint16_t 	ADC_readout 		[];
+
+extern uint16_t 	FRONT_LEFT_Distance, FRONT_LEFT_Return, FRONT_LEFT_Temperature;
+extern uint16_t 	FRONT_RIGHT_Distance, FRONT_RIGHT_Return, FRONT_RIGHT_Temperature;
+extern uint16_t 	ANGLE_LEFT_Distance, ANGLE_LEFT_Return, ANGLE_LEFT_Temperature;
+extern uint16_t 	ANGLE_RIGHT_Distance, ANGLE_RIGHT_Return, ANGLE_RIGHT_Temperature;
+
+extern uint16_t 	ADC_threshold_HI;
+extern uint16_t		ADC_threshold_LO;
+extern uint16_t		Line_Color_Threshold;
+
+extern uint8_t		Module_Switch		[];
+
+extern float Total_Angle;
+
+uint8_t 	LastEnemyLocation;
+
+uint8_t robot_status = 1;
+uint8_t done = 0;
+
+uint8_t SUMO_StartParameters(void);
+void GoForward(void);
+
+void SUMO_Battle(void)
+{
+	static uint8_t	Ring_Status;
+	static uint8_t	Enemy_Status;
+	static uint16_t Reverse_Timer;
+//	static uint16_t Battle_Timer = 0;
+	static uint8_t	SumoBattleInit;
+	if(SumoBattleInit == 0)
+	{
+		SumoBattleInit = SUMO_StartParameters();
+	//	SumoBattleInit = 2;
+	}
+
+	// Rush forward after start - for roborave change to accelerometer rotation;
+	else if(SumoBattleInit == 1)
+	{
+//		static uint8_t done = 0;
+//		static uint8_t robot_status = 0;
+		static uint8_t timer = 0;
+
+		// go forward till line
+//		robot_status = 1;
+		if (robot_status == 1)
+		{
+			MOTOR_DRIVER_SetDuty(BOTH_MOTORS, SUMO_VELOCITY_ATTACK);
+			robot_status = 2;
+		}
+		else if(robot_status == 2)
+		{
+			timer++;
+			if (timer >= RUSH_TIME)
+			{
+				MOTOR_DRIVER_SetDuty(BOTH_MOTORS, SUMO_VELOCITY_ATTACK/3);
+				timer = 0;
+				robot_status = 3;
+			}
+		}
+		else if (robot_status == 3)
+		{
+			// find line
+			Ring_Status = RingStatus(NBR_OF_LINE_SENS);
+			if (Ring_Status != ON_RING)
+			{
+				robot_status = 4;
+			}
+		}
+		// rotate 180deg
+		else if (robot_status == 4)
+		{
+			done = rotate_robot(180);
+			if (done == 1)
+				robot_status = 5;
+		}
+		else if(robot_status == 5)
+		{
+			MOTOR_DRIVER_SetDuty(BOTH_MOTORS, SUMO_VELOCITY_ATTACK);
+			timer++;
+			if (timer >= RUSH_TIME)
+				SumoBattleInit = 2;
+		}
+//		else if(robot_status == 5)
+//		{
+//			SumoBattleInit = 2;
+//		}
+	}
+
+	// Main sumo
+	else if (SumoBattleInit == 2)
+	{
+		Ring_Status = RingStatus(NBR_OF_LINE_SENS);
+		Enemy_Status = EnemyLocation(NBR_OF_DISTANCE_SENS);
+
+	 // =====================================ROBOT INSIDE OF RING AREA==================
+
+		if (Ring_Status == ON_RING)
+		{
+			// Standard battle
+			if (Module_Switch[0] == 0)
+			{
+			// -----------------------------------------------FRONT SENSORS -----------------------------------
+
+				if (Enemy_Status == ENEMY_FRONT)
+					MOTOR_DRIVER_SetDuty(BOTH_MOTORS, SUMO_VELOCITY_ATTACK);
+
+				else if (Enemy_Status == ENEMY_FRONT_LEFT)
+				{
+					MOTOR_DRIVER_SetDuty(LEFT_MOTOR, 0);
+					MOTOR_DRIVER_SetDuty(RIGHT_MOTOR, SUMO_VELOCITY_SEARCH);
+					LastEnemyLocation = ENEMY_LEFT;
+				}
+
+				else if (Enemy_Status == ENEMY_FRONT_RIGHT)
+				{
+					MOTOR_DRIVER_SetDuty(RIGHT_MOTOR, 0);
+					MOTOR_DRIVER_SetDuty(LEFT_MOTOR, SUMO_VELOCITY_SEARCH);
+					LastEnemyLocation = ENEMY_RIGHT;
+				}
+
+				// ------------------------------------------ANGLE SENSORS -----------------------------------
+
+				else if (Enemy_Status == ENEMY_LEFT)
+				{
+					MOTOR_DRIVER_SetDuty(LEFT_MOTOR, -SUMO_VELOCITY_SEARCH/2);
+					MOTOR_DRIVER_SetDuty(RIGHT_MOTOR, SUMO_VELOCITY_SEARCH);
+					LastEnemyLocation = ENEMY_LEFT;
+				}
+
+				else if (Enemy_Status == ENEMY_RIGHT)
+				{
+					MOTOR_DRIVER_SetDuty(RIGHT_MOTOR, -SUMO_VELOCITY_SEARCH/2);
+					MOTOR_DRIVER_SetDuty(LEFT_MOTOR, SUMO_VELOCITY_SEARCH);
+					LastEnemyLocation = ENEMY_RIGHT;
+				}
+
+				// ---------------------------------------- NO OPPONENT DETECTED -----------------------------
+				else if (Reverse_Timer == 0)
+				{
+					if (LastEnemyLocation == UNKNOWN)
+						MOTOR_DRIVER_SetDuty(BOTH_MOTORS, 0);
+
+					if (LastEnemyLocation == ENEMY_RIGHT)
+					{
+						MOTOR_DRIVER_SetDuty(RIGHT_MOTOR, -SUMO_VELOCITY_SEARCH);
+						MOTOR_DRIVER_SetDuty(LEFT_MOTOR, SUMO_VELOCITY_SEARCH);
+					}
+					if (LastEnemyLocation == ENEMY_LEFT)
+					{
+						MOTOR_DRIVER_SetDuty(LEFT_MOTOR, -SUMO_VELOCITY_SEARCH);
+						MOTOR_DRIVER_SetDuty(RIGHT_MOTOR, SUMO_VELOCITY_SEARCH);
+					}
+				}
+			}
+		}
+		//====================================================| OUTSIDE RING AREA |===================================================
+		else if (Ring_Status == FRONT_RIGHT_OUT)
+		{
+			MOTOR_DRIVER_SetDuty(BOTH_MOTORS, SUMO_VELOCITY_REVERSE);
+			//---- ROTATE
+			LastEnemyLocation = ENEMY_LEFT;
+			Reverse_Timer = 1;
+		}
+		else if (Ring_Status == FRONT_LEFT_OUT)
+		{
+			MOTOR_DRIVER_SetDuty(BOTH_MOTORS, SUMO_VELOCITY_REVERSE);
+			//---- ROTATE
+			LastEnemyLocation = ENEMY_RIGHT;
+			Reverse_Timer = 1;
+		}
+
+		if (Reverse_Timer > 0)
+			Reverse_Timer = (Reverse_Timer + 1) % SUMO_RETURN_TIME;
+
+	}
+}
+
+uint8_t SUMO_StartParameters(void)
+{
+	static uint16_t Delay_Timer;
+	uint8_t ready = 1;
+//	if(LINE_CAL_TYPE == 2 || Autocal == 1 )
+	if(LINE_CAL_TYPE == 3)
+	{
+		if(ADC_readout[ADC_CHANNEL_LEFT_LINE_A] < Line_Color_Threshold)
+		{
+			ADC_threshold_HI = Line_Color_Threshold;
+			ADC_threshold_LO = 0;
+		}
+		else
+		{
+			ADC_threshold_HI = 4096;
+			ADC_threshold_LO = Line_Color_Threshold;
+		}
+	}
+	Delay_Timer++;
+
+	if(Delay_Timer >= SUMO_START_DELAY)
+		ready = 1;
+	else
+		ready = 0;
+
+	return ready;
+}
+
+void SUMO_PreStartParameters(void)
+{
+	if (FRONT_LEFT_Distance < 10)
+		LastEnemyLocation = ENEMY_LEFT;
+	if (FRONT_RIGHT_Distance < 10)
+		LastEnemyLocation = ENEMY_RIGHT;
+}
+
+void pd_regulation(float angle_difference)
+{
+	static float last_error;
+	int8_t motor_speed;
+	motor_speed = angle_difference * KP + (angle_difference - last_error) * KD;
+	if (motor_speed > PD_MAX_SPEED)
+		motor_speed = PD_MAX_SPEED;
+	else if (motor_speed < -PD_MAX_SPEED)
+		motor_speed = -PD_MAX_SPEED;
+	SET_MOTOR(motor_speed, - motor_speed);
+	last_error = angle_difference;
+}
+
+

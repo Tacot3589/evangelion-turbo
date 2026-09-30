@@ -1,0 +1,10 @@
+01:26:49 **** Build of configuration Debug for project kama conreoller bananynanynany ****
+make -j8 all 
+arm-none-eabi-size  kama\ conreoller\ bananynanynany.elf 
+   text	   data	    bss	    dec	    hex	filename
+ 103584	    532	   6020	 110136	  1ae38	kama conreoller bananynanynany.elf
+Finished building: default.size.stdout
+ 
+
+01:26:50 Build Finished. 0 errors, 0 warnings. (took 1s.396ms)
+
