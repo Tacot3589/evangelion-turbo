@@ -1,0 +1,4 @@
+Change Component Footprint: Designator=L1 Old Footprint=L 1206 New Footprint=L 1008
+Change Component Footprint: Designator=L2 Old Footprint=L 1206 New Footprint=L 1008
+Added Room: Name=U_MotorDriver8873SA
+Added Room: Name=U_MotorDriver8873SB

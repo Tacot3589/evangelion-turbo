@@ -1,0 +1,6 @@
+Removed Pin From Net: NetName=GND Pin=GND1-1
+Removed Pin From Net: NetName=Vcc Pin=VIN1-1
+Removed Member From Class: ClassName=U_Power_supply Member=GND1
+Removed Member From Class: ClassName=U_Power_supply Member=VIN1
+Added Room: Name=U_MotorDriver8873SA
+Added Room: Name=U_MotorDriver8873SB

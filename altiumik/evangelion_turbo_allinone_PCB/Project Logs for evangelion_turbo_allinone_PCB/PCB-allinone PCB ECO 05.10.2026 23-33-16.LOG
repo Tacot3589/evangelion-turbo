@@ -1,0 +1,7 @@
+Change Component Designator: OldDesignator=M1?A NewDesignator=M1A
+Change Component Designator: OldDesignator=M1?A NewDesignator=M2A
+Change Component Designator: OldDesignator=M1?B NewDesignator=M1B
+Change Component Designator: OldDesignator=M1?B NewDesignator=M2B
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component M1A (M1) 1 Pin
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component M1B (M1) 1 Pin
+Added Room: Name=U_MotorDriver8873SA

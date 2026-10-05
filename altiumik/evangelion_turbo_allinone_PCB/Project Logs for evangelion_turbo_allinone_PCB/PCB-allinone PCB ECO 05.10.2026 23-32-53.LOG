@@ -1,0 +1,51 @@
+Removed Pin From Net: NetName=NetIC6A_18 Pin=MA1A-1
+Removed Pin From Net: NetName=NetIC6B_18 Pin=MA1B-1
+Removed Pin From Net: NetName=NetIC6A_18 Pin=MA2A-1
+Removed Pin From Net: NetName=NetIC6B_18 Pin=MA2B-1
+Removed Pin From Net: NetName=NetIC6A_14 Pin=MB1A-1
+Removed Pin From Net: NetName=NetIC6B_14 Pin=MB1B-1
+Removed Pin From Net: NetName=NetIC6A_14 Pin=MB2A-1
+Removed Pin From Net: NetName=NetIC6B_14 Pin=MB2B-1
+Removed Member From Class: ClassName=U_MotorDriver8873SA Member=MA1A
+Removed Member From Class: ClassName=U_MotorDriver8873SB Member=MA1B
+Removed Member From Class: ClassName=U_MotorDriver8873SA Member=MA2A
+Removed Member From Class: ClassName=U_MotorDriver8873SB Member=MA2B
+Removed Member From Class: ClassName=U_MotorDriver8873SA Member=MB1A
+Removed Member From Class: ClassName=U_MotorDriver8873SB Member=MB1B
+Removed Member From Class: ClassName=U_MotorDriver8873SA Member=MB2A
+Removed Member From Class: ClassName=U_MotorDriver8873SB Member=MB2B
+Added Component: Designator=M1?A(motor connector)
+Added Component: Designator=M1?A(motor connector)
+Added Component: Designator=M1?B(motor connector)
+Added Component: Designator=M1?B(motor connector)
+Added Pin To Net: NetName=NetIC6A_14 Pin=M1?A-1
+Added Pin To Net: NetName=NetIC6A_14 Pin=M1?A-1
+Added Pin To Net: NetName=NetIC6A_14 Pin=M1?A-1
+Added Pin To Net: NetName=NetIC6A_14 Pin=M1?A-1
+Added Pin To Net: NetName=NetIC6A_14 Pin=M1?A-1
+Added Pin To Net: NetName=NetIC6A_14 Pin=M1?A-1
+Added Pin To Net: NetName=NetIC6A_18 Pin=M1?A-1
+Added Pin To Net: NetName=NetIC6A_18 Pin=M1?A-1
+Added Pin To Net: NetName=NetIC6A_18 Pin=M1?A-1
+Added Pin To Net: NetName=NetIC6A_18 Pin=M1?A-1
+Added Pin To Net: NetName=NetIC6A_18 Pin=M1?A-1
+Added Pin To Net: NetName=NetIC6A_18 Pin=M1?A-1
+Added Pin To Net: NetName=NetIC6B_14 Pin=M1?B-1
+Added Pin To Net: NetName=NetIC6B_14 Pin=M1?B-1
+Added Pin To Net: NetName=NetIC6B_14 Pin=M1?B-1
+Added Pin To Net: NetName=NetIC6B_14 Pin=M1?B-1
+Added Pin To Net: NetName=NetIC6B_14 Pin=M1?B-1
+Added Pin To Net: NetName=NetIC6B_14 Pin=M1?B-1
+Added Pin To Net: NetName=NetIC6B_18 Pin=M1?B-1
+Added Pin To Net: NetName=NetIC6B_18 Pin=M1?B-1
+Added Pin To Net: NetName=NetIC6B_18 Pin=M1?B-1
+Added Pin To Net: NetName=NetIC6B_18 Pin=M1?B-1
+Added Pin To Net: NetName=NetIC6B_18 Pin=M1?B-1
+Added Pin To Net: NetName=NetIC6B_18 Pin=M1?B-1
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component M1?A (M1?) 1 Pin
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component M1?A (M1?) 1 Pin
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component M1?B (M1?) 1 Pin
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component M1?B (M1?) 1 Pin
+Added Room: Name=U_Capacitors
+Added Room: Name=U_MotorDriver8873SA
+Added Room: Name=U_MotorDriver8873SB

@@ -1,0 +1,10 @@
+Change Component Footprint: Designator=C72A Old Footprint=C 0805 New Footprint=C 0603
+Change Component Footprint: Designator=C72B Old Footprint=C 0805 New Footprint=C 0603
+Change Component Footprint: Designator=C74A Old Footprint=C 0805 New Footprint=C 0603
+Change Component Footprint: Designator=C74B Old Footprint=C 0805 New Footprint=C 0603
+Change Component Comment : Designator=C72A Old Comment=1uF 50V New Comment=1uF 25V
+Change Component Comment : Designator=C72B Old Comment=1uF 50V New Comment=1uF 25V
+Change Component Comment : Designator=C74A Old Comment=100nF 100V New Comment=100nF 25V
+Change Component Comment : Designator=C74B Old Comment=100nF 100V New Comment=100nF 25V
+Added Room: Name=U_Capacitors
+Added Room: Name=U_MotorDriver8873SA

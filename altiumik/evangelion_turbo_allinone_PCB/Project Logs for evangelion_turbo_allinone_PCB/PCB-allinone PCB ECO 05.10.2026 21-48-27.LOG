@@ -1,0 +1,8 @@
+Removed Pin From Net: NetName=3.3v Pin=C20-1
+Removed Pin From Net: NetName=GND Pin=C20-2
+Removed Pin From Net: NetName=3.3v Pin=C30-1
+Removed Pin From Net: NetName=GND Pin=C30-2
+Removed Member From Class: ClassName=U_Start_mod Member=C20
+Removed Member From Class: ClassName=U_Start_mod Member=C30
+Added Room: Name=U_MotorDriver8873SA
+Added Room: Name=U_MotorDriver8873SB
