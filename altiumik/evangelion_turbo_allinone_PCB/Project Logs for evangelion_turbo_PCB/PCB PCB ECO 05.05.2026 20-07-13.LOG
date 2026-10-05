@@ -1,0 +1,31 @@
+Added Component: Designator=OLED?(oled flex 0.96)
+Added Pin To Net: NetName=GND Pin=OLED?-1
+Added Pin To Net: NetName=NetC47_1 Pin=OLED?-2
+Added Pin To Net: NetName=NetC47_2 Pin=OLED?-3
+Added Pin To Net: NetName=NetC48_1 Pin=OLED?-4
+Added Pin To Net: NetName=NetC48_2 Pin=OLED?-5
+Added Pin To Net: NetName=3.3v Pin=OLED?-6
+Added Pin To Net: NetName=GND Pin=OLED?-8
+Added Pin To Net: NetName=3.3v Pin=OLED?-9
+Added Pin To Net: NetName=GND Pin=OLED?-10
+Added Pin To Net: NetName=3.3v Pin=OLED?-11
+Added Pin To Net: NetName=GND Pin=OLED?-12
+Added Pin To Net: NetName=GND Pin=OLED?-13
+Added Pin To Net: NetName=NetC46_1 Pin=OLED?-14
+Added Pin To Net: NetName=GND Pin=OLED?-15
+Added Pin To Net: NetName=GND Pin=OLED?-16
+Added Pin To Net: NetName=GND Pin=OLED?-17
+Added Pin To Net: NetName=I2C_OLED_SCL Pin=OLED?-18
+Added Pin To Net: NetName=I2C_OLED_SDA Pin=OLED?-19
+Added Pin To Net: NetName=I2C_OLED_SDA Pin=OLED?-20
+Added Pin To Net: NetName=GND Pin=OLED?-21
+Added Pin To Net: NetName=GND Pin=OLED?-22
+Added Pin To Net: NetName=GND Pin=OLED?-23
+Added Pin To Net: NetName=GND Pin=OLED?-24
+Added Pin To Net: NetName=GND Pin=OLED?-25
+Added Pin To Net: NetName=NetOLED?_26 Pin=OLED?-26
+Added Pin To Net: NetName=NetC49_1 Pin=OLED?-27
+Added Pin To Net: NetName=NetC50_1 Pin=OLED?-28
+Added Pin To Net: NetName=GND Pin=OLED?-29
+Added Pin To Net: NetName=GND Pin=OLED?-30
+Added Member To Class: ClassName=U_OledAndLed Member=Component OLED? oled flex 0.96

@@ -1,0 +1,42 @@
+Removed Pin From Net: NetName=3.3v Pin=R6-2
+Removed Pin From Net: NetName=3.3v Pin=R7-2
+Removed Pin From Net: NetName=3.3v Pin=R8-2
+Removed Member From Class: ClassName=U_EPROM Member=R6
+Removed Member From Class: ClassName=U_EPROM Member=R7
+Removed Member From Class: ClassName=U_EPROM Member=R8
+Change Component Designator: OldDesignator=C25A NewDesignator=C25C
+Change Component Designator: OldDesignator=C25B NewDesignator=C25D
+Change Component Designator: OldDesignator=C25C NewDesignator=C25B
+Change Component Designator: OldDesignator=C25D NewDesignator=C25A
+Change Component Designator: OldDesignator=C70A NewDesignator=C70C
+Change Component Designator: OldDesignator=C70B NewDesignator=C70D
+Change Component Designator: OldDesignator=C70C NewDesignator=C70B
+Change Component Designator: OldDesignator=C70D NewDesignator=C70A
+Change Component Designator: OldDesignator=FAN NewDesignator=FAN?
+Change Component Designator: OldDesignator=R38A NewDesignator=R38C
+Change Component Designator: OldDesignator=R38B NewDesignator=R38D
+Change Component Designator: OldDesignator=R38C NewDesignator=R38B
+Change Component Designator: OldDesignator=R38D NewDesignator=R38A
+Change Component Designator: OldDesignator=R39A NewDesignator=R39C
+Change Component Designator: OldDesignator=R39B NewDesignator=R39D
+Change Component Designator: OldDesignator=R39C NewDesignator=R39B
+Change Component Designator: OldDesignator=R39D NewDesignator=R39A
+Added Pin To Net: NetName=GND Pin=IC4-1
+Added Pin To Net: NetName=GND Pin=IC4-2
+Added Pin To Net: NetName=GND Pin=IC4-3
+Change Net Name : Old Net Name=RX_INA New Net Name=RX_INC
+Change Net Name : Old Net Name=RX_INB New Net Name=RX_IND
+Change Net Name : Old Net Name=RX_INC New Net Name=RX_INB
+Change Net Name : Old Net Name=RX_IND New Net Name=RX_INA
+Change Net Name : Old Net Name=RX_OUTA New Net Name=RX_OUTC
+Change Net Name : Old Net Name=RX_OUTB New Net Name=RX_OUTD
+Change Net Name : Old Net Name=RX_OUTC New Net Name=RX_OUTB
+Change Net Name : Old Net Name=RX_OUTD New Net Name=RX_OUTA
+Change Net Name : Old Net Name=TX_INA New Net Name=TX_INC
+Change Net Name : Old Net Name=TX_INB New Net Name=TX_IND
+Change Net Name : Old Net Name=TX_INC New Net Name=TX_INB
+Change Net Name : Old Net Name=TX_IND New Net Name=TX_INA
+Change Net Name : Old Net Name=TX_OUTA New Net Name=TX_OUTC
+Change Net Name : Old Net Name=TX_OUTB New Net Name=TX_OUTD
+Change Net Name : Old Net Name=TX_OUTC New Net Name=TX_OUTB
+Change Net Name : Old Net Name=TX_OUTD New Net Name=TX_OUTA

@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=START_MOD_IR_1 Pin=IC1-38
+Removed Pin From Net: NetName=LED GREEN Pin=IC1-42
+Added Pin To Net: NetName=LED GREEN Pin=IC1-40
+Added Pin To Net: NetName=START_MOD_IR_1 Pin=IC1-42

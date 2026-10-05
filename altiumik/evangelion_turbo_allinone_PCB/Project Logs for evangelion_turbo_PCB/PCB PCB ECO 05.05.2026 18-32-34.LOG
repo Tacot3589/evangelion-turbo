@@ -1,0 +1,7 @@
+Removed Pin From Net: NetName=DR1_EN_MCU Pin=J3-2
+Removed Pin From Net: NetName=DR2_EN_MCU Pin=J4-2
+Removed Member From Class: ClassName=PCB Member=J3
+Removed Member From Class: ClassName=PCB Member=J4
+Added Pin To Net: NetName=DR1_EN_MCU Pin=D9-2
+Added Pin To Net: NetName=DR2_EN_MCU Pin=D10-2
+Added Member To Class: ClassName=U_MCU_2 Member=Component C42 1uF

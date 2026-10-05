@@ -1,0 +1,89 @@
+Added Component: Designator=C?A(C 0402)
+Added Component: Designator=C?A(C 0402)
+Added Component: Designator=C?B(C 0402)
+Added Component: Designator=C?B(C 0402)
+Added Component: Designator=C?C(C 0402)
+Added Component: Designator=C?C(C 0402)
+Added Component: Designator=C?D(C 0402)
+Added Component: Designator=C?D(C 0402)
+Added Component: Designator=R?A(R 0402)
+Added Component: Designator=R?A(R 0402)
+Added Component: Designator=R?B(R 0402)
+Added Component: Designator=R?B(R 0402)
+Added Component: Designator=R?C(R 0402)
+Added Component: Designator=R?C(R 0402)
+Added Component: Designator=R?D(R 0402)
+Added Component: Designator=R?D(R 0402)
+Added Pin To Net: NetName=GND Pin=C?A-2
+Added Pin To Net: NetName=GND Pin=C?A-2
+Added Pin To Net: NetName=GND Pin=C?B-2
+Added Pin To Net: NetName=GND Pin=C?B-2
+Added Pin To Net: NetName=GND Pin=C?C-2
+Added Pin To Net: NetName=GND Pin=C?C-2
+Added Pin To Net: NetName=GND Pin=C?D-2
+Added Pin To Net: NetName=GND Pin=C?D-2
+Added Pin To Net: NetName=RX_INA Pin=LUNA4-2
+Added Pin To Net: NetName=RX_INA Pin=R?A-1
+Added Net: Name=RX_INA
+Added Pin To Net: NetName=RX_INB Pin=LUNA1-2
+Added Pin To Net: NetName=RX_INB Pin=R?B-1
+Added Net: Name=RX_INB
+Added Pin To Net: NetName=RX_INC Pin=LUNA2-2
+Added Pin To Net: NetName=RX_INC Pin=R?C-1
+Added Net: Name=RX_INC
+Added Pin To Net: NetName=RX_IND Pin=LUNA3-2
+Added Pin To Net: NetName=RX_IND Pin=R?D-1
+Added Net: Name=RX_IND
+Added Pin To Net: NetName=RX_OUTA Pin=C?A-1
+Added Pin To Net: NetName=RX_OUTA Pin=IC1-34
+Added Pin To Net: NetName=RX_OUTA Pin=R?A-2
+Added Net: Name=RX_OUTA
+Added Pin To Net: NetName=RX_OUTB Pin=C?B-1
+Added Pin To Net: NetName=RX_OUTB Pin=IC1-36
+Added Pin To Net: NetName=RX_OUTB Pin=R?B-2
+Added Net: Name=RX_OUTB
+Added Pin To Net: NetName=RX_OUTC Pin=C?C-1
+Added Pin To Net: NetName=RX_OUTC Pin=IC1-17
+Added Pin To Net: NetName=RX_OUTC Pin=R?C-2
+Added Net: Name=RX_OUTC
+Added Pin To Net: NetName=RX_OUTD Pin=C?D-1
+Added Pin To Net: NetName=RX_OUTD Pin=IC1-15
+Added Pin To Net: NetName=RX_OUTD Pin=R?D-2
+Added Net: Name=RX_OUTD
+Added Pin To Net: NetName=TX_INA Pin=LUNA4-1
+Added Pin To Net: NetName=TX_INA Pin=R?A-1
+Added Net: Name=TX_INA
+Added Pin To Net: NetName=TX_INB Pin=LUNA1-1
+Added Pin To Net: NetName=TX_INB Pin=R?B-1
+Added Net: Name=TX_INB
+Added Pin To Net: NetName=TX_INC Pin=LUNA2-1
+Added Pin To Net: NetName=TX_INC Pin=R?C-1
+Added Net: Name=TX_INC
+Added Pin To Net: NetName=TX_IND Pin=LUNA3-1
+Added Pin To Net: NetName=TX_IND Pin=R?D-1
+Added Net: Name=TX_IND
+Added Pin To Net: NetName=TX_OUTA Pin=C?A-1
+Added Pin To Net: NetName=TX_OUTA Pin=IC1-35
+Added Pin To Net: NetName=TX_OUTA Pin=R?A-2
+Added Net: Name=TX_OUTA
+Added Pin To Net: NetName=TX_OUTB Pin=C?B-1
+Added Pin To Net: NetName=TX_OUTB Pin=IC1-37
+Added Pin To Net: NetName=TX_OUTB Pin=R?B-2
+Added Net: Name=TX_OUTB
+Added Pin To Net: NetName=TX_OUTC Pin=C?C-1
+Added Pin To Net: NetName=TX_OUTC Pin=IC1-16
+Added Pin To Net: NetName=TX_OUTC Pin=R?C-2
+Added Net: Name=TX_OUTC
+Added Pin To Net: NetName=TX_OUTD Pin=C?D-1
+Added Pin To Net: NetName=TX_OUTD Pin=IC1-14
+Added Pin To Net: NetName=TX_OUTD Pin=R?D-2
+Added Net: Name=TX_OUTD
+Added Class: Name=U_Uart_LowPass_HighFreqFilterA
+Added Class: Name=U_Uart_LowPass_HighFreqFilterB
+Added Class: Name=U_Uart_LowPass_HighFreqFilterC
+Added Class: Name=U_Uart_LowPass_HighFreqFilterD
+Added Class: Name=Uart_LowPass_HighFreqFilter
+Added Room: Name=U_Uart_LowPass_HighFreqFilterA
+Added Room: Name=U_Uart_LowPass_HighFreqFilterB
+Added Room: Name=U_Uart_LowPass_HighFreqFilterC
+Added Room: Name=U_Uart_LowPass_HighFreqFilterD

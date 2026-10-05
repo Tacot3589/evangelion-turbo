@@ -1,0 +1,8 @@
+Removed Pin From Net: NetName=PWR_ENABLE_DRIVER2 Pin=D9-1
+Removed Pin From Net: NetName=DR1_EN_MCU Pin=D9-2
+Removed Pin From Net: NetName=PWR_ENABLE_DRIVER1 Pin=D10-1
+Removed Pin From Net: NetName=DR2_EN_MCU Pin=D10-2
+Added Pin To Net: NetName=DR1_EN_MCU Pin=D9-1
+Added Pin To Net: NetName=PWR_ENABLE_DRIVER2 Pin=D9-2
+Added Pin To Net: NetName=DR2_EN_MCU Pin=D10-1
+Added Pin To Net: NetName=PWR_ENABLE_DRIVER1 Pin=D10-2

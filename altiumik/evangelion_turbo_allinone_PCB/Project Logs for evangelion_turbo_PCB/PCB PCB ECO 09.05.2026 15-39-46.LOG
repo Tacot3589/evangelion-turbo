@@ -1,0 +1,4 @@
+Added Component: Designator=C31(C 0402)
+Added Pin To Net: NetName=GND Pin=C31-2
+Added Member To Class: ClassName=U_MCU Member=Component C31 100nF
+Added Member To Class: ClassName=U_OledAndLed Member=Component OLED1 oled flex 0.96
