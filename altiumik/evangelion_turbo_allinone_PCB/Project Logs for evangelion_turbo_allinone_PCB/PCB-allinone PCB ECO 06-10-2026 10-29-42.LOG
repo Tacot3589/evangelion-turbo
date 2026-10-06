@@ -1,0 +1,20 @@
+Added Component: Designator=M1A(motor connector)
+Added Component: Designator=M1B(motor connector)
+Added Component: Designator=M2A(motor connector)
+Added Component: Designator=M2B(motor connector)
+Added Pin To Net: NetName=NetIC6A_18 Pin=M1A-1
+Added Pin To Net: NetName=NetIC6A_18 Pin=M1A-1
+Added Pin To Net: NetName=NetIC6A_18 Pin=M1A-1
+Added Pin To Net: NetName=NetIC6B_18 Pin=M1B-1
+Added Pin To Net: NetName=NetIC6B_18 Pin=M1B-1
+Added Pin To Net: NetName=NetIC6B_18 Pin=M1B-1
+Added Pin To Net: NetName=NetIC6A_14 Pin=M2A-1
+Added Pin To Net: NetName=NetIC6A_14 Pin=M2A-1
+Added Pin To Net: NetName=NetIC6A_14 Pin=M2A-1
+Added Pin To Net: NetName=NetIC6B_14 Pin=M2B-1
+Added Pin To Net: NetName=NetIC6B_14 Pin=M2B-1
+Added Pin To Net: NetName=NetIC6B_14 Pin=M2B-1
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component M1A (M1) 1 Pin
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component M1B (M1) 1 Pin
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component M2A (M2) 1 Pin
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component M2B (M2) 1 Pin

@@ -1,0 +1,157 @@
+Removed Pin From Net: NetName=Vcc Pin=C20-1
+Removed Pin From Net: NetName=GND Pin=C20-2
+Removed Pin From Net: NetName=Vcc Pin=C23-1
+Removed Pin From Net: NetName=GND Pin=C23-2
+Removed Pin From Net: NetName=Vcc Pin=C25-1
+Removed Pin From Net: NetName=GND Pin=C25-2
+Removed Pin From Net: NetName=Vcc Pin=C30-1
+Removed Pin From Net: NetName=GND Pin=C30-2
+Removed Pin From Net: NetName=Vcc Pin=C31-1
+Removed Pin From Net: NetName=GND Pin=C31-2
+Removed Pin From Net: NetName=Vcc Pin=C42-1
+Removed Pin From Net: NetName=GND Pin=C42-2
+Removed Pin From Net: NetName=Vcc Pin=C43-1
+Removed Pin From Net: NetName=GND Pin=C43-2
+Removed Pin From Net: NetName=Vcc Pin=C77-1
+Removed Pin From Net: NetName=GND Pin=C77-2
+Removed Pin From Net: NetName=Vcc Pin=C78-1
+Removed Pin From Net: NetName=GND Pin=C78-2
+Removed Pin From Net: NetName=Vcc Pin=C79-1
+Removed Pin From Net: NetName=GND Pin=C79-2
+Removed Pin From Net: NetName=Vcc Pin=C80-1
+Removed Pin From Net: NetName=GND Pin=C80-2
+Removed Pin From Net: NetName=Vcc Pin=C81-1
+Removed Pin From Net: NetName=GND Pin=C81-2
+Removed Pin From Net: NetName=Vcc Pin=C82-1
+Removed Pin From Net: NetName=GND Pin=C82-2
+Removed Pin From Net: NetName=Vcc Pin=C83-1
+Removed Pin From Net: NetName=GND Pin=C83-2
+Removed Pin From Net: NetName=Vcc Pin=C84-1
+Removed Pin From Net: NetName=GND Pin=C84-2
+Removed Pin From Net: NetName=Vcc Pin=C85-1
+Removed Pin From Net: NetName=GND Pin=C85-2
+Removed Pin From Net: NetName=Vcc Pin=C86-1
+Removed Pin From Net: NetName=GND Pin=C86-2
+Removed Pin From Net: NetName=Vcc Pin=C87-1
+Removed Pin From Net: NetName=GND Pin=C87-2
+Removed Pin From Net: NetName=Vcc Pin=C88-1
+Removed Pin From Net: NetName=GND Pin=C88-2
+Removed Pin From Net: NetName=Vcc Pin=C89-1
+Removed Pin From Net: NetName=GND Pin=C89-2
+Removed Pin From Net: NetName=Vcc Pin=C90-1
+Removed Pin From Net: NetName=GND Pin=C90-2
+Removed Pin From Net: NetName=Vcc Pin=C91-1
+Removed Pin From Net: NetName=GND Pin=C91-2
+Removed Pin From Net: NetName=Vcc Pin=C92-1
+Removed Pin From Net: NetName=GND Pin=C92-2
+Removed Pin From Net: NetName=Vcc Pin=C93-1
+Removed Pin From Net: NetName=GND Pin=C93-2
+Removed Pin From Net: NetName=Vcc Pin=C94-1
+Removed Pin From Net: NetName=GND Pin=C94-2
+Removed Pin From Net: NetName=Vcc Pin=C95-1
+Removed Pin From Net: NetName=GND Pin=C95-2
+Removed Pin From Net: NetName=Vcc Pin=C96-1
+Removed Pin From Net: NetName=GND Pin=C96-2
+Removed Pin From Net: NetName=Vcc Pin=C97-1
+Removed Pin From Net: NetName=GND Pin=C97-2
+Removed Pin From Net: NetName=Vcc Pin=C98-1
+Removed Pin From Net: NetName=GND Pin=C98-2
+Removed Pin From Net: NetName=Vcc Pin=C99-1
+Removed Pin From Net: NetName=GND Pin=C99-2
+Removed Pin From Net: NetName=Vcc Pin=C100-1
+Removed Pin From Net: NetName=GND Pin=C100-2
+Removed Pin From Net: NetName=Vcc Pin=C101-1
+Removed Pin From Net: NetName=GND Pin=C101-2
+Removed Pin From Net: NetName=Vcc Pin=C102-1
+Removed Pin From Net: NetName=GND Pin=C102-2
+Removed Pin From Net: NetName=Vcc Pin=C103-1
+Removed Pin From Net: NetName=GND Pin=C103-2
+Removed Pin From Net: NetName=Vcc Pin=C104-1
+Removed Pin From Net: NetName=GND Pin=C104-2
+Removed Pin From Net: NetName=Vcc Pin=C105-1
+Removed Pin From Net: NetName=GND Pin=C105-2
+Removed Pin From Net: NetName=Vcc Pin=C106-1
+Removed Pin From Net: NetName=GND Pin=C106-2
+Removed Pin From Net: NetName=Vcc Pin=C107-1
+Removed Pin From Net: NetName=GND Pin=C107-2
+Removed Pin From Net: NetName=Vcc Pin=C108-1
+Removed Pin From Net: NetName=GND Pin=C108-2
+Removed Pin From Net: NetName=Vcc Pin=C109-1
+Removed Pin From Net: NetName=GND Pin=C109-2
+Removed Pin From Net: NetName=Vcc Pin=C110-1
+Removed Pin From Net: NetName=GND Pin=C110-2
+Removed Pin From Net: NetName=Vcc Pin=C111-1
+Removed Pin From Net: NetName=GND Pin=C111-2
+Removed Pin From Net: NetName=Vcc Pin=C112-1
+Removed Pin From Net: NetName=GND Pin=C112-2
+Removed Pin From Net: NetName=Vcc Pin=C113-1
+Removed Pin From Net: NetName=GND Pin=C113-2
+Removed Pin From Net: NetName=Vcc Pin=C114-1
+Removed Pin From Net: NetName=GND Pin=C114-2
+Removed Pin From Net: NetName=Vcc Pin=C115-1
+Removed Pin From Net: NetName=GND Pin=C115-2
+Removed Pin From Net: NetName=Vcc Pin=C116-1
+Removed Pin From Net: NetName=GND Pin=C116-2
+Removed Pin From Net: NetName=Vcc Pin=C117-1
+Removed Pin From Net: NetName=GND Pin=C117-2
+Removed Pin From Net: NetName=Vcc Pin=C118-1
+Removed Pin From Net: NetName=GND Pin=C118-2
+Change Component Footprint: Designator=C72A Old Footprint=C 0603 New Footprint=C 0402
+Change Component Footprint: Designator=C72B Old Footprint=C 0603 New Footprint=C 0402
+Change Component Footprint: Designator=C74A Old Footprint=C 0603 New Footprint=C 0402
+Change Component Footprint: Designator=C74B Old Footprint=C 0603 New Footprint=C 0402
+Change Component Designator: OldDesignator=C37A NewDesignator=C37B
+Change Component Designator: OldDesignator=C37B NewDesignator=C37A
+Change Component Designator: OldDesignator=C40A NewDesignator=C40B
+Change Component Designator: OldDesignator=C40B NewDesignator=C40A
+Change Component Designator: OldDesignator=C72A NewDesignator=C72B
+Change Component Designator: OldDesignator=C72B NewDesignator=C72A
+Change Component Designator: OldDesignator=C74A NewDesignator=C74B
+Change Component Designator: OldDesignator=C74B NewDesignator=C74A
+Change Component Designator: OldDesignator=C75A NewDesignator=C75B
+Change Component Designator: OldDesignator=C75B NewDesignator=C75A
+Change Component Designator: OldDesignator=C76A NewDesignator=C76B
+Change Component Designator: OldDesignator=C76B NewDesignator=C76A
+Change Component Designator: OldDesignator=IC6A NewDesignator=IC6B
+Change Component Designator: OldDesignator=IC6B NewDesignator=IC6A
+Change Component Designator: OldDesignator=M1A NewDesignator=M1?B
+Change Component Designator: OldDesignator=M1B NewDesignator=M1?A
+Change Component Designator: OldDesignator=M2A NewDesignator=M1?B
+Change Component Designator: OldDesignator=M2B NewDesignator=M1?A
+Change Component Designator: OldDesignator=R8A NewDesignator=R8B
+Change Component Designator: OldDesignator=R8B NewDesignator=R8A
+Change Component Designator: OldDesignator=R9A NewDesignator=R9B
+Change Component Designator: OldDesignator=R9B NewDesignator=R9A
+Change Component Designator: OldDesignator=R10A NewDesignator=R10B
+Change Component Designator: OldDesignator=R10B NewDesignator=R10A
+Change Component Designator: OldDesignator=R11A NewDesignator=R11B
+Change Component Designator: OldDesignator=R11B NewDesignator=R11A
+Change Component Designator: OldDesignator=R13A NewDesignator=R13B
+Change Component Designator: OldDesignator=R13B NewDesignator=R13A
+Change Net Name : Old Net Name=DIRA New Net Name=DIRB
+Change Net Name : Old Net Name=DIRB New Net Name=DIRA
+Change Net Name : Old Net Name=IPROPI1A New Net Name=IPROPI1B
+Change Net Name : Old Net Name=IPROPI1B New Net Name=IPROPI1A
+Change Net Name : Old Net Name=NetC37A_1 New Net Name=NetC37B_1
+Change Net Name : Old Net Name=NetC37B_1 New Net Name=NetC37A_1
+Change Net Name : Old Net Name=NetC40A_1 New Net Name=NetC40B_1
+Change Net Name : Old Net Name=NetC40B_1 New Net Name=NetC40A_1
+Change Net Name : Old Net Name=NetC72A_2 New Net Name=NetC72B_2
+Change Net Name : Old Net Name=NetC72B_2 New Net Name=NetC72A_2
+Change Net Name : Old Net Name=NetC74A_1 New Net Name=NetC74B_1
+Change Net Name : Old Net Name=NetC74A_2 New Net Name=NetC74B_2
+Change Net Name : Old Net Name=NetC74B_1 New Net Name=NetC74A_1
+Change Net Name : Old Net Name=NetC74B_2 New Net Name=NetC74A_2
+Change Net Name : Old Net Name=NetIC6A_2 New Net Name=NetIC6B_2
+Change Net Name : Old Net Name=NetIC6A_14 New Net Name=NetIC6B_14
+Change Net Name : Old Net Name=NetIC6A_18 New Net Name=NetIC6B_18
+Change Net Name : Old Net Name=NetIC6B_2 New Net Name=NetIC6A_2
+Change Net Name : Old Net Name=NetIC6B_14 New Net Name=NetIC6A_14
+Change Net Name : Old Net Name=NetIC6B_18 New Net Name=NetIC6A_18
+Change Net Name : Old Net Name=SPI_CSA New Net Name=SPI_CSB
+Change Net Name : Old Net Name=SPI_CSB New Net Name=SPI_CSA
+Change Class Name : Old Net Name=U_MotorDriver8873SA New Net Name=U_MotorDriver8873SB
+Change Class Name : Old Net Name=U_MotorDriver8873SB New Net Name=U_MotorDriver8873SA
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component M1?B (M1?) 1 Pin
+Added Room: Name=U_MotorDriver8873SA
+Added Room: Name=U_MotorDriver8873SB

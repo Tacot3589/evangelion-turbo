@@ -1,0 +1,30 @@
+Removed Member From Class: ClassName=U_MotorDriver8873SB Member=C37A
+Removed Member From Class: ClassName=U_MotorDriver8873SB Member=C40A
+Removed Member From Class: ClassName=U_MotorDriver8873SA Member=C72B
+Removed Member From Class: ClassName=U_MotorDriver8873SA Member=C74B
+Removed Member From Class: ClassName=U_MotorDriver8873SA Member=C75B
+Removed Member From Class: ClassName=U_MotorDriver8873SA Member=C76B
+Removed Member From Class: ClassName=U_MotorDriver8873SA Member=IC6B
+Removed Member From Class: ClassName=U_MotorDriver8873SB Member=R8A
+Removed Member From Class: ClassName=U_MotorDriver8873SB Member=R9A
+Removed Member From Class: ClassName=U_MotorDriver8873SB Member=R10A
+Removed Member From Class: ClassName=U_MotorDriver8873SB Member=R11A
+Removed Member From Class: ClassName=U_MotorDriver8873SA Member=R13B
+Change Component Designator: OldDesignator=M1?A NewDesignator=M1A
+Change Component Designator: OldDesignator=M1?A NewDesignator=M2A
+Change Component Designator: OldDesignator=M1?B NewDesignator=M1B
+Change Component Designator: OldDesignator=M1?B NewDesignator=M2B
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C37B (C37) 10pF
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C40B (C40) 10pF
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C72A (C72) 1uF 25V
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C74A (C74) 100nF 25V
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C75A (C75) 1uF
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C76A (C76) 100nF
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component IC6A (IC6) DRV8873SPWPR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component M1A (M1) 1 Pin
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component M1B (M1) 1 Pin
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component R8B (R8) 330R
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component R9B (R9) 330R
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component R10B (R10) 1k
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component R11B (R11) 1k
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component R13A (R13) 10k
