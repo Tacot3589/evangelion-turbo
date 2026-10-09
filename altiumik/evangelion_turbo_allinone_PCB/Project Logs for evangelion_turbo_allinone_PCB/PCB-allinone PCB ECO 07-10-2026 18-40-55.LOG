@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=IPROPI1B Pin=IC1-8
+Removed Pin From Net: NetName=IPROPI1A Pin=IC1-9
+Added Pin To Net: NetName=IPROPI1A Pin=IC1-8
+Added Pin To Net: NetName=IPROPI1B Pin=IC1-9

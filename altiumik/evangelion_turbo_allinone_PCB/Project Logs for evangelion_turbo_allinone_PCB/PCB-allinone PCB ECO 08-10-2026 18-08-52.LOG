@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=SPI_CSB Pin=IC1-29
+Removed Pin From Net: NetName=JOY1 Pin=IC1-32
+Added Pin To Net: NetName=JOY1 Pin=IC1-29
+Added Pin To Net: NetName=SPI_CSB Pin=IC1-32

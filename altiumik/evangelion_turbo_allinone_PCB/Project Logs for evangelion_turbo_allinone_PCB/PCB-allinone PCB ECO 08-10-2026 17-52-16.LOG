@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=DIRA Pin=IC1-44
+Added Pin To Net: NetName=DIRA Pin=IC1-47
+Added Pin To Net: NetName=DRV_PWM_B2 Pin=IC1-44
+Added Pin To Net: NetName=DRV_PWM_B2 Pin=R10A-1
+Added Net: Name=DRV_PWM_B2
