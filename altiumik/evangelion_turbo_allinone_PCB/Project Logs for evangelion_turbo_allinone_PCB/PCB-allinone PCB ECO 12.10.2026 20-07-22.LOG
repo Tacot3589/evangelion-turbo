@@ -1,0 +1,154 @@
+Removed Pin From Net: NetName=5v Pin=C75A-1
+Removed Pin From Net: NetName=5v Pin=C75B-1
+Removed Pin From Net: NetName=5v Pin=C76A-1
+Removed Pin From Net: NetName=5v Pin=C76B-1
+Removed Pin From Net: NetName=5v Pin=IC6A-1
+Removed Pin From Net: NetName=5v Pin=IC6A-11
+Removed Pin From Net: NetName=5v Pin=IC6B-1
+Removed Pin From Net: NetName=5v Pin=IC6B-11
+Removed Pin From Net: NetName=5v Pin=R13A-2
+Removed Pin From Net: NetName=5v Pin=R13B-2
+Change Component Comment : Designator=C74A Old Comment=100nF 25V New Comment=47nF 25V
+Change Component Comment : Designator=C74B Old Comment=100nF 25V New Comment=47nF 25V
+Added Component: Designator=C20A(C 0805)
+Added Component: Designator=C20B(C 0805)
+Added Component: Designator=C23A(C 0805)
+Added Component: Designator=C23B(C 0805)
+Added Component: Designator=C25A(C 0805)
+Added Component: Designator=C25B(C 0805)
+Added Component: Designator=C30A(C 0805)
+Added Component: Designator=C30B(C 0805)
+Added Component: Designator=C31A(C 0805)
+Added Component: Designator=C31B(C 0805)
+Added Component: Designator=C41A(C 0805)
+Added Component: Designator=C41B(C 0805)
+Added Component: Designator=C42A(C 0805)
+Added Component: Designator=C42B(C 0805)
+Added Component: Designator=C43A(C 0805)
+Added Component: Designator=C43B(C 0805)
+Added Component: Designator=C44A(C 0805)
+Added Component: Designator=C44B(C 0805)
+Added Component: Designator=C51A(C 0805)
+Added Component: Designator=C51B(C 0805)
+Added Component: Designator=C70A(C 0805)
+Added Component: Designator=C70B(C 0805)
+Added Component: Designator=C71A(C 0805)
+Added Component: Designator=C71B(C 0805)
+Added Component: Designator=C73A(C 0805)
+Added Component: Designator=C73B(C 0805)
+Added Component: Designator=C77A(C 0805)
+Added Component: Designator=C77B(C 0805)
+Added Component: Designator=C78A(C 0805)
+Added Component: Designator=C78B(C 0805)
+Added Component: Designator=C79A(C 0805)
+Added Component: Designator=C79B(C 0805)
+Added Pin To Net: NetName=Vcc Pin=C20A-1
+Added Pin To Net: NetName=GND Pin=C20A-2
+Added Pin To Net: NetName=Vcc Pin=C20B-1
+Added Pin To Net: NetName=GND Pin=C20B-2
+Added Pin To Net: NetName=Vcc Pin=C23A-1
+Added Pin To Net: NetName=GND Pin=C23A-2
+Added Pin To Net: NetName=Vcc Pin=C23B-1
+Added Pin To Net: NetName=GND Pin=C23B-2
+Added Pin To Net: NetName=Vcc Pin=C25A-1
+Added Pin To Net: NetName=GND Pin=C25A-2
+Added Pin To Net: NetName=Vcc Pin=C25B-1
+Added Pin To Net: NetName=GND Pin=C25B-2
+Added Pin To Net: NetName=Vcc Pin=C30A-1
+Added Pin To Net: NetName=GND Pin=C30A-2
+Added Pin To Net: NetName=Vcc Pin=C30B-1
+Added Pin To Net: NetName=GND Pin=C30B-2
+Added Pin To Net: NetName=Vcc Pin=C31A-1
+Added Pin To Net: NetName=GND Pin=C31A-2
+Added Pin To Net: NetName=Vcc Pin=C31B-1
+Added Pin To Net: NetName=GND Pin=C31B-2
+Added Pin To Net: NetName=Vcc Pin=C41A-1
+Added Pin To Net: NetName=GND Pin=C41A-2
+Added Pin To Net: NetName=Vcc Pin=C41B-1
+Added Pin To Net: NetName=GND Pin=C41B-2
+Added Pin To Net: NetName=Vcc Pin=C42A-1
+Added Pin To Net: NetName=GND Pin=C42A-2
+Added Pin To Net: NetName=Vcc Pin=C42B-1
+Added Pin To Net: NetName=GND Pin=C42B-2
+Added Pin To Net: NetName=Vcc Pin=C43A-1
+Added Pin To Net: NetName=GND Pin=C43A-2
+Added Pin To Net: NetName=Vcc Pin=C43B-1
+Added Pin To Net: NetName=GND Pin=C43B-2
+Added Pin To Net: NetName=Vcc Pin=C44A-1
+Added Pin To Net: NetName=GND Pin=C44A-2
+Added Pin To Net: NetName=Vcc Pin=C44B-1
+Added Pin To Net: NetName=GND Pin=C44B-2
+Added Pin To Net: NetName=Vcc Pin=C51A-1
+Added Pin To Net: NetName=GND Pin=C51A-2
+Added Pin To Net: NetName=Vcc Pin=C51B-1
+Added Pin To Net: NetName=GND Pin=C51B-2
+Added Pin To Net: NetName=Vcc Pin=C70A-1
+Added Pin To Net: NetName=GND Pin=C70A-2
+Added Pin To Net: NetName=Vcc Pin=C70B-1
+Added Pin To Net: NetName=GND Pin=C70B-2
+Added Pin To Net: NetName=Vcc Pin=C71A-1
+Added Pin To Net: NetName=GND Pin=C71A-2
+Added Pin To Net: NetName=Vcc Pin=C71B-1
+Added Pin To Net: NetName=GND Pin=C71B-2
+Added Pin To Net: NetName=Vcc Pin=C73A-1
+Added Pin To Net: NetName=GND Pin=C73A-2
+Added Pin To Net: NetName=Vcc Pin=C73B-1
+Added Pin To Net: NetName=GND Pin=C73B-2
+Added Pin To Net: NetName=Vcc Pin=C77A-1
+Added Pin To Net: NetName=GND Pin=C77A-2
+Added Pin To Net: NetName=Vcc Pin=C77B-1
+Added Pin To Net: NetName=GND Pin=C77B-2
+Added Pin To Net: NetName=Vcc Pin=C78A-1
+Added Pin To Net: NetName=GND Pin=C78A-2
+Added Pin To Net: NetName=Vcc Pin=C78B-1
+Added Pin To Net: NetName=GND Pin=C78B-2
+Added Pin To Net: NetName=Vcc Pin=C79A-1
+Added Pin To Net: NetName=GND Pin=C79A-2
+Added Pin To Net: NetName=Vcc Pin=C79B-1
+Added Pin To Net: NetName=GND Pin=C79B-2
+Added Pin To Net: NetName=5v_DVDDA Pin=C75A-1
+Added Pin To Net: NetName=5v_DVDDA Pin=C76A-1
+Added Pin To Net: NetName=5v_DVDDA Pin=IC6A-1
+Added Pin To Net: NetName=5v_DVDDA Pin=IC6A-11
+Added Pin To Net: NetName=5v_DVDDA Pin=R13A-2
+Added Net: Name=5v_DVDDA
+Added Pin To Net: NetName=5v_DVDDB Pin=C75B-1
+Added Pin To Net: NetName=5v_DVDDB Pin=C76B-1
+Added Pin To Net: NetName=5v_DVDDB Pin=IC6B-1
+Added Pin To Net: NetName=5v_DVDDB Pin=IC6B-11
+Added Pin To Net: NetName=5v_DVDDB Pin=R13B-2
+Added Net: Name=5v_DVDDB
+Added Member To Class: ClassName=U_Power_supply Member=Component C17 2* 10uF 50v 1206
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C20A (C20) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C20B (C20) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C23A (C23) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C23B (C23) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C25A (C25) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C25B (C25) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C30A (C30) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C30B (C30) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C31A (C31) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C31B (C31) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C41A (C41) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C41B (C41) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C42A (C42) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C42B (C42) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C43A (C43) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C43B (C43) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C44A (C44) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C44B (C44) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C51A (C51) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C51B (C51) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C70A (C70) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C70B (C70) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C71A (C71) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C71B (C71) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C73A (C73) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C73B (C73) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C77A (C77) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C77B (C77) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C78A (C78) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C78B (C78) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SA Member=Component C79A (C79) 10uF low ESR
+Added Member To Class: ClassName=U_MotorDriver8873SB Member=Component C79B (C79) 10uF low ESR
+Added Member To Class: ClassName=U_MCU Member=Component Y1 US3200005Z
