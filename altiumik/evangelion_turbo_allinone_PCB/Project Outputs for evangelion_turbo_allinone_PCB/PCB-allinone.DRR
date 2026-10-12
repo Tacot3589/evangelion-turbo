@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------------------------------------------------------
-NCDrill File Report For: PCB-allinone.PcbDoc   12/10/2026  17:30:23
+NCDrill File Report For: PCB-allinone.PcbDoc   12.10.2026  21:58:21
 ----------------------------------------------------------------------------------------------------------------------------------
 
 Layer Pair : Top Layer to Bottom Layer
@@ -7,10 +7,10 @@ ASCII Plated RoundHoles File : PCB-allinone-Plated.TXT
 
 Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
 ----------------------------------------------------------------------------------------------------------------------------------
-T1      12mil (0.3mm)                                             Round             633       PTH        36.86inch (936.32mm)
-T2      39mil (1mm)                                               Round             8         PTH        2.11inch (53.55mm)
+T1      12mil (0.3mm)                                             Round             671       PTH        39.05inch (991.93mm)
+T2      39mil (1mm)                                               Round             8         PTH        2.12inch (53.83mm)
 T3      98mil (2.5mm)                                             Round             4         PTH        6.24inch (158.41mm)
 ----------------------------------------------------------------------------------------------------------------------------------
-Totals                                                                              645
+Totals                                                                              683
 
 Total Processing Time (hh:mm:ss) : 00:00:00
