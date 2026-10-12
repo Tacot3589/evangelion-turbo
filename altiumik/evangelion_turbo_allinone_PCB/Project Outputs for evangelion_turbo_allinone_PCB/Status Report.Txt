@@ -1,0 +1,12 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [evangelion_turbo_allinone_PCB.PrjPcb]
+   Generated File[PCB-allinone-Plated.TXT]
+   Generated File[PCB-allinone.LDP]
+   Generated File[PCB-allinone.DRR]
+
+
+Files Generated   : 3
+Documents Printed : 0
+
+Finished Output Generation At 16:28:33 On 12/10/2026
