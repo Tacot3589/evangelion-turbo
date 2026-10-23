@@ -1,0 +1,409 @@
+/*
+ * start_module.c
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+
+#include "start_module.h"
+#include "main.h"
+#include "MY_INCLUDES.h"
+
+static uint8_t StartModuleStarted = false;
+static uint8_t Dohyo_ID=0;
+static StartMod_state_t Module_State = 0;
+
+uint8_t StartModule_Startup()
+{
+    Module_State = STARTUP;
+	//ssd1306_Clear(); //todo OLED
+	//_ssd1306_WriteInTheMiddle("START", init_text_height, BIG);
+	//_ssd1306_WriteInTheMiddle("MODULE", init_secondary_text_height, SMALL);
+	//ssd1306_UpdateScreen();
+	HAL_Delay(INIT_DELAY);
+	//  Signal Power UP
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+	HAL_Delay(125);
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_SET);
+	HAL_Delay(125);
+	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+	HAL_Delay(250);
+	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+}
+
+
+
+
+void StartMod_OnRisingExti()
+{
+	Interrupt(RISING);
+}
+
+void StartMod_OnFallingExti()
+{
+	Interrupt(FALLING);
+}
+
+
+
+void InterruptLeds(void)
+{
+	LED_BLUE_Control(TICK, 0);
+	LED_RED_Control(TICK, 0);
+	LED_GREEN_Control(TICK, 0);
+}
+
+void Interrupt(uint8_t Edge)
+{
+	static uint8_t 		Last_Edge;
+	static uint8_t 		Bit_Nbr;
+	static uint16_t 	IR_Buffer;
+	static uint8_t		Line_Iddle;
+	static uint8_t		IR_Protocol;
+
+	uint32_t 	Timer; // 10ticks = 1uS
+	uint16_t 	shift;
+	uint8_t		Address;
+	uint8_t		Command;
+
+	Timer = TIM15->CNT;
+
+	if (Module_State == RC5_START)
+		IR_Protocol = RC5;
+	else if (Module_State == SIRC_START)
+		IR_Protocol = SIRC;
+
+	if (Edge == TIMEOUT)
+	{
+	    Line_Iddle = 0;
+	    Bit_Nbr = 0;
+	    IR_Buffer = 0;
+	    IR_Protocol = UNKNOWN;
+	}
+
+	else if (Line_Iddle == 0 && Edge == FALLING)
+	{
+		TIM15->CNT = 0;
+		Line_Iddle = 1;
+		Bit_Nbr = 0;
+		IR_Buffer = 0;
+	}
+	else if (Line_Iddle == 0 && Edge == RISING)
+		TIM15->CNT = 0;
+
+// Check if selected protocol
+	else if (IR_Protocol == UNKNOWN)	// Second Interrupt. Protocol yet unknown
+	{
+		if (Last_Edge == FALLING && Edge == RISING && (Timer >= RC5_Short-Margin && Timer <= RC5_Short + Margin))
+			IR_Protocol = RC5;
+
+		else if (Last_Edge == FALLING && Edge == RISING && (Timer >= 2*SIRC_Long - 2*Margin && Timer <= 2*SIRC_Long + 2*Margin))
+		{
+			IR_Protocol = SIRC;
+			TIM15->CNT = 0;
+		}
+		else
+			Line_Iddle = 0; 	// Error - Restart communication
+	}
+
+	else if (IR_Protocol == RC5)
+	{
+		if (Timer >= RC5_Long - Margin && Timer <= RC5_Long + Margin) // Received Bit
+		{
+			TIM15->CNT = 0;
+			// Received 0
+			if (Edge == RISING)
+				Bit_Nbr ++;
+
+			// Received 1
+			else if (Edge == FALLING)
+			{
+				Bit_Nbr ++;
+				shift = 15 - Bit_Nbr;
+				IR_Buffer = IR_Buffer | 0b1 << shift;
+			}
+		}
+
+		else if (Timer >= RC5_Long + Margin)
+			Line_Iddle = 0;
+
+		if (Bit_Nbr == 13)
+		{
+			Line_Iddle = 0;
+			Address = (IR_Buffer >> 8) & 0b00011111;
+			Command = (IR_Buffer >> 2) & 0b00111111;
+			Received_RC5_Frame(Address, Command);
+		}
+	}
+	else if (IR_Protocol == SIRC)
+	{
+		TIM15->CNT = 0;
+		// Begin of Frame
+		if (Edge == RISING && (Timer >= 2*SIRC_Long - 2*Margin && Timer <= 2*SIRC_Long + 2*Margin))
+			Bit_Nbr = 0;
+
+		// Received 1
+		else if (Edge == RISING && (Timer >= SIRC_Long - Margin && Timer <= SIRC_Long + Margin))
+		{
+			Bit_Nbr ++;
+			shift = Bit_Nbr - 1;
+			IR_Buffer = IR_Buffer | 0b1 << shift;
+		}
+
+		// Received 0
+		else if (Edge == RISING && (Timer >= SIRC_Short - Margin && Timer <= SIRC_Short + Margin))
+			Bit_Nbr ++;
+
+		if (Bit_Nbr == 12)
+		{
+			Line_Iddle = 0;
+			Command = IR_Buffer & 0b01111111;
+			Address = (IR_Buffer >> 7)  & 0b00011111;
+			Received_SIRC_Frame(Address, Command);
+		}
+
+	}
+
+	if (Edge != TIMEOUT)
+		Last_Edge = Edge;
+
+}
+
+void Received_RC5_Frame(uint8_t Addres, uint8_t Command)
+{
+	uint8_t StartCommand;
+	StartCommand = Command & 0x01;
+
+	if (Addres == 0x0B) // Programming Frame
+	{
+		if (Module_State == STARTUP)
+		{
+			LED_GREEN_Control(BLINK_SLOW, 2);
+			if ((Command >> 1) != Dohyo_ID)
+			{
+				Dohyo_ID = Command >> 1;
+			}
+			Module_State = PPROGRAMMED;
+		}
+		else if (Module_State == PPROGRAMMED)
+		{
+			LED_GREEN_Control(BLINK_FAST, 2);
+			if ((Command >> 1) != Dohyo_ID)
+			{
+				Dohyo_ID = Command >> 1;
+			}
+		}
+	}
+	else if (Addres == 0x07) // Command Frame
+	{
+		if ((Command >> 1) == Dohyo_ID)
+		{
+			if (StartCommand == 1 && Module_State != STOP && Module_State != RC5_START)
+			{
+				Module_State = RC5_START;
+				Eva.inBattle = TRUE;
+				LED_GREEN_Control(ON, 0);
+			}
+			else if (StartCommand == 0 && Module_State != STOP)
+			{
+				//Module_State = STOP;
+				Module_State = STARTUP;
+				Eva.inBattle = FALSE;
+				LED_GREEN_Control(BLINK_SLOW, 3);
+			}
+		}
+	}
+}
+void Received_SIRC_Frame(uint8_t Addres, uint8_t Command)
+{
+	// Programming Frame
+	if (Command == 0x7F)
+	{
+		if (Module_State == STARTUP || Module_State == PPROGRAMMED)
+		{
+			Module_State = PPROGRAMMED;
+			Dohyo_ID = Addres;
+			LED_BLUE_Control(BLINK_FAST, 3);
+			LED_RED_Control(BLINK_FAST, 3);
+		}
+
+	}
+	else if(Addres == Dohyo_ID)
+	{
+		if (Command == 0x06 && (Module_State == STARTUP || Module_State == PPROGRAMMED)) // Ready
+		{
+			Module_State = READY;
+			LED_BLUE_Control(BLINK_FAST, 3);
+			LED_RED_Control(ON, 0);
+		}
+		else if (Command == 0x07 && Module_State == READY && Module_State != SIRC_START) // Start
+		{
+			Module_State = SIRC_START;
+			Eva.inBattle = TRUE;
+			LED_BLUE_Control(ON, 0);
+			LED_RED_Control(OFF, 0);
+		}
+		else if (Command == 0x08 && Module_State != STOP) // Stop
+		{
+			//Module_State = STOP;
+			Module_State = STARTUP;
+			Eva.inBattle = FALSE;
+			LED_BLUE_Control(BLINK_SLOW, 3);
+			LED_RED_Control(BLINK_SLOW,	3);
+		}
+	}
+}
+uint8_t LED_GREEN_Control(uint8_t Command, uint8_t Data)
+{
+	static uint8_t LED_Status = OFF;
+	static uint8_t LED_Data;
+	static uint8_t Counter;
+
+	if (LED_Status == ON || LED_Status == OFF || ((LED_Status == BLINK_FAST || LED_Status == BLINK_SLOW) && LED_Data == 255))
+	{
+		if (Command == ON)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+			LED_Status = Command;
+		}
+		else if (Command == OFF)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+		}
+		else if (Command == BLINK_SLOW)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 6*Data;
+		}
+		else if (Command == BLINK_FAST)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 2*Data;
+		}
+		Counter = 0;
+	}
+	else if (Command == TICK)
+	{
+		Counter++;
+
+		if (LED_Status == BLINK_FAST)
+			HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+
+		else if (LED_Status == BLINK_SLOW && (Counter % 3 == 0) )
+			HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+
+		if (Counter >= LED_Data && LED_Data < 100)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = OFF;
+		}
+	}
+	return LED_Status;
+}
+uint8_t LED_RED_Control(uint8_t Command, uint8_t Data)
+{
+	static uint8_t LED_Status = OFF;
+	static uint8_t LED_Data;
+	static uint8_t Counter;
+
+	if (LED_Status == ON || LED_Status == OFF || ((LED_Status == BLINK_FAST || LED_Status == BLINK_SLOW) && LED_Data == 255))
+	{
+		if (Command == ON)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+			LED_Status = Command;
+		}
+		else if (Command == OFF)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+		}
+		else if (Command == BLINK_SLOW)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 6*Data;
+		}
+		else if (Command == BLINK_FAST)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 2*Data;
+		}
+		Counter = 0;
+	}
+	else if (Command == TICK)
+	{
+		Counter++;
+
+		if (LED_Status == BLINK_FAST)
+			HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+
+		else if (LED_Status == BLINK_SLOW && (Counter % 3 == 0) )
+			HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+
+		if (Counter >= LED_Data && LED_Data < 100)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = OFF;
+		}
+	}
+	return LED_Status;
+}
+uint8_t LED_BLUE_Control(uint8_t Command, uint8_t Data)
+{
+	static uint8_t LED_Status = OFF;
+	static uint8_t LED_Data;
+	static uint8_t Counter;
+
+	if (LED_Status == ON || LED_Status == OFF || ((LED_Status == BLINK_FAST || LED_Status == BLINK_SLOW) && LED_Data == 255))
+	{
+		if (Command == ON)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_SET);
+			LED_Status = Command;
+		}
+		else if (Command == OFF)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+		}
+		else if (Command == BLINK_SLOW)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 6*Data;
+		}
+		else if (Command == BLINK_FAST)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 2*Data;
+		}
+		Counter = 0;
+	}
+	else if (Command == TICK)
+	{
+		Counter++;
+
+		if (LED_Status == BLINK_FAST)
+			HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
+
+		else if (LED_Status == BLINK_SLOW && (Counter % 3 == 0) )
+			HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
+
+		if (Counter >= LED_Data && LED_Data < 100)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = OFF;
+		}
+	}
+	return LED_Status;
+}
+

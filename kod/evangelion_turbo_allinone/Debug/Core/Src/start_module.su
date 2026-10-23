@@ -1,0 +1,11 @@
+../Core/Src/start_module.c:16:9:StartModule_Startup	8	static
+../Core/Src/start_module.c:39:6:StartMod_OnRisingExti	8	static
+../Core/Src/start_module.c:44:6:StartMod_OnFallingExti	8	static
+../Core/Src/start_module.c:50:6:InterruptStartModLeds	8	static
+../Core/Src/start_module.c:57:6:InterruptStartMod	24	static
+../Core/Src/start_module.c:173:6:Received_RC5_Frame	24	static
+../Core/Src/start_module.c:215:6:Received_SIRC_Frame	16	static
+../Core/Src/start_module.c:251:9:LED_GREEN_Control	16	static
+../Core/Src/start_module.c:301:9:LED_RED_Control	16	static
+../Core/Src/start_module.c:351:9:LED_BLUE_Control	16	static
+../Core/Src/start_module.c:402:9:StartModule_Started	4	static
