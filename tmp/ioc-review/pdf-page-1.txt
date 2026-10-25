@@ -1,0 +1,111 @@
+1
+1
+2
+2
+3
+3
+4
+4
+D D
+C C
+B B
+A A
+Title
+Number RevisionSize
+A4
+Date: 10/12/2026 Sheet   of
+File: D:\tech\..\PCB.SchDoc Drawn By:
+I2C_IMU
+U_IMU
+IMU.SchDoc
+I2C_OLED
+USART1
+USART2
+USART3
+USART4
+I2C_IMU
+START_MOD
+ADC2
+ADC3
+ADC4
+ADC5
+ADC6
+ADC7
+ADC8
+ADC1Battery Voltage
+JOYSTICK
+PROG
+SPI_CS_1
+SPI_CS_2
+DRV_PWM_A1
+DRV_PWM_B1
+DRV_PWM_A2
+DRV_PWM_B2
+SPI_SDO
+SPI_SDI
+SPI_CLK
+DRV_CURRENT_A
+DRV_CURRENT_B
+U_MCU MCU.SchDoc
+Battery Voltage
+U_MCU_2
+MCU_2.SchDoc
+I2C_OLED
+U_OledAndLed
+OledAndLed.SchDoc
+PWR ENABLE
+U_Power_supply
+Power_supply.SchDoc
+PWR ENABLE
+U_PWRButton
+PWRButton.SchDoc
+USART1
+USART2
+USART3
+USART4
+ADC2
+ADC3
+ADC4
+ADC5
+ADC6
+ADC7
+ADC8
+ADC1
+U_Sensor_connectors
+Sensor_connectors.SchDoc
+START_MOD
+U_Start_mod
+Start_mod.SchDoc
+JOYSTICK
+PROG
+U_Interface
+Interface.SchDoc
+DIR
+PWM
+CURRENT
+SPI_SDO
+SPI_SDI
+SPI_CLK
+SPI_CS
+U_MotorDriver8873S
+MotorDriver8873S.SchDoc
+DIR
+PWM
+CURRENT
+SPI_SDO
+SPI_SDI
+SPI_CLK
+SPI_CS
+U_MotorDriver8873S
+MotorDriver8873S.SchDoc
+SPI_SDI
+SPI_CLK
+SPI_SDO
+SPI_SDI
+SPI_CLK
+SPI_SDO
+U_Capacitors
+Capacitors.SchDoc
+NLSPI0CLK 
+NLSPI0SDI 
+NLSPI0SDO 

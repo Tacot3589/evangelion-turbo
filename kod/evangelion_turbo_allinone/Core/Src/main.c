@@ -23,10 +23,32 @@
 /* USER CODE BEGIN Includes */
 #include "MY_INCLUDES.h"
 #include "start_module.h"
+#include "fonts.h"
+#include "ssd1306.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+/* raw[] / hal_status[] / hal_error[] are indexed by register address 0..5.
+ * Data fields are meaningful only for successful transfers with valid headers.
+ */
+typedef struct
+{
+  uint16_t raw[6];
+  HAL_StatusTypeDef hal_status[6];
+  uint32_t hal_error[6];
+  uint8_t transport_ok_mask;
+  uint8_t header_valid_mask;
+  uint8_t default_config_match;
+  uint8_t fault;
+  uint8_t diag;
+  uint8_t ic1;
+  uint8_t ic2;
+  uint8_t ic3;
+  uint8_t ic4;
+  uint32_t scans;
+} DRV8873_Diagnostics;
+
 /*
 	IMU: LSM6DSOX
 	DRV: DRV8873SPWR
@@ -57,6 +79,7 @@ ADC_HandleTypeDef hadc2;
 I2C_HandleTypeDef hi2c1;
 I2C_HandleTypeDef hi2c2;
 DMA_HandleTypeDef hdma_i2c1_rx;
+DMA_HandleTypeDef hdma_i2c2_tx;
 
 UART_HandleTypeDef hlpuart1;
 UART_HandleTypeDef huart4;
@@ -74,7 +97,20 @@ TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
 
 /* USER CODE BEGIN PV */
+/* Driver A: CS1/PA10; driver B: CS2/PA3. Inspect these in Expressions. */
+volatile DRV8873_Diagnostics drv_a = {0};
+volatile DRV8873_Diagnostics drv_b = {0};
+static uint32_t drv_last_poll_ms = 0;
+
 uint32_t dupa = 0;
+
+//performance!
+static uint32_t last_total = 0;
+static uint32_t last_idle = 0;
+volatile uint32_t cpu_idle_cycles = 0;
+volatile uint32_t cpu_load_permille = 0;
+volatile uint8_t MCU_LOAD = 0;
+volatile uint8_t MCU_LOAD_MAX = 0;
 
 /* USER CODE END PV */
 
@@ -99,11 +135,73 @@ static void MX_TIM17_Init(void);
 static void MX_TIM7_Init(void);
 static void MX_TIM6_Init(void);
 /* USER CODE BEGIN PFP */
-
+static inline void DWT_Init(void);
+void LOAD_PERFORMANCE_CALCULATION(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+/* DRV8873 datasheet, sections 7.5 and 7.6:
+ * read = bit 14, address = bits 13:9; response = status:8 | register:8.
+ * Reads neither clear latched faults nor change the bridge configuration.
+ */
+static void DRV8873_ReadDiagnostics(GPIO_TypeDef *cs_port, uint16_t cs_pin,
+                                    volatile DRV8873_Diagnostics *out)
+{
+  DRV8873_Diagnostics sample = {0};
+
+  HAL_GPIO_WritePin(DRV_CS_1_GPIO_Port, DRV_CS_1_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(DRV_CS_2_GPIO_Port, DRV_CS_2_Pin, GPIO_PIN_SET);
+
+  for (uint8_t address = 0; address < 6; ++address)
+  {
+    uint16_t tx = (uint16_t)(0x4000U | ((uint16_t)address << 9));
+    uint16_t rx = 0;
+
+    /* Deliberately slow diagnostic timing: CS high >= 500 ns, plus setup. */
+    HAL_Delay(1);
+    HAL_GPIO_WritePin(cs_port, cs_pin, GPIO_PIN_RESET);
+    HAL_Delay(1);
+    /* With SPI_DATASIZE_16BIT, Size=1 means one complete 16-clock frame. */
+    sample.hal_status[address] = HAL_SPI_TransmitReceive(
+        &hspi2, (uint8_t *)&tx, (uint8_t *)&rx, 1, 20);
+    HAL_GPIO_WritePin(cs_port, cs_pin, GPIO_PIN_SET);
+    sample.hal_error[address] = HAL_SPI_GetError(&hspi2);
+    sample.raw[address] = rx;
+
+    if (sample.hal_status[address] == HAL_OK)
+    {
+      sample.transport_ok_mask |= (uint8_t)(1U << address);
+      if ((rx & 0xC000U) == 0xC000U)
+      {
+        sample.header_valid_mask |= (uint8_t)(1U << address);
+      }
+    }
+  }
+
+  sample.fault = (uint8_t)sample.raw[0];
+  sample.diag = (uint8_t)sample.raw[1];
+  sample.ic1 = (uint8_t)sample.raw[2];
+  sample.ic2 = (uint8_t)sample.raw[3];
+  sample.ic3 = (uint8_t)sample.raw[4];
+  sample.ic4 = (uint8_t)sample.raw[5];
+  /* Header bits alone also match a stuck-high MISO (0xFFFF).
+   * Matching all four reset control values is stronger evidence of a reply.
+   * A mismatch can also mean a valid, previously changed configuration.
+   */
+  sample.default_config_match = (sample.header_valid_mask == 0x3FU &&
+      sample.ic1 == 0x51U && sample.ic2 == 0x0CU &&
+      sample.ic3 == 0x40U && sample.ic4 == 0x08U);
+  sample.scans = out->scans + 1U;
+  *out = sample;
+}
+
+static void DRV8873_PollBoth(void)
+{
+  DRV8873_ReadDiagnostics(DRV_CS_1_GPIO_Port, DRV_CS_1_Pin, &drv_a);
+  DRV8873_ReadDiagnostics(DRV_CS_2_GPIO_Port, DRV_CS_2_Pin, &drv_b);
+}
+
 
 /* USER CODE END 0 */
 
@@ -133,7 +231,7 @@ int main(void)
 
   //Disable SPI for drivers
   HAL_GPIO_WritePin(DRV_CS_1_GPIO_Port, DRV_CS_1_Pin, 1);
-  HAL_GPIO_WritePin(DRV_CS_1_GPIO_Port, DRV_CS_2_Pin, 1);
+  HAL_GPIO_WritePin(DRV_CS_2_GPIO_Port, DRV_CS_2_Pin, 1);
 
   /* USER CODE END Init */
 
@@ -164,9 +262,94 @@ int main(void)
   MX_TIM7_Init();
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
-  StartModule_Startup();
+  /* Read drivers before OLED/start-module initialization can delay diagnostics. */
+  HAL_Delay(10);
+  DRV8873_PollBoth();
+  drv_last_poll_ms = HAL_GetTick();
 
-	//Timers
+	//============================= OLED
+	if(ssd1306_Init()==0)
+		Error_Handler();
+	ssd1306_Clear();
+	ssd1306_SetColor(White);
+	ssd1306_Fill();
+	ssd1306_UpdateScreen();
+	HAL_Delay(INIT_DELAY);
+
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("TURBO", 20, BIG);
+	_ssd1306_WriteInTheMiddle("EVANGELION", 40, BIG);
+	ssd1306_UpdateScreen();
+	HAL_Delay(INIT_DELAY);
+
+
+	//============================= START MOD
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
+	_ssd1306_WriteInTheMiddle("START MODULE...", 30, SMALL);
+	ssd1306_UpdateScreen();
+	StartModule_Startup();
+	HAL_Delay(INIT_DELAY);
+
+	//============================= LIDARS
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
+	_ssd1306_WriteInTheMiddle("LIDAR A...", 30, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(10);
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
+	_ssd1306_WriteInTheMiddle("LIDAR B...", 30, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(10);
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
+	_ssd1306_WriteInTheMiddle("LIDAR C...", 30, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(10);
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
+	_ssd1306_WriteInTheMiddle("LIDAR D...", 30, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(10);
+	HAL_Delay(INIT_DELAY);
+
+	//============================= ADCs
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
+	_ssd1306_WriteInTheMiddle("ADCs...", 30, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(INIT_DELAY);
+
+	//============================= DRIVER A
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
+	_ssd1306_WriteInTheMiddle("DRIVER A...", 30, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(INIT_DELAY);
+
+	//============================= DRIVER B
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
+	_ssd1306_WriteInTheMiddle("DRIVER B...", 30, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(INIT_DELAY);
+
+
+	//Performance
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
+	_ssd1306_WriteInTheMiddle("PERFORMANCE...", 30, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(INIT_DELAY);
+	//DWT_Init();
+
+	//============================= TIMERS
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
+	_ssd1306_WriteInTheMiddle("TIMERS...", 30, SMALL);
+	ssd1306_UpdateScreen();
+
 	HAL_TIM_Base_Start(&htim4); //PWM A
 	HAL_TIM_Base_Start(&htim8); //PWM B
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
@@ -180,16 +363,38 @@ int main(void)
 	HAL_TIM_Base_Start_IT(&htim17); //100Hz
 	HAL_TIM_Base_Start_IT(&htim15); //25Hz
 
+	//============================= DONE!
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("TURBO", 20, BIG);
+	_ssd1306_WriteInTheMiddle("EVANGELION", 40, BIG);
+	ssd1306_UpdateScreen();
 	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
 	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
 	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+
+
+	TIM4->CCR1 = 0;
+	TIM4->CCR2 = 800; // SPI diagnostic test: motor drive disabled
+
+	TIM8->CCR1 = 0;
+	TIM8->CCR3 = 800; // SPI diagnostic test: motor drive disabled
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  dupa = dupa+1;
+	dupa = dupa+1;
+    if ((uint32_t)(HAL_GetTick() - drv_last_poll_ms) >= 500U)
+    {
+      DRV8873_PollBoth();
+      drv_last_poll_ms = HAL_GetTick();
+    }
+	/*
+	uint32_t start = DWT->CYCCNT;
+	__WFI();
+	cpu_idle_cycles += (DWT->CYCCNT - start);
+	*/
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -441,7 +646,7 @@ static void MX_I2C2_Init(void)
 
   /* USER CODE END I2C2_Init 1 */
   hi2c2.Instance = I2C2;
-  hi2c2.Init.Timing = 0x40B285C2;
+  hi2c2.Init.Timing = 0x4052060F;
   hi2c2.Init.OwnAddress1 = 0;
   hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -467,6 +672,10 @@ static void MX_I2C2_Init(void)
   {
     Error_Handler();
   }
+
+  /** I2C Fast mode Plus enable
+  */
+  HAL_I2CEx_EnableFastModePlus(I2C_FASTMODEPLUS_I2C2);
   /* USER CODE BEGIN I2C2_Init 2 */
 
   /* USER CODE END I2C2_Init 2 */
@@ -683,17 +892,17 @@ static void MX_SPI2_Init(void)
   hspi2.Instance = SPI2;
   hspi2.Init.Mode = SPI_MODE_MASTER;
   hspi2.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi2.Init.DataSize = SPI_DATASIZE_4BIT;
+  hspi2.Init.DataSize = SPI_DATASIZE_16BIT;
   hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
-  hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi2.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi2.Init.NSS = SPI_NSS_SOFT;
-  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
+  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
   hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
   hspi2.Init.CRCPolynomial = 7;
   hspi2.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  hspi2.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+  hspi2.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
   if (HAL_SPI_Init(&hspi2) != HAL_OK)
   {
     Error_Handler();
@@ -723,9 +932,9 @@ static void MX_TIM4_Init(void)
 
   /* USER CODE END TIM4_Init 1 */
   htim4.Instance = TIM4;
-  htim4.Init.Prescaler = 0;
+  htim4.Init.Prescaler = 17-1;
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim4.Init.Period = 65535;
+  htim4.Init.Period = 999;
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_PWM_Init(&htim4) != HAL_OK)
@@ -853,9 +1062,9 @@ static void MX_TIM8_Init(void)
 
   /* USER CODE END TIM8_Init 1 */
   htim8.Instance = TIM8;
-  htim8.Init.Prescaler = 0;
+  htim8.Init.Prescaler = 17-1;
   htim8.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim8.Init.Period = 65535;
+  htim8.Init.Period = 999;
   htim8.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim8.Init.RepetitionCounter = 0;
   htim8.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -1033,6 +1242,9 @@ static void MX_DMA_Init(void)
   /* DMA1_Channel1_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+  /* DMA1_Channel2_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel2_IRQn);
 
 }
 
@@ -1056,7 +1268,10 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, DRV_CS_2_Pin|DRV_CS_1_Pin|LED_BLUE_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, DRV_CS_2_Pin|DRV_CS_1_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
@@ -1130,6 +1345,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if (htim->Instance == TIM16) //100Hz
 	{
 		//watchdog
+		LOAD_PERFORMANCE_CALCULATION();
 	}
 	if (htim->Instance == TIM17) //25Hz
 	{
@@ -1149,6 +1365,34 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     }
 }
 
+
+void LOAD_PERFORMANCE_CALCULATION()
+{
+   //LOAD
+	uint32_t total = DWT->CYCCNT;
+	uint32_t total_diff = total - last_total;
+	uint32_t idle_diff  = cpu_idle_cycles - last_idle;
+
+	last_total = total;
+	last_idle = cpu_idle_cycles;
+
+	if (total_diff > 0)
+		cpu_load_permille = (1000U * (total_diff - idle_diff)) / total_diff;
+	else
+		cpu_load_permille = 0;
+
+	MCU_LOAD = cpu_load_permille / 10;
+
+	if(MCU_LOAD > MCU_LOAD_MAX)
+		MCU_LOAD_MAX = MCU_LOAD;
+}
+
+static inline void DWT_Init(void)
+{
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+    DWT->CYCCNT = 0;
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+}
 
 /* USER CODE END 4 */
 

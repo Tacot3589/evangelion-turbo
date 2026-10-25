@@ -67,8 +67,6 @@ void Error_Handler(void);
 #define JOY1_GPIO_Port GPIOC
 #define JOY5_Pin GPIO_PIN_10
 #define JOY5_GPIO_Port GPIOG
-#define DRV_CURRENT_B_Pin GPIO_PIN_0
-#define DRV_CURRENT_B_GPIO_Port GPIOA
 #define LPUART1_RX_Pin GPIO_PIN_2
 #define LPUART1_RX_GPIO_Port GPIOA
 #define DRV_CS_2_Pin GPIO_PIN_3

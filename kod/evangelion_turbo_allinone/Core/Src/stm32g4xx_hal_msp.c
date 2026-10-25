@@ -24,6 +24,8 @@
 /* USER CODE END Includes */
 extern DMA_HandleTypeDef hdma_i2c1_rx;
 
+extern DMA_HandleTypeDef hdma_i2c2_tx;
+
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
 
@@ -125,7 +127,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
     PB1     ------> ADC1_IN12
     PB12     ------> ADC1_IN11
     */
-    GPIO_InitStruct.Pin = DRV_CURRENT_B_Pin|GPIO_PIN_1;
+    GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -219,7 +221,7 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
     PB1     ------> ADC1_IN12
     PB12     ------> ADC1_IN11
     */
-    HAL_GPIO_DeInit(GPIOA, DRV_CURRENT_B_Pin|GPIO_PIN_1);
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_0|GPIO_PIN_1);
 
     HAL_GPIO_DeInit(GPIOB, GPIO_PIN_0|GPIO_PIN_1|DRV_CURRENT_A_Pin);
 
@@ -353,6 +355,28 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
 
     /* Peripheral clock enable */
     __HAL_RCC_I2C2_CLK_ENABLE();
+
+    /* I2C2 DMA Init */
+    /* I2C2_TX Init */
+    hdma_i2c2_tx.Instance = DMA1_Channel2;
+    hdma_i2c2_tx.Init.Request = DMA_REQUEST_I2C2_TX;
+    hdma_i2c2_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+    hdma_i2c2_tx.Init.PeriphInc = DMA_PINC_DISABLE;
+    hdma_i2c2_tx.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_i2c2_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    hdma_i2c2_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+    hdma_i2c2_tx.Init.Mode = DMA_NORMAL;
+    hdma_i2c2_tx.Init.Priority = DMA_PRIORITY_LOW;
+    if (HAL_DMA_Init(&hdma_i2c2_tx) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+    __HAL_LINKDMA(hi2c,hdmatx,hdma_i2c2_tx);
+
+    /* I2C2 interrupt Init */
+    HAL_NVIC_SetPriority(I2C2_EV_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(I2C2_EV_IRQn);
     /* USER CODE BEGIN I2C2_MspInit 1 */
 
     /* USER CODE END I2C2_MspInit 1 */
@@ -409,6 +433,11 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
 
     HAL_GPIO_DeInit(OLED_SCL_GPIO_Port, OLED_SCL_Pin);
 
+    /* I2C2 DMA DeInit */
+    HAL_DMA_DeInit(hi2c->hdmatx);
+
+    /* I2C2 interrupt DeInit */
+    HAL_NVIC_DisableIRQ(I2C2_EV_IRQn);
     /* USER CODE BEGIN I2C2_MspDeInit 1 */
 
     /* USER CODE END I2C2_MspDeInit 1 */
