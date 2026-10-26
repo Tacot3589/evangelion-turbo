@@ -1,0 +1,33 @@
+/*
+ * start_module.h
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+#ifndef INC_TFLUNA_H_
+#define INC_TFLUNA_H_
+
+#include <stdint.h>
+#include "main.h"
+
+
+//======================================= PRIVATE DEFINES
+
+
+//======================================= DEFINES
+#define MIN_AMP_TRESCHOLD 200
+#define LIDARS_FILTERING_ARRAY_SIZE 11
+#define MAX_DISTANCE 75
+#define MIN_DISTANCE 5
+#define CLOSE_DISTANCE 5
+#define MAX_RETRIES_INIT 5
+
+
+//======================================= PUBLIC FUNCTIONS
+uint8_t TFLUNA_INIT(UART_HandleTypeDef *huartRX, UART_HandleTypeDef *huartTX, DMA_HandleTypeDef *hdma, uint8_t *RX);
+uint16_t TFLUNA_AMP(void);
+uint16_t TFLUNA_DIST(void);
+uint16_t TFLUNA_TEMP(void);
+
+#endif /* INC_START_MODULE_H_ */

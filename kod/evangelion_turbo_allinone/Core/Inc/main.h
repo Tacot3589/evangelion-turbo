@@ -31,11 +31,42 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+//#include "TFLUNA.h"
 
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+typedef struct {
+	uint16_t Array[20];
+	uint8_t indx;
+} LidarReceiveFilteringData_t;
+
+typedef struct {
+	LidarReceiveFilteringData_t Dist;
+	LidarReceiveFilteringData_t Amp;
+	LidarReceiveFilteringData_t Temp;
+	uint8_t size;
+} LidarReceiveFiltering_t;
+
+typedef struct {
+	UART_HandleTypeDef *huartRX;
+	uint8_t RX[20];
+	LidarReceiveFiltering_t Buffer;
+	uint16_t Dist;
+	uint16_t Amp;
+	uint16_t Temp;
+} Lidar_t;
+
+typedef struct {
+	UART_HandleTypeDef *huartTX;
+	Lidar_t FrontLeft;
+	Lidar_t FrontRight;
+	Lidar_t BackLeft;
+	Lidar_t BackRight;
+} LineSensors_t;
+
+
 
 /* USER CODE END ET */
 

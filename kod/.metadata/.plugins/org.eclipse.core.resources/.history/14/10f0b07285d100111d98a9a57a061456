@@ -1,0 +1,278 @@
+/*
+ * start_module.c
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+
+#include "start_module.h"
+#include "TFLUNA.h"
+#include "main.h"
+#include "MY_INCLUDES.h"
+#include "stm32g4xx_hal_dma.h"
+
+
+uint8_t ack1 = 0;
+uint8_t ack2 = 0;
+uint8_t ack3 = 0;
+uint8_t ack4 = 0;
+
+uint8_t IN_INIT = true;
+uint8_t actual_command;
+
+uint8_t TFLUNAs_INIT(LineSensors_t *Lunas)
+{
+	uint32_t start;
+	IN_INIT=true;
+
+	//prepare and send
+	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas->FrontRight.huartRX, Lunas->FrontRight.RX, sizeof Lunas->FrontRight.RX) != HAL_OK) {
+	    return 1;
+	}
+	 __HAL_DMA_DISABLE_IT(Lunas->FrontRight.huartRX->hdmarx, DMA_IT_HT);
+
+	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas->FrontLeft.huartRX, Lunas->FrontLeft.RX, sizeof Lunas->FrontLeft.RX) != HAL_OK) {
+	    return 1;
+	}
+	__HAL_DMA_DISABLE_IT(Lunas->FrontLeft.huartRX->hdmarx, DMA_IT_HT);
+
+	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas->BackRight.huartRX,  Lunas->BackRight.RX, sizeof Lunas->BackRight.RX) != HAL_OK) {
+	    return 1;
+	}
+	__HAL_DMA_DISABLE_IT(Lunas->BackRight.huartRX->hdmarx, DMA_IT_HT);
+
+	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas->BackLeft.huartRX, Lunas->BackLeft.RX, sizeof Lunas->BackLeft.RX) != HAL_OK) {
+	    return 1;
+	}
+	__HAL_DMA_DISABLE_IT(Lunas->BackLeft.huartRX->hdmarx, DMA_IT_HT);
+
+
+	//send and wait!
+	actual_command = *CMD_DISABLE_OUTPUT;
+	if (HAL_UART_Transmit(Lunas->huartTX, (uint8_t *)CMD_DISABLE_OUTPUT, sizeof CMD_DISABLE_OUTPUT, INIT_TIMEOUT) != HAL_OK) {
+	    return 1;
+	}
+	//Wait for success
+	start = HAL_GetTick();
+	ack1 = ack2 = ack3 = ack4 = 0;
+	while (true)
+	{
+		if(((ack1 == 1) && (ack2 == 1) && (ack3 == 1) && (ack4 == 1)))
+		{
+			break;
+		}
+
+		else if( (HAL_GetTick() - start) <(INIT_TIMEOUT*4) )
+		{
+			return 1;
+		}
+	}
+
+
+
+	//send and wait!
+	actual_command = *CMD_SET_250HZ;
+	if (HAL_UART_Transmit(Lunas->huartTX, (uint8_t *)CMD_SET_250HZ, sizeof CMD_SET_250HZ, INIT_TIMEOUT) != HAL_OK) {
+	    return 1;
+	}
+	//Wait for success
+	start = HAL_GetTick();
+	ack1 = ack2 = ack3 = ack4 = 0;
+	while (true)
+	{
+		if(((ack1 == 1) && (ack2 == 1) && (ack3 == 1) && (ack4 == 1)))
+		{
+			break;
+		}
+
+		else if( (HAL_GetTick() - start) <(INIT_TIMEOUT*4) )
+		{
+			return 1;
+		}
+	}
+
+
+	//send and wait!
+	actual_command = *CMD_ENABLE_OUTPUT;
+	if (HAL_UART_Transmit(Lunas->huartTX, (uint8_t *)CMD_ENABLE_OUTPUT, sizeof CMD_ENABLE_OUTPUT, INIT_TIMEOUT) != HAL_OK) {
+	    return 1;
+	}
+	//Wait for success
+	start = HAL_GetTick();
+	ack1 = ack2 = ack3 = ack4 = 0;
+	while (true)
+	{
+		if(((ack1 == 1) && (ack2 == 1) && (ack3 == 1) && (ack4 == 1)))
+		{
+			break;
+		}
+
+		else if( (HAL_GetTick() - start) <(INIT_TIMEOUT*4) )
+		{
+			return 1;
+		}
+	}
+
+
+	IN_INIT=false;
+
+/*
+	HAL_UART_AbortReceive(huartRX);
+	__HAL_UART_CLEAR_OREFLAG(huartRX);
+	huartRX->ErrorCode = HAL_UART_ERROR_NONE;
+	huartRX->RxState   = HAL_UART_STATE_READY;
+	huartRX->gState = HAL_UART_STATE_READY;
+	if(HAL_UARTEx_ReceiveToIdle_DMA(huartRX, RX, 9) != HAL_OK)
+		return 1;
+	__HAL_DMA_DISABLE_IT(hdma, DMA_IT_HT);
+*/
+	return HAL_OK;
+}
+
+
+void TFLUNAs_DMA_CALLBACK(LineSensors_t *Lunas, UART_HandleTypeDef *huart)
+{
+	if(IN_INIT == true)
+	{
+	    if (huart->Instance == Lunas->FrontRight.huartRX)
+	    {
+	        ack1 = BUFFER_CONTAINS(Lunas->FrontRight.RX, actual_command);
+	    }
+	    else if (huart->Instance == Lunas->FrontLeft.huartRX)
+	    {
+	    	ack2 = BUFFER_CONTAINS(Lunas->FrontLeft.RX, actual_command);
+		}
+	    else if (huart->Instance == Lunas->BackRight.huartRX)
+		{
+	    	ack3 = BUFFER_CONTAINS(Lunas->BackRight.RX, actual_command);
+	    }
+	    else if (huart->Instance == Lunas->BackLeft.huartRX)
+	    {
+	    	ack4 = BUFFER_CONTAINS(Lunas->BackLeft.RX, actual_command);
+	    }
+	}
+
+	else if(IN_INIT == true)
+	{
+#define LIDARS_FILTERING_ARRAY_SIZE_FRONT 11
+#define LIDARS_FILTERING_ARRAY_SIZE_BACK 11
+
+		uint8_t j, k;
+		uint8_t *RX;
+		uint16_t *buffor_Dist;
+		uint16_t *buffor_Amp;
+		uint16_t *buffor_Temp;
+		uint16_t *Dist;
+		uint16_t *Temp;
+		uint16_t *Amp;
+
+		if(huart->Instance == Lunas->FrontRight.huartRX)
+		{
+			*RX = Lunas->FrontRight.RX;
+			*buffor_Dist = Lunas->FrontRight.bufforDist;
+			*buffor_Amp = Lunas->FrontRight.bufforAmp;
+			*buffor_Temp = Lunas->FrontRight.bufforTemp;
+			*Dist = Lunas->FrontRight.Dist;
+			*Temp = Lunas->FrontRight.Temp;
+			*Amp = Lunas->FrontRight.Amp;
+		}
+
+		for (int i = 1; i < 10; i++)
+		{
+			if (RX[(i-1)% 9] == 0x59 && RX[i%9] == 0x59)
+			{
+				//DISTANCE
+				j = (i + 1) % 9;
+				k = (i + 2) % 9;
+				Dist = RX[j] + (RX[k] << 8);
+
+
+				//AMPERAGE
+				j = (i + 3) % 9;
+				k = (i + 4) % 9;
+				Amp = RX[j] + (RX[k] << 8);
+
+				//TEMPERATURE
+				j = (i + 5) % 9;
+				k = (i + 6) % 9;
+				Temp = RX[j] + (RX[k] << 8);
+
+				if((Dist < MIN_LIDAR_AMP_DIST && Amp > MIN_LIDAR_AMP_DIST_AMP) || Amp > MIN_AMP_TRESCHOLD)
+				{
+					Dist=Dist;
+				}
+				else
+				{
+					Dist = UINT8_MAX;
+				}
+
+				break;
+			}
+
+			//=====MEDIAN FILTERING
+			static uint16_t window1_Dist[LIDARS_FILTERING_ARRAY_SIZE_BACK];
+			static uint16_t window1_Amp[LIDARS_FILTERING_ARRAY_SIZE_BACK];
+			static uint8_t idx1_Dist = 0;
+			static uint8_t idx1_Amp = 0;
+
+			//Wstaw nowe wartosci
+			window1_Dist[idx1_Dist] = Dist;
+			window1_Amp[idx1_Amp] = Amp;
+
+			//Przesun indeksy cyklicznie
+			idx1_Dist = (idx1_Dist + 1) % LIDARS_FILTERING_ARRAY_SIZE_BACK;
+			idx1_Amp = (idx1_Amp + 1) % LIDARS_FILTERING_ARRAY_SIZE_BACK;
+
+			//Kopiuj i sortuj w jednej petli
+			for (int i = 0; i < LIDARS_FILTERING_ARRAY_SIZE_BACK; i++) {
+				buffor_Dist[i] = window1_Dist[i];
+				buffor_Amp[i] = window1_Amp[i];
+			}
+
+			//Sortuj osobno
+			SORT(buffor_Dist, LIDARS_FILTERING_ARRAY_SIZE_BACK);
+			SORT(buffor_Amp, LIDARS_FILTERING_ARRAY_SIZE_BACK);
+
+			//Wyciagnij mediany
+			Dist = buffor_Dist[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE_BACK - 1) / 2)];
+			Amp = buffor_Amp[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE_BACK - 1) / 2)];
+
+			//Save results
+			BackLeft.Distance = Dist;
+			BackLeft.LidarAmp = Amp;
+			BackLeft.LidarTemp = Temp;
+
+
+			if(HAL_UARTEx_ReceiveToIdle_DMA(&huart1, UART1_RX, 9) != HAL_OK)
+				COOKED(LIDARS_INIT_ERR);
+			__HAL_DMA_DISABLE_IT(DMA_HANDLE_UART1, DMA_IT_HT);
+		}
+	}
+}
+
+
+uint8_t BUFFER_CONTAINS(const uint8_t *buffer, const uint8_t *pattern)
+{
+	size_t buffer_len = sizeof buffer;
+	size_t pattern_len = sizeof pattern;
+
+    if (buffer == NULL || pattern == NULL || pattern_len == 0 || pattern_len > buffer_len) {
+        return false;
+    }
+
+    for (size_t i = 0; i <= buffer_len - pattern_len; i++)
+    {
+        size_t j = 0;
+
+        while (j < pattern_len && buffer[i + j] == pattern[j]) {
+            j++;
+        }
+
+        if (j == pattern_len) {
+            return true;
+        }
+    }
+
+    return false;
+}

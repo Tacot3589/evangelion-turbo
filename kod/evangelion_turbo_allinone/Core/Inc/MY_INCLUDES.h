@@ -65,22 +65,15 @@
 //>200 error, veery bad error
 //in separate file
 
-//==================================================== BUZZER
-//INTRO
-#define FREQ_STARTING 500
-#define FREQ_STEP_INIT 50
-
-
 //=================================================== YEEEAAAA BOOIIIIII
 #define NONE 0
 #define LEFT 1
 #define RIGHT 2
-
-//misc
 #define true 1
 #define TRUE 1
 #define false 0
 #define FALSE 0
+
 
 
 //============DEFAULT SETTINGS

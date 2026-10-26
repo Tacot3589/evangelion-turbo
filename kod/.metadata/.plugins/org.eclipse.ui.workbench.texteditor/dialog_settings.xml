@@ -3,6 +3,8 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
+		<item value="Lunas."/>
+		<item value="HAL_UART_Receive_DMA"/>
 		<item value="MX_DMA_INIT"/>
 		<item value="uart4"/>
 		<item value="LIDARS_INIT_UART_TIMEOUT"/>
@@ -16,9 +18,9 @@
 		<item value="StartModule_Started"/>
 		<item value="Module_state"/>
 		<item value="Interrupt"/>
-		<item value="Module_State"/>
 	</list>
 	<list key="replacehistory">
+		<item value="Lunas-&gt;"/>
 		<item value="INIT_TIMEOUT"/>
 	</list>
 </section>

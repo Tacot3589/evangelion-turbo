@@ -1,0 +1,186 @@
+/*
+ * start_module.c
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+
+#include "start_module.h"
+#include "TFLUNA.h"
+#include "main.h"
+#include "MY_INCLUDES.h"
+#include "stm32g4xx_hal_dma.h"
+
+
+uint8_t ack1 = 0;
+uint8_t ack2 = 0;
+uint8_t ack3 = 0;
+uint8_t ack4 = 0;
+
+uint8_t IN_INIT = true;
+uint8_t actual_command;
+
+uint8_t TFLUNAs_INIT(LineSensors_t *Lunas)
+{
+	uint32_t start;
+	IN_INIT=true;
+
+	//prepare and send
+	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas->FrontRight.huartRX, Lunas->FrontRight.RX, sizeof Lunas->FrontRight.RX) != HAL_OK) {
+	    return 1;
+	}
+	 __HAL_DMA_DISABLE_IT(Lunas.FrontRight.huartRX->hdmarx, DMA_IT_HT);
+
+	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas.FrontLeft.huartRX, Lunas.FrontLeft.RX, sizeof Lunas.FrontLeft.RX) != HAL_OK) {
+	    return 1;
+	}
+	__HAL_DMA_DISABLE_IT(Lunas.FrontLeft.huartRX->hdmarx, DMA_IT_HT);
+
+	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas.BackRight.huartRX,  Lunas.BackRight.RX, sizeof Lunas.BackRight.RX) != HAL_OK) {
+	    return 1;
+	}
+	__HAL_DMA_DISABLE_IT(Lunas.BackRight.huartRX->hdmarx, DMA_IT_HT);
+
+	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas.BackLeft.huartRX, Lunas.BackLeft.RX, sizeof Lunas.BackLeft.RX) != HAL_OK) {
+	    return 1;
+	}
+	__HAL_DMA_DISABLE_IT(Lunas.BackLeft.huartRX->hdmarx, DMA_IT_HT);
+
+
+	//send and wait!
+	actual_command = *CMD_DISABLE_OUTPUT;
+	if (HAL_UART_Transmit(Lunas.huartTX, (uint8_t *)CMD_DISABLE_OUTPUT, sizeof CMD_DISABLE_OUTPUT, INIT_TIMEOUT) != HAL_OK) {
+	    return 1;
+	}
+	//Wait for success
+	start = HAL_GetTick();
+	ack1 = ack2 = ack3 = ack4 = 0;
+	while (true)
+	{
+		if(((ack1 == 1) && (ack2 == 1) && (ack3 == 1) && (ack4 == 1)))
+		{
+			break;
+		}
+
+		else if( (HAL_GetTick() - start) <(INIT_TIMEOUT*4) )
+		{
+			return 1;
+		}
+	}
+
+
+
+	//send and wait!
+	actual_command = *CMD_SET_250HZ;
+	if (HAL_UART_Transmit(Lunas.huartTX, (uint8_t *)CMD_SET_250HZ, sizeof CMD_SET_250HZ, INIT_TIMEOUT) != HAL_OK) {
+	    return 1;
+	}
+	//Wait for success
+	start = HAL_GetTick();
+	ack1 = ack2 = ack3 = ack4 = 0;
+	while (true)
+	{
+		if(((ack1 == 1) && (ack2 == 1) && (ack3 == 1) && (ack4 == 1)))
+		{
+			break;
+		}
+
+		else if( (HAL_GetTick() - start) <(INIT_TIMEOUT*4) )
+		{
+			return 1;
+		}
+	}
+
+
+	//send and wait!
+	actual_command = *CMD_ENABLE_OUTPUT;
+	if (HAL_UART_Transmit(Lunas.huartTX, (uint8_t *)CMD_ENABLE_OUTPUT, sizeof CMD_ENABLE_OUTPUT, INIT_TIMEOUT) != HAL_OK) {
+	    return 1;
+	}
+	//Wait for success
+	start = HAL_GetTick();
+	ack1 = ack2 = ack3 = ack4 = 0;
+	while (true)
+	{
+		if(((ack1 == 1) && (ack2 == 1) && (ack3 == 1) && (ack4 == 1)))
+		{
+			break;
+		}
+
+		else if( (HAL_GetTick() - start) <(INIT_TIMEOUT*4) )
+		{
+			return 1;
+		}
+	}
+
+
+	IN_INIT=false;
+
+/*
+	HAL_UART_AbortReceive(huartRX);
+	__HAL_UART_CLEAR_OREFLAG(huartRX);
+	huartRX->ErrorCode = HAL_UART_ERROR_NONE;
+	huartRX->RxState   = HAL_UART_STATE_READY;
+	huartRX->gState = HAL_UART_STATE_READY;
+	if(HAL_UARTEx_ReceiveToIdle_DMA(huartRX, RX, 9) != HAL_OK)
+		return 1;
+	__HAL_DMA_DISABLE_IT(hdma, DMA_IT_HT);
+*/
+	return HAL_OK;
+}
+
+
+void TFLUNAs_DMA_CALLBACK(LineSensors_t *Lunas, UART_HandleTypeDef *huart)
+{
+	if(IN_INIT == true)
+	{
+	    if (huart->Instance == Lunas.FrontRight.huartRX)
+	    {
+	        ack1 = BUFFER_CONTAINS(Lunas.FrontRight.RX, actual_command);
+	    }
+	    else if (huart->Instance == Lunas.FrontLeft.huartRX)
+	    {
+	    	ack2 = BUFFER_CONTAINS(Lunas.FrontLeft.RX, actual_command);
+		}
+	    else if (huart->Instance == Lunas.BackRight.huartRX)
+		{
+	    	ack3 = BUFFER_CONTAINS(Lunas.BackRight.RX, actual_command);
+	    }
+	    else if (huart->Instance == Lunas.BackLeft.huartRX)
+	    {
+	    	ack4 = BUFFER_CONTAINS(Lunas.BackLeft.RX, actual_command);
+	    }
+	}
+
+	else if(IN_INIT == true)
+	{
+
+	}
+}
+
+
+uint8_t BUFFER_CONTAINS(const uint8_t *buffer, const uint8_t *pattern)
+{
+	size_t buffer_len = sizeof buffer;
+	size_t pattern_len = sizeof pattern;
+
+    if (buffer == NULL || pattern == NULL || pattern_len == 0 || pattern_len > buffer_len) {
+        return false;
+    }
+
+    for (size_t i = 0; i <= buffer_len - pattern_len; i++)
+    {
+        size_t j = 0;
+
+        while (j < pattern_len && buffer[i + j] == pattern[j]) {
+            j++;
+        }
+
+        if (j == pattern_len) {
+            return true;
+        }
+    }
+
+    return false;
+}

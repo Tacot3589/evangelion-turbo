@@ -76,6 +76,10 @@ UART_HandleTypeDef hlpuart1;
 UART_HandleTypeDef huart4;
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
+DMA_HandleTypeDef hdma_lpuart1_rx;
+DMA_HandleTypeDef hdma_uart4_rx;
+DMA_HandleTypeDef hdma_usart2_rx;
+DMA_HandleTypeDef hdma_usart3_rx;
 
 SPI_HandleTypeDef hspi2;
 
@@ -89,11 +93,6 @@ TIM_HandleTypeDef htim17;
 
 /* USER CODE BEGIN PV */
 uint32_t dupa = 0;
-volatile uint8_t UART1_RX[9];
-volatile uint8_t UART2_RX[9];
-volatile uint8_t UART3_RX[9];
-volatile uint8_t UART4_RX[9];
-
 //performance!
 static uint32_t last_total = 0;
 static uint32_t last_idle = 0;
@@ -103,7 +102,7 @@ volatile uint8_t MCU_LOAD = 0;
 volatile uint8_t MCU_LOAD_MAX = 0;
 
 
-volatile HAL_StatusTypeDef rx_status;
+LineSensors_t Lunas;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -149,7 +148,11 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+	Lunas.FrontLeft.huartRX = &hlpuart1;
+	Lunas.FrontRight.huartRX = &huart2;
+	Lunas.BackLeft.huartRX = &huart3;
+	Lunas.BackRight.huartRX = &huart4;
+	Lunas.huartTX = &huart2;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -220,54 +223,18 @@ int main(void)
 	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
 	_ssd1306_WriteInTheMiddle("START MODULE...", 30, SMALL);
 	ssd1306_UpdateScreen();
-	StartModule_Startup();
 	HAL_Delay(INIT_DELAY);
+	StartModule_Startup();
+
 
 	//============================= LIDARS
 	ssd1306_Clear();
 	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
-	_ssd1306_WriteInTheMiddle("LIDAR FRONT RIGHT...", 30, SMALL);
+	_ssd1306_WriteInTheMiddle("LIDARs INIT...", 30, SMALL);
 	ssd1306_UpdateScreen();
-
-	uint8_t UART_TX[8];
-	//LIDARS OFF
-	UART_TX[0] = 0x5A;
-	UART_TX[1] = 0x05;
-	UART_TX[2] = 0x07;
-	UART_TX[3] = 0x00;
-	UART_TX[4] = (UART_TX[0] + UART_TX[1] + UART_TX[2] + UART_TX[3]) % 0x100;
-	//HAL_UART_Transmit(&huart2, UART_TX, 5, INIT_TIMEOUT);
-	HAL_UART_Receive(&huart2, UART2_RX, 5, INIT_TIMEOUT);
-
-
-	//if(TFLUNA_INIT(&huart2, &huart2, 0, UART2_RX) != HAL_OK)
-		//Error_Handler();
-	HAL_Delay(20);
-
-	ssd1306_Clear();
-	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
-	_ssd1306_WriteInTheMiddle("LIDAR FRONT LEFT...", 30, SMALL);
-	ssd1306_UpdateScreen();
-	if(TFLUNA_INIT(&hlpuart1, &huart2, 0, UART1_RX) != HAL_OK)
-		Error_Handler();
-	HAL_Delay(20);
-
-	ssd1306_Clear();
-	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
-	_ssd1306_WriteInTheMiddle("LIDAR BACK RIGHT...", 30, SMALL);
-	ssd1306_UpdateScreen();
-	if(TFLUNA_INIT(&huart3, &huart2, 0, UART3_RX) != HAL_OK)
-		Error_Handler();
-	HAL_Delay(20);
-
-	ssd1306_Clear();
-	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
-	_ssd1306_WriteInTheMiddle("LIDAR BACK LEFT...", 30, SMALL);
-	ssd1306_UpdateScreen();
-	if(TFLUNA_INIT(&huart4, &huart2, 0, UART4_RX) != HAL_OK)
-		Error_Handler();
-	HAL_Delay(20);
 	HAL_Delay(INIT_DELAY);
+	if(TFLUNAs_INIT(&Lunas) != HAL_OK)
+		Error_Handler();
 
 	//============================= ADCs
 	ssd1306_Clear();
@@ -1196,6 +1163,18 @@ static void MX_DMA_Init(void)
   /* DMA1_Channel2_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel2_IRQn);
+  /* DMA1_Channel3_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel3_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel3_IRQn);
+  /* DMA1_Channel4_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel4_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel4_IRQn);
+  /* DMA1_Channel5_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
+  /* DMA1_Channel6_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
 
 }
 
@@ -1336,6 +1315,11 @@ void LOAD_PERFORMANCE_CALCULATION()
 
 	if(MCU_LOAD > MCU_LOAD_MAX)
 		MCU_LOAD_MAX = MCU_LOAD;
+}
+
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t size)
+{
+	TFLUNAs_DMA_CALLBACK(&Lunas, huart);
 }
 
 static inline void DWT_Init(void)
