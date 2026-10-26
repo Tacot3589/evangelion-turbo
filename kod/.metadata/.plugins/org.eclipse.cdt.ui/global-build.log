@@ -1,139 +1,119 @@
-23:12:48 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+00:18:00 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
 make -j16 all 
 arm-none-eabi-gcc -gdwarf-4 "../Core/Src/TFLUNA.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/TFLUNA.d" -MT"Core/Src/TFLUNA.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/TFLUNA.o"
 ../Core/Src/TFLUNA.c: In function 'TFLUNAs_INIT':
-../Core/Src/TFLUNA.c:52:24: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'uint8_t' {aka 'unsigned char'} makes pointer from integer without a cast [-Wint-conversion]
-   52 |         actual_command = *CMD_DISABLE_OUTPUT;
+../Core/Src/TFLUNA.c:63:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   63 |         actual_command = CMD_DISABLE_OUTPUT;
       |                        ^
-../Core/Src/TFLUNA.c:75:24: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'uint8_t' {aka 'unsigned char'} makes pointer from integer without a cast [-Wint-conversion]
-   75 |         actual_command = *CMD_SET_250HZ;
+../Core/Src/TFLUNA.c:87:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   87 |         actual_command = CMD_SET_250HZ;
       |                        ^
-../Core/Src/TFLUNA.c:97:24: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'uint8_t' {aka 'unsigned char'} makes pointer from integer without a cast [-Wint-conversion]
-   97 |         actual_command = *CMD_ENABLE_OUTPUT;
+../Core/Src/TFLUNA.c:110:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  110 |         actual_command = CMD_ENABLE_OUTPUT;
       |                        ^
 ../Core/Src/TFLUNA.c: In function 'TFLUNAs_DMA_CALLBACK':
-../Core/Src/TFLUNA.c:174:30: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from 'uint16_t' {aka 'short unsigned int'} makes pointer from integer without a cast [-Wint-conversion]
-  174 |                         Dist = Lunas->FrontRight.Dist;
-      |                              ^
-../Core/Src/TFLUNA.c:175:30: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from 'uint16_t' {aka 'short unsigned int'} makes pointer from integer without a cast [-Wint-conversion]
-  175 |                         Temp = Lunas->FrontRight.Temp;
-      |                              ^
-../Core/Src/TFLUNA.c:176:29: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from 'uint16_t' {aka 'short unsigned int'} makes pointer from integer without a cast [-Wint-conversion]
-  176 |                         Amp = Lunas->FrontRight.Amp;
-      |                             ^
-../Core/Src/TFLUNA.c:177:35: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'uint8_t' {aka 'unsigned char'} makes pointer from integer without a cast [-Wint-conversion]
-  177 |                         Dist_indx = Lunas->FrontRight.Buffer.Dist.indx;
-      |                                   ^
-../Core/Src/TFLUNA.c:178:35: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'uint8_t' {aka 'unsigned char'} makes pointer from integer without a cast [-Wint-conversion]
-  178 |                         Temp_indx = Lunas->FrontRight.Buffer.Temp.indx;
-      |                                   ^
-../Core/Src/TFLUNA.c:179:34: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'uint8_t' {aka 'unsigned char'} makes pointer from integer without a cast [-Wint-conversion]
-  179 |                         Amp_indx =Lunas->FrontRight.Buffer.Amp.indx;
-      |                                  ^
-../Core/Src/TFLUNA.c:189:30: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from 'uint16_t' {aka 'short unsigned int'} makes pointer from integer without a cast [-Wint-conversion]
-  189 |                         Dist = Lunas->FrontLeft.Dist;
-      |                              ^
-../Core/Src/TFLUNA.c:190:30: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from 'uint16_t' {aka 'short unsigned int'} makes pointer from integer without a cast [-Wint-conversion]
-  190 |                         Temp = Lunas->FrontLeft.Temp;
-      |                              ^
-../Core/Src/TFLUNA.c:191:29: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from 'uint16_t' {aka 'short unsigned int'} makes pointer from integer without a cast [-Wint-conversion]
-  191 |                         Amp = Lunas->FrontLeft.Amp;
-      |                             ^
-../Core/Src/TFLUNA.c:192:35: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'uint8_t' {aka 'unsigned char'} makes pointer from integer without a cast [-Wint-conversion]
-  192 |                         Dist_indx = Lunas->FrontLeft.Buffer.Dist.indx;
-      |                                   ^
-../Core/Src/TFLUNA.c:193:35: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'uint8_t' {aka 'unsigned char'} makes pointer from integer without a cast [-Wint-conversion]
-  193 |                         Temp_indx = Lunas->FrontLeft.Buffer.Temp.indx;
-      |                                   ^
-../Core/Src/TFLUNA.c:194:34: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'uint8_t' {aka 'unsigned char'} makes pointer from integer without a cast [-Wint-conversion]
-  194 |                         Amp_indx =Lunas->FrontLeft.Buffer.Amp.indx;
-      |                                  ^
-../Core/Src/TFLUNA.c:204:30: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from 'uint16_t' {aka 'short unsigned int'} makes pointer from integer without a cast [-Wint-conversion]
-  204 |                         Dist = Lunas->BackRight.Dist;
-      |                              ^
-../Core/Src/TFLUNA.c:205:30: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from 'uint16_t' {aka 'short unsigned int'} makes pointer from integer without a cast [-Wint-conversion]
-  205 |                         Temp = Lunas->BackRight.Temp;
-      |                              ^
-../Core/Src/TFLUNA.c:206:29: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from 'uint16_t' {aka 'short unsigned int'} makes pointer from integer without a cast [-Wint-conversion]
-  206 |                         Amp = Lunas->BackRight.Amp;
-      |                             ^
-../Core/Src/TFLUNA.c:207:35: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'uint8_t' {aka 'unsigned char'} makes pointer from integer without a cast [-Wint-conversion]
-  207 |                         Dist_indx = Lunas->BackRight.Buffer.Dist.indx;
-      |                                   ^
-../Core/Src/TFLUNA.c:208:35: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'uint8_t' {aka 'unsigned char'} makes pointer from integer without a cast [-Wint-conversion]
-  208 |                         Temp_indx = Lunas->BackRight.Buffer.Temp.indx;
-      |                                   ^
-../Core/Src/TFLUNA.c:209:34: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'uint8_t' {aka 'unsigned char'} makes pointer from integer without a cast [-Wint-conversion]
-  209 |                         Amp_indx = Lunas->BackRight.Buffer.Amp.indx;
-      |                                  ^
-../Core/Src/TFLUNA.c:219:30: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from 'uint16_t' {aka 'short unsigned int'} makes pointer from integer without a cast [-Wint-conversion]
-  219 |                         Dist = Lunas->BackLeft.Dist;
-      |                              ^
-../Core/Src/TFLUNA.c:220:30: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from 'uint16_t' {aka 'short unsigned int'} makes pointer from integer without a cast [-Wint-conversion]
-  220 |                         Temp = Lunas->BackLeft.Temp;
-      |                              ^
-../Core/Src/TFLUNA.c:221:29: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from 'uint16_t' {aka 'short unsigned int'} makes pointer from integer without a cast [-Wint-conversion]
-  221 |                         Amp = Lunas->BackLeft.Amp;
-      |                             ^
-../Core/Src/TFLUNA.c:222:35: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'uint8_t' {aka 'unsigned char'} makes pointer from integer without a cast [-Wint-conversion]
-  222 |                         Dist_indx = Lunas->BackLeft.Buffer.Dist.indx;
-      |                                   ^
-../Core/Src/TFLUNA.c:223:35: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'uint8_t' {aka 'unsigned char'} makes pointer from integer without a cast [-Wint-conversion]
-  223 |                         Temp_indx = Lunas->BackLeft.Buffer.Temp.indx;
-      |                                   ^
-../Core/Src/TFLUNA.c:224:34: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'uint8_t' {aka 'unsigned char'} makes pointer from integer without a cast [-Wint-conversion]
-  224 |                         Amp_indx =Lunas->BackLeft.Buffer.Amp.indx;
-      |                                  ^
+../Core/Src/TFLUNA.c:182:62: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  182 |                 ack1 = BUFFER_CONTAINS(Lunas->FrontRight.RX, actual_command, actual_command_lenght);
+      |                                                              ^~~~~~~~~~~~~~
+In file included from ../Core/Src/TFLUNA.c:10:
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:186:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  186 |                 ack2 = BUFFER_CONTAINS(Lunas->FrontLeft.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:190:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  190 |                 ack3 = BUFFER_CONTAINS(Lunas->BackRight.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:194:60: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  194 |                 ack4 = BUFFER_CONTAINS(Lunas->BackLeft.RX, actual_command, actual_command_lenght);
+      |                                                            ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:211:28: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from incompatible pointer type 'uint8_t (*)[40]' {aka 'unsigned char (*)[40]'} [-Wincompatible-pointer-types]
+  211 |                         RX = &Lunas->FrontRight.RX;
+      |                            ^
+../Core/Src/TFLUNA.c:212:37: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from incompatible pointer type 'uint16_t (*)[20]' {aka 'short unsigned int (*)[20]'} [-Wincompatible-pointer-types]
+  212 |                         buffor_Dist = &Lunas->FrontRight.Buffer.Dist.Array;
+      |                                     ^
+../Core/Src/TFLUNA.c:213:36: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from incompatible pointer type 'uint16_t (*)[20]' {aka 'short unsigned int (*)[20]'} [-Wincompatible-pointer-types]
+  213 |                         buffor_Amp = &Lunas->FrontRight.Buffer.Amp.Array;
+      |                                    ^
+../Core/Src/TFLUNA.c:214:37: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from incompatible pointer type 'uint16_t (*)[20]' {aka 'short unsigned int (*)[20]'} [-Wincompatible-pointer-types]
+  214 |                         buffor_Temp = &Lunas->FrontRight.Buffer.Temp.Array;
+      |                                     ^
+../Core/Src/TFLUNA.c:226:28: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from incompatible pointer type 'uint8_t (*)[40]' {aka 'unsigned char (*)[40]'} [-Wincompatible-pointer-types]
+  226 |                         RX = &Lunas->FrontLeft.RX;
+      |                            ^
+../Core/Src/TFLUNA.c:227:37: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from incompatible pointer type 'uint16_t (*)[20]' {aka 'short unsigned int (*)[20]'} [-Wincompatible-pointer-types]
+  227 |                         buffor_Dist = &Lunas->FrontLeft.Buffer.Dist.Array;
+      |                                     ^
+../Core/Src/TFLUNA.c:228:36: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from incompatible pointer type 'uint16_t (*)[20]' {aka 'short unsigned int (*)[20]'} [-Wincompatible-pointer-types]
+  228 |                         buffor_Amp = &Lunas->FrontLeft.Buffer.Amp.Array;
+      |                                    ^
+../Core/Src/TFLUNA.c:229:37: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from incompatible pointer type 'uint16_t (*)[20]' {aka 'short unsigned int (*)[20]'} [-Wincompatible-pointer-types]
+  229 |                         buffor_Temp =&Lunas->FrontLeft.Buffer.Temp.Array;
+      |                                     ^
+../Core/Src/TFLUNA.c:241:28: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from incompatible pointer type 'uint8_t (*)[40]' {aka 'unsigned char (*)[40]'} [-Wincompatible-pointer-types]
+  241 |                         RX = &Lunas->BackRight.RX;
+      |                            ^
+../Core/Src/TFLUNA.c:242:37: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from incompatible pointer type 'uint16_t (*)[20]' {aka 'short unsigned int (*)[20]'} [-Wincompatible-pointer-types]
+  242 |                         buffor_Dist = &Lunas->BackRight.Buffer.Dist.Array;
+      |                                     ^
+../Core/Src/TFLUNA.c:243:36: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from incompatible pointer type 'uint16_t (*)[20]' {aka 'short unsigned int (*)[20]'} [-Wincompatible-pointer-types]
+  243 |                         buffor_Amp = &Lunas->BackRight.Buffer.Amp.Array;
+      |                                    ^
+../Core/Src/TFLUNA.c:244:37: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from incompatible pointer type 'uint16_t (*)[20]' {aka 'short unsigned int (*)[20]'} [-Wincompatible-pointer-types]
+  244 |                         buffor_Temp =&Lunas->BackRight.Buffer.Temp.Array;
+      |                                     ^
+../Core/Src/TFLUNA.c:256:28: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from incompatible pointer type 'uint8_t (*)[40]' {aka 'unsigned char (*)[40]'} [-Wincompatible-pointer-types]
+  256 |                         RX = &Lunas->BackLeft.RX;
+      |                            ^
+../Core/Src/TFLUNA.c:257:37: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from incompatible pointer type 'uint16_t (*)[20]' {aka 'short unsigned int (*)[20]'} [-Wincompatible-pointer-types]
+  257 |                         buffor_Dist = &Lunas->BackLeft.Buffer.Dist.Array;
+      |                                     ^
+../Core/Src/TFLUNA.c:258:36: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from incompatible pointer type 'uint16_t (*)[20]' {aka 'short unsigned int (*)[20]'} [-Wincompatible-pointer-types]
+  258 |                         buffor_Amp = &Lunas->BackLeft.Buffer.Amp.Array;
+      |                                    ^
+../Core/Src/TFLUNA.c:259:37: warning: assignment to 'uint16_t *' {aka 'short unsigned int *'} from incompatible pointer type 'uint16_t (*)[20]' {aka 'short unsigned int (*)[20]'} [-Wincompatible-pointer-types]
+  259 |                         buffor_Temp =&Lunas->BackLeft.Buffer.Temp.Array;
+      |                                     ^
 arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: evangelion_turbo_allinone.elf
  
 arm-none-eabi-size  evangelion_turbo_allinone.elf 
 arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
    text	   data	    bss	    dec	    hex	filename
-  53860	     36	   5484	  59380	   e7f4	evangelion_turbo_allinone.elf
+  54988	     36	   5572	  60596	   ecb4	evangelion_turbo_allinone.elf
 Finished building: default.size.stdout
  
 Finished building: evangelion_turbo_allinone.list
  
-23:14:45 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+00:18:05 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
 make -j16 all 
-arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-In file included from ../Core/Src/main.c:26:
-../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
-   15 | static uint8_t BUFFER_CONTAINS(const uint8_t *buffer, const uint8_t *pattern);
-      |                ^~~~~~~~~~~~~~~
-../Core/Inc/TFLUNA.h:16:17: warning: 'GET_MEDIAN' declared 'static' but never defined [-Wunused-function]
-   16 | static uint16_t GET_MEDIAN(uint16_t *Array, uint8_t Array_Filtering_size);
-      |                 ^~~~~~~~~~
-arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: evangelion_turbo_allinone.elf
- 
 arm-none-eabi-size  evangelion_turbo_allinone.elf 
-arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
    text	   data	    bss	    dec	    hex	filename
-  53872	     36	   5484	  59392	   e800	evangelion_turbo_allinone.elf
+  54988	     36	   5572	  60596	   ecb4	evangelion_turbo_allinone.elf
 Finished building: default.size.stdout
  
-Finished building: evangelion_turbo_allinone.list
- 
-23:15:18 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+00:18:21 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
 make -j16 all 
-arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-In file included from ../Core/Src/main.c:26:
-../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
-   15 | static uint8_t BUFFER_CONTAINS(const uint8_t *buffer, const uint8_t *pattern);
-      |                ^~~~~~~~~~~~~~~
-../Core/Inc/TFLUNA.h:16:17: warning: 'GET_MEDIAN' declared 'static' but never defined [-Wunused-function]
-   16 | static uint16_t GET_MEDIAN(uint16_t *Array, uint8_t Array_Filtering_size);
-      |                 ^~~~~~~~~~
-arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: evangelion_turbo_allinone.elf
- 
 arm-none-eabi-size  evangelion_turbo_allinone.elf 
-arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
    text	   data	    bss	    dec	    hex	filename
-  53872	     36	   5484	  59392	   e800	evangelion_turbo_allinone.elf
+  54988	     36	   5572	  60596	   ecb4	evangelion_turbo_allinone.elf
 Finished building: default.size.stdout
  
-Finished building: evangelion_turbo_allinone.list
+00:18:38 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j16 all 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+   text	   data	    bss	    dec	    hex	filename
+  54988	     36	   5572	  60596	   ecb4	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
  

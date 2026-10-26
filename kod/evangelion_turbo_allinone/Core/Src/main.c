@@ -264,7 +264,7 @@ int main(void)
 	_ssd1306_WriteInTheMiddle("PERFORMANCE...", 30, SMALL);
 	ssd1306_UpdateScreen();
 	HAL_Delay(INIT_DELAY);
-	//DWT_Init();
+	DWT_Init();
 
 	//============================= TIMERS
 	ssd1306_Clear();
@@ -307,12 +307,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	dupa = dupa+1;
-	/*
 	uint32_t start = DWT->CYCCNT;
 	__WFI();
 	cpu_idle_cycles += (DWT->CYCCNT - start);
-	*/
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -1319,6 +1317,7 @@ void LOAD_PERFORMANCE_CALCULATION()
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t size)
 {
+	dupa++;
 	TFLUNAs_DMA_CALLBACK(&Lunas, huart);
 }
 

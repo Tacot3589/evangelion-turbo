@@ -51,7 +51,7 @@ typedef struct {
 
 typedef struct {
 	UART_HandleTypeDef *huartRX;
-	uint8_t RX[20];
+	uint8_t RX[40];
 	LidarReceiveFiltering_t Buffer;
 	uint16_t Dist;
 	uint16_t Amp;

@@ -13,35 +13,46 @@
 #include "stm32g4xx_hal_dma.h"
 
 
-uint8_t ack1 = 0;
-uint8_t ack2 = 0;
-uint8_t ack3 = 0;
-uint8_t ack4 = 0;
+volatile uint8_t ack1 = 0;
+volatile uint8_t ack2 = 0;
+volatile uint8_t ack3 = 0;
+volatile uint8_t ack4 = 0;
 
-uint8_t IN_INIT = true;
-uint8_t *actual_command;
+volatile uint8_t IN_INIT = true;
+volatile uint8_t *actual_command;
+volatile uint8_t actual_command_lenght = 0;
+ uint8_t buffer_lenght = 0;
 
 uint8_t TFLUNAs_INIT(LineSensors_t *Lunas)
 {
 	uint32_t start;
+	buffer_lenght = sizeof Lunas->FrontRight.RX;
 	IN_INIT=true;
 
 	//prepare and send
+	if (__HAL_UART_GET_FLAG(Lunas->FrontRight.huartRX, UART_FLAG_ORE) != RESET)
+	    __HAL_UART_CLEAR_OREFLAG(Lunas->FrontRight.huartRX);
 	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas->FrontRight.huartRX, Lunas->FrontRight.RX, sizeof Lunas->FrontRight.RX) != HAL_OK) {
 	    return 1;
 	}
 	 __HAL_DMA_DISABLE_IT(Lunas->FrontRight.huartRX->hdmarx, DMA_IT_HT);
 
+	if (__HAL_UART_GET_FLAG(Lunas->FrontLeft.huartRX, UART_FLAG_ORE) != RESET)
+		__HAL_UART_CLEAR_OREFLAG(Lunas->FrontLeft.huartRX);
 	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas->FrontLeft.huartRX, Lunas->FrontLeft.RX, sizeof Lunas->FrontLeft.RX) != HAL_OK) {
 	    return 1;
 	}
 	__HAL_DMA_DISABLE_IT(Lunas->FrontLeft.huartRX->hdmarx, DMA_IT_HT);
 
+	if (__HAL_UART_GET_FLAG(Lunas->BackRight.huartRX, UART_FLAG_ORE) != RESET)
+			__HAL_UART_CLEAR_OREFLAG(Lunas->BackRight.huartRX);
 	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas->BackRight.huartRX,  Lunas->BackRight.RX, sizeof Lunas->BackRight.RX) != HAL_OK) {
 	    return 1;
 	}
 	__HAL_DMA_DISABLE_IT(Lunas->BackRight.huartRX->hdmarx, DMA_IT_HT);
 
+	if (__HAL_UART_GET_FLAG(Lunas->BackLeft.huartRX, UART_FLAG_ORE) != RESET)
+			__HAL_UART_CLEAR_OREFLAG(Lunas->BackLeft.huartRX);
 	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas->BackLeft.huartRX, Lunas->BackLeft.RX, sizeof Lunas->BackLeft.RX) != HAL_OK) {
 	    return 1;
 	}
@@ -49,13 +60,14 @@ uint8_t TFLUNAs_INIT(LineSensors_t *Lunas)
 
 
 	//send and wait!
-	actual_command = *CMD_DISABLE_OUTPUT;
+	actual_command = CMD_DISABLE_OUTPUT;
+	actual_command_lenght = sizeof CMD_DISABLE_OUTPUT;
+	ack1 = ack2 = ack3 = ack4 = 0;
 	if (HAL_UART_Transmit(Lunas->huartTX, (uint8_t *)CMD_DISABLE_OUTPUT, sizeof CMD_DISABLE_OUTPUT, INIT_TIMEOUT) != HAL_OK) {
 	    return 1;
 	}
 	//Wait for success
 	start = HAL_GetTick();
-	ack1 = ack2 = ack3 = ack4 = 0;
 	while (true)
 	{
 		if(((ack1 == 1) && (ack2 == 1) && (ack3 == 1) && (ack4 == 1)))
@@ -63,7 +75,7 @@ uint8_t TFLUNAs_INIT(LineSensors_t *Lunas)
 			break;
 		}
 
-		else if( (HAL_GetTick() - start) <(INIT_TIMEOUT*4) )
+		else if( (HAL_GetTick() - start) > (INIT_TIMEOUT*4) )
 		{
 			return 1;
 		}
@@ -72,13 +84,14 @@ uint8_t TFLUNAs_INIT(LineSensors_t *Lunas)
 
 
 	//send and wait!
-	actual_command = *CMD_SET_250HZ;
+	actual_command = CMD_SET_250HZ;
+	actual_command_lenght = sizeof CMD_SET_250HZ;
+	ack1 = ack2 = ack3 = ack4 = 0;
 	if (HAL_UART_Transmit(Lunas->huartTX, (uint8_t *)CMD_SET_250HZ, sizeof CMD_SET_250HZ, INIT_TIMEOUT) != HAL_OK) {
 	    return 1;
 	}
 	//Wait for success
 	start = HAL_GetTick();
-	ack1 = ack2 = ack3 = ack4 = 0;
 	while (true)
 	{
 		if(((ack1 == 1) && (ack2 == 1) && (ack3 == 1) && (ack4 == 1)))
@@ -86,7 +99,7 @@ uint8_t TFLUNAs_INIT(LineSensors_t *Lunas)
 			break;
 		}
 
-		else if( (HAL_GetTick() - start) <(INIT_TIMEOUT*4) )
+		else if( (HAL_GetTick() - start) > (INIT_TIMEOUT*4) )
 		{
 			return 1;
 		}
@@ -94,13 +107,14 @@ uint8_t TFLUNAs_INIT(LineSensors_t *Lunas)
 
 
 	//send and wait!
-	actual_command = *CMD_ENABLE_OUTPUT;
+	actual_command = CMD_ENABLE_OUTPUT;
+	actual_command_lenght = sizeof CMD_ENABLE_OUTPUT;
+	ack1 = ack2 = ack3 = ack4 = 0;
 	if (HAL_UART_Transmit(Lunas->huartTX, (uint8_t *)CMD_ENABLE_OUTPUT, sizeof CMD_ENABLE_OUTPUT, INIT_TIMEOUT) != HAL_OK) {
 	    return 1;
 	}
 	//Wait for success
 	start = HAL_GetTick();
-	ack1 = ack2 = ack3 = ack4 = 0;
 	while (true)
 	{
 		if(((ack1 == 1) && (ack2 == 1) && (ack3 == 1) && (ack4 == 1)))
@@ -108,26 +122,54 @@ uint8_t TFLUNAs_INIT(LineSensors_t *Lunas)
 			break;
 		}
 
-		else if( (HAL_GetTick() - start) <(INIT_TIMEOUT*4) )
+		else if( (HAL_GetTick() - start) > (INIT_TIMEOUT*4) )
 		{
 			return 1;
 		}
 	}
 
+	//=============================================Restart communication with normal leghnt
+	if (HAL_UART_AbortReceive(Lunas->FrontRight.huartRX) != HAL_OK)
+	    return 1;
+	if (__HAL_UART_GET_FLAG(Lunas->FrontRight.huartRX, UART_FLAG_ORE) != RESET)
+	    __HAL_UART_CLEAR_OREFLAG(Lunas->FrontRight.huartRX);
+	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas->FrontRight.huartRX, Lunas->FrontRight.RX, 9) != HAL_OK) {
+	    return 1;
+	}
+	 __HAL_DMA_DISABLE_IT(Lunas->FrontRight.huartRX->hdmarx, DMA_IT_HT);
+
+
+	if (HAL_UART_AbortReceive(Lunas->FrontLeft.huartRX) != HAL_OK)
+		return 1;
+	if (__HAL_UART_GET_FLAG(Lunas->FrontLeft.huartRX, UART_FLAG_ORE) != RESET)
+		__HAL_UART_CLEAR_OREFLAG(Lunas->FrontLeft.huartRX);
+	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas->FrontLeft.huartRX, Lunas->FrontLeft.RX, 9) != HAL_OK) {
+	    return 1;
+	}
+	__HAL_DMA_DISABLE_IT(Lunas->FrontLeft.huartRX->hdmarx, DMA_IT_HT);
+
+
+	if (HAL_UART_AbortReceive(Lunas->BackRight.huartRX) != HAL_OK)
+	    return 1;
+	if (__HAL_UART_GET_FLAG(Lunas->BackRight.huartRX, UART_FLAG_ORE) != RESET)
+			__HAL_UART_CLEAR_OREFLAG(Lunas->BackRight.huartRX);
+	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas->BackRight.huartRX,  Lunas->BackRight.RX, 9) != HAL_OK) {
+	    return 1;
+	}
+	__HAL_DMA_DISABLE_IT(Lunas->BackRight.huartRX->hdmarx, DMA_IT_HT);
+
+
+	if (HAL_UART_AbortReceive(Lunas->BackLeft.huartRX) != HAL_OK)
+	    return 1;
+	if (__HAL_UART_GET_FLAG(Lunas->BackLeft.huartRX, UART_FLAG_ORE) != RESET)
+			__HAL_UART_CLEAR_OREFLAG(Lunas->BackLeft.huartRX);
+	if (HAL_UARTEx_ReceiveToIdle_DMA(Lunas->BackLeft.huartRX, Lunas->BackLeft.RX, 9) != HAL_OK) {
+	    return 1;
+	}
+	__HAL_DMA_DISABLE_IT(Lunas->BackLeft.huartRX->hdmarx, DMA_IT_HT);
 
 	IN_INIT=false;
-
-/*
-	HAL_UART_AbortReceive(huartRX);
-	__HAL_UART_CLEAR_OREFLAG(huartRX);
-	huartRX->ErrorCode = HAL_UART_ERROR_NONE;
-	huartRX->RxState   = HAL_UART_STATE_READY;
-	huartRX->gState = HAL_UART_STATE_READY;
-	if(HAL_UARTEx_ReceiveToIdle_DMA(huartRX, RX, 9) != HAL_OK)
-		return 1;
-	__HAL_DMA_DISABLE_IT(hdma, DMA_IT_HT);
-*/
-	return HAL_OK;
+	return 0;
 }
 
 
@@ -137,25 +179,24 @@ void TFLUNAs_DMA_CALLBACK(LineSensors_t *Lunas, UART_HandleTypeDef *huart)
 	{
 	    if (huart->Instance == Lunas->FrontRight.huartRX->Instance)
 	    {
-	        ack1 = BUFFER_CONTAINS(Lunas->FrontRight.RX, actual_command);
+	        ack1 = BUFFER_CONTAINS(Lunas->FrontRight.RX, actual_command, actual_command_lenght);
 	    }
 	    else if (huart->Instance == Lunas->FrontLeft.huartRX->Instance)
 	    {
-	    	ack2 = BUFFER_CONTAINS(Lunas->FrontLeft.RX, actual_command);
+	    	ack2 = BUFFER_CONTAINS(Lunas->FrontLeft.RX, actual_command, actual_command_lenght);
 		}
 	    else if (huart->Instance == Lunas->BackRight.huartRX->Instance)
 		{
-	    	ack3 = BUFFER_CONTAINS(Lunas->BackRight.RX, actual_command);
+	    	ack3 = BUFFER_CONTAINS(Lunas->BackRight.RX, actual_command, actual_command_lenght);
 	    }
 	    else if (huart->Instance == Lunas->BackLeft.huartRX->Instance)
 	    {
-	    	ack4 = BUFFER_CONTAINS(Lunas->BackLeft.RX, actual_command);
+	    	ack4 = BUFFER_CONTAINS(Lunas->BackLeft.RX, actual_command, actual_command_lenght);
 	    }
 	}
 
-	else if(IN_INIT == true)
+	else if(IN_INIT == false)
 	{
-
 		uint8_t j, k;
 		uint8_t *RX;
 		uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
@@ -167,62 +208,65 @@ void TFLUNAs_DMA_CALLBACK(LineSensors_t *Lunas, UART_HandleTypeDef *huart)
 		{
 			Lunas->FrontRight.Buffer.size = LIDARS_FILTERING_ARRAY_SIZE_FRONT;
 			Array_Filtering_size = LIDARS_FILTERING_ARRAY_SIZE_FRONT;
-			RX = Lunas->FrontRight.RX;
-			buffor_Dist = Lunas->FrontRight.Buffer.Dist.Array;
-			buffor_Amp = Lunas->FrontRight.Buffer.Amp.Array;
-			buffor_Temp =Lunas->FrontRight.Buffer.Temp.Array;
-			Dist = Lunas->FrontRight.Dist;
-			Temp = Lunas->FrontRight.Temp;
-			Amp = Lunas->FrontRight.Amp;
-			Dist_indx = Lunas->FrontRight.Buffer.Dist.indx;
-			Temp_indx = Lunas->FrontRight.Buffer.Temp.indx;
-			Amp_indx =Lunas->FrontRight.Buffer.Amp.indx;
+			RX = &Lunas->FrontRight.RX;
+			buffor_Dist = &Lunas->FrontRight.Buffer.Dist.Array;
+			buffor_Amp = &Lunas->FrontRight.Buffer.Amp.Array;
+			buffor_Temp = &Lunas->FrontRight.Buffer.Temp.Array;
+			Dist = &Lunas->FrontRight.Dist;
+			Temp = &Lunas->FrontRight.Temp;
+			Amp = &Lunas->FrontRight.Amp;
+			Dist_indx = &Lunas->FrontRight.Buffer.Dist.indx;
+			Temp_indx = &Lunas->FrontRight.Buffer.Temp.indx;
+			Amp_indx = &Lunas->FrontRight.Buffer.Amp.indx;
 		}
 		else if(huart->Instance == Lunas->FrontLeft.huartRX->Instance)
 		{
 			Lunas->FrontLeft.Buffer.size = LIDARS_FILTERING_ARRAY_SIZE_FRONT;
 			Array_Filtering_size = LIDARS_FILTERING_ARRAY_SIZE_FRONT;
-			RX = Lunas->FrontLeft.RX;
-			buffor_Dist = Lunas->FrontLeft.Buffer.Dist.Array;
-			buffor_Amp = Lunas->FrontLeft.Buffer.Amp.Array;
-			buffor_Temp =Lunas->FrontLeft.Buffer.Temp.Array;
-			Dist = Lunas->FrontLeft.Dist;
-			Temp = Lunas->FrontLeft.Temp;
-			Amp = Lunas->FrontLeft.Amp;
-			Dist_indx = Lunas->FrontLeft.Buffer.Dist.indx;
-			Temp_indx = Lunas->FrontLeft.Buffer.Temp.indx;
-			Amp_indx =Lunas->FrontLeft.Buffer.Amp.indx;
+			RX = &Lunas->FrontLeft.RX;
+			buffor_Dist = &Lunas->FrontLeft.Buffer.Dist.Array;
+			buffor_Amp = &Lunas->FrontLeft.Buffer.Amp.Array;
+			buffor_Temp =&Lunas->FrontLeft.Buffer.Temp.Array;
+			Dist = &Lunas->FrontLeft.Dist;
+			Temp = &Lunas->FrontLeft.Temp;
+			Amp = &Lunas->FrontLeft.Amp;
+			Dist_indx = &Lunas->FrontLeft.Buffer.Dist.indx;
+			Temp_indx = &Lunas->FrontLeft.Buffer.Temp.indx;
+			Amp_indx = &Lunas->FrontLeft.Buffer.Amp.indx;
 		}
 		else if(huart->Instance == Lunas->BackRight.huartRX->Instance)
 		{
 			Lunas->BackRight.Buffer.size = LIDARS_FILTERING_ARRAY_SIZE_FRONT;
 			Array_Filtering_size = LIDARS_FILTERING_ARRAY_SIZE_BACK;
-			RX = Lunas->BackRight.RX;
-			buffor_Dist = Lunas->BackRight.Buffer.Dist.Array;
-			buffor_Amp = Lunas->BackRight.Buffer.Amp.Array;
-			buffor_Temp =Lunas->BackRight.Buffer.Temp.Array;
-			Dist = Lunas->BackRight.Dist;
-			Temp = Lunas->BackRight.Temp;
-			Amp = Lunas->BackRight.Amp;
-			Dist_indx = Lunas->BackRight.Buffer.Dist.indx;
-			Temp_indx = Lunas->BackRight.Buffer.Temp.indx;
-			Amp_indx = Lunas->BackRight.Buffer.Amp.indx;
+			RX = &Lunas->BackRight.RX;
+			buffor_Dist = &Lunas->BackRight.Buffer.Dist.Array;
+			buffor_Amp = &Lunas->BackRight.Buffer.Amp.Array;
+			buffor_Temp =&Lunas->BackRight.Buffer.Temp.Array;
+			Dist = &Lunas->BackRight.Dist;
+			Temp = &Lunas->BackRight.Temp;
+			Amp =& Lunas->BackRight.Amp;
+			Dist_indx = &Lunas->BackRight.Buffer.Dist.indx;
+			Temp_indx = &Lunas->BackRight.Buffer.Temp.indx;
+			Amp_indx = &Lunas->BackRight.Buffer.Amp.indx;
 		}
 		else if(huart->Instance == Lunas->BackLeft.huartRX->Instance)
 		{
 			Lunas->BackLeft.Buffer.size = LIDARS_FILTERING_ARRAY_SIZE_FRONT;
 			Array_Filtering_size = LIDARS_FILTERING_ARRAY_SIZE_BACK;
-			RX = Lunas->BackLeft.RX;
-			buffor_Dist = Lunas->BackLeft.Buffer.Dist.Array;
-			buffor_Amp = Lunas->BackLeft.Buffer.Amp.Array;
-			buffor_Temp =Lunas->BackLeft.Buffer.Temp.Array;
-			Dist = Lunas->BackLeft.Dist;
-			Temp = Lunas->BackLeft.Temp;
-			Amp = Lunas->BackLeft.Amp;
-			Dist_indx = Lunas->BackLeft.Buffer.Dist.indx;
-			Temp_indx = Lunas->BackLeft.Buffer.Temp.indx;
-			Amp_indx =Lunas->BackLeft.Buffer.Amp.indx;
+			RX = &Lunas->BackLeft.RX;
+			buffor_Dist = &Lunas->BackLeft.Buffer.Dist.Array;
+			buffor_Amp = &Lunas->BackLeft.Buffer.Amp.Array;
+			buffor_Temp =&Lunas->BackLeft.Buffer.Temp.Array;
+			Dist = &Lunas->BackLeft.Dist;
+			Temp = &Lunas->BackLeft.Temp;
+			Amp = &Lunas->BackLeft.Amp;
+			Dist_indx = &Lunas->BackLeft.Buffer.Dist.indx;
+			Temp_indx = &Lunas->BackLeft.Buffer.Temp.indx;
+			Amp_indx = &Lunas->BackLeft.Buffer.Amp.indx;
 		}
+		else
+			return;
+
 
 		for (int i = 1; i < 10; i++)
 		{
@@ -276,10 +320,11 @@ void TFLUNAs_DMA_CALLBACK(LineSensors_t *Lunas, UART_HandleTypeDef *huart)
 }
 
 
-uint8_t BUFFER_CONTAINS(const uint8_t *buffer, const uint8_t *pattern)
+uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size) //todo uint8_t pattern_size
 {
-	size_t buffer_len = sizeof buffer;
-	size_t pattern_len = sizeof pattern;
+
+	size_t buffer_len = buffer_lenght;
+	size_t pattern_len = pattern_size;
 
     if (buffer == NULL || pattern == NULL || pattern_len == 0 || pattern_len > buffer_len) {
         return false;

@@ -3,6 +3,10 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
+		<item value="dupa"/>
+		<item value="IN_INIT"/>
+		<item value="MIN_AMP_TRESCHOLD"/>
+		<item value="MIN_LIDAR_AMP_DIST_AMP"/>
 		<item value="Lunas."/>
 		<item value="HAL_UART_Receive_DMA"/>
 		<item value="MX_DMA_INIT"/>
@@ -14,10 +18,6 @@
 		<item value="TIM"/>
 		<item value="TIM15"/>
 		<item value="TIM1"/>
-		<item value="RC5_Short"/>
-		<item value="StartModule_Started"/>
-		<item value="Module_state"/>
-		<item value="Interrupt"/>
 	</list>
 	<list key="replacehistory">
 		<item value="Lunas-&gt;"/>

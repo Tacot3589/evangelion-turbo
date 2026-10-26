@@ -12,7 +12,7 @@
 #include "main.h"
 
 //======================================= PRIVATE FUNCTIONS
-static uint8_t BUFFER_CONTAINS(const uint8_t *buffer, const uint8_t *pattern);
+static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
 static uint16_t GET_MEDIAN(uint16_t *Array, uint8_t Array_Filtering_size);
 
 //======================================= DEFINES
