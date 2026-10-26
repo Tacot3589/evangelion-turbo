@@ -23,8 +23,15 @@
 /* USER CODE BEGIN Includes */
 #include "MY_INCLUDES.h"
 #include "start_module.h"
+#include "TFLUNA.h"
 #include "fonts.h"
 #include "ssd1306.h"
+/*
+#define DMA_HANDLE_UART1_RX (&hdma_lpuart1_rx)
+#define DMA_HANDLE_UART2_RX (&hdma_usart2_rx)
+#define DMA_HANDLE_UART3_RX (&hdma_usart3_rx)
+#define DMA_HANDLE_UART4_RX (&hdma_uart4_rx)
+*/
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -32,22 +39,6 @@
 /* raw[] / hal_status[] / hal_error[] are indexed by register address 0..5.
  * Data fields are meaningful only for successful transfers with valid headers.
  */
-typedef struct
-{
-  uint16_t raw[6];
-  HAL_StatusTypeDef hal_status[6];
-  uint32_t hal_error[6];
-  uint8_t transport_ok_mask;
-  uint8_t header_valid_mask;
-  uint8_t default_config_match;
-  uint8_t fault;
-  uint8_t diag;
-  uint8_t ic1;
-  uint8_t ic2;
-  uint8_t ic3;
-  uint8_t ic4;
-  uint32_t scans;
-} DRV8873_Diagnostics;
 
 /*
 	IMU: LSM6DSOX
@@ -97,12 +88,11 @@ TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
 
 /* USER CODE BEGIN PV */
-/* Driver A: CS1/PA10; driver B: CS2/PA3. Inspect these in Expressions. */
-volatile DRV8873_Diagnostics drv_a = {0};
-volatile DRV8873_Diagnostics drv_b = {0};
-static uint32_t drv_last_poll_ms = 0;
-
 uint32_t dupa = 0;
+volatile uint8_t UART1_RX[9];
+volatile uint8_t UART2_RX[9];
+volatile uint8_t UART3_RX[9];
+volatile uint8_t UART4_RX[9];
 
 //performance!
 static uint32_t last_total = 0;
@@ -112,6 +102,8 @@ volatile uint32_t cpu_load_permille = 0;
 volatile uint8_t MCU_LOAD = 0;
 volatile uint8_t MCU_LOAD_MAX = 0;
 
+
+volatile HAL_StatusTypeDef rx_status;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -145,62 +137,6 @@ void LOAD_PERFORMANCE_CALCULATION(void);
  * read = bit 14, address = bits 13:9; response = status:8 | register:8.
  * Reads neither clear latched faults nor change the bridge configuration.
  */
-static void DRV8873_ReadDiagnostics(GPIO_TypeDef *cs_port, uint16_t cs_pin,
-                                    volatile DRV8873_Diagnostics *out)
-{
-  DRV8873_Diagnostics sample = {0};
-
-  HAL_GPIO_WritePin(DRV_CS_1_GPIO_Port, DRV_CS_1_Pin, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(DRV_CS_2_GPIO_Port, DRV_CS_2_Pin, GPIO_PIN_SET);
-
-  for (uint8_t address = 0; address < 6; ++address)
-  {
-    uint16_t tx = (uint16_t)(0x4000U | ((uint16_t)address << 9));
-    uint16_t rx = 0;
-
-    /* Deliberately slow diagnostic timing: CS high >= 500 ns, plus setup. */
-    HAL_Delay(1);
-    HAL_GPIO_WritePin(cs_port, cs_pin, GPIO_PIN_RESET);
-    HAL_Delay(1);
-    /* With SPI_DATASIZE_16BIT, Size=1 means one complete 16-clock frame. */
-    sample.hal_status[address] = HAL_SPI_TransmitReceive(
-        &hspi2, (uint8_t *)&tx, (uint8_t *)&rx, 1, 20);
-    HAL_GPIO_WritePin(cs_port, cs_pin, GPIO_PIN_SET);
-    sample.hal_error[address] = HAL_SPI_GetError(&hspi2);
-    sample.raw[address] = rx;
-
-    if (sample.hal_status[address] == HAL_OK)
-    {
-      sample.transport_ok_mask |= (uint8_t)(1U << address);
-      if ((rx & 0xC000U) == 0xC000U)
-      {
-        sample.header_valid_mask |= (uint8_t)(1U << address);
-      }
-    }
-  }
-
-  sample.fault = (uint8_t)sample.raw[0];
-  sample.diag = (uint8_t)sample.raw[1];
-  sample.ic1 = (uint8_t)sample.raw[2];
-  sample.ic2 = (uint8_t)sample.raw[3];
-  sample.ic3 = (uint8_t)sample.raw[4];
-  sample.ic4 = (uint8_t)sample.raw[5];
-  /* Header bits alone also match a stuck-high MISO (0xFFFF).
-   * Matching all four reset control values is stronger evidence of a reply.
-   * A mismatch can also mean a valid, previously changed configuration.
-   */
-  sample.default_config_match = (sample.header_valid_mask == 0x3FU &&
-      sample.ic1 == 0x51U && sample.ic2 == 0x0CU &&
-      sample.ic3 == 0x40U && sample.ic4 == 0x08U);
-  sample.scans = out->scans + 1U;
-  *out = sample;
-}
-
-static void DRV8873_PollBoth(void)
-{
-  DRV8873_ReadDiagnostics(DRV_CS_1_GPIO_Port, DRV_CS_1_Pin, &drv_a);
-  DRV8873_ReadDiagnostics(DRV_CS_2_GPIO_Port, DRV_CS_2_Pin, &drv_b);
-}
 
 
 /* USER CODE END 0 */
@@ -222,7 +158,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  HAL_Delay(INIT_DELAY);
+  HAL_Delay(INIT_DELAY*2);
 
   //blink leds
   HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
@@ -262,10 +198,6 @@ int main(void)
   MX_TIM7_Init();
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
-  /* Read drivers before OLED/start-module initialization can delay diagnostics. */
-  HAL_Delay(10);
-  DRV8873_PollBoth();
-  drv_last_poll_ms = HAL_GetTick();
 
 	//============================= OLED
 	if(ssd1306_Init()==0)
@@ -294,24 +226,47 @@ int main(void)
 	//============================= LIDARS
 	ssd1306_Clear();
 	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
-	_ssd1306_WriteInTheMiddle("LIDAR A...", 30, SMALL);
+	_ssd1306_WriteInTheMiddle("LIDAR FRONT RIGHT...", 30, SMALL);
 	ssd1306_UpdateScreen();
-	HAL_Delay(10);
+
+	uint8_t UART_TX[8];
+	//LIDARS OFF
+	UART_TX[0] = 0x5A;
+	UART_TX[1] = 0x05;
+	UART_TX[2] = 0x07;
+	UART_TX[3] = 0x00;
+	UART_TX[4] = (UART_TX[0] + UART_TX[1] + UART_TX[2] + UART_TX[3]) % 0x100;
+	//HAL_UART_Transmit(&huart2, UART_TX, 5, INIT_TIMEOUT);
+	HAL_UART_Receive(&huart2, UART2_RX, 5, INIT_TIMEOUT);
+
+
+	//if(TFLUNA_INIT(&huart2, &huart2, 0, UART2_RX) != HAL_OK)
+		//Error_Handler();
+	HAL_Delay(20);
+
 	ssd1306_Clear();
 	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
-	_ssd1306_WriteInTheMiddle("LIDAR B...", 30, SMALL);
+	_ssd1306_WriteInTheMiddle("LIDAR FRONT LEFT...", 30, SMALL);
 	ssd1306_UpdateScreen();
-	HAL_Delay(10);
+	if(TFLUNA_INIT(&hlpuart1, &huart2, 0, UART1_RX) != HAL_OK)
+		Error_Handler();
+	HAL_Delay(20);
+
 	ssd1306_Clear();
 	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
-	_ssd1306_WriteInTheMiddle("LIDAR C...", 30, SMALL);
+	_ssd1306_WriteInTheMiddle("LIDAR BACK RIGHT...", 30, SMALL);
 	ssd1306_UpdateScreen();
-	HAL_Delay(10);
+	if(TFLUNA_INIT(&huart3, &huart2, 0, UART3_RX) != HAL_OK)
+		Error_Handler();
+	HAL_Delay(20);
+
 	ssd1306_Clear();
 	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
-	_ssd1306_WriteInTheMiddle("LIDAR D...", 30, SMALL);
+	_ssd1306_WriteInTheMiddle("LIDAR BACK LEFT...", 30, SMALL);
 	ssd1306_UpdateScreen();
-	HAL_Delay(10);
+	if(TFLUNA_INIT(&huart4, &huart2, 0, UART4_RX) != HAL_OK)
+		Error_Handler();
+	HAL_Delay(20);
 	HAL_Delay(INIT_DELAY);
 
 	//============================= ADCs
@@ -372,12 +327,13 @@ int main(void)
 	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
 	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
 
-
+/*
 	TIM4->CCR1 = 0;
 	TIM4->CCR2 = 800; // SPI diagnostic test: motor drive disabled
 
 	TIM8->CCR1 = 0;
 	TIM8->CCR3 = 800; // SPI diagnostic test: motor drive disabled
+	*/
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -385,11 +341,6 @@ int main(void)
   while (1)
   {
 	dupa = dupa+1;
-    if ((uint32_t)(HAL_GetTick() - drv_last_poll_ms) >= 500U)
-    {
-      DRV8873_PollBoth();
-      drv_last_poll_ms = HAL_GetTick();
-    }
 	/*
 	uint32_t start = DWT->CYCCNT;
 	__WFI();
@@ -698,11 +649,11 @@ static void MX_LPUART1_UART_Init(void)
 
   /* USER CODE END LPUART1_Init 1 */
   hlpuart1.Instance = LPUART1;
-  hlpuart1.Init.BaudRate = 209700;
+  hlpuart1.Init.BaudRate = 115200;
   hlpuart1.Init.WordLength = UART_WORDLENGTH_8B;
   hlpuart1.Init.StopBits = UART_STOPBITS_1;
   hlpuart1.Init.Parity = UART_PARITY_NONE;
-  hlpuart1.Init.Mode = UART_MODE_TX_RX;
+  hlpuart1.Init.Mode = UART_MODE_RX;
   hlpuart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
   hlpuart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
   hlpuart1.Init.ClockPrescaler = UART_PRESCALER_DIV1;

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<item key="hasShownOverlayPopupBefore" value="true"/>
-	<item key="replaceBarOpen" value="false"/>
+	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
+		<item value="MX_DMA_INIT"/>
+		<item value="uart4"/>
+		<item value="LIDARS_INIT_UART_TIMEOUT"/>
 		<item value="IT"/>
 		<item value="_Control"/>
 		<item value="while"/>
@@ -14,5 +17,8 @@
 		<item value="Module_state"/>
 		<item value="Interrupt"/>
 		<item value="Module_State"/>
+	</list>
+	<list key="replacehistory">
+		<item value="INIT_TIMEOUT"/>
 	</list>
 </section>

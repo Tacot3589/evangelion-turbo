@@ -10,11 +10,11 @@
 
 #include <stdint.h>
 
-static void Received_RC5_Frame(uint8_t Addres, uint8_t Command);
-static void Received_SIRC_Frame(uint8_t Addres, uint8_t Command);
-static uint8_t LED_GREEN_Control(uint8_t Command, uint8_t Data);
-static uint8_t LED_RED_Control(uint8_t Command, uint8_t Data);
-static uint8_t LED_BLUE_Control(uint8_t Command, uint8_t Data);
+void Received_RC5_Frame(uint8_t Addres, uint8_t Command);
+void Received_SIRC_Frame(uint8_t Addres, uint8_t Command);
+uint8_t LED_GREEN_Control(uint8_t Command, uint8_t Data);
+uint8_t LED_RED_Control(uint8_t Command, uint8_t Data);
+uint8_t LED_BLUE_Control(uint8_t Command, uint8_t Data);
 
 typedef enum {
 	STARTUP,

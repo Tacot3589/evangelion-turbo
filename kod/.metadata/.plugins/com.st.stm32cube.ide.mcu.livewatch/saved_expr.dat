@@ -1,4 +1,4 @@
 dupa
-clock_fail_stage
-hse_status
-imu_id
+UART2_RX
+UART_TX
+rx_status

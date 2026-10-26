@@ -31,19 +31,11 @@
 #define REAL_MAX_PWM_PERCENTAGE 85 //faster is basicly killing meeeee = 90
 
 
-//==================================================== SENSORS
-#define MIN_AMP_TRESCHOLD 200
-#define SWITCH_SIDE_LIDARS 0
-#define SWITCH_LIDARS 1 //uart1 is left; uart2 is right normally
-#define MAX_RETRIES_LIDARS_INIT 5
-#define LIDARS_INIT_UART_TIMEOUT 200
-#define LIDARS_FILTERING_ARRAY_SIZE 11
-#define MAX_DISTANCE 100
-#define INTRO_MIN_DISTANCE_FOR_LAST_SEEN 3
+//==================================================== senzorzxd
+
 #define WHITE_LINE_TRESCHOLD 3700 //white is less
-#define SWITCH_LINE_SENSORS 0
 #define INIT_DELAY 100
-#define INIT_TIMEOUT 300
+#define INIT_TIMEOUT 500
 
 //==================================================== START SETUP
 #define STARTIING_WAIT_TIME	0 //3000
@@ -103,49 +95,6 @@
 #define DEFAULT_SETTING_DONT_INITIALIZE_LIDARS		FALSE
 #define DEFAULT_SETTING_ALWAYS_SHOW_OLED			TRUE
 #define DEFAULT_ATTACK_MODE_ID						1 //0 MM, 1 sumo, 2 sumo curve
-
-
-//===================================INIT ERRORS
-#define START_SIGNAL_AT_STARTUP 1
-
-#define TIM1_INIT_ERR 2
-#define TIM2_INIT_ERR 3
-#define TIM3_INIT_ERR 4
-#define TIM4_INIT_ERR 5
-
-#define ADC1_INIT_ERR 6
-#define ADC2_INIT_ERR 7
-#define ADC1_BUFFER_INIT_ERR 8
-#define ADC2_BUFFER_INIT_ERR 9
-
-#define BATTLE_TIM_INIT_ERR 10
-#define WATCHDOG_TIM_INIT_ERR 11
-#define OLED_TIM_INIT_ERR 12
-
-#define LEFT_LIDAR_INIT_ERR1 13
-#define RIGHT_LIDAR_INIT_ERR1 14
-#define LEFT_LIDAR_INIT_ERR2 15
-#define RIGHT_LIDAR_INIT_ERR2 16
-#define LEFT_LIDAR_INIT_ERR3 17
-#define RIGHT_LIDAR_INIT_ERR3 18
-#define LEFT_LIDAR_INIT_ERR4 19
-#define RIGHT_LIDAR_INIT_ERR4 20
-#define LEFT_LIDAR_UART_ERR 21
-#define RIGHT_LIDAR_UART_ERR 22
-
-#define IMU_I2C_INIT_ERR 23
-
-#define START_MOD_UART_CONNECTION_COOKED 24
-
-
-//===================================
-#define START_DELAY_IN_USE 200
-
-
-//===================================BAD_ERRORS >200, no HALT of mcu
-#define OLED_INIT_ERR 201
-#define LOW_BATTERY_VOLTAGE 200
-
 
 
 //option IDs
