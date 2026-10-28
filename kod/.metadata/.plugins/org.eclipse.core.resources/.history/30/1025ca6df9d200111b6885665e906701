@@ -1,0 +1,41 @@
+/*
+ * start_module.c
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+
+#include "ADC_READOUT.h"
+#include "main.h"
+#include "MY_INCLUDES.h"
+
+
+void ADC_REDOUT_INFO_GETTHEMALL(Evangelion_t *Eva, LinesSensors_t *Lines, uint8_t *A1, uint8_t *A2)
+{
+	Lines->FrontLeft.RawA = A2[1-1];
+	Lines->FrontLeft.RawB = A2[2-1];
+
+	Lines->FrontRight.RawA = A1[2-1];
+	Lines->FrontRight.RawB = A2[5-1];
+
+	Lines->BackLeft.RawA = A2[3-1];
+	Lines->BackLeft.RawB = A2[5-1];
+
+	Lines->BackRight.RawA = A1[4-1];
+	Lines->BackRight.RawB = A2[4-1];
+
+	//=====MEDIAN FILTERING
+	static VBAT_FILTER_ARRAY[BATTERY_ADC_VOLTAGE_FILTRATION_ARRAY_SIZE];
+	static uint8_t VBAT_FILTER_INDX=0;
+
+	buffor_Dist[*Dist_indx] = Current_Dist;
+
+	*Dist_indx = (*Dist_indx + 1) % BATTERY_ADC_VOLTAGE_FILTRATION_ARRAY_SIZE;
+
+	//Sortuj osobno
+	*Dist = GET_MEDIAN(buffor_Dist, Array_Filtering_size);
+	*Amp = GET_MEDIAN(buffor_Amp, Array_Filtering_size);
+	*Temp = GET_MEDIAN(buffor_Temp, Array_Filtering_size);
+	Eva->Voltage = BATTERY_CONSTANT * A2[1];
+}

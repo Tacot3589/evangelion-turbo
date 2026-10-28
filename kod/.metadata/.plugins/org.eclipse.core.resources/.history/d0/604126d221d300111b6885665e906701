@@ -1,0 +1,25 @@
+/*
+ * start_module.c
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+
+#include "DRIVERS.h"
+#include "main.h"
+#include "MY_INCLUDES.h"
+
+
+uint8_t DRIVERS_INIT()
+{
+	  HAL_GPIO_WritePin(DRV_CS_1_GPIO_Port, DRV_CS_1_Pin, 0);
+	  HAL_GPIO_WritePin(DRV_CS_2_GPIO_Port, DRV_CS_2_Pin, 1);
+}
+
+
+
+
+
+
+

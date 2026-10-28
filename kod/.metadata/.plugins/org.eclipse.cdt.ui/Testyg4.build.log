@@ -1,4 +1,4 @@
-22:06:09 **** Incremental Build of configuration Debug for project Testyg4 ****
+18:17:17 **** Build of configuration Debug for project Testyg4 ****
 make -j16 all 
 arm-none-eabi-size  Testyg4.elf 
    text	   data	    bss	    dec	    hex	filename
@@ -6,5 +6,5 @@ arm-none-eabi-size  Testyg4.elf
 Finished building: default.size.stdout
  
 
-22:06:09 Build Finished. 0 errors, 0 warnings. (took 137ms)
+18:17:17 Build Finished. 0 errors, 0 warnings. (took 136ms)
 

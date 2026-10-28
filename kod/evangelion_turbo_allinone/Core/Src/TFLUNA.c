@@ -23,7 +23,7 @@ volatile uint8_t *actual_command;
 volatile uint8_t actual_command_lenght = 0;
  uint8_t buffer_lenght = 0;
 
-uint8_t TFLUNAs_INIT(LineSensors_t *Lunas)
+uint8_t TFLUNAs_INIT(LidarSensors_t *Lunas)
 {
 	uint32_t start;
 	buffer_lenght = sizeof Lunas->FrontRight.RX;
@@ -168,12 +168,24 @@ uint8_t TFLUNAs_INIT(LineSensors_t *Lunas)
 	}
 	__HAL_DMA_DISABLE_IT(Lunas->BackLeft.huartRX->hdmarx, DMA_IT_HT);
 
+
+	//Set labels to zeros!
+    for (uint16_t i = 0; i < Lunas->FrontRight.RXsize; i++)
+    	Lunas->FrontRight.RX[i] = 0;
+    for (uint16_t i = 0; i < Lunas->FrontLeft.RXsize; i++)
+    	Lunas->FrontLeft.RX[i] = 0;
+    for (uint16_t i = 0; i < Lunas->BackRight.RXsize; i++)
+    	Lunas->BackRight.RX[i] = 0;
+    for (uint16_t i = 0; i < Lunas->BackLeft.RXsize; i++)
+    	Lunas->BackLeft.RX[i] = 0;
+
+
 	IN_INIT=false;
 	return 0;
 }
 
 
-void TFLUNAs_DMA_CALLBACK(LineSensors_t *Lunas, UART_HandleTypeDef *huart)
+void TFLUNAs_DMA_CALLBACK(LidarSensors_t *Lunas, UART_HandleTypeDef *huart)
 {
 	if(IN_INIT == true)
 	{
@@ -320,7 +332,7 @@ void TFLUNAs_DMA_CALLBACK(LineSensors_t *Lunas, UART_HandleTypeDef *huart)
 }
 
 
-uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size) //todo uint8_t pattern_size
+static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size) //todo uint8_t pattern_size
 {
 
 	size_t buffer_len = buffer_lenght;

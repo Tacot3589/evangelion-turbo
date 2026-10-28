@@ -1,0 +1,35 @@
+/*
+ * start_module.c
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+
+#include "DRIVERS.h"
+#include "main.h"
+#include "MY_INCLUDES.h"
+
+inline MotorsSettingsInfo_t Motors;
+uint8_t BUFFER[20];
+
+uint8_t DRIVERS_INIT(SPI_HandleTypeDef *hspi)
+{
+	  HAL_GPIO_WritePin(DRV_CS_1_GPIO_Port, DRV_CS_1_Pin, 1);
+	  HAL_GPIO_WritePin(DRV_CS_2_GPIO_Port, DRV_CS_2_Pin, 0);
+
+
+	  HAL_SPI_TransmitReceive(hspi, 0x4000u, BUFFER, 8, 1000);
+
+	  return 0;
+}
+
+
+
+static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+Velocity_t SET_MOTORS(Velocity_t M);
+
+
+

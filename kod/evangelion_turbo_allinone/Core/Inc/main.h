@@ -37,6 +37,7 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+//==================== Lidars
 typedef struct {
 	uint16_t Array[20];
 	uint8_t indx;
@@ -50,6 +51,7 @@ typedef struct {
 } LidarReceiveFiltering_t;
 
 typedef struct {
+	uint16_t RXsize;
 	UART_HandleTypeDef *huartRX;
 	uint8_t RX[40];
 	LidarReceiveFiltering_t Buffer;
@@ -64,9 +66,96 @@ typedef struct {
 	Lidar_t FrontRight;
 	Lidar_t BackLeft;
 	Lidar_t BackRight;
-} LineSensors_t;
+} LidarSensors_t;
 
 
+//==================== Robot
+typedef struct
+{
+	int16_t L;
+	int16_t R;
+} Velocity_t;
+
+typedef struct
+{
+	Velocity_t Requested;
+	Velocity_t Set;
+	Velocity_t DRV_Current;
+	Velocity_t DRV_OTW;
+	Velocity_t DRV_CurrentPeak;
+} MotorsSettingsInfo_t;
+
+typedef enum {
+	STRAIGHT,
+	CURVE,
+	FOLLOW_LINER,
+	FOLLOW_ATTACKER,
+	COUNT,
+} RobotAttackMode_t;
+
+typedef enum {
+	IDLE,
+	BEFORE_ATTACK_OPTIONAL_ROTATION,
+	BEFORE_ATTACK_TASK,
+	ATTACK,
+} RobotState_t;
+
+typedef struct
+{
+	uint16_t Voltage;
+	uint16_t CellVoltage;
+	RobotState_t State;
+	RobotAttackMode_t AttackMode;
+	uint8_t InBattle;
+	uint16_t MCU_USAGE;
+	uint16_t MCU_TEMP;
+} Evangelion_t;
+
+//==================== Line Sensors
+typedef enum {
+	IN,
+	OUT
+} LineState_t;
+
+typedef struct
+{
+	LineState_t Dohyo;
+	uint16_t RawA;
+	uint16_t RawB;
+	LineState_t A;
+	LineState_t B;
+} OneLineSensors_t;
+
+typedef struct
+{
+	OneLineSensors_t FrontLeft;
+	OneLineSensors_t FrontRight;
+	OneLineSensors_t BackLeft;
+	OneLineSensors_t BackRight;
+} LinesSensors_t;
+
+//=================== Interface
+typedef enum {
+	_NOTHING,
+	_UP,
+	_DOWN,
+	_LEFT,
+	_RIGHT,
+	_CENTER,
+	_BUTTON_REBOUNCE,
+} JoystickMode_t;
+
+//=================== IMU
+typedef struct {
+	int16_t x;
+	int16_t y;
+	int16_t z;
+} Vector_t;
+
+typedef struct {
+	Vector_t Accel;
+	Vector_t Gyro;
+} IMUInfo_t;
 
 /* USER CODE END ET */
 
@@ -98,19 +187,37 @@ void Error_Handler(void);
 #define JOY1_GPIO_Port GPIOC
 #define JOY5_Pin GPIO_PIN_10
 #define JOY5_GPIO_Port GPIOG
+#define DRV_CURRENT_B_ADC_1_1_Pin GPIO_PIN_0
+#define DRV_CURRENT_B_ADC_1_1_GPIO_Port GPIOA
+#define FRA_ADC1_2_Pin GPIO_PIN_1
+#define FRA_ADC1_2_GPIO_Port GPIOA
 #define LPUART1_RX_Pin GPIO_PIN_2
 #define LPUART1_RX_GPIO_Port GPIOA
 #define DRV_CS_2_Pin GPIO_PIN_3
 #define DRV_CS_2_GPIO_Port GPIOA
-#define VBAT_IN_Pin GPIO_PIN_4
-#define VBAT_IN_GPIO_Port GPIOA
+#define VBAT_IN_ADC2_6_Pin GPIO_PIN_4
+#define VBAT_IN_ADC2_6_GPIO_Port GPIOA
+#define FRB_ADC2_5_Pin GPIO_PIN_5
+#define FRB_ADC2_5_GPIO_Port GPIOA
+#define FLA_ADC2_1_Pin GPIO_PIN_6
+#define FLA_ADC2_1_GPIO_Port GPIOA
+#define FLB_ADC2_2_Pin GPIO_PIN_7
+#define FLB_ADC2_2_GPIO_Port GPIOA
+#define BLA_ADC2_3_Pin GPIO_PIN_4
+#define BLA_ADC2_3_GPIO_Port GPIOC
+#define BLB_ADC1_5_Pin GPIO_PIN_0
+#define BLB_ADC1_5_GPIO_Port GPIOB
+#define BRA_ADC1_4_Pin GPIO_PIN_1
+#define BRA_ADC1_4_GPIO_Port GPIOB
+#define BRB_ADC2_4_Pin GPIO_PIN_2
+#define BRB_ADC2_4_GPIO_Port GPIOB
 #define UART3_RX_Pin GPIO_PIN_10
 #define UART3_RX_GPIO_Port GPIOB
 #define START_MOD_IR_Pin GPIO_PIN_11
 #define START_MOD_IR_GPIO_Port GPIOB
 #define START_MOD_IR_EXTI_IRQn EXTI15_10_IRQn
-#define DRV_CURRENT_A_Pin GPIO_PIN_12
-#define DRV_CURRENT_A_GPIO_Port GPIOB
+#define DRV_CURRENT_A_ADC1_3_Pin GPIO_PIN_12
+#define DRV_CURRENT_A_ADC1_3_GPIO_Port GPIOB
 #define JOY4_Pin GPIO_PIN_6
 #define JOY4_GPIO_Port GPIOC
 #define OLED_SDA_Pin GPIO_PIN_8

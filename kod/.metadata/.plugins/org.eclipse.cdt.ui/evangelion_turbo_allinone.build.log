@@ -1,10 +1,10 @@
-00:18:38 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+00:53:59 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
 make -j16 all 
 arm-none-eabi-size  evangelion_turbo_allinone.elf 
    text	   data	    bss	    dec	    hex	filename
-  54988	     36	   5572	  60596	   ecb4	evangelion_turbo_allinone.elf
+  61112	     36	   6004	  67152	  10650	evangelion_turbo_allinone.elf
 Finished building: default.size.stdout
  
 
-00:18:38 Build Finished. 0 errors, 0 warnings. (took 142ms)
+00:53:59 Build Finished. 0 errors, 0 warnings. (took 137ms)
 

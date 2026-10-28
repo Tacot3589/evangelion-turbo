@@ -1,0 +1,72 @@
+/*
+ * start_module.c
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+
+#include "ADC_READOUT.h"
+#include "main.h"
+#include "MY_INCLUDES.h"
+
+
+void ADC_REDOUT_INFO_GETTHEMALL(Evangelion_t *Eva, LinesSensors_t *Lines, uint8_t *A1, uint8_t *A2)
+{
+	Lines->FrontLeft.RawA = A2[1-1];
+	Lines->FrontLeft.RawB = A2[2-1];
+
+	Lines->FrontRight.RawA = A1[2-1];
+	Lines->FrontRight.RawB = A2[5-1];
+
+	Lines->BackLeft.RawA = A2[3-1];
+	Lines->BackLeft.RawB = A2[5-1];
+
+	Lines->BackRight.RawA = A1[4-1];
+	Lines->BackRight.RawB = A2[4-1];
+
+	//=====MEDIAN FILTERING
+	static uint16_t VBAT_FILTER_ARRAY[BATTERY_ADC_VOLTAGE_FILTRATION_ARRAY_SIZE];
+	static uint16_t VBAT_FILTER_INDX=0;
+	static uint16_t CURRENT_VBAT=0;
+
+	CURRENT_VBAT = BATTERY_CONSTANT * A2[1];
+	VBAT_FILTER_ARRAY[VBAT_FILTER_INDX] = CURRENT_VBAT;
+	VBAT_FILTER_ARRAY = (VBAT_FILTER_INDX + 1) % BATTERY_ADC_VOLTAGE_FILTRATION_ARRAY_SIZE;
+
+	//Sortuj osobno
+	*Dist = GET_MEDIAN(buffor_Dist, Array_Filtering_size);
+	*Amp = GET_MEDIAN(buffor_Amp, Array_Filtering_size);
+	*Temp = GET_MEDIAN(buffor_Temp, Array_Filtering_size);
+	Eva->Voltage = BATTERY_CONSTANT * A2[1];
+}
+
+
+uint16_t GET_MEDIAN(uint16_t *Array, uint8_t Array_Filtering_size)
+{
+    uint16_t sorted[Array_Filtering_size];
+
+    for (size_t i = 0U; i < Array_Filtering_size; i++) {
+        sorted[i] = Array[i];
+    }
+
+    for (size_t i = 1U; i < Array_Filtering_size; i++) {
+        uint16_t value = sorted[i];
+        size_t j = i;
+
+        while (j > 0U && sorted[j - 1U] > value) {
+            sorted[j] = sorted[j - 1U];
+            j--;
+        }
+
+        sorted[j] = value;
+    }
+
+    size_t mid = Array_Filtering_size / 2U;
+
+    if ((Array_Filtering_size % 2U) != 0U) {
+        return sorted[mid];
+    }
+
+    return (uint16_t)(((uint32_t)sorted[mid - 1U] + sorted[mid]) / 2U);
+}

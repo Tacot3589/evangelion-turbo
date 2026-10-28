@@ -1,0 +1,102 @@
+/*
+ * start_module.c
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+
+#include "DRIVERS.h"
+#include "main.h"
+#include "MY_INCLUDES.h"
+
+inline MotorsSettingsInfo_t Motors;
+uint8_t BUFFER[20];
+
+uint8_t DRIVERS_INIT(SPI_HandleTypeDef *hspi)
+{
+
+    const uint8_t reg[3] = {
+        DRV_REG_IC1_CONTROL,
+        DRV_REG_IC2_CONTROL,
+        DRV_REG_IC4_CONTROL
+    };
+    const uint8_t mask[3] = {
+        0xC0u,  // IC1: TOFF
+        0xEFu,  // IC2: wybrane pola; bit 4 zostaje bez zmian
+        0x0Cu   // IC4: ITRIP_LVL
+    };
+    const uint8_t set[3] = {
+        0x00u,  // TOFF = 00b
+        0xE2u,  // ITRIP_REP=1, TSD_MODE=1, OTW_REP=1,
+                // OCP_TRETRY=00, OCP_MODE=10
+        0x0Cu   // ITRIP_LVL = 11b
+    };
+
+    uint8_t i, j, value;
+    uint16_t tx, rx;
+    HAL_StatusTypeDef status;
+
+    HAL_GPIO_WritePin(DRV_CS_1_GPIO_Port, DRV_CS_1_Pin, 1);
+    HAL_GPIO_WritePin(DRV_CS_2_GPIO_Port, DRV_CS_2_Pin, 1);
+
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 3; j++)
+        {
+            // Odczytaj rejestr
+            tx = DRV_CMD_READ(reg[j]);
+            rx = 0;
+
+            HAL_GPIO_WritePin(DRV_CS_1_GPIO_Port, DRV_CS_1_Pin, 0);
+            if(HAL_SPI_TransmitReceive(hspi, (uint8_t *)&tx, (uint8_t *)&rx, 1, 50) != HAL_OK)
+            	return 1;
+            HAL_GPIO_WritePin(DRV_CS_1_GPIO_Port, DRV_CS_1_Pin, 1);
+
+            // Zmień tylko wskazane bity
+            value = (uint8_t)rx;
+            value = (uint8_t)((value & (uint8_t)~mask[j]) | set[j]);
+
+            // Zapisz rejestr
+            tx = DRV_CMD_WRITE(reg[j], value);
+            rx = 0;
+
+            HAL_GPIO_WritePin(DRV_CS_2_GPIO_Port, DRV_CS_2_Pin, 0);
+            if(HAL_SPI_TransmitReceive(hspi, (uint8_t *)&tx, (uint8_t *)&rx, 1, 50) != HAL_OK)
+            	return 1;
+            HAL_GPIO_WritePin(DRV_CS_2_GPIO_Port, DRV_CS_2_Pin, 1);
+        }
+    }
+
+    return 0; // HAL_OK
+}
+
+
+
+
+
+
+
+
+
+
+
+
+static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M)
+{
+
+}
+static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M)
+{
+
+}
+static Velocity_t CURRENT_COMPENSATION(Velocity_t M)
+{
+
+}
+Velocity_t SET_MOTORS(Velocity_t M)
+{
+
+}
+
+
+

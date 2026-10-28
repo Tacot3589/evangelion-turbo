@@ -24,46 +24,17 @@
 
 
 //==================================================== MOTOR SETTINGS
-#define SWITCH_MOTORS 1
-#define REVERSE_RIGHT_MOTOR 1
-#define REVERSE_LEFT_MOTOR 1
-#define REAL_MIN_PWM_PERCENTAGE 60 //slower is basicly not moving at all
-#define REAL_MAX_PWM_PERCENTAGE 85 //faster is basicly killing meeeee = 90
+
 
 
 //==================================================== senzorzxd
-
-#define WHITE_LINE_TRESCHOLD 3700 //white is less
-#define INIT_DELAY 100
-#define INIT_TIMEOUT 500
-
-//==================================================== START SETUP
-#define STARTIING_WAIT_TIME	0 //3000
+#define INIT_DELAY 50
+#define INIT_TIMEOUT 250
+#define MCU_USAGE_FILTRATION_ARRAY_SIZE 15
 
 //==================================================== BATTERY
-#define R1 120
-#define R2 27
-#define BATTERY_VOLTAGE_COMPENSATION 1.007597
 #define MIN_BATTERY_VOLTAGE_PER_CELL 3.45
-#define BATTERY_ADC_CHANNEL 3
-#define BATTERY_CONST  ((3.3f / 4095.0f * ((R1) + (R2)) / (R2)) * (BATTERY_VOLTAGE_COMPENSATION) * 100.0f)
-#define BATTERY_ADC_READOUT_BUFFER_SIZE 10 // <= 16
 
-
-//==================================================== WORKING SETUP
-#define MAIN_FREQ 1000
-#define SIDE_FREQ 100
-#define OLED_FREQ 25
-#define true 1
-#define TRUE 1
-#define false 0
-#define FALSE 0
-
-//==================================================== ERROR FLAGS
-//<200 init error flags
-//==200 start delay
-//>200 error, veery bad error
-//in separate file
 
 //=================================================== YEEEAAAA BOOIIIIII
 #define NONE 0

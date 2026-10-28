@@ -13,7 +13,6 @@
 
 //======================================= PRIVATE FUNCTIONS
 static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
-static uint16_t GET_MEDIAN(uint16_t *Array, uint8_t Array_Filtering_size);
 
 //======================================= DEFINES
 #define MAX_DISTANCE 75
@@ -30,11 +29,12 @@ static uint16_t GET_MEDIAN(uint16_t *Array, uint8_t Array_Filtering_size);
 
 
 //======================================= PUBLIC FUNCTIONS
-uint8_t TFLUNAs_INIT(LineSensors_t *Lunas);
-void TFLUNAs_DMA_CALLBACK(LineSensors_t *Lunas, UART_HandleTypeDef *huart);
+uint8_t TFLUNAs_INIT(LidarSensors_t *Lunas);
+void TFLUNAs_DMA_CALLBACK(LidarSensors_t *Lunas, UART_HandleTypeDef *huart);
 uint16_t TFLUNA_AMP(uint8_t UART_NO);
 uint16_t TFLUNA_DIST(uint8_t UART_NO);
 uint16_t TFLUNA_TEMP(uint8_t UART_NO);
+uint16_t GET_MEDIAN(uint16_t *Array, uint8_t Array_Filtering_size);
 
 
 //======================================= PRIVATE STATIC

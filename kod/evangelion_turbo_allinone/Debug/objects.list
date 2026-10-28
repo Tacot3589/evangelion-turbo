@@ -1,3 +1,5 @@
+"./Core/Src/ADC_READOUT.o"
+"./Core/Src/DRIVERS.o"
 "./Core/Src/TFLUNA.o"
 "./Core/Src/fonts.o"
 "./Core/Src/main.o"

@@ -24,14 +24,10 @@
 #include "MY_INCLUDES.h"
 #include "start_module.h"
 #include "TFLUNA.h"
+#include "ADC_READOUT.h"
 #include "fonts.h"
 #include "ssd1306.h"
-/*
-#define DMA_HANDLE_UART1_RX (&hdma_lpuart1_rx)
-#define DMA_HANDLE_UART2_RX (&hdma_usart2_rx)
-#define DMA_HANDLE_UART3_RX (&hdma_usart3_rx)
-#define DMA_HANDLE_UART4_RX (&hdma_uart4_rx)
-*/
+#include "DRIVERS.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -66,6 +62,8 @@
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
 ADC_HandleTypeDef hadc2;
+DMA_HandleTypeDef hdma_adc1;
+DMA_HandleTypeDef hdma_adc2;
 
 I2C_HandleTypeDef hi2c1;
 I2C_HandleTypeDef hi2c2;
@@ -92,17 +90,28 @@ TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
 
 /* USER CODE BEGIN PV */
-uint32_t dupa = 0;
+uint32_t dupa=0;
+
 //performance!
 static uint32_t last_total = 0;
 static uint32_t last_idle = 0;
 volatile uint32_t cpu_idle_cycles = 0;
 volatile uint32_t cpu_load_permille = 0;
 volatile uint8_t MCU_LOAD = 0;
-volatile uint8_t MCU_LOAD_MAX = 0;
 
 
-LineSensors_t Lunas;
+LidarSensors_t Lunas;
+LinesSensors_t Lines;
+JoystickMode_t JoystickState;
+Evangelion_t Eva;
+MotorsSettingsInfo_t Motors;
+
+
+uint8_t lastSeen = LEFT;
+
+volatile uint16_t ADC1_BUFFER[6];
+volatile uint16_t ADC2_BUFFER[6];
+const float BATTERY_CONSTANT = BATTERY_CONST;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -153,6 +162,11 @@ int main(void)
 	Lunas.BackLeft.huartRX = &huart3;
 	Lunas.BackRight.huartRX = &huart4;
 	Lunas.huartTX = &huart2;
+	Lunas.FrontLeft.RXsize = sizeof Lunas.FrontLeft.RX;
+	Lunas.FrontRight.RXsize = sizeof Lunas.FrontRight.RX;
+	Lunas.BackLeft.RXsize = sizeof Lunas.BackLeft.RX;
+	Lunas.BackRight.RXsize = sizeof Lunas.BackRight.RX;
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -233,8 +247,7 @@ int main(void)
 	_ssd1306_WriteInTheMiddle("LIDARs INIT...", 30, SMALL);
 	ssd1306_UpdateScreen();
 	HAL_Delay(INIT_DELAY);
-	if(TFLUNAs_INIT(&Lunas) != HAL_OK)
-		Error_Handler();
+	if(TFLUNAs_INIT(&Lunas) != HAL_OK) Error_Handler();
 
 	//============================= ADCs
 	ssd1306_Clear();
@@ -242,23 +255,20 @@ int main(void)
 	_ssd1306_WriteInTheMiddle("ADCs...", 30, SMALL);
 	ssd1306_UpdateScreen();
 	HAL_Delay(INIT_DELAY);
+	if(ADC_READOUT_INIT(&hadc1, ADC1_BUFFER, 6) != HAL_OK) Error_Handler();
+	if(ADC_READOUT_INIT(&hadc2, ADC2_BUFFER, 6) != HAL_OK) Error_Handler();
 
-	//============================= DRIVER A
+
+	//============================= DRIVERS
 	ssd1306_Clear();
 	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
-	_ssd1306_WriteInTheMiddle("DRIVER A...", 30, SMALL);
+	_ssd1306_WriteInTheMiddle("DRIVERS...", 30, SMALL);
 	ssd1306_UpdateScreen();
 	HAL_Delay(INIT_DELAY);
-
-	//============================= DRIVER B
-	ssd1306_Clear();
-	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
-	_ssd1306_WriteInTheMiddle("DRIVER B...", 30, SMALL);
-	ssd1306_UpdateScreen();
-	HAL_Delay(INIT_DELAY);
+	if(DRIVERS_INIT(&hspi2) != HAL_OK) Error_Handler();
 
 
-	//Performance
+	//============================= Performance
 	ssd1306_Clear();
 	_ssd1306_WriteInTheMiddle("INIT", 10, BIG);
 	_ssd1306_WriteInTheMiddle("PERFORMANCE...", 30, SMALL);
@@ -294,19 +304,14 @@ int main(void)
 	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
 	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
 
-/*
-	TIM4->CCR1 = 0;
-	TIM4->CCR2 = 800; // SPI diagnostic test: motor drive disabled
-
-	TIM8->CCR1 = 0;
-	TIM8->CCR3 = 800; // SPI diagnostic test: motor drive disabled
-	*/
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+
 	uint32_t start = DWT->CYCCNT;
 	__WFI();
 	cpu_idle_cycles += (DWT->CYCCNT - start);
@@ -393,16 +398,16 @@ static void MX_ADC1_Init(void)
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc1.Init.GainCompensation = 0;
-  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc1.Init.LowPowerAutoWait = DISABLE;
-  hadc1.Init.ContinuousConvMode = DISABLE;
-  hadc1.Init.NbrOfConversion = 1;
+  hadc1.Init.ContinuousConvMode = ENABLE;
+  hadc1.Init.NbrOfConversion = 6;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc1.Init.DMAContinuousRequests = DISABLE;
-  hadc1.Init.Overrun = ADC_OVR_DATA_PRESERVED;
+  hadc1.Init.DMAContinuousRequests = ENABLE;
+  hadc1.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
   hadc1.Init.OversamplingMode = DISABLE;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
@@ -419,12 +424,59 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_12;
+  sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_640CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_2;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
+  sConfig.SamplingTime = ADC_SAMPLETIME_92CYCLES_5;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_11;
+  sConfig.Rank = ADC_REGULAR_RANK_3;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_12;
+  sConfig.Rank = ADC_REGULAR_RANK_4;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_15;
+  sConfig.Rank = ADC_REGULAR_RANK_5;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_TEMPSENSOR_ADC1;
+  sConfig.Rank = ADC_REGULAR_RANK_6;
+  sConfig.SamplingTime = ADC_SAMPLETIME_640CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -460,16 +512,16 @@ static void MX_ADC2_Init(void)
   hadc2.Init.Resolution = ADC_RESOLUTION_12B;
   hadc2.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc2.Init.GainCompensation = 0;
-  hadc2.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc2.Init.ScanConvMode = ADC_SCAN_ENABLE;
   hadc2.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc2.Init.LowPowerAutoWait = DISABLE;
-  hadc2.Init.ContinuousConvMode = DISABLE;
-  hadc2.Init.NbrOfConversion = 1;
+  hadc2.Init.ContinuousConvMode = ENABLE;
+  hadc2.Init.NbrOfConversion = 6;
   hadc2.Init.DiscontinuousConvMode = DISABLE;
   hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc2.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc2.Init.DMAContinuousRequests = DISABLE;
-  hadc2.Init.Overrun = ADC_OVR_DATA_PRESERVED;
+  hadc2.Init.DMAContinuousRequests = ENABLE;
+  hadc2.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
   hadc2.Init.OversamplingMode = DISABLE;
   if (HAL_ADC_Init(&hadc2) != HAL_OK)
   {
@@ -480,10 +532,55 @@ static void MX_ADC2_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_3;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_92CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_4;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_5;
+  sConfig.Rank = ADC_REGULAR_RANK_3;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_12;
+  sConfig.Rank = ADC_REGULAR_RANK_4;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_13;
+  sConfig.Rank = ADC_REGULAR_RANK_5;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_17;
+  sConfig.Rank = ADC_REGULAR_RANK_6;
   if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -1153,6 +1250,7 @@ static void MX_DMA_Init(void)
   /* DMA controller clock enable */
   __HAL_RCC_DMAMUX1_CLK_ENABLE();
   __HAL_RCC_DMA1_CLK_ENABLE();
+  __HAL_RCC_DMA2_CLK_ENABLE();
 
   /* DMA interrupt init */
   /* DMA1_Channel1_IRQn interrupt configuration */
@@ -1173,6 +1271,12 @@ static void MX_DMA_Init(void)
   /* DMA1_Channel6_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
+  /* DMA2_Channel1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Channel1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Channel1_IRQn);
+  /* DMA2_Channel2_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Channel2_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Channel2_IRQn);
 
 }
 
@@ -1268,7 +1372,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
 	if (htim->Instance == TIM15) //1kHz
 	{
-		//main
+		ADC_REDOUT_INFO_GETTHEMALL(&Eva, &Motors, &Lines, ADC1_BUFFER, ADC2_BUFFER);
+		//void ADC_REDOUT_INFO_GETTHEMALL(Evangelion_t *Eva, MotorsSettingsInfo_t *Motors, LinesSensors_t *Lines, uint8_t *A1, uint8_t *A2);
 	}
 	if (htim->Instance == TIM16) //100Hz
 	{
@@ -1311,13 +1416,20 @@ void LOAD_PERFORMANCE_CALCULATION()
 
 	MCU_LOAD = cpu_load_permille / 10;
 
-	if(MCU_LOAD > MCU_LOAD_MAX)
-		MCU_LOAD_MAX = MCU_LOAD;
+	//================================ MEDIAN FILTERING, MCU temp
+	static uint16_t FILTER_ARRAY[MCU_USAGE_FILTRATION_ARRAY_SIZE];
+	static uint16_t FILTER_INDX=0;
+	static uint16_t CURRENT=0;
+
+	CURRENT = MCU_LOAD;
+	FILTER_ARRAY[FILTER_INDX] = CURRENT;
+	FILTER_INDX = (FILTER_INDX + 1) % MCU_USAGE_FILTRATION_ARRAY_SIZE;
+
+	Eva.MCU_USAGE = GET_MEDIAN(FILTER_ARRAY, MCU_USAGE_FILTRATION_ARRAY_SIZE);
 }
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t size)
 {
-	dupa++;
 	TFLUNAs_DMA_CALLBACK(&Lunas, huart);
 }
 
@@ -1327,6 +1439,13 @@ static inline void DWT_Init(void)
     DWT->CYCCNT = 0;
     DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 }
+
+
+
+
+
+
+
 
 /* USER CODE END 4 */
 

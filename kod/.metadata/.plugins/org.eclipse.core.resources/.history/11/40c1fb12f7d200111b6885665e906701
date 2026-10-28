@@ -1,0 +1,18 @@
+/*
+ * start_module.c
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+
+#include "ADC_READOUT.h"
+#include "main.h"
+#include "MY_INCLUDES.h"
+
+void ADC_REDOUT_INFO_GETTHEMALL(LinesSensors_t *Lines, uint8_t)
+{
+
+
+
+}
