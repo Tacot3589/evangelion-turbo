@@ -1,0 +1,27 @@
+/*
+ * start_module.c
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+
+#include "WATCHDOG.h"
+#include "main.h"
+#include "MY_INCLUDES.h"
+
+void WATCHDOG()
+{
+	/*
+	_NOTHING,
+	_UP,
+	_DOWN,
+	_LEFT,
+	_RIGHT,
+	_CENTER,
+	_BUTTON_REBOUNCE,
+	*/
+	//JOYSTICK
+	if()
+}
+

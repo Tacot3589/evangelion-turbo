@@ -1,0 +1,14 @@
+/*
+ * start_module.c
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+
+#include "ATCK_MODES.h"
+#include "main.h"
+#include "MY_INCLUDES.h"
+
+
+

@@ -28,6 +28,7 @@
 #include "fonts.h"
 #include "ssd1306.h"
 #include "DRIVERS.h"
+#include "WATCHDOG_AND_INTERFACE.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -310,8 +311,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
-
 	uint32_t start = DWT->CYCCNT;
 	__WFI();
 	cpu_idle_cycles += (DWT->CYCCNT - start);
@@ -1373,16 +1372,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if (htim->Instance == TIM15) //1kHz
 	{
 		ADC_REDOUT_INFO_GETTHEMALL(&Eva, &Motors, &Lines, ADC1_BUFFER, ADC2_BUFFER);
-		//void ADC_REDOUT_INFO_GETTHEMALL(Evangelion_t *Eva, MotorsSettingsInfo_t *Motors, LinesSensors_t *Lines, uint8_t *A1, uint8_t *A2);
 	}
 	if (htim->Instance == TIM16) //100Hz
 	{
-		//watchdog
+		WATCHDOG();
 		LOAD_PERFORMANCE_CALCULATION();
 	}
 	if (htim->Instance == TIM17) //25Hz
 	{
-		//OLED
+		OLED_INFO();
 	}
 }
 

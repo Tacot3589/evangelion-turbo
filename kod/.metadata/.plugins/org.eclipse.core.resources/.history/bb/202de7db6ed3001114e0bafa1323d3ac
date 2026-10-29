@@ -1,0 +1,53 @@
+/*
+ * start_module.c
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+
+#include <WATCHDOG_AND_INTERFACE.h>
+#include "main.h"
+#include "MY_INCLUDES.h"
+
+void WATCHDOG()
+{
+	/*
+	_NOTHING,
+	_UP,
+	_DOWN,
+	_LEFT,
+	_RIGHT,
+	_CENTER,
+	_BUTTON_REBOUNCE,
+	*/
+	//JOYSTICK
+
+	if( JoystickState == _BUTTON_REBOUNCE
+		&& HAL_GPIO_ReadPin(JOY1_GPIO_Port, JOY1_Pin)==GPIO_PIN_RESET
+		&& HAL_GPIO_ReadPin(JOY2_GPIO_Port, JOY2_Pin)==GPIO_PIN_RESET
+		&& HAL_GPIO_ReadPin(JOY3_GPIO_Port, JOY3_Pin)==GPIO_PIN_RESET
+		&& HAL_GPIO_ReadPin(JOY4_GPIO_Port, JOY4_Pin)==GPIO_PIN_RESET
+		&& HAL_GPIO_ReadPin(JOY5_GPIO_Port, JOY5_Pin)==GPIO_PIN_RESET)
+	{
+		JoystickState = _NOTHING;
+	}
+
+	if(JoystickState == _NOTHING)
+	{
+		if(HAL_GPIO_ReadPin(JOY1_GPIO_Port, JOY1_Pin)) JoystickState = _UP;
+		else if(HAL_GPIO_ReadPin(JOY2_GPIO_Port, JOY2_Pin)) JoystickState = _DOWN;
+		else if(HAL_GPIO_ReadPin(JOY3_GPIO_Port, JOY3_Pin)) JoystickState = _LEFT;
+		else if(HAL_GPIO_ReadPin(JOY4_GPIO_Port, JOY4_Pin)) JoystickState = _RIGHT;
+		else if(HAL_GPIO_ReadPin(JOY5_GPIO_Port, JOY5_Pin)) JoystickState = _CENTER;
+
+	}
+
+	if(JoystickState != _NOTHING && JoystickState != _BUTTON_REBOUNCE)
+		MENU_CHANGE(JoystickState);
+}
+
+static void MENU_CHANGE(JoystickMode_t Change)
+{
+
+}

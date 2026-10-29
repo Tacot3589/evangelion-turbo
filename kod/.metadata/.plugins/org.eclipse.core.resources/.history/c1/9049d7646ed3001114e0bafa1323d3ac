@@ -1,0 +1,22 @@
+/*
+ * start_module.h
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+#ifndef WATCHDOG_H_
+#define WATCHDOG_H_
+
+#include <stdint.h>
+#include "main.h"
+//======================================= PRIVATE FUNCTIONS
+
+
+//======================================= PRIVATE DEFINES
+
+
+//======================================= PUBLIC FUNCTIONS
+void WATCHDOG(void);
+
+#endif /* INC_START_MODULE_H_ */

@@ -1,6 +1,8 @@
 "./Core/Src/ADC_READOUT.o"
+"./Core/Src/ATCK_MODES.o"
 "./Core/Src/DRIVERS.o"
 "./Core/Src/TFLUNA.o"
+"./Core/Src/WATCHDOG_AND_INTERFACE.o"
 "./Core/Src/fonts.o"
 "./Core/Src/main.o"
 "./Core/Src/ssd1306.o"

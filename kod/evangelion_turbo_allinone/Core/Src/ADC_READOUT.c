@@ -13,17 +13,76 @@
 
 void ADC_REDOUT_INFO_GETTHEMALL(Evangelion_t *Eva, MotorsSettingsInfo_t *Motors, LinesSensors_t  *Lines, volatile uint16_t *A1, volatile uint16_t *A2)
 {
-	Lines->FrontLeft.RawA = A2[1-1];
-	Lines->FrontLeft.RawB = A2[2-1];
+	Lines->FrontLeft.RawA = A2[1 - 1];
+	if (Lines->FrontLeft.RawA < WHITE_LINE_TRESCHOLD)
+	    Lines->FrontLeft.A = OUT;
+	else
+	    Lines->FrontLeft.A = IN;
 
-	Lines->FrontRight.RawA = A1[2-1];
-	Lines->FrontRight.RawB = A2[5-1];
+	Lines->FrontLeft.RawB = A2[2 - 1];
+	if (Lines->FrontLeft.RawB < WHITE_LINE_TRESCHOLD)
+	    Lines->FrontLeft.B = OUT;
+	else
+	    Lines->FrontLeft.B = IN;
 
-	Lines->BackLeft.RawA = A2[3-1];
-	Lines->BackLeft.RawB = A1[5-1];
+	if (Lines->FrontLeft.A == OUT && Lines->FrontLeft.B == OUT)
+	    Lines->FrontLeft.Dohyo = OUT;
+	else
+	    Lines->FrontLeft.Dohyo = IN;
 
-	Lines->BackRight.RawA = A1[4-1];
-	Lines->BackRight.RawB = A2[4-1];
+
+	Lines->FrontRight.RawA = A1[2 - 1];
+	if (Lines->FrontRight.RawA < WHITE_LINE_TRESCHOLD)
+	    Lines->FrontRight.A = OUT;
+	else
+	    Lines->FrontRight.A = IN;
+
+	Lines->FrontRight.RawB = A2[5 - 1];
+	if (Lines->FrontRight.RawB < WHITE_LINE_TRESCHOLD)
+	    Lines->FrontRight.B = OUT;
+	else
+	    Lines->FrontRight.B = IN;
+
+	if (Lines->FrontRight.A == OUT && Lines->FrontRight.B == OUT)
+	    Lines->FrontRight.Dohyo = OUT;
+	else
+	    Lines->FrontRight.Dohyo = IN;
+
+
+	Lines->BackLeft.RawA = A2[3 - 1];
+	if (Lines->BackLeft.RawA < WHITE_LINE_TRESCHOLD)
+	    Lines->BackLeft.A = OUT;
+	else
+	    Lines->BackLeft.A = IN;
+
+	Lines->BackLeft.RawB = A1[5 - 1];
+	if (Lines->BackLeft.RawB < WHITE_LINE_TRESCHOLD)
+	    Lines->BackLeft.B = OUT;
+	else
+	    Lines->BackLeft.B = IN;
+
+	if (Lines->BackLeft.A == OUT && Lines->BackLeft.B == OUT)
+	    Lines->BackLeft.Dohyo = OUT;
+	else
+	    Lines->BackLeft.Dohyo = IN;
+
+
+	Lines->BackRight.RawA = A1[4 - 1];
+	if (Lines->BackRight.RawA < WHITE_LINE_TRESCHOLD)
+	    Lines->BackRight.A = OUT;
+	else
+	    Lines->BackRight.A = IN;
+
+	Lines->BackRight.RawB = A2[4 - 1];
+	if (Lines->BackRight.RawB < WHITE_LINE_TRESCHOLD)
+	    Lines->BackRight.B = OUT;
+	else
+	    Lines->BackRight.B = IN;
+
+	if (Lines->BackRight.A == OUT && Lines->BackRight.B == OUT)
+	    Lines->BackRight.Dohyo = OUT;
+	else
+	    Lines->BackRight.Dohyo = IN;
 
 	//================================ MEDIAN FILTERING, vbat
 	static uint16_t VBAT_FILTER_ARRAY[BATTERY_ADC_VOLTAGE_FILTRATION_ARRAY_SIZE];
