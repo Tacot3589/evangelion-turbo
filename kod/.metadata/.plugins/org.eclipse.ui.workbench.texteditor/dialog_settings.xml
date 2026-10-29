@@ -3,6 +3,9 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
+		<item value="BackLeft.Line"/>
+		<item value="SET_RAW_MOTORS"/>
+		<item value="ssd1306_SetCursor"/>
 		<item value="dupa"/>
 		<item value="IN_INIT"/>
 		<item value="MIN_AMP_TRESCHOLD"/>
@@ -15,11 +18,11 @@
 		<item value="IT"/>
 		<item value="_Control"/>
 		<item value="while"/>
-		<item value="TIM"/>
-		<item value="TIM15"/>
-		<item value="TIM1"/>
 	</list>
 	<list key="replacehistory">
+		<item value="Line.BackLeft"/>
+		<item value="SET_MOTORS"/>
+		<item value="_ssd1306_SetCursor"/>
 		<item value="Lunas-&gt;"/>
 		<item value="INIT_TIMEOUT"/>
 	</list>

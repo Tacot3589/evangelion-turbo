@@ -1,0 +1,340 @@
+/*
+ * start_module.c
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+
+#include <WATCHDOG_AND_INTERFACE.h>
+#include "main.h"
+#include "MY_INCLUDES.h"
+
+uint8_t Menu_Option=0;
+uint8_t Menu_count=5;
+
+void WATCHDOG()
+{
+	/*
+	_NOTHING,
+	_UP,
+	_DOWN,
+	_LEFT,
+	_RIGHT,
+	_CENTER,
+	_BUTTON_REBOUNCE,
+	*/
+	//JOYSTICK
+
+	if( JoystickState == _BUTTON_REBOUNCE
+		&& HAL_GPIO_ReadPin(JOY1_GPIO_Port, JOY1_Pin)==GPIO_PIN_RESET
+		&& HAL_GPIO_ReadPin(JOY2_GPIO_Port, JOY2_Pin)==GPIO_PIN_RESET
+		&& HAL_GPIO_ReadPin(JOY3_GPIO_Port, JOY3_Pin)==GPIO_PIN_RESET
+		&& HAL_GPIO_ReadPin(JOY4_GPIO_Port, JOY4_Pin)==GPIO_PIN_RESET
+		&& HAL_GPIO_ReadPin(JOY5_GPIO_Port, JOY5_Pin)==GPIO_PIN_RESET)
+	{
+		JoystickState = _NOTHING;
+	}
+
+	if(JoystickState == _NOTHING)
+	{
+		if(HAL_GPIO_ReadPin(JOY1_GPIO_Port, JOY1_Pin) == GPIO_PIN_SET) JoystickState = _UP;
+		else if(HAL_GPIO_ReadPin(JOY5_GPIO_Port, JOY5_Pin) == GPIO_PIN_SET) JoystickState = _DOWN;
+		else if(HAL_GPIO_ReadPin(JOY3_GPIO_Port, JOY3_Pin) == GPIO_PIN_SET) JoystickState = _LEFT;
+		else if(HAL_GPIO_ReadPin(JOY4_GPIO_Port, JOY4_Pin) == GPIO_PIN_SET) JoystickState = _RIGHT;
+		else if(HAL_GPIO_ReadPin(JOY2_GPIO_Port, JOY2_Pin) == GPIO_PIN_SET) JoystickState = _CENTER;
+
+	}
+
+	if(JoystickState != _NOTHING && JoystickState != _BUTTON_REBOUNCE)
+		MENU_CHANGE(&JoystickState);
+}
+
+static void MENU_CHANGE(JoystickMode_t *Change)
+{
+	//todo whattodo!
+	if(*Change == _UP)
+		Menu_Option = (Menu_Option + 1) % Menu_count;
+	else if(*Change == _DOWN)
+		Menu_Option = (Menu_Option + Menu_count - 1) % Menu_count;
+
+	if(*Change == _LEFT)
+		Eva.AttackMode = (Eva.AttackMode + 1) % COUNT;
+	else if(*Change == _RIGHT)
+		Eva.AttackMode = (Eva.AttackMode + COUNT - 1) % COUNT;
+
+	*Change = _BUTTON_REBOUNCE;
+}
+
+void OLED_INFO(void)
+{
+    static uint8_t pageTimerStarted = 0;
+    static uint32_t lastPageTick = 0;
+
+    char row[32];
+    ssd1306_Clear();
+
+    // ================================ 0: status, bateria, CPU, start module
+    if (Menu_Option == 0)
+    {
+        const char *state;
+        const char *mode;
+        uint16_t cellVoltage =
+            Eva.Voltage / DEFAULT_SETTING_BATTERY_CELL_NO;
+
+        switch (Eva.State)
+        {
+            case IDLE:
+                state = "IDLE";
+                break;
+            case BEFORE_ATTACK_OPTIONAL_ROTATION:
+                state = "ROTATE";
+                break;
+            case BEFORE_ATTACK_TASK:
+                state = "TASK";
+                break;
+            case ATTACK:
+                state = (Eva.InBattle == TRUE) ? "BATTLE" : "ATTACK";
+                break;
+            default:
+                state = "?";
+                break;
+        }
+
+        switch (Eva.AttackMode)
+        {
+            case STRAIGHT:
+                mode = "STRAIGHT";
+                break;
+            case CURVE:
+                mode = "CURVE";
+                break;
+            case FOLLOW_LINER:
+                mode = "FOLLOW LINE";
+                break;
+            case FOLLOW_ATTACKER:
+                mode = "FOLLOW ATK";
+                break;
+            default:
+                mode = "?";
+                break;
+        }
+
+        _ssd1306_SetCursor(0, 0);
+        ssd1306_WriteString("SYSTEM", Font_6x8);
+
+        snprintf(row, sizeof(row), "STATE: %s", state);
+        _ssd1306_SetCursor(0, 8);
+        ssd1306_WriteString(row, Font_6x8);
+
+        snprintf(row, sizeof(row), "MODE: %s", mode);
+        _ssd1306_SetCursor(0, 16);
+        ssd1306_WriteString(row, Font_6x8);
+
+        snprintf(row, sizeof(row), "BAT: %u.%02uV",
+                 (unsigned int)(Eva.Voltage / 100u),
+                 (unsigned int)(Eva.Voltage % 100u));
+        _ssd1306_SetCursor(0, 24);
+        ssd1306_WriteString(row, Font_6x8);
+
+        snprintf(row, sizeof(row), "CELL: %u.%02uV",
+                 (unsigned int)(cellVoltage / 100u),
+                 (unsigned int)(cellVoltage % 100u));
+        _ssd1306_SetCursor(0, 32);
+        ssd1306_WriteString(row, Font_6x8);
+
+        snprintf(row, sizeof(row), "CPU: %u%%",
+                 (unsigned int)Eva.MCU_USAGE);
+        _ssd1306_SetCursor(0, 40);
+        ssd1306_WriteString(row, Font_6x8);
+
+        snprintf(row, sizeof(row), "MCU: %uC",
+                 (unsigned int)Eva.MCU_TEMP);
+        _ssd1306_SetCursor(0, 48);
+        ssd1306_WriteString(row, Font_6x8);
+
+        snprintf(row, sizeof(row), "START:%s ID:%02u",
+                 StartModule_Started() ? "GO" : "WAIT",
+                 (unsigned int)StartModule_GetDohyoID());
+        _ssd1306_SetCursor(0, 56);
+        ssd1306_WriteString(row, Font_6x8);
+    }
+
+    // ================================ 1: cztery TF-Luna
+    else if (Menu_Option == 1)
+    {
+        Lidar_t *lidars[4] = {
+            &Lunas.FrontLeft,
+            &Lunas.FrontRight,
+            &Lunas.BackLeft,
+            &Lunas.BackRight
+        };
+        char names[4][3] = { "FL", "FR", "BL", "BR" };
+
+        _ssd1306_SetCursor(0, 0);
+        ssd1306_WriteString("LIDAR: d=cm, A=amp", Font_6x8);
+
+        for (uint8_t i = 0; i < 4; i++)
+        {
+            Lidar_t *lidar = lidars[i];
+            uint16_t dist = lidar->Dist;
+            uint8_t seen =
+                (dist != UINT16_MAX) &&
+                (dist <= MAX_DISTANCE) &&
+                (lidar->Amp >= MIN_AMP_TRESCHOLD);
+
+            uint8_t y = 10u + (i * 14u);
+
+            if (seen)
+            {
+                snprintf(row, sizeof(row), "%s %3uc A%4u",
+                         names[i],
+                         (unsigned int)dist,
+                         (unsigned int)lidar->Amp);
+            }
+            else
+            {
+                snprintf(row, sizeof(row), "%s --- A%4u",
+                         names[i],
+                         (unsigned int)lidar->Amp);
+            }
+
+            _ssd1306_SetCursor(0, y);
+            ssd1306_WriteString(row, Font_6x8);
+
+            _ssd1306_SetCursor(84, y);
+            ssd1306_WriteChar(
+                seen ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY,
+                Font_6x8);
+
+            // Im bliżej obiekt, tym pasek pełniejszy.
+            uint8_t progress = 0;
+            if (seen)
+                progress = ((MAX_DISTANCE - dist) * 100u) / MAX_DISTANCE;
+
+            uint16_t fillWidth = (progress * 28u) / 100u;
+
+            ssd1306_DrawRect(96, y + 1, 30, 6);
+            if (fillWidth > 0)
+                ssd1306_FillRect(97, y + 2, fillWidth, 4);
+        }
+    }
+
+    // ================================ 2: cztery podwójne czujniki linii
+    else if (Menu_Option == 2)
+    {
+        OneLineSensors_t *lineSensors[4] = {
+            &Lines.FrontLeft,
+            &Lines.FrontRight,
+            &Lines.BackLeft,
+            &Lines.BackRight
+        };
+        char names[4][3] = { "FL", "FR", "BL", "BR" };
+
+        _ssd1306_SetCursor(0, 0);
+        ssd1306_WriteString("LINES: A/B; O=OUT", Font_6x8);
+
+        for (uint8_t i = 0; i < 4; i++)
+        {
+            uint8_t y = 12u + (i * 12u);
+
+            _ssd1306_SetCursor(0, y);
+            ssd1306_WriteString(names[i], Font_6x8);
+
+            _ssd1306_SetCursor(18, y);
+            ssd1306_WriteChar('A', Font_6x8);
+            _ssd1306_SetCursor(26, y);
+            ssd1306_WriteChar(
+                (lineSensors[i]->A == OUT)
+                    ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY,
+                Font_6x8);
+
+            _ssd1306_SetCursor(42, y);
+            ssd1306_WriteChar('B', Font_6x8);
+            _ssd1306_SetCursor(50, y);
+            ssd1306_WriteChar(
+                (lineSensors[i]->B == OUT)
+                    ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY,
+                Font_6x8);
+
+            _ssd1306_SetCursor(68, y);
+            ssd1306_WriteChar('O', Font_6x8);
+            _ssd1306_SetCursor(78, y);
+            ssd1306_WriteChar(
+                (lineSensors[i]->Dohyo == OUT)
+                    ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY,
+                Font_6x8);
+        }
+    }
+
+    // ================================ 3: prąd, komenda PWM i OTW silników
+    else if (Menu_Option == 3)
+    {
+        int percentL = Motors.Requested.L / 10;
+        int percentR = Motors.Requested.R / 10;
+
+        if (percentL > 100) percentL = 100;
+        if (percentL < -100) percentL = -100;
+        if (percentR > 100) percentR = 100;
+        if (percentR < -100) percentR = -100;
+
+        _ssd1306_SetCursor(0, 0);
+        ssd1306_WriteString("MOTORS: CMD, mA", Font_6x8);
+
+        snprintf(row, sizeof(row), "L %4umA %4d%%",
+                 (unsigned int)(uint16_t)Motors.DRV_Current.L,
+                 percentL);
+        _ssd1306_SetCursor(0, 12);
+        ssd1306_WriteString(row, Font_6x8);
+
+        snprintf(row, sizeof(row), "R %4umA %4d%%",
+                 (unsigned int)(uint16_t)Motors.DRV_Current.R,
+                 percentR);
+        _ssd1306_SetCursor(0, 24);
+        ssd1306_WriteString(row, Font_6x8);
+
+        _ssd1306_SetCursor(0, 42);
+        ssd1306_WriteString("OTW L", Font_6x8);
+        _ssd1306_SetCursor(30, 42);
+        ssd1306_WriteChar(
+            Motors.DRV_OTW.L ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY,
+            Font_6x8);
+
+        _ssd1306_SetCursor(48, 42);
+        ssd1306_WriteString("R", Font_6x8);
+        _ssd1306_SetCursor(56, 42);
+        ssd1306_WriteChar(
+            Motors.DRV_OTW.R ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY,
+            Font_6x8);
+
+        _ssd1306_SetCursor(0, 56);
+        ssd1306_WriteString("checked = overtemp", Font_6x8);
+    }
+
+    // ================================ 4: akcelerometr i żyroskop
+    else
+    {
+        _ssd1306_SetCursor(0, 0);
+        ssd1306_WriteString("IMU A/G (raw)", Font_6x8);
+
+        snprintf(row, sizeof(row), "X A:%d G:%d",
+                 (int)IMU.Accel.x, (int)IMU.Gyro.x);
+        _ssd1306_SetCursor(0, 12);
+        ssd1306_WriteString(row, Font_6x8);
+
+        snprintf(row, sizeof(row), "Y A:%d G:%d",
+                 (int)IMU.Accel.y, (int)IMU.Gyro.y);
+        _ssd1306_SetCursor(0, 24);
+        ssd1306_WriteString(row, Font_6x8);
+
+        snprintf(row, sizeof(row), "Z A:%d G:%d",
+                 (int)IMU.Accel.z, (int)IMU.Gyro.z);
+        _ssd1306_SetCursor(0, 36);
+        ssd1306_WriteString(row, Font_6x8);
+
+        _ssd1306_SetCursor(0, 52);
+        ssd1306_WriteString("IMU values are raw", Font_6x8);
+    }
+
+    ssd1306_UpdateScreen();
+}

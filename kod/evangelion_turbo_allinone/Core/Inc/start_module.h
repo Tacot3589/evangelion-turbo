@@ -56,5 +56,6 @@ void StartMod_OnRisingExti(void);
 void StartMod_OnFallingExti(void);
 void InterruptStartModLeds(void);
 void InterruptStartMod(uint8_t Edge);
+uint8_t StartModule_GetDohyoID(void);
 
 #endif /* INC_START_MODULE_H_ */

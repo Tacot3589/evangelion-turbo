@@ -10,9 +10,12 @@
 
 #include <stdint.h>
 #include "main.h"
-//======================================= PRIVATE FUNCTIONS
-static void MENU_CHANGE(JoystickMode_t *Change);
+#include "ssd1306.h"
+#include "TFLUNA.h"
+#include "start_module.h"
+#include <stdio.h>
 
+//======================================= PRIVATE FUNCTIONS
 
 //======================================= PRIVATE DEFINES
 extern LidarSensors_t Lunas;
@@ -21,6 +24,7 @@ extern Evangelion_t Eva;
 extern MotorsSettingsInfo_t Motors;
 extern uint8_t lastSeen;
 extern JoystickMode_t JoystickState;
+extern IMUInfo_t IMU;
 
 //======================================= PUBLIC FUNCTIONS
 void WATCHDOG(void);

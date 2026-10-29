@@ -1,0 +1,218 @@
+/*
+ * start_module.c
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+
+#include <WATCHDOG_AND_INTERFACE.h>
+#include "main.h"
+#include "MY_INCLUDES.h"
+
+
+void WATCHDOG()
+{
+	/*
+	_NOTHING,
+	_UP,
+	_DOWN,
+	_LEFT,
+	_RIGHT,
+	_CENTER,
+	_BUTTON_REBOUNCE,
+	*/
+	//JOYSTICK
+
+	if( JoystickState == _BUTTON_REBOUNCE
+		&& HAL_GPIO_ReadPin(JOY1_GPIO_Port, JOY1_Pin)==GPIO_PIN_RESET
+		&& HAL_GPIO_ReadPin(JOY2_GPIO_Port, JOY2_Pin)==GPIO_PIN_RESET
+		&& HAL_GPIO_ReadPin(JOY3_GPIO_Port, JOY3_Pin)==GPIO_PIN_RESET
+		&& HAL_GPIO_ReadPin(JOY4_GPIO_Port, JOY4_Pin)==GPIO_PIN_RESET
+		&& HAL_GPIO_ReadPin(JOY5_GPIO_Port, JOY5_Pin)==GPIO_PIN_RESET)
+	{
+		JoystickState = _NOTHING;
+	}
+
+	if(JoystickState == _NOTHING)
+	{
+		if(HAL_GPIO_ReadPin(JOY1_GPIO_Port, JOY1_Pin)) JoystickState = _UP;
+		else if(HAL_GPIO_ReadPin(JOY2_GPIO_Port, JOY2_Pin)) JoystickState = _DOWN;
+		else if(HAL_GPIO_ReadPin(JOY3_GPIO_Port, JOY3_Pin)) JoystickState = _LEFT;
+		else if(HAL_GPIO_ReadPin(JOY4_GPIO_Port, JOY4_Pin)) JoystickState = _RIGHT;
+		else if(HAL_GPIO_ReadPin(JOY5_GPIO_Port, JOY5_Pin)) JoystickState = _CENTER;
+
+	}
+
+	if(JoystickState != _NOTHING && JoystickState != _BUTTON_REBOUNCE)
+		MENU_CHANGE(&JoystickState);
+}
+
+static void MENU_CHANGE(JoystickMode_t *Change)
+{
+	//todo whattodo!
+	Change = _BUTTON_REBOUNCE;
+}
+
+void OLED_INFO(void)
+{
+    char row[32];
+    char flDist[3] = "--";
+    char frDist[3] = "--";
+    char blDist[3] = "--";
+    char brDist[3] = "--";
+
+    if (Lunas.FrontLeft.Dist <= MAX_DISTANCE) snprintf(flDist, sizeof(flDist), "%02u",
+                         (unsigned int)Lunas.FrontLeft.Dist);
+    if (Lunas.FrontRight.Dist <= MAX_DISTANCE) snprintf(frDist, sizeof(frDist), "%02u",
+                         (unsigned int)Lunas.FrontRight.Dist);
+    if (Lunas.BackLeft.Dist <= MAX_DISTANCE) snprintf(blDist, sizeof(blDist), "%02u",
+                         (unsigned int)Lunas.BackLeft.Dist);
+    if (Lunas.BackRight.Dist <= MAX_DISTANCE) snprintf(brDist, sizeof(brDist), "%02u",
+                         (unsigned int)Lunas.BackRight.Dist);
+
+    const char *state;
+    const char *mode;
+
+    if (Eva.InBattle == TRUE)
+        state = "BATTLE";
+    else
+    {
+        switch (Eva.State)
+        {
+            case IDLE:
+                state = "IDL";
+                break;
+            case BEFORE_ATTACK_OPTIONAL_ROTATION:
+                state = "ROT";
+                break;
+            case BEFORE_ATTACK_TASK:
+                state = "TSK";
+                break;
+            case ATTACK:
+                state = "ATK";
+                break;
+            default:
+                state = "?";
+                break;
+        }
+    }
+
+    switch (Eva.AttackMode)
+    {
+        case STRAIGHT:
+            mode = "ST";
+            break;
+        case CURVE:
+            mode = "CV";
+            break;
+        case FOLLOW_LINER:
+            mode = "FL";
+            break;
+        case FOLLOW_ATTACKER:
+            mode = "FA";
+            break;
+        default:
+            mode = "?";
+            break;
+    }
+
+    uint16_t cellVoltage =
+        Eva.Voltage / DEFAULT_SETTING_BATTERY_CELL_NO;
+
+    int pwmL = Motors.Requested.L / 10;
+    int pwmR = Motors.Requested.R / 10;
+
+    if (pwmL > 100) pwmL = 100;
+    if (pwmL < -100) pwmL = -100;
+    if (pwmR > 100) pwmR = 100;
+    if (pwmR < -100) pwmR = -100;
+
+    ssd1306_Clear();
+
+    // 1/8: robot state, attack mode, start module, dohyo ID
+    snprintf(row, sizeof(row), "%s/%s %s D%02u",
+             state,
+             mode,
+             StartModule_Started() ? "GO" : "WAIT",
+             (unsigned int)StartModule_GetDohyoID());
+    _ssd1306_SetCursor(0, 0);
+    ssd1306_WriteString(row, Font_6x8);
+
+    // 2/8: MCU %, temperatura C, bateria / napięcie celi
+    snprintf(row, sizeof(row), "M%u%% T%u B%u.%u/%u.%uV",
+             (unsigned int)Eva.MCU_USAGE,
+             (unsigned int)Eva.MCU_TEMP,
+             (unsigned int)(Eva.Voltage / 100u),
+             (unsigned int)((Eva.Voltage % 100u) / 10u),
+             (unsigned int)(cellVoltage / 100u),
+             (unsigned int)((cellVoltage % 100u) / 10u));
+    _ssd1306_SetCursor(0, 8);
+    ssd1306_WriteString(row, Font_6x8);
+
+    // 3/8: przednie LIDAR-y: dystans w cm, A = amp / 10, checkbox = widzi
+    snprintf(row, sizeof(row), "FL%scA%04u%c FR%scA%04u%c",
+             flDist,
+             (unsigned int)(Lunas.FrontLeft.Amp / 10u),
+             flSeen ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY,
+             frDist,
+             (unsigned int)(Lunas.FrontRight.Amp / 10u),
+             frSeen ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY);
+    _ssd1306_SetCursor(0, 16);
+    ssd1306_WriteString(row, Font_6x8);
+
+    // 4/8: tylne LIDAR-y
+    snprintf(row, sizeof(row), "BL%scA%04u%c BR%scA%04u%c",
+             blDist,
+             (unsigned int)(Lunas.BackLeft.Amp / 10u),
+             blSeen ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY,
+             brDist,
+             (unsigned int)(Lunas.BackRight.Amp / 10u),
+             brSeen ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY);
+    _ssd1306_SetCursor(0, 24);
+    ssd1306_WriteString(row, Font_6x8);
+
+    // 5/8: wynik czterech podwójnych czujników linii; checkbox = OUT
+    snprintf(row, sizeof(row), "LN FL%c FR%c BL%c BR%c",
+             Lines.FrontLeft.Dohyo == OUT
+                 ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY,
+             Lines.FrontRight.Dohyo == OUT
+                 ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY,
+             Lines.BackLeft.Dohyo == OUT
+                 ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY,
+             Lines.BackRight.Dohyo == OUT
+                 ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY);
+    _ssd1306_SetCursor(0, 32);
+    ssd1306_WriteString(row, Font_6x8);
+
+    // 6/8: prąd w jednostkach 0.1 A, żądana moc w %, checkbox = OTW
+    snprintf(row, sizeof(row), "D L%u%+03d%c R%u%+03d%c",
+             (unsigned int)((uint16_t)Motors.DRV_Current.L / 100u),
+             pwmL,
+             Motors.DRV_OTW.L
+                 ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY,
+             (unsigned int)((uint16_t)Motors.DRV_Current.R / 100u),
+             pwmR,
+             Motors.DRV_OTW.R
+                 ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY);
+    _ssd1306_SetCursor(0, 40);
+    ssd1306_WriteString(row, Font_6x8);
+
+    // 7/8: akcelerometr X,Y,Z
+    snprintf(row, sizeof(row), "A%+d,%+d,%+d",
+             (int)IMU.Accel.x,
+             (int)IMU.Accel.y,
+             (int)IMU.Accel.z);
+    _ssd1306_SetCursor(0, 48);
+    ssd1306_WriteString(row, Font_6x8);
+
+    // 8/8: żyroskop X,Y,Z
+    snprintf(row, sizeof(row), "G%+d,%+d,%+d",
+             (int)IMU.Gyro.x,
+             (int)IMU.Gyro.y,
+             (int)IMU.Gyro.z);
+    _ssd1306_SetCursor(0, 56);
+    ssd1306_WriteString(row, Font_6x8);
+
+    ssd1306_UpdateScreen();
+}

@@ -9,3 +9,4 @@
 ../Core/Src/start_module.c:301:9:LED_RED_Control	16	static
 ../Core/Src/start_module.c:351:9:LED_BLUE_Control	16	static
 ../Core/Src/start_module.c:402:9:StartModule_Started	4	static
+../Core/Src/start_module.c:410:9:StartModule_GetDohyoID	4	static

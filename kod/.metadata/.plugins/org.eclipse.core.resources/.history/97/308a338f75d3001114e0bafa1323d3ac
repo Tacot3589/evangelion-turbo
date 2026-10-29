@@ -1,0 +1,19 @@
+/*
+ * start_module.c
+ *
+ *  Created on: Oct 23, 2026
+ *      Author: szymo
+ */
+
+
+#include "ATCK_MODES.h"
+#include "main.h"
+#include "MY_INCLUDES.h"
+
+
+
+Velocity_t STRAIGHT_SIMPLEST_ATTACK()
+{
+	if(Lunas.FrontLeft.Dist < 20 && Lunas.FrontRight.Dist < 20)
+		return (Velocity_t){20,20};
+}

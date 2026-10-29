@@ -36,7 +36,9 @@ Core/Src/WATCHDOG_AND_INTERFACE.o: ../Core/Src/WATCHDOG_AND_INTERFACE.c \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h \
- ../Core/Inc/main.h ../Core/Inc/MY_INCLUDES.h
+ ../Core/Inc/ssd1306.h ../Core/Inc/ssd1306_defines.h ../Core/Inc/fonts.h \
+ ../Core/Inc/TFLUNA.h ../Core/Inc/start_module.h ../Core/Inc/main.h \
+ ../Core/Inc/MY_INCLUDES.h
 ../Core/Inc/WATCHDOG_AND_INTERFACE.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:
@@ -75,5 +77,10 @@ Core/Src/WATCHDOG_AND_INTERFACE.o: ../Core/Src/WATCHDOG_AND_INTERFACE.c \
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h:
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h:
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h:
+../Core/Inc/ssd1306.h:
+../Core/Inc/ssd1306_defines.h:
+../Core/Inc/fonts.h:
+../Core/Inc/TFLUNA.h:
+../Core/Inc/start_module.h:
 ../Core/Inc/main.h:
 ../Core/Inc/MY_INCLUDES.h:

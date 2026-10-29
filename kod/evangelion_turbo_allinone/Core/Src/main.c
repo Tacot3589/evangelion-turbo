@@ -29,6 +29,7 @@
 #include "ssd1306.h"
 #include "DRIVERS.h"
 #include "WATCHDOG_AND_INTERFACE.h"
+#include "ATCK_MODES.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -106,6 +107,7 @@ LinesSensors_t Lines;
 JoystickMode_t JoystickState;
 Evangelion_t Eva;
 MotorsSettingsInfo_t Motors;
+IMUInfo_t IMU;
 
 
 uint8_t lastSeen = LEFT;
@@ -167,6 +169,8 @@ int main(void)
 	Lunas.FrontRight.RXsize = sizeof Lunas.FrontRight.RX;
 	Lunas.BackLeft.RXsize = sizeof Lunas.BackLeft.RX;
 	Lunas.BackRight.RXsize = sizeof Lunas.BackRight.RX;
+
+	JoystickState = _NOTHING;
 
   /* USER CODE END 1 */
 
@@ -1313,13 +1317,13 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pins : JOY3_Pin JOY2_Pin JOY1_Pin JOY4_Pin */
   GPIO_InitStruct.Pin = JOY3_Pin|JOY2_Pin|JOY1_Pin|JOY4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : JOY5_Pin */
   GPIO_InitStruct.Pin = JOY5_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(JOY5_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : DRV_CS_2_Pin DRV_CS_1_Pin LED_BLUE_Pin */
@@ -1372,6 +1376,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if (htim->Instance == TIM15) //1kHz
 	{
 		ADC_REDOUT_INFO_GETTHEMALL(&Eva, &Motors, &Lines, ADC1_BUFFER, ADC2_BUFFER);
+		Eva.InBattle = StartModule_Started();
+		if(Eva.InBattle)
+		{
+			if(Eva.AttackMode == STRAIGHT)
+				STRAIGHT_ATTACK();
+			else if(Eva.AttackMode == CURVE)
+				CURVE_ATTACK();
+			else if(Eva.AttackMode == FOLLOW_LINER)
+				FOLLOWLINER_ATTACK();
+			else if(Eva.AttackMode == FOLLOW_ATTACKER)
+				FOLLOW_ATTACKER_ATTACK();
+		}
 	}
 	if (htim->Instance == TIM16) //100Hz
 	{

@@ -35,7 +35,8 @@ Core/Src/ATCK_MODES.o: ../Core/Src/ATCK_MODES.c ../Core/Inc/ATCK_MODES.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h \
- ../Core/Inc/main.h ../Core/Inc/MY_INCLUDES.h
+ ../Core/Inc/DRIVERS.h ../Core/Inc/TFLUNA.h ../Core/Inc/MY_INCLUDES.h \
+ ../Core/Inc/TFLUNA.h
 ../Core/Inc/ATCK_MODES.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:
@@ -74,5 +75,7 @@ Core/Src/ATCK_MODES.o: ../Core/Src/ATCK_MODES.c ../Core/Inc/ATCK_MODES.h \
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h:
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h:
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h:
-../Core/Inc/main.h:
+../Core/Inc/DRIVERS.h:
+../Core/Inc/TFLUNA.h:
 ../Core/Inc/MY_INCLUDES.h:
+../Core/Inc/TFLUNA.h:

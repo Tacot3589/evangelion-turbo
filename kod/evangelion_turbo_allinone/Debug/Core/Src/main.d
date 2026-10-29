@@ -39,7 +39,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Core/Inc/TFLUNA.h ../Core/Inc/main.h ../Core/Inc/ADC_READOUT.h \
  ../Core/Inc/TFLUNA.h ../Core/Inc/fonts.h ../Core/Inc/ssd1306.h \
  ../Core/Inc/ssd1306_defines.h ../Core/Inc/fonts.h ../Core/Inc/DRIVERS.h \
- ../Core/Inc/WATCHDOG_AND_INTERFACE.h
+ ../Core/Inc/WATCHDOG_AND_INTERFACE.h ../Core/Inc/ssd1306.h \
+ ../Core/Inc/start_module.h ../Core/Inc/ATCK_MODES.h
 ../Core/Inc/main.h:
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:
 ../Core/Inc/stm32g4xx_hal_conf.h:
@@ -89,3 +90,6 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/fonts.h:
 ../Core/Inc/DRIVERS.h:
 ../Core/Inc/WATCHDOG_AND_INTERFACE.h:
+../Core/Inc/ssd1306.h:
+../Core/Inc/start_module.h:
+../Core/Inc/ATCK_MODES.h:

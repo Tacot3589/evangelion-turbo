@@ -406,3 +406,8 @@ uint8_t StartModule_Started()
 	else
 		return false;
 }
+
+uint8_t StartModule_GetDohyoID(void)
+{
+    return Dohyo_ID;
+}
