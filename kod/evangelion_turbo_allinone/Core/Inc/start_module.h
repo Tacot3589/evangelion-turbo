@@ -39,7 +39,7 @@ typedef enum {
 #define RC5_Long    1778     // 1778 us
 #define SIRC_Short  600      // 600 us
 #define SIRC_Long   1200     // 1200 us
-#define Margin      300
+#define Margin      400
 
 // Led Commands
 #define ON			2

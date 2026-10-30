@@ -1,4 +1,508 @@
-13:06:39 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+16:51:39 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ADC_READOUT.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ADC_READOUT.d" -MT"Core/Src/ADC_READOUT.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ADC_READOUT.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ATCK_MODES.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ATCK_MODES.d" -MT"Core/Src/ATCK_MODES.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ATCK_MODES.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/DRIVERS.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/DRIVERS.d" -MT"Core/Src/DRIVERS.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/DRIVERS.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/TFLUNA.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/TFLUNA.d" -MT"Core/Src/TFLUNA.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/TFLUNA.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/WATCHDOG_AND_INTERFACE.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/WATCHDOG_AND_INTERFACE.d" -MT"Core/Src/WATCHDOG_AND_INTERFACE.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/WATCHDOG_AND_INTERFACE.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ssd1306.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ssd1306.d" -MT"Core/Src/ssd1306.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ssd1306.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/start_module.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/start_module.d" -MT"Core/Src/start_module.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/start_module.o"
+In file included from ../Core/Inc/ADC_READOUT.h:13,
+                 from ../Core/Src/ADC_READOUT.c:9:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Inc/DRIVERS.h:13,
+                 from ../Core/Src/ATCK_MODES.c:2:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from ../Core/Inc/DRIVERS.h:13,
+                 from ../Core/Src/DRIVERS.c:9:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+../Core/Src/WATCHDOG_AND_INTERFACE.c: In function 'OLED_INFO':
+../Core/Src/WATCHDOG_AND_INTERFACE.c:81:21: warning: unused variable 'lastPageTick' [-Wunused-variable]
+   81 |     static uint32_t lastPageTick = 0;
+      |                     ^~~~~~~~~~~~
+../Core/Src/WATCHDOG_AND_INTERFACE.c:80:20: warning: unused variable 'pageTimerStarted' [-Wunused-variable]
+   80 |     static uint8_t pageTimerStarted = 0;
+      |                    ^~~~~~~~~~~~~~~~
+In file included from ../Core/Inc/WATCHDOG_AND_INTERFACE.h:14,
+                 from ../Core/Src/WATCHDOG_AND_INTERFACE.c:9:
+../Core/Inc/TFLUNA.h: At top level:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_INIT':
+../Core/Src/TFLUNA.c:63:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   63 |         actual_command = CMD_DISABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:87:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   87 |         actual_command = CMD_SET_250HZ;
+      |                        ^
+../Core/Src/TFLUNA.c:110:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  110 |         actual_command = CMD_ENABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:179:5: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  179 |     for (uint16_t i = 0; i < Lunas->BackLeft.RXsize; i++)
+      |     ^~~
+../Core/Src/TFLUNA.c:183:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  183 |         IN_INIT=false;
+      |         ^~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_DMA_CALLBACK':
+../Core/Src/TFLUNA.c:194:62: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  194 |                 ack1 = BUFFER_CONTAINS(Lunas->FrontRight.RX, actual_command, actual_command_lenght);
+      |                                                              ^~~~~~~~~~~~~~
+In file included from ../Core/Src/TFLUNA.c:10:
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:198:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  198 |                 ack2 = BUFFER_CONTAINS(Lunas->FrontLeft.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:202:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  202 |                 ack3 = BUFFER_CONTAINS(Lunas->BackRight.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:206:60: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  206 |                 ack4 = BUFFER_CONTAINS(Lunas->BackLeft.RX, actual_command, actual_command_lenght);
+      |                                                            ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/start_module.c: In function 'StartModule_Startup':
+../Core/Src/start_module.c:34:1: warning: control reaches end of non-void function [-Wreturn-type]
+   34 | }
+      | ^
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/stm32g4xx_hal_msp.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32g4xx_hal_msp.d" -MT"Core/Src/stm32g4xx_hal_msp.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32g4xx_hal_msp.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/stm32g4xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32g4xx_it.d" -MT"Core/Src/stm32g4xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32g4xx_it.o"
+In file included from ../Core/Src/main.c:26:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_allinone.elf
+ 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
+   text	   data	    bss	    dec	    hex	filename
+  74988	    140	   6532	  81660	  13efc	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_allinone.list
+ 
+16:52:53 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/WATCHDOG_AND_INTERFACE.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/WATCHDOG_AND_INTERFACE.d" -MT"Core/Src/WATCHDOG_AND_INTERFACE.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/WATCHDOG_AND_INTERFACE.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/WATCHDOG_AND_INTERFACE.c: In function 'OLED_INFO':
+../Core/Src/WATCHDOG_AND_INTERFACE.c:81:21: warning: unused variable 'lastPageTick' [-Wunused-variable]
+   81 |     static uint32_t lastPageTick = 0;
+      |                     ^~~~~~~~~~~~
+../Core/Src/WATCHDOG_AND_INTERFACE.c:80:20: warning: unused variable 'pageTimerStarted' [-Wunused-variable]
+   80 |     static uint8_t pageTimerStarted = 0;
+      |                    ^~~~~~~~~~~~~~~~
+In file included from ../Core/Inc/WATCHDOG_AND_INTERFACE.h:14,
+                 from ../Core/Src/WATCHDOG_AND_INTERFACE.c:9:
+../Core/Inc/TFLUNA.h: At top level:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:26:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_allinone.elf
+ 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
+   text	   data	    bss	    dec	    hex	filename
+  75048	    140	   6532	  81720	  13f38	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_allinone.list
+ 
+16:54:52 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Src/main.c:26:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_allinone.elf
+ 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
+   text	   data	    bss	    dec	    hex	filename
+  75040	    140	   6532	  81712	  13f30	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_allinone.list
+ 
+17:11:22 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ADC_READOUT.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ADC_READOUT.d" -MT"Core/Src/ADC_READOUT.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ADC_READOUT.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/stm32g4xx_hal_msp.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32g4xx_hal_msp.d" -MT"Core/Src/stm32g4xx_hal_msp.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32g4xx_hal_msp.o"
+In file included from ../Core/Inc/ADC_READOUT.h:13,
+                 from ../Core/Src/ADC_READOUT.c:9:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:26:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_allinone.elf
+ 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
+   text	   data	    bss	    dec	    hex	filename
+  75040	    140	   6532	  81712	  13f30	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_allinone.list
+ 
+17:20:18 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ADC_READOUT.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ADC_READOUT.d" -MT"Core/Src/ADC_READOUT.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ADC_READOUT.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ATCK_MODES.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ATCK_MODES.d" -MT"Core/Src/ATCK_MODES.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ATCK_MODES.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/DRIVERS.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/DRIVERS.d" -MT"Core/Src/DRIVERS.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/DRIVERS.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/TFLUNA.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/TFLUNA.d" -MT"Core/Src/TFLUNA.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/TFLUNA.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/WATCHDOG_AND_INTERFACE.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/WATCHDOG_AND_INTERFACE.d" -MT"Core/Src/WATCHDOG_AND_INTERFACE.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/WATCHDOG_AND_INTERFACE.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Inc/ADC_READOUT.h:13,
+                 from ../Core/Src/ADC_READOUT.c:9:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Inc/DRIVERS.h:13,
+                 from ../Core/Src/DRIVERS.c:9:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Inc/DRIVERS.h:13,
+                 from ../Core/Src/ATCK_MODES.c:2:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_INIT':
+../Core/Src/TFLUNA.c:63:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   63 |         actual_command = CMD_DISABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:87:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   87 |         actual_command = CMD_SET_250HZ;
+      |                        ^
+../Core/Src/TFLUNA.c:110:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  110 |         actual_command = CMD_ENABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:179:5: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  179 |     for (uint16_t i = 0; i < Lunas->BackLeft.RXsize; i++)
+      |     ^~~
+../Core/Src/TFLUNA.c:183:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  183 |         IN_INIT=false;
+      |         ^~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_DMA_CALLBACK':
+../Core/Src/TFLUNA.c:194:62: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  194 |                 ack1 = BUFFER_CONTAINS(Lunas->FrontRight.RX, actual_command, actual_command_lenght);
+      |                                                              ^~~~~~~~~~~~~~
+In file included from ../Core/Src/TFLUNA.c:10:
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:198:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  198 |                 ack2 = BUFFER_CONTAINS(Lunas->FrontLeft.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:202:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  202 |                 ack3 = BUFFER_CONTAINS(Lunas->BackRight.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:206:60: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  206 |                 ack4 = BUFFER_CONTAINS(Lunas->BackLeft.RX, actual_command, actual_command_lenght);
+      |                                                            ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+In file included from ../Core/Src/main.c:26:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/WATCHDOG_AND_INTERFACE.c: In function 'OLED_INFO':
+../Core/Src/WATCHDOG_AND_INTERFACE.c:81:21: warning: unused variable 'lastPageTick' [-Wunused-variable]
+   81 |     static uint32_t lastPageTick = 0;
+      |                     ^~~~~~~~~~~~
+../Core/Src/WATCHDOG_AND_INTERFACE.c:80:20: warning: unused variable 'pageTimerStarted' [-Wunused-variable]
+   80 |     static uint8_t pageTimerStarted = 0;
+      |                    ^~~~~~~~~~~~~~~~
+In file included from ../Core/Inc/WATCHDOG_AND_INTERFACE.h:14,
+                 from ../Core/Src/WATCHDOG_AND_INTERFACE.c:9:
+../Core/Inc/TFLUNA.h: At top level:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_allinone.elf
+ 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
+   text	   data	    bss	    dec	    hex	filename
+  75056	    140	   6532	  81728	  13f40	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_allinone.list
+ 
+17:21:34 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+   text	   data	    bss	    dec	    hex	filename
+  75056	    140	   6532	  81728	  13f40	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+18:05:31 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/TFLUNA.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/TFLUNA.d" -MT"Core/Src/TFLUNA.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/TFLUNA.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_INIT':
+../Core/Src/TFLUNA.c:63:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   63 |         actual_command = CMD_DISABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:87:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   87 |         actual_command = CMD_SET_250HZ;
+      |                        ^
+../Core/Src/TFLUNA.c:110:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  110 |         actual_command = CMD_ENABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:179:5: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  179 |     for (uint16_t i = 0; i < Lunas->BackLeft.RXsize; i++)
+      |     ^~~
+../Core/Src/TFLUNA.c:183:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  183 |         IN_INIT=false;
+      |         ^~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_DMA_CALLBACK':
+../Core/Src/TFLUNA.c:194:62: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  194 |                 ack1 = BUFFER_CONTAINS(Lunas->FrontRight.RX, actual_command, actual_command_lenght);
+      |                                                              ^~~~~~~~~~~~~~
+In file included from ../Core/Src/TFLUNA.c:10:
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:198:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  198 |                 ack2 = BUFFER_CONTAINS(Lunas->FrontLeft.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:202:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  202 |                 ack3 = BUFFER_CONTAINS(Lunas->BackRight.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:206:60: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  206 |                 ack4 = BUFFER_CONTAINS(Lunas->BackLeft.RX, actual_command, actual_command_lenght);
+      |                                                            ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+In file included from ../Core/Src/main.c:26:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_allinone.elf
+ 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
+   text	   data	    bss	    dec	    hex	filename
+  75056	    140	   6532	  81728	  13f40	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_allinone.list
+ 
+18:06:33 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Src/main.c:26:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_allinone.elf
+ 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
+   text	   data	    bss	    dec	    hex	filename
+  75064	    140	   6532	  81736	  13f48	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_allinone.list
+ 
+18:10:07 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+   text	   data	    bss	    dec	    hex	filename
+  75064	    140	   6532	  81736	  13f48	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+18:12:36 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
 make -j8 all 
 arm-none-eabi-gcc -gdwarf-4 "../Core/Src/TFLUNA.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/TFLUNA.d" -MT"Core/Src/TFLUNA.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/TFLUNA.o"
 ../Core/Src/TFLUNA.c: In function 'TFLUNAs_INIT':
@@ -49,22 +553,885 @@ Finished building target: evangelion_turbo_allinone.elf
 arm-none-eabi-size  evangelion_turbo_allinone.elf 
 arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
    text	   data	    bss	    dec	    hex	filename
-  72204	    128	   6360	  78692	  13364	evangelion_turbo_allinone.elf
+  75020	    140	   6532	  81692	  13f1c	evangelion_turbo_allinone.elf
 Finished building: default.size.stdout
  
 Finished building: evangelion_turbo_allinone.list
  
-13:06:41 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+18:18:17 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
 make -j8 all 
 arm-none-eabi-size  evangelion_turbo_allinone.elf 
    text	   data	    bss	    dec	    hex	filename
-  72204	    128	   6360	  78692	  13364	evangelion_turbo_allinone.elf
+  75020	    140	   6532	  81692	  13f1c	evangelion_turbo_allinone.elf
 Finished building: default.size.stdout
  
-13:07:06 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+18:20:34 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/TFLUNA.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/TFLUNA.d" -MT"Core/Src/TFLUNA.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/TFLUNA.o"
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_INIT':
+../Core/Src/TFLUNA.c:63:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   63 |         actual_command = CMD_DISABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:87:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   87 |         actual_command = CMD_SET_250HZ;
+      |                        ^
+../Core/Src/TFLUNA.c:110:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  110 |         actual_command = CMD_ENABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:179:5: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  179 |     for (uint16_t i = 0; i < Lunas->BackLeft.RXsize; i++)
+      |     ^~~
+../Core/Src/TFLUNA.c:183:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  183 |         IN_INIT=false;
+      |         ^~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_DMA_CALLBACK':
+../Core/Src/TFLUNA.c:194:62: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  194 |                 ack1 = BUFFER_CONTAINS(Lunas->FrontRight.RX, actual_command, actual_command_lenght);
+      |                                                              ^~~~~~~~~~~~~~
+In file included from ../Core/Src/TFLUNA.c:10:
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:198:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  198 |                 ack2 = BUFFER_CONTAINS(Lunas->FrontLeft.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:202:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  202 |                 ack3 = BUFFER_CONTAINS(Lunas->BackRight.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:206:60: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  206 |                 ack4 = BUFFER_CONTAINS(Lunas->BackLeft.RX, actual_command, actual_command_lenght);
+      |                                                            ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:217:60: warning: variable 'Array_Filtering_size' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                                            ^~~~~~~~~~~~~~~~~~~~
+../Core/Src/TFLUNA.c:217:50: warning: variable 'Amp_indx' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                                  ^~~~~~~~
+../Core/Src/TFLUNA.c:217:38: warning: variable 'Temp_indx' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                      ^~~~~~~~~
+../Core/Src/TFLUNA.c:217:26: warning: variable 'Dist_indx' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                          ^~~~~~~~~
+../Core/Src/TFLUNA.c:214:55: warning: variable 'buffor_Amp' set but not used [-Wunused-but-set-variable]
+  214 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                                                       ^~~~~~~~~~
+../Core/Src/TFLUNA.c:214:41: warning: variable 'buffor_Temp' set but not used [-Wunused-but-set-variable]
+  214 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                                         ^~~~~~~~~~~
+../Core/Src/TFLUNA.c:214:27: warning: variable 'buffor_Dist' set but not used [-Wunused-but-set-variable]
+  214 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                           ^~~~~~~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_allinone.elf
+ 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
+   text	   data	    bss	    dec	    hex	filename
+  74880	    140	   6532	  81552	  13e90	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_allinone.list
+ 
+23:39:58 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ADC_READOUT.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ADC_READOUT.d" -MT"Core/Src/ADC_READOUT.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ADC_READOUT.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ATCK_MODES.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ATCK_MODES.d" -MT"Core/Src/ATCK_MODES.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ATCK_MODES.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/DRIVERS.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/DRIVERS.d" -MT"Core/Src/DRIVERS.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/DRIVERS.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/TFLUNA.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/TFLUNA.d" -MT"Core/Src/TFLUNA.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/TFLUNA.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/WATCHDOG_AND_INTERFACE.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/WATCHDOG_AND_INTERFACE.d" -MT"Core/Src/WATCHDOG_AND_INTERFACE.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/WATCHDOG_AND_INTERFACE.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ssd1306.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ssd1306.d" -MT"Core/Src/ssd1306.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ssd1306.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/start_module.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/start_module.d" -MT"Core/Src/start_module.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/start_module.o"
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_INIT':
+../Core/Src/TFLUNA.c:63:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   63 |         actual_command = CMD_DISABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:111:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  111 |         actual_command = CMD_ENABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:180:5: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  180 |     for (uint16_t i = 0; i < Lunas->BackLeft.RXsize; i++)
+      |     ^~~
+../Core/Src/TFLUNA.c:184:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  184 |         IN_INIT=false;
+      |         ^~~~~~~
+In file included from ../Core/Inc/DRIVERS.h:13,
+                 from ../Core/Src/DRIVERS.c:9:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_DMA_CALLBACK':
+../Core/Src/TFLUNA.c:195:62: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  195 |                 ack1 = BUFFER_CONTAINS(Lunas->FrontRight.RX, actual_command, actual_command_lenght);
+      |                                                              ^~~~~~~~~~~~~~
+In file included from ../Core/Src/TFLUNA.c:10:
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:199:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  199 |                 ack2 = BUFFER_CONTAINS(Lunas->FrontLeft.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:203:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  203 |                 ack3 = BUFFER_CONTAINS(Lunas->BackRight.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:207:60: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  207 |                 ack4 = BUFFER_CONTAINS(Lunas->BackLeft.RX, actual_command, actual_command_lenght);
+      |                                                            ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:218:60: warning: variable 'Array_Filtering_size' set but not used [-Wunused-but-set-variable]
+  218 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                                            ^~~~~~~~~~~~~~~~~~~~
+../Core/Src/TFLUNA.c:218:50: warning: variable 'Amp_indx' set but not used [-Wunused-but-set-variable]
+  218 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                                  ^~~~~~~~
+../Core/Src/TFLUNA.c:218:38: warning: variable 'Temp_indx' set but not used [-Wunused-but-set-variable]
+  218 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                      ^~~~~~~~~
+../Core/Src/TFLUNA.c:218:26: warning: variable 'Dist_indx' set but not used [-Wunused-but-set-variable]
+  218 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                          ^~~~~~~~~
+../Core/Src/TFLUNA.c:215:55: warning: variable 'buffor_Amp' set but not used [-Wunused-but-set-variable]
+  215 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                                                       ^~~~~~~~~~
+../Core/Src/TFLUNA.c:215:41: warning: variable 'buffor_Temp' set but not used [-Wunused-but-set-variable]
+  215 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                                         ^~~~~~~~~~~
+../Core/Src/TFLUNA.c:215:27: warning: variable 'buffor_Dist' set but not used [-Wunused-but-set-variable]
+  215 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                           ^~~~~~~~~~~
+../Core/Src/start_module.c: In function 'StartModule_Startup':
+../Core/Src/start_module.c:34:1: warning: control reaches end of non-void function [-Wreturn-type]
+   34 | }
+      | ^
+In file included from ../Core/Inc/DRIVERS.h:13,
+                 from ../Core/Src/ATCK_MODES.c:2:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from ../Core/Inc/ADC_READOUT.h:13,
+                 from ../Core/Src/ADC_READOUT.c:9:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+../Core/Src/WATCHDOG_AND_INTERFACE.c: In function 'OLED_INFO':
+../Core/Src/WATCHDOG_AND_INTERFACE.c:81:21: warning: unused variable 'lastPageTick' [-Wunused-variable]
+   81 |     static uint32_t lastPageTick = 0;
+      |                     ^~~~~~~~~~~~
+../Core/Src/WATCHDOG_AND_INTERFACE.c:80:20: warning: unused variable 'pageTimerStarted' [-Wunused-variable]
+   80 |     static uint8_t pageTimerStarted = 0;
+      |                    ^~~~~~~~~~~~~~~~
+In file included from ../Core/Inc/WATCHDOG_AND_INTERFACE.h:14,
+                 from ../Core/Src/WATCHDOG_AND_INTERFACE.c:9:
+../Core/Inc/TFLUNA.h: At top level:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:26:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/stm32g4xx_hal_msp.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32g4xx_hal_msp.d" -MT"Core/Src/stm32g4xx_hal_msp.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32g4xx_hal_msp.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/stm32g4xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32g4xx_it.d" -MT"Core/Src/stm32g4xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32g4xx_it.o"
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_allinone.elf
+ 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
+   text	   data	    bss	    dec	    hex	filename
+  74724	    140	   6532	  81396	  13df4	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_allinone.list
+ 
+23:41:08 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/TFLUNA.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/TFLUNA.d" -MT"Core/Src/TFLUNA.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/TFLUNA.o"
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_INIT':
+../Core/Src/TFLUNA.c:63:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   63 |         actual_command = CMD_DISABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:87:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   87 |         actual_command = CMD_SET_250HZ;
+      |                        ^
+../Core/Src/TFLUNA.c:110:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  110 |         actual_command = CMD_ENABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:179:5: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  179 |     for (uint16_t i = 0; i < Lunas->BackLeft.RXsize; i++)
+      |     ^~~
+../Core/Src/TFLUNA.c:183:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  183 |         IN_INIT=false;
+      |         ^~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_DMA_CALLBACK':
+../Core/Src/TFLUNA.c:194:62: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  194 |                 ack1 = BUFFER_CONTAINS(Lunas->FrontRight.RX, actual_command, actual_command_lenght);
+      |                                                              ^~~~~~~~~~~~~~
+In file included from ../Core/Src/TFLUNA.c:10:
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:198:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  198 |                 ack2 = BUFFER_CONTAINS(Lunas->FrontLeft.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:202:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  202 |                 ack3 = BUFFER_CONTAINS(Lunas->BackRight.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:206:60: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  206 |                 ack4 = BUFFER_CONTAINS(Lunas->BackLeft.RX, actual_command, actual_command_lenght);
+      |                                                            ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:217:60: warning: variable 'Array_Filtering_size' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                                            ^~~~~~~~~~~~~~~~~~~~
+../Core/Src/TFLUNA.c:217:50: warning: variable 'Amp_indx' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                                  ^~~~~~~~
+../Core/Src/TFLUNA.c:217:38: warning: variable 'Temp_indx' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                      ^~~~~~~~~
+../Core/Src/TFLUNA.c:217:26: warning: variable 'Dist_indx' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                          ^~~~~~~~~
+../Core/Src/TFLUNA.c:214:55: warning: variable 'buffor_Amp' set but not used [-Wunused-but-set-variable]
+  214 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                                                       ^~~~~~~~~~
+../Core/Src/TFLUNA.c:214:41: warning: variable 'buffor_Temp' set but not used [-Wunused-but-set-variable]
+  214 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                                         ^~~~~~~~~~~
+../Core/Src/TFLUNA.c:214:27: warning: variable 'buffor_Dist' set but not used [-Wunused-but-set-variable]
+  214 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                           ^~~~~~~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_allinone.elf
+ 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
+   text	   data	    bss	    dec	    hex	filename
+  74880	    140	   6532	  81552	  13e90	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_allinone.list
+ 
+23:44:00 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ADC_READOUT.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ADC_READOUT.d" -MT"Core/Src/ADC_READOUT.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ADC_READOUT.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ATCK_MODES.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ATCK_MODES.d" -MT"Core/Src/ATCK_MODES.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ATCK_MODES.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/DRIVERS.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/DRIVERS.d" -MT"Core/Src/DRIVERS.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/DRIVERS.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/TFLUNA.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/TFLUNA.d" -MT"Core/Src/TFLUNA.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/TFLUNA.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/WATCHDOG_AND_INTERFACE.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/WATCHDOG_AND_INTERFACE.d" -MT"Core/Src/WATCHDOG_AND_INTERFACE.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/WATCHDOG_AND_INTERFACE.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Inc/DRIVERS.h:13,
+                 from ../Core/Src/ATCK_MODES.c:2:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from ../Core/Inc/DRIVERS.h:13,
+                 from ../Core/Src/DRIVERS.c:9:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_INIT':
+../Core/Src/TFLUNA.c:63:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   63 |         actual_command = CMD_DISABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:87:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   87 |         actual_command = CMD_SET_250HZ;
+      |                        ^
+../Core/Src/TFLUNA.c:110:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  110 |         actual_command = CMD_ENABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:179:5: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  179 |     for (uint16_t i = 0; i < Lunas->BackLeft.RXsize; i++)
+      |     ^~~
+../Core/Src/TFLUNA.c:183:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  183 |         IN_INIT=false;
+      |         ^~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_DMA_CALLBACK':
+../Core/Src/TFLUNA.c:194:62: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  194 |                 ack1 = BUFFER_CONTAINS(Lunas->FrontRight.RX, actual_command, actual_command_lenght);
+      |                                                              ^~~~~~~~~~~~~~
+In file included from ../Core/Src/TFLUNA.c:10:
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:198:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  198 |                 ack2 = BUFFER_CONTAINS(Lunas->FrontLeft.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:202:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  202 |                 ack3 = BUFFER_CONTAINS(Lunas->BackRight.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:206:60: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  206 |                 ack4 = BUFFER_CONTAINS(Lunas->BackLeft.RX, actual_command, actual_command_lenght);
+      |                                                            ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:217:60: warning: variable 'Array_Filtering_size' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                                            ^~~~~~~~~~~~~~~~~~~~
+../Core/Src/TFLUNA.c:217:50: warning: variable 'Amp_indx' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                                  ^~~~~~~~
+../Core/Src/TFLUNA.c:217:38: warning: variable 'Temp_indx' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                      ^~~~~~~~~
+../Core/Src/TFLUNA.c:217:26: warning: variable 'Dist_indx' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                          ^~~~~~~~~
+../Core/Src/TFLUNA.c:214:55: warning: variable 'buffor_Amp' set but not used [-Wunused-but-set-variable]
+  214 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                                                       ^~~~~~~~~~
+../Core/Src/TFLUNA.c:214:41: warning: variable 'buffor_Temp' set but not used [-Wunused-but-set-variable]
+  214 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                                         ^~~~~~~~~~~
+../Core/Src/TFLUNA.c:214:27: warning: variable 'buffor_Dist' set but not used [-Wunused-but-set-variable]
+  214 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                           ^~~~~~~~~~~
+In file included from ../Core/Inc/ADC_READOUT.h:13,
+                 from ../Core/Src/ADC_READOUT.c:9:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:26:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/WATCHDOG_AND_INTERFACE.c: In function 'OLED_INFO':
+../Core/Src/WATCHDOG_AND_INTERFACE.c:81:21: warning: unused variable 'lastPageTick' [-Wunused-variable]
+   81 |     static uint32_t lastPageTick = 0;
+      |                     ^~~~~~~~~~~~
+../Core/Src/WATCHDOG_AND_INTERFACE.c:80:20: warning: unused variable 'pageTimerStarted' [-Wunused-variable]
+   80 |     static uint8_t pageTimerStarted = 0;
+      |                    ^~~~~~~~~~~~~~~~
+In file included from ../Core/Inc/WATCHDOG_AND_INTERFACE.h:14,
+                 from ../Core/Src/WATCHDOG_AND_INTERFACE.c:9:
+../Core/Inc/TFLUNA.h: At top level:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_allinone.elf
+ 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
+   text	   data	    bss	    dec	    hex	filename
+  74880	    140	   6532	  81552	  13e90	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_allinone.list
+ 
+23:46:37 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ADC_READOUT.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ADC_READOUT.d" -MT"Core/Src/ADC_READOUT.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ADC_READOUT.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ATCK_MODES.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ATCK_MODES.d" -MT"Core/Src/ATCK_MODES.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ATCK_MODES.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/DRIVERS.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/DRIVERS.d" -MT"Core/Src/DRIVERS.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/DRIVERS.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/TFLUNA.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/TFLUNA.d" -MT"Core/Src/TFLUNA.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/TFLUNA.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/WATCHDOG_AND_INTERFACE.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/WATCHDOG_AND_INTERFACE.d" -MT"Core/Src/WATCHDOG_AND_INTERFACE.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/WATCHDOG_AND_INTERFACE.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Inc/DRIVERS.h:13,
+                 from ../Core/Src/ATCK_MODES.c:2:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from ../Core/Inc/DRIVERS.h:13,
+                 from ../Core/Src/DRIVERS.c:9:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_INIT':
+../Core/Src/TFLUNA.c:63:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   63 |         actual_command = CMD_DISABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:87:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   87 |         actual_command = CMD_SET_250HZ;
+      |                        ^
+../Core/Src/TFLUNA.c:110:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  110 |         actual_command = CMD_ENABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:179:5: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  179 |     for (uint16_t i = 0; i < Lunas->BackLeft.RXsize; i++)
+      |     ^~~
+../Core/Src/TFLUNA.c:183:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  183 |         IN_INIT=false;
+      |         ^~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_DMA_CALLBACK':
+../Core/Src/TFLUNA.c:194:62: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  194 |                 ack1 = BUFFER_CONTAINS(Lunas->FrontRight.RX, actual_command, actual_command_lenght);
+      |                                                              ^~~~~~~~~~~~~~
+In file included from ../Core/Src/TFLUNA.c:10:
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:198:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  198 |                 ack2 = BUFFER_CONTAINS(Lunas->FrontLeft.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:202:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  202 |                 ack3 = BUFFER_CONTAINS(Lunas->BackRight.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:206:60: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  206 |                 ack4 = BUFFER_CONTAINS(Lunas->BackLeft.RX, actual_command, actual_command_lenght);
+      |                                                            ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:217:60: warning: variable 'Array_Filtering_size' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                                            ^~~~~~~~~~~~~~~~~~~~
+../Core/Src/TFLUNA.c:217:50: warning: variable 'Amp_indx' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                                  ^~~~~~~~
+../Core/Src/TFLUNA.c:217:38: warning: variable 'Temp_indx' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                      ^~~~~~~~~
+../Core/Src/TFLUNA.c:217:26: warning: variable 'Dist_indx' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                          ^~~~~~~~~
+../Core/Src/TFLUNA.c:214:55: warning: variable 'buffor_Amp' set but not used [-Wunused-but-set-variable]
+  214 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                                                       ^~~~~~~~~~
+../Core/Src/TFLUNA.c:214:41: warning: variable 'buffor_Temp' set but not used [-Wunused-but-set-variable]
+  214 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                                         ^~~~~~~~~~~
+../Core/Src/TFLUNA.c:214:27: warning: variable 'buffor_Dist' set but not used [-Wunused-but-set-variable]
+  214 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                           ^~~~~~~~~~~
+In file included from ../Core/Inc/ADC_READOUT.h:13,
+                 from ../Core/Src/ADC_READOUT.c:9:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:26:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/WATCHDOG_AND_INTERFACE.c: In function 'OLED_INFO':
+../Core/Src/WATCHDOG_AND_INTERFACE.c:81:21: warning: unused variable 'lastPageTick' [-Wunused-variable]
+   81 |     static uint32_t lastPageTick = 0;
+      |                     ^~~~~~~~~~~~
+../Core/Src/WATCHDOG_AND_INTERFACE.c:80:20: warning: unused variable 'pageTimerStarted' [-Wunused-variable]
+   80 |     static uint8_t pageTimerStarted = 0;
+      |                    ^~~~~~~~~~~~~~~~
+In file included from ../Core/Inc/WATCHDOG_AND_INTERFACE.h:14,
+                 from ../Core/Src/WATCHDOG_AND_INTERFACE.c:9:
+../Core/Inc/TFLUNA.h: At top level:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_allinone.elf
+ 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
+   text	   data	    bss	    dec	    hex	filename
+  74880	    140	   6532	  81552	  13e90	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_allinone.list
+ 
+23:48:03 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ADC_READOUT.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ADC_READOUT.d" -MT"Core/Src/ADC_READOUT.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ADC_READOUT.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/ATCK_MODES.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ATCK_MODES.d" -MT"Core/Src/ATCK_MODES.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/ATCK_MODES.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/DRIVERS.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/DRIVERS.d" -MT"Core/Src/DRIVERS.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/DRIVERS.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/TFLUNA.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/TFLUNA.d" -MT"Core/Src/TFLUNA.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/TFLUNA.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/WATCHDOG_AND_INTERFACE.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/WATCHDOG_AND_INTERFACE.d" -MT"Core/Src/WATCHDOG_AND_INTERFACE.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/WATCHDOG_AND_INTERFACE.o"
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Inc/DRIVERS.h:13,
+                 from ../Core/Src/DRIVERS.c:9:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Inc/ADC_READOUT.h:13,
+                 from ../Core/Src/ADC_READOUT.c:9:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_INIT':
+../Core/Src/TFLUNA.c:63:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   63 |         actual_command = CMD_DISABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:87:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   87 |         actual_command = CMD_SET_250HZ;
+      |                        ^
+../Core/Src/TFLUNA.c:110:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  110 |         actual_command = CMD_ENABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:179:5: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  179 |     for (uint16_t i = 0; i < Lunas->BackLeft.RXsize; i++)
+      |     ^~~
+../Core/Src/TFLUNA.c:183:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  183 |         IN_INIT=false;
+      |         ^~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_DMA_CALLBACK':
+../Core/Src/TFLUNA.c:194:62: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  194 |                 ack1 = BUFFER_CONTAINS(Lunas->FrontRight.RX, actual_command, actual_command_lenght);
+      |                                                              ^~~~~~~~~~~~~~
+In file included from ../Core/Src/TFLUNA.c:10:
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:198:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  198 |                 ack2 = BUFFER_CONTAINS(Lunas->FrontLeft.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:202:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  202 |                 ack3 = BUFFER_CONTAINS(Lunas->BackRight.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:206:60: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  206 |                 ack4 = BUFFER_CONTAINS(Lunas->BackLeft.RX, actual_command, actual_command_lenght);
+      |                                                            ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:217:60: warning: variable 'Array_Filtering_size' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                                            ^~~~~~~~~~~~~~~~~~~~
+../Core/Src/TFLUNA.c:217:50: warning: variable 'Amp_indx' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                                  ^~~~~~~~
+../Core/Src/TFLUNA.c:217:38: warning: variable 'Temp_indx' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                                      ^~~~~~~~~
+../Core/Src/TFLUNA.c:217:26: warning: variable 'Dist_indx' set but not used [-Wunused-but-set-variable]
+  217 |                 uint8_t *Dist_indx, *Temp_indx, *Amp_indx, Array_Filtering_size;
+      |                          ^~~~~~~~~
+../Core/Src/TFLUNA.c:214:55: warning: variable 'buffor_Amp' set but not used [-Wunused-but-set-variable]
+  214 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                                                       ^~~~~~~~~~
+../Core/Src/TFLUNA.c:214:41: warning: variable 'buffor_Temp' set but not used [-Wunused-but-set-variable]
+  214 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                                         ^~~~~~~~~~~
+../Core/Src/TFLUNA.c:214:27: warning: variable 'buffor_Dist' set but not used [-Wunused-but-set-variable]
+  214 |                 uint16_t *buffor_Dist, *buffor_Temp, *buffor_Amp;
+      |                           ^~~~~~~~~~~
+In file included from ../Core/Inc/DRIVERS.h:13,
+                 from ../Core/Src/ATCK_MODES.c:2:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:26:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:30:
+../Core/Inc/DRIVERS.h:17:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   17 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:18:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   18 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:19:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
+   19 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:20:16: warning: 'Acceleration_Time_Compensation_L' declared 'static' but never defined [-Wunused-function]
+   20 | static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Inc/DRIVERS.h:21:16: warning: 'Acceleration_Time_Compensation_R' declared 'static' but never defined [-Wunused-function]
+   21 | static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/WATCHDOG_AND_INTERFACE.c: In function 'OLED_INFO':
+../Core/Src/WATCHDOG_AND_INTERFACE.c:81:21: warning: unused variable 'lastPageTick' [-Wunused-variable]
+   81 |     static uint32_t lastPageTick = 0;
+      |                     ^~~~~~~~~~~~
+../Core/Src/WATCHDOG_AND_INTERFACE.c:80:20: warning: unused variable 'pageTimerStarted' [-Wunused-variable]
+   80 |     static uint8_t pageTimerStarted = 0;
+      |                    ^~~~~~~~~~~~~~~~
+In file included from ../Core/Inc/WATCHDOG_AND_INTERFACE.h:14,
+                 from ../Core/Src/WATCHDOG_AND_INTERFACE.c:9:
+../Core/Inc/TFLUNA.h: At top level:
+../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_allinone.elf
+ 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
+   text	   data	    bss	    dec	    hex	filename
+  74880	    140	   6532	  81552	  13e90	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_allinone.list
+ 
+23:56:55 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/TFLUNA.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/TFLUNA.d" -MT"Core/Src/TFLUNA.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/TFLUNA.o"
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_INIT':
+../Core/Src/TFLUNA.c:63:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   63 |         actual_command = CMD_DISABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:87:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   87 |         actual_command = CMD_SET_250HZ;
+      |                        ^
+../Core/Src/TFLUNA.c:110:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  110 |         actual_command = CMD_ENABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:179:5: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  179 |     for (uint16_t i = 0; i < Lunas->BackLeft.RXsize; i++)
+      |     ^~~
+../Core/Src/TFLUNA.c:183:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  183 |         IN_INIT=false;
+      |         ^~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_DMA_CALLBACK':
+../Core/Src/TFLUNA.c:194:62: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  194 |                 ack1 = BUFFER_CONTAINS(Lunas->FrontRight.RX, actual_command, actual_command_lenght);
+      |                                                              ^~~~~~~~~~~~~~
+In file included from ../Core/Src/TFLUNA.c:10:
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:198:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  198 |                 ack2 = BUFFER_CONTAINS(Lunas->FrontLeft.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:202:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  202 |                 ack3 = BUFFER_CONTAINS(Lunas->BackRight.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:206:60: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  206 |                 ack4 = BUFFER_CONTAINS(Lunas->BackLeft.RX, actual_command, actual_command_lenght);
+      |                                                            ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:212:28: warning: unused variable 'k' [-Wunused-variable]
+  212 |                 uint8_t j, k;
+      |                            ^
+../Core/Src/TFLUNA.c:212:25: warning: unused variable 'j' [-Wunused-variable]
+  212 |                 uint8_t j, k;
+      |                         ^
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_allinone.elf
+ 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
+   text	   data	    bss	    dec	    hex	filename
+  75100	    140	   6532	  81772	  13f6c	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_allinone.list
+ 
+23:57:59 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+make -j8 all 
+arm-none-eabi-gcc -gdwarf-4 "../Core/Src/TFLUNA.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/TFLUNA.d" -MT"Core/Src/TFLUNA.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/TFLUNA.o"
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_INIT':
+../Core/Src/TFLUNA.c:63:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   63 |         actual_command = CMD_DISABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:87:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   87 |         actual_command = CMD_SET_250HZ;
+      |                        ^
+../Core/Src/TFLUNA.c:110:24: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  110 |         actual_command = CMD_ENABLE_OUTPUT;
+      |                        ^
+../Core/Src/TFLUNA.c:179:5: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  179 |     for (uint16_t i = 0; i < Lunas->BackLeft.RXsize; i++)
+      |     ^~~
+../Core/Src/TFLUNA.c:183:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  183 |         IN_INIT=false;
+      |         ^~~~~~~
+../Core/Src/TFLUNA.c: In function 'TFLUNAs_DMA_CALLBACK':
+../Core/Src/TFLUNA.c:194:62: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  194 |                 ack1 = BUFFER_CONTAINS(Lunas->FrontRight.RX, actual_command, actual_command_lenght);
+      |                                                              ^~~~~~~~~~~~~~
+In file included from ../Core/Src/TFLUNA.c:10:
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:198:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  198 |                 ack2 = BUFFER_CONTAINS(Lunas->FrontLeft.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:202:61: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  202 |                 ack3 = BUFFER_CONTAINS(Lunas->BackRight.RX, actual_command, actual_command_lenght);
+      |                                                             ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:206:60: warning: passing argument 2 of 'BUFFER_CONTAINS' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  206 |                 ack4 = BUFFER_CONTAINS(Lunas->BackLeft.RX, actual_command, actual_command_lenght);
+      |                                                            ^~~~~~~~~~~~~~
+../Core/Inc/TFLUNA.h:15:58: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
+      |                                                 ~~~~~~~~~^~~~~~~
+../Core/Src/TFLUNA.c:212:28: warning: unused variable 'k' [-Wunused-variable]
+  212 |                 uint8_t j, k;
+      |                            ^
+../Core/Src/TFLUNA.c:212:25: warning: unused variable 'j' [-Wunused-variable]
+  212 |                 uint8_t j, k;
+      |                         ^
+arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: evangelion_turbo_allinone.elf
+ 
+arm-none-eabi-size  evangelion_turbo_allinone.elf 
+arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
+   text	   data	    bss	    dec	    hex	filename
+  75084	    140	   6532	  81756	  13f5c	evangelion_turbo_allinone.elf
+Finished building: default.size.stdout
+ 
+Finished building: evangelion_turbo_allinone.list
+ 
+23:58:17 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
 make -j8 all 
 arm-none-eabi-size  evangelion_turbo_allinone.elf 
    text	   data	    bss	    dec	    hex	filename
-  72204	    128	   6360	  78692	  13364	evangelion_turbo_allinone.elf
+  75084	    140	   6532	  81756	  13f5c	evangelion_turbo_allinone.elf
 Finished building: default.size.stdout
  

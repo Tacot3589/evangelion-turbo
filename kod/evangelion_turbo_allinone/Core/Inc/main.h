@@ -90,6 +90,8 @@ typedef enum {
 	CURVE,
 	FOLLOW_LINER,
 	FOLLOW_ATTACKER,
+	STRAIGHT_FLAGS,
+	CURVE_FLAGS,
 	COUNT,
 } RobotAttackMode_t;
 

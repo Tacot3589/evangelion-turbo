@@ -15,13 +15,13 @@
 static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
 
 //======================================= DEFINES
-#define MAX_DISTANCE 75
+#define MAX_DISTANCE 70
 #define MIN_DISTANCE 5
-#define CLOSE_DISTANCE 5
+#define CLOSE_DISTANCE 10
 #define MAX_RETRIES_INIT 5
 
 //filtering
-#define MIN_AMP_TRESCHOLD 200
+#define MIN_AMP_TRESCHOLD 600
 #define LIDARS_FILTERING_ARRAY_SIZE_FRONT 11
 #define LIDARS_FILTERING_ARRAY_SIZE_BACK 11
 #define MIN_LIDAR_AMP_DIST_AMP 300
@@ -41,6 +41,5 @@ uint16_t GET_MEDIAN(uint16_t *Array, uint8_t Array_Filtering_size);
 static const uint8_t CMD_DISABLE_OUTPUT[5] = { 0x5A, 0x05, 0x07, 0x00, 0x66};
 static const uint8_t CMD_ENABLE_OUTPUT[5] = { 0x5A, 0x05, 0x07, 0x01, 0x67};
 static const uint8_t CMD_SET_250HZ[6] = {0x5A, 0x06, 0x03, 0xFA, 0x00, 0x5D};
-
 
 #endif /* INC_START_MODULE_H_ */

@@ -16,10 +16,10 @@
 
 
 //======================================= PRIVATE DEFINES
-#define WHITE_LINE_TRESCHOLD 3700 //white is less
+#define WHITE_LINE_TRESCHOLD 3800 //white is less
 #define R1 47000
 #define R2 4700
-#define BATTERY_VOLTAGE_COMPENSATION 1.1
+#define BATTERY_VOLTAGE_COMPENSATION 1.14
 #define BATTERY_ADC_CHANNEL 3
 #define REFERENCE_VOLTAGE 3.4f
 #define BATTERY_CONST  ((REFERENCE_VOLTAGE / 4095.0f * ((R1) + (R2)) / (R2)) * (BATTERY_VOLTAGE_COMPENSATION) * 100.0f)

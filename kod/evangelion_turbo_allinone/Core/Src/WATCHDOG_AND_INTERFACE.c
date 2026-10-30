@@ -124,6 +124,12 @@ void OLED_INFO(void)
             case FOLLOW_ATTACKER:
                 mode = "FOLLOW ATK";
                 break;
+            case STRAIGHT_FLAGS:
+                mode = "STRAIGHT FL";
+                break;
+            case CURVE_FLAGS:
+                mode = "CURVE FL";
+                break;
             default:
                 mode = "?";
                 break;
@@ -189,43 +195,35 @@ void OLED_INFO(void)
             uint16_t dist = lidar->Dist;
             uint8_t seen =
                 (dist != UINT16_MAX) &&
-                (dist <= MAX_DISTANCE) &&
                 (lidar->Amp >= MIN_AMP_TRESCHOLD);
 
             uint8_t y = 10u + (i * 14u);
 
-            if (seen)
-            {
-                snprintf(row, sizeof(row), "%s %3uc A%4u",
-                         names[i],
-                         (unsigned int)dist,
-                         (unsigned int)lidar->Amp);
-            }
-            else
-            {
-                snprintf(row, sizeof(row), "%s --- A%4u",
-                         names[i],
-                         (unsigned int)lidar->Amp);
-            }
+            // Show the raw uint16 distance, including UINT16_MAX (65535),
+            // which is also the driver's invalid/no-measurement sentinel.
+            snprintf(row, sizeof(row), "%s %5u A%5u",
+                     names[i],
+                     (unsigned int)dist,
+                     (unsigned int)lidar->Amp);
 
             _ssd1306_SetCursor(0, y);
             ssd1306_WriteString(row, Font_6x8);
 
-            _ssd1306_SetCursor(84, y);
+            _ssd1306_SetCursor(92, y);
             ssd1306_WriteChar(
                 seen ? _CHECKBOX_CHECKED : _CHECKBOX_EMPTY,
                 Font_6x8);
 
             // Im bliżej obiekt, tym pasek pełniejszy.
             uint8_t progress = 0;
-            if (seen)
+            if (seen && dist <= MAX_DISTANCE)
                 progress = ((MAX_DISTANCE - dist) * 100u) / MAX_DISTANCE;
 
-            uint16_t fillWidth = (progress * 28u) / 100u;
+            uint16_t fillWidth = (progress * 24u) / 100u;
 
-            ssd1306_DrawRect(96, y + 1, 30, 6);
+            ssd1306_DrawRect(101, y + 1, 26, 6);
             if (fillWidth > 0)
-                ssd1306_FillRect(97, y + 2, fillWidth, 4);
+                ssd1306_FillRect(102, y + 2, fillWidth, 4);
         }
     }
 

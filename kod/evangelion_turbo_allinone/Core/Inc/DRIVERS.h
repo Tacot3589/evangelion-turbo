@@ -11,14 +11,16 @@
 #include <stdint.h>
 #include "main.h"
 #include "TFLUNA.h"
+//#include "stm32g4xx_hal_tim.h"
 
 //======================================= PRIVATE FUNCTIONS
 static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
 static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
 static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
+static int16_t Acceleration_Time_Compensation_L(int16_t Duty);
+static int16_t Acceleration_Time_Compensation_R(int16_t Duty);
 
 //======================================= PRIVATE DEFINES
-extern MotorsSettingsInfo_t Motors;
 #define DRV_REG_IC1_CONTROL  0x02u
 #define DRV_REG_IC2_CONTROL  0x03u
 #define DRV_REG_IC4_CONTROL  0x05u
@@ -28,9 +30,13 @@ extern MotorsSettingsInfo_t Motors;
 #define SWITCH_MOTORS 0
 #define REVERSE_RIGHT_MOTOR 0
 #define REVERSE_LEFT_MOTOR 1
-#define REAL_MIN_PWM 300 //slower is basicly not moving at all
+#define REAL_MIN_PWM 200 //slower is basicly not moving at all
 #define REAL_MAX_PWM 1000 //faster is basicly killing meeeee = 90
+#define MAX_ACCELERATION_MS 400
 
+extern MotorsSettingsInfo_t Motors;
+extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim2;
 //======================================= PUBLIC FUNCTIONS
 Velocity_t SET_MOTORS(int16_t L, int16_t R);
 uint8_t DRIVERS_INIT(SPI_HandleTypeDef *hspi);

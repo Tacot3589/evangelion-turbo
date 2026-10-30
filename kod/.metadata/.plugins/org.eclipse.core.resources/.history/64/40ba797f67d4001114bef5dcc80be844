@@ -1,0 +1,979 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Main program body
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2025 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+extern DMA_HandleTypeDef hdma_usart2_rx;
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+
+/* USER CODE END PTD */
+
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+//TODO UART NOT IN USE - ONLY START FROM ONE PIN TO MAIN MCU
+
+#define RISING 		1
+#define FALLING		2
+#define TIMEOUT		3
+
+#define RC5				1
+#define SIRC			2
+#define UNKNOWN			0
+#define SAVED_STATUS 	5
+
+#define RC5_Short   (uint16_t)889*55/889      // 889 us
+#define RC5_Long    (uint16_t)1778*55/889     // 1778 us
+#define SIRC_Short  (uint16_t)600*55/889      // 600 us
+#define SIRC_Long   (uint16_t)1200*55/889     // 1200 us
+#define Margin      (uint16_t)300*55/889
+
+// Module Status
+#define STARTUP		1
+#define	PPROGRAMMED	2
+#define	READY		3
+#define	RC5_START	4
+#define SIRC_START	5
+#define	STOP		6
+
+// Led Commands
+#define ON			2
+#define OFF			3
+#define BLINK_SLOW	4
+#define BLINK_FAST	5
+#define TICK		6
+
+#define FLASHADDR 0x08007000 // Calibration data storage addres PAGE 14
+#define FLASHRANGE 4092 // Full Page size is 2048kb, use uint32_t is 4 bytes per write use 2 pages
+
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+
+TIM_HandleTypeDef htim14;
+TIM_HandleTypeDef htim16;
+
+UART_HandleTypeDef huart2;
+DMA_HandleTypeDef hdma_usart2_rx;
+DMA_HandleTypeDef hdma_usart2_tx;
+
+/* USER CODE BEGIN PV */
+volatile uint8_t		Module_State;
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
+static void MX_TIM14_Init(void);
+static void MX_TIM16_Init(void);
+static void MX_USART2_UART_Init(void);
+/* USER CODE BEGIN PFP */
+
+void Interrupt10Hz(void);
+void Interrupt(uint8_t Edge);
+void Received_RC5_Frame(uint8_t Addres, uint8_t Command);
+void Received_SIRC_Frame(uint8_t Addres, uint8_t Command);
+
+uint8_t LED_GREEN_Control(uint8_t Command, uint8_t Data);
+uint8_t LED_RED_Control(uint8_t Command, uint8_t Data);
+uint8_t LED_BLUE_Control(uint8_t Command, uint8_t Data);
+
+void SaveToFlash(uint8_t RC5_ADDR, uint8_t SIRC_ADDR, uint8_t Status);
+uint8_t ReadFromFlash(uint8_t Data);
+
+void SEND_DATA_VIA_UART(uint8_t option, uint8_t data0, uint8_t data1);
+/* USER CODE END PFP */
+
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
+uint8_t UART_TX[4];
+uint8_t UART_RX[4];
+/* USER CODE END 0 */
+
+/**
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+
+  /* USER CODE BEGIN 1 */
+	uint8_t Status;
+  /* USER CODE END 1 */
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_DMA_Init();
+  MX_TIM14_Init();
+  MX_TIM16_Init();
+  MX_USART2_UART_Init();
+  /* USER CODE BEGIN 2 */
+
+  // SET Output Pins //TODO
+  //HAL_GPIO_WritePin(KILL_GPIO_Port, KILL_Pin, GPIO_PIN_SET);
+  //HAL_GPIO_WritePin(START_GPIO_Port, START_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(START_DIGITAL_OUTPUT_GPIO_Port, START_DIGITAL_OUTPUT_Pin, GPIO_PIN_RESET);
+
+  //  Signal Power UP
+  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+  HAL_Delay(250);
+  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_SET);
+  HAL_Delay(250);
+  HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+  HAL_Delay(500);
+  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+
+  HAL_TIM_Base_Start_IT(&htim14);
+  HAL_TIM_Base_Start_IT(&htim16);
+
+  // Read Status
+  Status = ReadFromFlash(SAVED_STATUS);
+  if (Status == RC5_START)
+  {
+	  Module_State = RC5_START;
+	  LED_GREEN_Control(ON, 0);
+	  //HAL_GPIO_WritePin(START_GPIO_Port, START_Pin, GPIO_PIN_SET);			//TODO
+	  HAL_GPIO_WritePin(START_DIGITAL_OUTPUT_GPIO_Port, START_DIGITAL_OUTPUT_Pin, GPIO_PIN_SET);
+  }
+  if (Status == SIRC_START)
+  {
+	  Module_State = SIRC_START;
+	  LED_BLUE_Control(ON, 0);
+	  //HAL_GPIO_WritePin(START_GPIO_Port, START_Pin, GPIO_PIN_SET);		//TODO
+	  HAL_GPIO_WritePin(START_DIGITAL_OUTPUT_GPIO_Port, START_DIGITAL_OUTPUT_Pin, GPIO_PIN_SET);
+  }
+  else
+	  Module_State = STARTUP;
+
+
+  //uart setup
+	HAL_UART_AbortReceive(&huart2);
+	__HAL_UART_CLEAR_OREFLAG(&huart2);
+	huart2.ErrorCode = HAL_UART_ERROR_NONE;
+	huart2.RxState   = HAL_UART_STATE_READY;
+	HAL_UART_Receive_DMA(&huart2, UART_RX, 4);
+	//_HAL_DMA_DISABLE_IT(&hdma_usart2_rx, DMA_IT_HT);
+
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
+  }
+  /* USER CODE END 3 */
+}
+
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+  __HAL_FLASH_SET_LATENCY(FLASH_LATENCY_1);
+
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV1;
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+  RCC_ClkInitStruct.SYSCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV1;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief TIM14 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM14_Init(void)
+{
+
+  /* USER CODE BEGIN TIM14_Init 0 */
+
+  /* USER CODE END TIM14_Init 0 */
+
+  /* USER CODE BEGIN TIM14_Init 1 */
+
+  /* USER CODE END TIM14_Init 1 */
+  htim14.Instance = TIM14;
+  htim14.Init.Prescaler = 2;
+  htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim14.Init.Period = 48000-1;
+  htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim14.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim14) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM14_Init 2 */
+
+  /* USER CODE END TIM14_Init 2 */
+
+}
+
+/**
+  * @brief TIM16 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM16_Init(void)
+{
+
+  /* USER CODE BEGIN TIM16_Init 0 */
+
+  /* USER CODE END TIM16_Init 0 */
+
+  /* USER CODE BEGIN TIM16_Init 1 */
+
+  /* USER CODE END TIM16_Init 1 */
+  htim16.Instance = TIM16;
+  htim16.Init.Prescaler = 200-1;
+  htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim16.Init.Period = 48000-1;
+  htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim16.Init.RepetitionCounter = 0;
+  htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim16) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM16_Init 2 */
+
+  /* USER CODE END TIM16_Init 2 */
+
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 256000;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart2.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+  /* DMA1_Channel2_3_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel2_3_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel2_3_IRQn);
+
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+  /* USER CODE END MX_GPIO_Init_1 */
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, START_DIGITAL_OUTPUT_Pin|LED_GREEN_Pin|LED_RED_Pin|LED_BLUE_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : START_DIGITAL_OUTPUT_Pin */
+  GPIO_InitStruct.Pin = START_DIGITAL_OUTPUT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(START_DIGITAL_OUTPUT_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LED_GREEN_Pin LED_RED_Pin LED_BLUE_Pin */
+  GPIO_InitStruct.Pin = LED_GREEN_Pin|LED_RED_Pin|LED_BLUE_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : IR_Pin */
+  GPIO_InitStruct.Pin = IR_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(IR_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI4_15_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_15_IRQn);
+
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+  /* USER CODE END MX_GPIO_Init_2 */
+}
+
+/* USER CODE BEGIN 4 */
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
+{
+	if (htim->Instance == TIM14)
+		Interrupt(TIMEOUT);
+	if (htim->Instance == TIM16)
+		Interrupt10Hz();
+}
+
+void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
+{
+	Interrupt(RISING);
+//	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+}
+void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
+{
+	Interrupt(FALLING);
+//	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+}
+
+void Interrupt10Hz(void)
+{
+	LED_BLUE_Control(TICK, 0);
+	LED_RED_Control(TICK, 0);
+	LED_GREEN_Control(TICK, 0);
+}
+
+void Interrupt(uint8_t Edge)
+{
+	static uint8_t 		Last_Edge;
+	static uint8_t 		Bit_Nbr;
+	static uint16_t 	IR_Buffer;
+	static uint8_t		Line_Iddle;
+	static uint8_t		IR_Protocol;
+
+	uint32_t 	Timer; // 16000 is 1us.
+	uint16_t 	shift;
+	uint8_t		Address;
+	uint8_t		Command;
+
+	Timer = TIM14->CNT;
+
+	if (Module_State == RC5_START)
+		IR_Protocol = RC5;
+	else if (Module_State == SIRC_START)
+		IR_Protocol = SIRC;
+
+	if (Edge == TIMEOUT)
+		Line_Iddle = 0;
+
+	else if (Line_Iddle == 0 && Edge == FALLING)
+	{
+		TIM14->CNT = 0;
+		Line_Iddle = 1;
+		Bit_Nbr = 0;
+		IR_Buffer = 0;
+	}
+	else if (Line_Iddle == 0 && Edge == RISING)
+		TIM14->CNT = 0;
+
+// Check if selected protocol
+	else if (IR_Protocol == UNKNOWN)	// Second Interrupt. Protocol yet unknown
+	{
+		if (Last_Edge == FALLING && Edge == RISING && (Timer >= RC5_Short-Margin && Timer <= RC5_Short + Margin))
+			IR_Protocol = RC5;
+
+		else if (Last_Edge == FALLING && Edge == RISING && (Timer >= 2*SIRC_Long - 2*Margin && Timer <= 2*SIRC_Long + 2*Margin))
+		{
+			IR_Protocol = SIRC;
+			TIM14->CNT = 0;
+		}
+		else
+			Line_Iddle = 0; 	// Error - Restart communication
+	}
+
+	else if (IR_Protocol == RC5)
+	{
+		if (Timer >= RC5_Long - Margin && Timer <= RC5_Long + Margin) // Received Bit
+		{
+			TIM14->CNT = 0;
+			// Received 0
+			if (Edge == RISING)
+				Bit_Nbr ++;
+
+			// Received 1
+			else if (Edge == FALLING)
+			{
+				Bit_Nbr ++;
+				shift = 15 - Bit_Nbr;
+				IR_Buffer = IR_Buffer | 0b1 << shift;
+			}
+		}
+
+		else if (Timer >= RC5_Long + Margin)
+			Line_Iddle = 0;
+
+		if (Bit_Nbr == 13)
+		{
+			Line_Iddle = 0;
+			Address = (IR_Buffer >> 8) & 0b00011111;
+			Command = (IR_Buffer >> 2) & 0b00111111;
+			Received_RC5_Frame(Address, Command);
+		}
+	}
+	else if (IR_Protocol == SIRC)
+	{
+		TIM14->CNT = 0;
+		// Begin of Frame
+		if (Edge == RISING && (Timer >= 2*SIRC_Long - 2*Margin && Timer <= 2*SIRC_Long + 2*Margin))
+			Bit_Nbr = 0;
+
+		// Received 1
+		else if (Edge == RISING && (Timer >= SIRC_Long - Margin && Timer <= SIRC_Long + Margin))
+		{
+			Bit_Nbr ++;
+			shift = Bit_Nbr - 1;
+			IR_Buffer = IR_Buffer | 0b1 << shift;
+		}
+
+		// Received 0
+		else if (Edge == RISING && (Timer >= SIRC_Short - Margin && Timer <= SIRC_Short + Margin))
+			Bit_Nbr ++;
+
+		if (Bit_Nbr == 12)
+		{
+			Line_Iddle = 0;
+			Command = IR_Buffer & 0b01111111;
+			Address = (IR_Buffer >> 7)  & 0b00011111;
+			Received_SIRC_Frame(Address, Command);
+		}
+	}
+
+	if (Edge != TIMEOUT)
+		Last_Edge = Edge;
+
+}
+
+void Received_RC5_Frame(uint8_t Addres, uint8_t Command)
+{
+	static uint8_t Dohyo_ID;
+
+	uint8_t StartCommand;
+	StartCommand = Command & 0x01;
+
+	// Read Dohyo_ID from flash
+	Dohyo_ID = ReadFromFlash(RC5);
+
+	if (Addres == 0x0B) // Programming Frame
+	{
+		if (Module_State == STARTUP)
+		{
+			LED_GREEN_Control(BLINK_SLOW, 2);
+			if ((Command >> 1) != Dohyo_ID)
+			{
+				Dohyo_ID = Command >> 1;
+				SaveToFlash(RC5, Dohyo_ID, Module_State);
+				SEND_DATA_VIA_UART(0x01, Dohyo_ID, 0x00);
+			}
+			Module_State = PPROGRAMMED;
+		}
+		else if (Module_State == PPROGRAMMED)
+		{
+			LED_GREEN_Control(BLINK_FAST, 2);
+			if (Command >> 1 != Dohyo_ID)
+			{
+				Dohyo_ID = Command >> 1;
+				SaveToFlash(RC5, Dohyo_ID, Module_State);
+				SEND_DATA_VIA_UART(0x01, Dohyo_ID, 0x00);
+			}
+		}
+	}
+	else if (Addres == 0x07) // Command Frame
+	{
+		if (Command >> 1 == Dohyo_ID)
+		{
+			if (StartCommand == 1 && Module_State != STOP && Module_State != RC5_START)
+			{
+				Module_State = RC5_START;
+				//HAL_GPIO_WritePin(START_GPIO_Port, START_Pin, GPIO_PIN_SET);		//TODO
+				//HAL_GPIO_WritePin(KILL_GPIO_Port, KILL_Pin, GPIO_PIN_SET);		//TODO
+				HAL_GPIO_WritePin(START_DIGITAL_OUTPUT_GPIO_Port, START_DIGITAL_OUTPUT_Pin, GPIO_PIN_SET);
+				LED_GREEN_Control(ON, 0);
+				SaveToFlash(RC5, Dohyo_ID, Module_State);
+			}
+			else if (StartCommand == 0 && Module_State != STOP)
+			{
+				Module_State = STOP;
+				//HAL_GPIO_WritePin(START_GPIO_Port, START_Pin, GPIO_PIN_RESET);		//TODO
+				//HAL_GPIO_WritePin(KILL_GPIO_Port, KILL_Pin, GPIO_PIN_RESET);		//TODO
+				HAL_GPIO_WritePin(START_DIGITAL_OUTPUT_GPIO_Port, START_DIGITAL_OUTPUT_Pin, GPIO_PIN_RESET);
+				LED_GREEN_Control(BLINK_SLOW, 255);
+				SaveToFlash(RC5, Dohyo_ID, Module_State);
+			}
+		}
+	}
+}
+
+void Received_SIRC_Frame(uint8_t Addres, uint8_t Command)
+{
+	static uint8_t Dohyo_ID;
+
+	// read ID from flash;
+	Dohyo_ID = ReadFromFlash(SIRC);
+
+	// Programming Frame
+	if (Command == 0x7F)
+	{
+		if (Module_State == STARTUP || Module_State == PPROGRAMMED)
+		{
+			Module_State = PPROGRAMMED;
+			Dohyo_ID = Addres;
+			LED_BLUE_Control(BLINK_FAST, 3);
+			LED_RED_Control(BLINK_FAST, 3);
+			SaveToFlash(SIRC, Dohyo_ID, 2);
+			SEND_DATA_VIA_UART(0x01, Dohyo_ID, 0x00);
+		}
+
+	}
+	else if(Addres == Dohyo_ID)
+	{
+		if (Command == 0x06 && (Module_State == STARTUP || Module_State == PPROGRAMMED)) // Ready
+		{
+			Module_State = READY;
+			LED_BLUE_Control(BLINK_FAST, 3);
+			LED_RED_Control(ON, 0);
+		}
+		else if (Command == 0x07 && Module_State == READY && Module_State != SIRC_START) // Start
+		{
+			Module_State = SIRC_START;
+			//HAL_GPIO_WritePin(START_GPIO_Port, START_Pin, GPIO_PIN_SET);		//TODO
+			//HAL_GPIO_WritePin(KILL_GPIO_Port, KILL_Pin, GPIO_PIN_SET);		//TODO
+			HAL_GPIO_WritePin(START_DIGITAL_OUTPUT_GPIO_Port, START_DIGITAL_OUTPUT_Pin, GPIO_PIN_SET);
+			LED_BLUE_Control(ON, 0);
+			LED_RED_Control(OFF, 0);
+			SaveToFlash(SIRC, Dohyo_ID, Module_State);
+		}
+		else if (Command == 0x08 && Module_State != STOP) // Stop
+		{
+			Module_State = STOP;
+			//HAL_GPIO_WritePin(START_GPIO_Port, START_Pin, GPIO_PIN_RESET);		//TODO
+			//HAL_GPIO_WritePin(KILL_GPIO_Port, KILL_Pin, GPIO_PIN_RESET);		//TODO
+			HAL_GPIO_WritePin(START_DIGITAL_OUTPUT_GPIO_Port, START_DIGITAL_OUTPUT_Pin, GPIO_PIN_RESET);
+			LED_BLUE_Control(BLINK_SLOW, 255);
+			LED_RED_Control(BLINK_SLOW,	255);
+			SaveToFlash(SIRC, Dohyo_ID, Module_State);
+		}
+	}
+}
+uint8_t LED_GREEN_Control(uint8_t Command, uint8_t Data)
+{
+	static uint8_t LED_Status;
+	static uint8_t LED_Data;
+	static uint8_t Counter;
+
+	if (LED_Status == ON || LED_Status == OFF || ((LED_Status == BLINK_FAST || LED_Status == BLINK_SLOW) && LED_Data == 255))
+	{
+		if (Command == ON)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+			LED_Status = Command;
+		}
+		else if (Command == OFF)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+		}
+		else if (Command == BLINK_SLOW)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 6*Data;
+		}
+		else if (Command == BLINK_FAST)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 2*Data;
+		}
+		Counter = 0;
+	}
+	else if (Command == TICK)
+	{
+		Counter++;
+
+		if (LED_Status == BLINK_FAST)
+			HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+
+		else if (LED_Status == BLINK_SLOW && (Counter % 3 == 0) )
+			HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+
+		if (Counter >= LED_Data && LED_Data < 100)
+		{
+			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+			LED_Status = OFF;
+		}
+	}
+	return LED_Status;
+}
+uint8_t LED_RED_Control(uint8_t Command, uint8_t Data)
+{
+	static uint8_t LED_Status;
+	static uint8_t LED_Data;
+	static uint8_t Counter;
+
+	if (LED_Status == ON || LED_Status == OFF || ((LED_Status == BLINK_FAST || LED_Status == BLINK_SLOW) && LED_Data == 255))
+	{
+		if (Command == ON)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+			LED_Status = Command;
+		}
+		else if (Command == OFF)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+		}
+		else if (Command == BLINK_SLOW)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 6*Data;
+		}
+		else if (Command == BLINK_FAST)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 2*Data;
+		}
+		Counter = 0;
+	}
+	else if (Command == TICK)
+	{
+		Counter++;
+
+		if (LED_Status == BLINK_FAST)
+			HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+
+		else if (LED_Status == BLINK_SLOW && (Counter % 3 == 0) )
+			HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+
+		if (Counter >= LED_Data && LED_Data < 100)
+		{
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+			LED_Status = OFF;
+		}
+	}
+	return LED_Status;
+}
+uint8_t LED_BLUE_Control(uint8_t Command, uint8_t Data)
+{
+	static uint8_t LED_Status;
+	static uint8_t LED_Data;
+	static uint8_t Counter;
+
+	if (LED_Status == ON || LED_Status == OFF || ((LED_Status == BLINK_FAST || LED_Status == BLINK_SLOW) && LED_Data == 255))
+	{
+		if (Command == ON)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_SET);
+			LED_Status = Command;
+		}
+		else if (Command == OFF)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+		}
+		else if (Command == BLINK_SLOW)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 6*Data;
+		}
+		else if (Command == BLINK_FAST)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = Command;
+			LED_Data = 2*Data;
+		}
+		Counter = 0;
+	}
+	else if (Command == TICK)
+	{
+		Counter++;
+
+		if (LED_Status == BLINK_FAST)
+			HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
+
+		else if (LED_Status == BLINK_SLOW && (Counter % 3 == 0) )
+			HAL_GPIO_TogglePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
+
+		if (Counter >= LED_Data && LED_Data < 100)
+		{
+			HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, GPIO_PIN_RESET);
+			LED_Status = OFF;
+		}
+	}
+	return LED_Status;
+}
+
+void SaveToFlash(uint8_t Protocol, uint8_t Addres, uint8_t Status)
+{
+	// Disable all interrupts timers
+	uint32_t flash_address_configuration;
+	uint64_t data;
+	uint32_t flash_buffer = 0x00000000;
+
+	data = 0;
+
+	if (Protocol == RC5)
+	{
+		// PREPARE DATA TO WRITE
+		flash_buffer = ReadFromFlash(SIRC);
+		data = Addres << 11;
+		data = data + (flash_buffer << 3);
+		data = data + Status;
+	}
+	else if (Protocol == SIRC)
+	{
+		flash_buffer = ReadFromFlash(RC5);
+		data = flash_buffer << 11;
+		data = data + (Addres << 3);
+		data = data + Status;
+	}
+
+	// CHECK IF ALL MEMORY IS USED
+	flash_address_configuration = FLASHADDR + FLASHRANGE;
+	flash_buffer = *(__IO uint32_t *)flash_address_configuration;
+
+	// IF ALL MEMORY IS USED ERASE SECTOR AND WRITE DATA IN FIRST ADDRES
+	if (flash_buffer != 0xFFFFFFFF)
+	{
+		HAL_FLASH_Unlock();
+		FLASH_EraseInitTypeDef EraseInitStruct;
+		EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
+		EraseInitStruct.Page = 14;
+		EraseInitStruct.NbPages = 2;
+		uint32_t PageError;
+
+		HAL_FLASHEx_Erase(&EraseInitStruct, &PageError);
+		volatile int d=48000; while(d>0) { d--; }
+//		HAL_Delay(1000);
+
+		flash_address_configuration = FLASHADDR;
+		HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, flash_address_configuration, data);
+//		d=48000; while(d>0) { d--; }
+		HAL_FLASH_Lock();
+	}
+	// IF NOT ALL MEMORY IS USED WRITE DATA IN FIRST EMPTY ADDRES
+	else
+	{
+		flash_address_configuration = FLASHADDR;
+		flash_buffer = *(__IO uint32_t *)flash_address_configuration;
+		while (flash_buffer != 0xFFFFFFFF)
+		{
+			flash_address_configuration = flash_address_configuration + 8;
+			flash_buffer = *(__IO uint32_t *)flash_address_configuration;
+		}
+		HAL_FLASH_Unlock();
+		HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, flash_address_configuration, data);
+		HAL_FLASH_Lock();
+
+	}
+}
+
+uint8_t ReadFromFlash(uint8_t Data)
+{
+	uint32_t 	flashAddress;
+	uint32_t 	flash_buffer;
+	uint8_t		RC5_Address;
+	uint8_t		SIRC_Address;
+	uint8_t		Saved_Status;
+	uint8_t 	Readback;
+
+
+	flashAddress = FLASHADDR;
+	flash_buffer = *(__IO uint32_t *)flashAddress;
+	while (flash_buffer != 0xFFFFFFFF)
+	{
+		flashAddress = flashAddress + 8;
+		flash_buffer = *(__IO uint32_t *)flashAddress;
+	}
+	flashAddress = flashAddress - 8;
+	flash_buffer = *(__IO uint32_t *)flashAddress;
+
+	Saved_Status = 0;
+	Saved_Status = flash_buffer;
+	RC5_Address = flash_buffer >> 11;
+	SIRC_Address = flash_buffer >> 3;
+
+	if (Data == RC5)
+		Readback = RC5_Address & 0b00011111;
+	else if (Data == SIRC)
+		Readback = SIRC_Address & 0b00011111;
+	else if (Data == SAVED_STATUS)
+		Readback = Saved_Status & 0b00000111;
+	else
+		Readback = 0;
+
+//	RC5_ADDRS = Readback = RC5_Address & 0b00011111;
+//	SIRC_ADDRS = Readback = SIRC_Address & 0b00011111;
+//	Module_State = Saved_Status & 0b00000111;
+
+	return Readback;
+}
+
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart->Instance == USART2)
+	{
+		if(UART_RX[0] == 0x02 && UART_RX[1] == 0x00 && UART_RX[2] == 0x00 && UART_RX[3] == 0x69)
+		{
+			//RESTART==============
+			NVIC_SystemReset();
+		}
+
+
+		HAL_UART_Receive_DMA(&huart2, UART_RX, 4);
+	}
+}
+
+void SEND_DATA_VIA_UART(uint8_t option, uint8_t data0, uint8_t data1)
+{
+	UART_TX[0] = option;
+	UART_TX[1] = data0;
+	UART_TX[2] = data1;
+	UART_TX[3] = 0x69;
+	HAL_UART_Transmit_DMA(&huart2, UART_TX, 4);
+}
+
+/* USER CODE END 4 */
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
+	//TODO
+	HAL_GPIO_WritePin(START_DIGITAL_OUTPUT_GPIO_Port, START_DIGITAL_OUTPUT_Pin, GPIO_PIN_RESET);
+  /* User can add his own implementation to report the HAL error return state */
+  __disable_irq();
+  while (1)
+  {
+  }
+  /* USER CODE END Error_Handler_Debug */
+}
+#ifdef USE_FULL_ASSERT
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+void assert_failed(uint8_t *file, uint32_t line)
+{
+  /* USER CODE BEGIN 6 */
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* USER CODE END 6 */
+}
+#endif /* USE_FULL_ASSERT */

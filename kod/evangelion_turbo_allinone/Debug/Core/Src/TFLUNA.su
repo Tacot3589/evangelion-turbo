@@ -1,4 +1,4 @@
 ../Core/Src/TFLUNA.c:26:9:TFLUNAs_INIT	32	static
-../Core/Src/TFLUNA.c:188:6:TFLUNAs_DMA_CALLBACK	80	static
-../Core/Src/TFLUNA.c:335:16:BUFFER_CONTAINS	40	static
-../Core/Src/TFLUNA.c:361:10:GET_MEDIAN	64	dynamic
+../Core/Src/TFLUNA.c:188:6:TFLUNAs_DMA_CALLBACK	72	static
+../Core/Src/TFLUNA.c:342:16:BUFFER_CONTAINS	40	static
+../Core/Src/TFLUNA.c:368:10:GET_MEDIAN	64	dynamic

@@ -1,0 +1,48 @@
+#ifndef ATCK_MODES_H_
+#define ATCK_MODES_H_
+
+#include <stdint.h>
+#include "main.h"
+
+#define GO_TO_LINE_TASK_SPEED 				400
+#define AFTER_TASK_ALIGMENT_SPEED 			300
+#define AFTER_TASK_ROTATION_TIME			50
+#define STARTING_ROAM_TIME					300 //3 cykle xD
+#define STARTING_ROAM_VELOCITY				500
+
+//============================================= STRAIGHT ATTACK
+#define SEARCH_STRAIGHT_ATTACK_SPEED		500
+#define ATTACK_STRAIGHT_ATTACK_SPEED		800
+
+
+//============================================= CURVE ATTACK
+#define CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER 600
+#define CURVE_ATTACK_SEARCH_SPEED_FASTER 500
+#define CURVE_ATTACK_SEARCH_SPEED_SLOWER 250
+#define LIDAR_DIST_FOR_LINE_FOLLOWER_ATCK_PLS_BE_BACK 400
+
+//============================================= FOLLOW LINER and ATTACKER
+#define FOLLOW_LINER_FASTER 400
+#define FOLLOW_LINER_SLOWER 300
+#define MAX_MOTOR_ACCELERATION_FOR_LINE_FOLLOWING 20
+
+//============================================= Choragiewki
+#define ATTACK_CHORAGIEWKI_MAX_DISTANCE 20
+
+#define LINE_COMEBACK_TIME						300
+#define LINE_COMEBACK_VELOCITY					300
+
+extern LidarSensors_t Lunas;
+extern LinesSensors_t Lines;
+extern Evangelion_t Eva;
+extern MotorsSettingsInfo_t Motors;
+extern uint8_t lastSeen;
+extern uint8_t before_attack_rotation_direction;
+
+void STRAIGHT_ATTACK();
+void CURVE_ATTACK();
+void FOLLOWLINER_ATTACK();
+void FOLLOW_ATTACKER_ATTACK();
+void STRAIGHT_SIMPLEST_ATTACK();
+
+#endif /* ATCK_MODES_H_ */

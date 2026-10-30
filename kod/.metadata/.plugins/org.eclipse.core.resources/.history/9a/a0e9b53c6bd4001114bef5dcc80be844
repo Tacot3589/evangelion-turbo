@@ -1,0 +1,3125 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Main program body
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2025 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+
+/*
+Kod do robota minisumo Evangelion.
+W trakcie dodawania funckcjonalnosci autonomicznej jazdy po labiryncie w inne konkurecji - Micromouse
+Kod by Szymon Filipkows
+*/
+
+/* USER CODE END Header */
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+#include "fonts.h"
+#include "ssd1306.h"
+#include "stdlib.h"
+#include "MY_INCLUDES.h"
+#include "micromouse.h"
+
+//extern DMA_HandleTypeDef hdma_lpuart1_rx;
+extern DMA_HandleTypeDef hdma_usart1_rx;
+extern DMA_HandleTypeDef hdma_usart2_rx;
+extern DMA_HandleTypeDef hdma_usart3_rx;
+extern DMA_HandleTypeDef hdma_i2c2_rx;
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+
+/* USER CODE END PTD */
+
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+//TODO WSZYSTKO TODO AND WSZYSTKO TOCHECK PONIZEJ //TODO
+//TODO s:
+/*
+-UART communication with c0
+-buzzer on errors
+-OGARNIC SORTA W ILTRZE MEDIANOWYM - SHELL SORT i TEMP TO INNE
+ */
+
+//==================================================== DEBUG
+/*
+#define DONT_USE_MOTORS 0
+#define ALWAYS_IN_BATTLE 0
+#define IGNORE_START_MODULE 0
+#define LINE_SENSORS_ALWAYS_IN 0
+#define IGNORE_ACCEL 0
+#define DISABLE_BUZZER 1
+#define NOT_INITIALIZE_LIDARS 1
+#define ALWAYS_SHOW_OLED 1
+*/
+
+//==================================================== OLED
+#define _ssd1306_SetCursor(x, y) ssd1306_SetCursor(y, x)
+#define BIG 1
+#define SMALL 0
+
+#define _ARR_UP '('
+#define _ARR_DOWN '@'
+#define _CHECKBOX_EMPTY '^'
+#define _CHECKBOX_CHECKED '$'
+#define _CHECKBOX_EMPTY_BIG ')'
+#define _CHECKBOX_CHECKED_BIG '\''
+#define _CANCEL '}'
+#define _APPLY '{'
+
+//==================================================== SPEEDS
+//STRAIGHT ATTACK MODE
+#define ATTACK_SPEED 100
+#define SEEK_SPEED 75
+#define REVERSE_SPEED 100
+#define REVERSE_TIME 100 //in ms
+
+#define MAX_MOTOR_ACCELERATION_NOT_DECELERATION_BY_CONTROLLER	50
+
+
+//==================================================== MOTOR SETTINGS
+#define SWITCH_MOTORS 1
+#define REVERSE_RIGHT_MOTOR 1
+#define REVERSE_LEFT_MOTOR 1
+#define REAL_MIN_PWM_PERCENTAGE 60 //slower is basicly not moving at all
+#define REAL_MAX_PWM_PERCENTAGE 85 //faster is basicly killing meeeee = 90
+
+//==================================================== SENSORS
+#define MIN_AMP_TRESCHOLD 200
+#define SWITCH_SIDE_LIDARS 0
+#define SWITCH_LIDARS 1 //uart1 is left; uart2 is right normally
+#define MAX_RETRIES_LIDARS_INIT 5
+#define LIDARS_INIT_UART_TIMEOUT 200
+#define LIDARS_FILTERING_ARRAY_SIZE 11
+#define MAX_DISTANCE 70
+#define INTRO_MIN_DISTANCE_FOR_LAST_SEEN 3
+#define WHITE_LINE_TRESCHOLD 3700 //white is less
+#define SWITCH_LINE_SENSORS 0
+
+#define IMU_INIT_I2C_TIMEOUT 500
+
+//==================================================== START SETUP
+#define STARTIING_WAIT_TIME	0 //3000
+
+//==================================================== BATTERY
+#define R1 120
+#define R2 27
+#define BATTERY_VOLTAGE_COMPENSATION 1.007597
+#define MIN_BATTERY_VOLTAGE_PER_CELL 3.45
+#define BATTERY_ADC_CHANNEL 3
+#define BATTERY_CONST  ((3.3f / 4095.0f * ((R1) + (R2)) / (R2)) * (BATTERY_VOLTAGE_COMPENSATION) * 100.0f)
+#define BATTERY_ADC_READOUT_BUFFER_SIZE 10 // <= 16
+
+
+//==================================================== WORKING SETUP
+#define MAIN_FREQ 1000
+#define SIDE_FREQ 100
+#define OLED_FREQ 25
+
+//==================================================== ERROR FLAGS
+//<200 init error flags
+//==200 start delay
+//>200 error, veery bad error
+//in separate file
+
+//==================================================== BUZZER
+//INTRO
+#define FREQ_STARTING 500
+#define FREQ_STEP_INIT 50
+
+#define FREQ_STARTING_MICROMOUSE 700
+#define FREQ_STEP_INIT_MICROMOUSE -50
+
+
+//==================================================== YEEEAAAA BOOIIIIII
+#define NONE 0
+#define NEXT 100
+#define PREVIOUS -100
+#define LEFT 1
+#define RIGHT 2
+
+//============etc
+#define ABS(x) ((x) < 0 ? -(x) : (x))
+
+//^^^ for motors for move, this means no change of PWM
+
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+typedef struct {
+	uint8_t DONT_USE_MOTORS;
+	uint8_t ALWAYS_IN_BATTLE;
+	uint8_t IGNORE_START_MODULE;
+	uint8_t LINE_SENSORS_ALWAYS_IN;
+	uint8_t IGNORE_ACCEL;
+	uint8_t ENABLE_BUZZER;
+	uint8_t DONT_INITIALIZE_LIDARS;
+	uint8_t ALWAYS_SHOW_OLED;
+} Settings_t;
+
+typedef enum {
+	IN,
+	OUT,
+} LineState_t;
+
+typedef enum {
+	MICROMOUSE,
+	STRAIGHT,
+	CURVE,
+} RobotAttackMode_t;
+
+typedef enum {
+	NOTHING,
+	UP_LEFT,
+	UP_RIGHT,
+	DOWN_LEFT,
+	DOWN_RIGHT,
+	CENTER,
+	BUTTON_REBOUNCE,
+} JoystickMode_t;
+
+typedef struct {
+	LineState_t Line;
+	uint16_t RawLine;
+    uint16_t Distance;
+    uint16_t LidarAmp;
+    uint16_t LidarTemp;
+} SensorData_t;
+
+typedef struct {
+	uint8_t Switch1;
+	uint8_t Switch2;
+	uint8_t Switch3;
+	JoystickMode_t Joystick;
+	uint8_t MenuOption;
+} Interface_t;
+
+typedef struct
+{
+	int16_t x;
+	int16_t y;
+	int16_t z;
+	int16_t peak;
+} Vector_t;
+
+typedef struct {
+	uint8_t inBattle;
+	RobotAttackMode_t AttackMode;
+	uint16_t Voltage;
+	uint16_t CellVoltage;
+	Vector_t Accel; //w jednotysiecznych g [1000 = 1g]
+	Vector_t Gyro;
+	uint16_t ImuTemp;
+	Interface_t Interface;
+	uint8_t BattType;
+} RobotData_t;
+
+
+typedef struct {
+	uint8_t CurrentAddres;
+	uint8_t Started;
+	uint8_t StartedViaInterface;
+	uint8_t StartedViaSwitch;
+	uint16_t Delay;
+	uint16_t VolatileDelayTimer;
+} StartModData_t;
+
+
+typedef struct
+{
+	int8_t L;
+	int8_t R;
+} Speed_t;
+
+typedef struct
+{
+	Speed_t Requested;
+	Speed_t Set;
+} MotorSpeed_t;
+
+typedef struct {
+    const char *name;
+    uint8_t id;
+} MenuOption_t;
+
+
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+ADC_HandleTypeDef hadc2;
+DMA_HandleTypeDef hdma_adc2;
+
+I2C_HandleTypeDef hi2c1;
+I2C_HandleTypeDef hi2c2;
+DMA_HandleTypeDef hdma_i2c1_tx;
+DMA_HandleTypeDef hdma_i2c1_rx;
+DMA_HandleTypeDef hdma_i2c2_rx;
+
+TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim4;
+TIM_HandleTypeDef htim6;
+TIM_HandleTypeDef htim7;
+TIM_HandleTypeDef htim16;
+TIM_HandleTypeDef htim17;
+
+UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart2;
+UART_HandleTypeDef huart3;
+DMA_HandleTypeDef hdma_usart1_rx;
+DMA_HandleTypeDef hdma_usart2_rx;
+DMA_HandleTypeDef hdma_usart3_rx;
+DMA_HandleTypeDef hdma_usart3_tx;
+
+/* USER CODE BEGIN PV */
+//====================== MISC AND DEBUG
+int16_t dupa=-10;
+int16_t dupa2=-10;
+uint16_t INITIALIZATION_STEP=0;
+uint8_t ERROR_FLAG=NONE;
+
+//====================== SENSORS
+volatile uint16_t ADC_BUFFER[1];
+
+SensorData_t Left={0};
+SensorData_t Right={0};
+SensorData_t LeftSide={0};
+SensorData_t RightSide={0};
+RobotData_t Eva={0};
+MotorSpeed_t Motors={0};
+StartModData_t StartMod={0};
+Settings_t Settings={0};
+
+uint8_t  UART1_RX[9];
+uint8_t  UART2_RX[9];
+uint8_t  UART_TX[9];
+uint8_t  UART3_RX[4];
+uint8_t TFLUNA1_I2C_RX_BUFFER[2];
+uint8_t TFLUNA2_I2C_RX_BUFFER[2];
+
+//MUSI BYC 24. inaczej nie flaga odczytu nie jest git - od 0x03 do 0x0E INT_STATUS_INT2 minimum
+uint8_t I2C2_Accel_Rx[24];
+int16_t ax=0;
+int16_t ay=0;
+int16_t az=0;
+
+
+//OLED
+/*
+const MenuOption_t	MENU_OPTION_LIST[] = {
+	  {"battery",  OPTION_ID_BATTERY},
+	  {"startMod", OPTION_ID_START_MOD},
+	  {"lunaDist", OPTION_ID_LUNA_DIST},
+	  {"lunaAmp", OPTION_ID_LUNA_AMP},
+	  {"line", OPTION_ID_LINES},
+	  {"accel", OPTION_ID_ACCEL},
+	  {"gyro",  OPTION_ID_GYRO},
+	  {"imuPeak", OPTION_ID_IMU_PEAK},
+	  {"setMots", OPTION_ID_SET_MOTS},
+	  {"debug", OPTION_ID_DEBUG},
+	  {"atckMode", OPTION_ID_ATTACK_MODE} //todo this and settings
+	};
+*/
+const MenuOption_t	MENU_OPTION_LIST[] = {
+	  {"battery",  OPTION_ID_BATTERY},
+	  {"startMod", OPTION_ID_START_MOD},
+	  {"lunaDist", OPTION_ID_LUNA_DIST},
+	  {"line", OPTION_ID_LINES},
+	  {"setMots", OPTION_ID_SET_MOTS},
+	  {"atckMode", OPTION_ID_ATTACK_MODE} //todo this and settings
+	};
+//====================== STRATEGY
+uint8_t lastSeen = LEFT;
+
+
+
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
+static void MX_USART1_UART_Init(void);
+static void MX_USART2_UART_Init(void);
+static void MX_USART3_UART_Init(void);
+static void MX_I2C1_Init(void);
+static void MX_TIM2_Init(void);
+static void MX_I2C2_Init(void);
+static void MX_ADC2_Init(void);
+static void MX_TIM3_Init(void);
+static void MX_TIM4_Init(void);
+static void MX_TIM6_Init(void);
+static void MX_TIM7_Init(void);
+static void MX_TIM16_Init(void);
+static void MX_TIM17_Init(void);
+/* USER CODE BEGIN PFP */
+static void _ssd1306_WriteInTheMiddle(char *text, uint8_t y, uint8_t font);
+static void SET_MOTORS(int8_t l, int8_t r);
+static void COOKED(uint8_t error_code);
+static void GET_SENSORS(void);
+static void PLAY_FREQ(uint16_t f_hz);
+static void LIDARS_INIT(void);
+static void SORT(uint16_t *array, uint8_t length);
+static void BATTLE(void);
+static void STRAIGHT_ATTACK(void);
+static void IMU_INIT(void);
+static void CALCULATE_MOTOR_SPEEDS(int8_t L, int8_t R);
+static void OLED(void);
+static void GET_START_MOD(void);
+static void TFLUNA_HAT_VIA_I2C_INIT(void);
+static int8_t Acceleration_Compensation_R(int8_t Duty);
+static int8_t Acceleration_Compensation_L(int8_t Duty);
+/* USER CODE END PFP */
+
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
+
+/* USER CODE END 0 */
+
+/**
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+
+  /* USER CODE BEGIN 1 */
+
+  /* USER CODE END 1 */
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_DMA_Init();
+  MX_USART1_UART_Init();
+  MX_USART2_UART_Init();
+  MX_USART3_UART_Init();
+  MX_I2C1_Init();
+  MX_TIM2_Init();
+  MX_I2C2_Init();
+  MX_ADC2_Init();
+  MX_TIM3_Init();
+  MX_TIM4_Init();
+  MX_TIM6_Init();
+  MX_TIM7_Init();
+  MX_TIM16_Init();
+  MX_TIM17_Init();
+  /* USER CODE BEGIN 2 */
+
+  //variables
+	Left.Distance = UINT16_MAX;
+	Left.LidarAmp = UINT16_MAX;
+	Left.LidarTemp = UINT16_MAX;
+	Left.Line = IN;
+	Right.Line = IN;
+	Right.Distance = UINT16_MAX;
+	Right.LidarAmp = UINT16_MAX;
+	Right.LidarTemp = UINT16_MAX;
+	Eva.Interface.MenuOption=0;
+	Eva.BattType = DEFAULT_SETTING_BATTERY_CELL_NO;
+	Eva.AttackMode = DEFAULT_ATTACK_MODE_ID;
+
+	Settings.DONT_USE_MOTORS = DEFAULT_SETTING_DONT_USE_MOTORS;
+	Settings.ALWAYS_IN_BATTLE = DEFAULT_SETTING_ALWAYS_IN_BATTLE;
+	Settings.IGNORE_START_MODULE = DEFAULT_SETTING_IGNORE_START_MODULE;
+	Settings.LINE_SENSORS_ALWAYS_IN = DEFAULT_SETTING_LINE_SENSORS_ALWAYS_IN;
+	Settings.IGNORE_ACCEL = DEFAULT_SETTING_IGNORE_ACCEL;
+	Settings.ENABLE_BUZZER = DEFAULT_SETTING_ENABLE_BUZZER;
+	Settings.DONT_INITIALIZE_LIDARS = DEFAULT_SETTING_DONT_INITIALIZE_LIDARS;
+	Settings.ALWAYS_SHOW_OLED = DEFAULT_SETTING_ALWAYS_SHOW_OLED;
+  HAL_Delay(50);
+
+  //Settings
+	Eva.Interface.Switch1 = !HAL_GPIO_ReadPin(SWITCH2_GPIO_Port, SWITCH2_Pin); //startModuse
+	Eva.Interface.Switch2 = !HAL_GPIO_ReadPin(SWITCH3_GPIO_Port, SWITCH3_Pin); //Mode
+	Eva.Interface.Switch3 = !HAL_GPIO_ReadPin(SWITCH1_GPIO_Port, SWITCH1_Pin); //MicroMouse?
+/*
+	if(Eva.Interface.Switch3 == true)
+		Eva.AttackMode = MICROMOUSE;
+	else
+		Eva.AttackMode = DEFAULT_ATTACK_MODE_ID;
+	HAL_Delay(50);
+*/
+	Eva.AttackMode = DEFAULT_ATTACK_MODE_ID;
+
+  //START MOD
+  if(HAL_GPIO_ReadPin(START_MOD_DIGITAL_INPUT_GPIO_Port, START_MOD_DIGITAL_INPUT_Pin) == 1 && Settings.IGNORE_START_MODULE==0)
+	  COOKED(START_SIGNAL_AT_STARTUP);
+
+	HAL_UART_AbortReceive(&huart3);
+	__HAL_UART_CLEAR_OREFLAG(&huart3);
+	huart3.ErrorCode = HAL_UART_ERROR_NONE;
+	huart3.RxState   = HAL_UART_STATE_READY;
+	if(HAL_UARTEx_ReceiveToIdle_DMA(&huart3, UART3_RX, 4) != HAL_OK)
+		COOKED(START_MOD_UART_CONNECTION_COOKED);
+	//__HAL_DMA_DISABLE_IT(&hdma_usart1_rx, DMA_IT_HT);
+  HAL_Delay(50);
+
+  uint16_t freq;
+  int16_t FREQ_STEP;
+  if(Eva.AttackMode == MICROMOUSE)
+  {
+
+	freq=FREQ_STARTING_MICROMOUSE;
+	FREQ_STEP = FREQ_STEP_INIT_MICROMOUSE;
+	PLAY_FREQ(freq);
+	freq = freq + FREQ_STEP;
+  }
+  else
+  {
+	freq=FREQ_STARTING;
+	FREQ_STEP = FREQ_STEP_INIT;
+	PLAY_FREQ(freq);
+	freq = freq + FREQ_STEP;
+  }
+
+
+
+
+  //OLED
+  if(Eva.AttackMode != MICROMOUSE)
+  {
+	  if(ssd1306_Init() != 0) //fuck nah
+		  COOKED(OLED_INIT_ERR);
+	  ssd1306_ResetOrientation();
+	  ssd1306_SetColor(White);
+	  ssd1306_Clear();
+	  _ssd1306_WriteInTheMiddle("ROBOILO", 0, BIG);
+	  _ssd1306_WriteInTheMiddle("awakening evangelion", 22, SMALL);
+	  ssd1306_UpdateScreen();
+  }
+  HAL_Delay(50);
+  PLAY_FREQ(freq * (Settings.ENABLE_BUZZER==false));
+  freq = freq + FREQ_STEP;
+
+  //ADCs
+  if(Eva.AttackMode != MICROMOUSE)
+  {
+	  ssd1306_Clear();
+	  _ssd1306_WriteInTheMiddle("EVANGELION", 0, BIG);
+	  _ssd1306_WriteInTheMiddle("ADCs setup", 22, SMALL);
+	  ssd1306_UpdateScreen();
+  }
+
+  if (HAL_ADCEx_Calibration_Start(&hadc2, ADC_SINGLE_ENDED) != HAL_OK)
+	  COOKED(ADC2_INIT_ERR);
+  HAL_Delay(50);
+
+
+  if (HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ADC_BUFFER, 1) != HAL_OK)
+	  COOKED(ADC2_BUFFER_INIT_ERR);
+  HAL_Delay(50);
+  PLAY_FREQ(freq * (Settings.ENABLE_BUZZER==false));
+  freq = freq + FREQ_STEP;
+
+
+  //LIDARS
+  if(Settings.DONT_INITIALIZE_LIDARS == false)
+  {
+
+		if(Eva.AttackMode != MICROMOUSE)
+		{
+			ssd1306_Clear();
+			  _ssd1306_WriteInTheMiddle("EVANGELION", 0, BIG);
+			_ssd1306_WriteInTheMiddle("LIDARS setup", 22, SMALL);
+			ssd1306_UpdateScreen();
+		}
+		LIDARS_INIT();
+		if(Eva.AttackMode == MICROMOUSE)
+			TFLUNA_HAT_VIA_I2C_INIT();
+		HAL_Delay(50);
+		PLAY_FREQ(freq * (Settings.ENABLE_BUZZER==false));
+		freq = freq + FREQ_STEP;
+	}
+
+
+  //IMU
+
+  if(Eva.AttackMode != MICROMOUSE)
+  {
+	  ssd1306_Clear();
+	  _ssd1306_WriteInTheMiddle("EVANGELION", 0, BIG);
+	  _ssd1306_WriteInTheMiddle("accel setup", 22, SMALL);
+	  ssd1306_UpdateScreen();
+  }
+  IMU_INIT();
+  HAL_Delay(50);
+  PLAY_FREQ(freq * (Settings.ENABLE_BUZZER==false));
+  freq = freq + FREQ_STEP;
+
+
+  //MOTORS
+	if(Eva.AttackMode != MICROMOUSE)
+	{
+	  ssd1306_Clear();
+	  _ssd1306_WriteInTheMiddle("EVANGELION", 0, BIG);
+	  _ssd1306_WriteInTheMiddle("motors setup", 22, SMALL);
+	  ssd1306_UpdateScreen();
+	}
+
+  if(HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1) != HAL_OK) //MOTOR
+	  COOKED(TIM1_INIT_ERR);
+  if(HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2) != HAL_OK) //MOTOR
+	  COOKED(TIM2_INIT_ERR);
+  if(HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3) != HAL_OK) //MOTOR
+	  COOKED(TIM3_INIT_ERR);
+  if(HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4) != HAL_OK) //MOTOR
+	  COOKED(TIM4_INIT_ERR);
+  HAL_Delay(50);
+  PLAY_FREQ(freq * (Settings.ENABLE_BUZZER==false));
+  freq = freq + FREQ_STEP;
+
+  //ITs
+	if(Eva.AttackMode != MICROMOUSE)
+	{
+	  ssd1306_Clear();
+	  _ssd1306_WriteInTheMiddle("EVANGELION", 0, BIG);
+	  _ssd1306_WriteInTheMiddle("interrupts", 22, SMALL);
+	  ssd1306_UpdateScreen();
+	}
+
+  if(HAL_TIM_Base_Start_IT(&htim4) != HAL_OK) //1000Hz BATTLE
+	  COOKED(BATTLE_TIM_INIT_ERR);
+  if(HAL_TIM_Base_Start_IT(&htim6) != HAL_OK) //100Hz watchdog
+	  COOKED(WATCHDOG_TIM_INIT_ERR);
+  if(HAL_TIM_Base_Start_IT(&htim7) != HAL_OK) //25hz OLED
+	  COOKED(OLED_TIM_INIT_ERR);
+  HAL_Delay(50);
+  PLAY_FREQ(freq * (Settings.ENABLE_BUZZER==false));
+  freq = freq + FREQ_STEP;
+
+  //start mod
+	HAL_UART_AbortReceive(&huart3);
+	__HAL_UART_CLEAR_OREFLAG(&huart3);
+	huart3.ErrorCode = HAL_UART_ERROR_NONE;
+	huart3.RxState   = HAL_UART_STATE_READY;
+	HAL_UART_Receive_DMA(&huart3, UART3_RX, 4);
+
+
+  //DONE
+	if(Eva.AttackMode != MICROMOUSE)
+	{
+	  ssd1306_Clear();
+	  _ssd1306_WriteInTheMiddle("EVANGELION", 0, BIG);
+	  _ssd1306_WriteInTheMiddle("DONE", 22, SMALL);
+	  ssd1306_UpdateScreen();
+	}
+
+  PLAY_FREQ(0);
+
+  //Afterparty changes
+  Eva.Accel.x = 0;
+  Eva.Accel.y = 0;
+  Eva.Accel.z = 0;
+  Eva.Accel.peak = 0;
+  Eva.Gyro.x = 0;
+  Eva.Gyro.y = 0;
+  Eva.Gyro.z = 0;
+  Eva.Gyro.peak = 0;
+
+  if(Eva.AttackMode == MICROMOUSE)
+	  ARDUINO_INIT();
+
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+
+  while (1)
+  {
+
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
+  }
+  /* USER CODE END 3 */
+}
+
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+  /** Configure the main internal regulator output voltage
+  */
+  HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1_BOOST);
+
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV4;
+  RCC_OscInitStruct.PLL.PLLN = 85;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+  RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
+  RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Enables the Clock Security System
+  */
+  HAL_RCC_EnableCSS();
+}
+
+/**
+  * @brief ADC2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_ADC2_Init(void)
+{
+
+  /* USER CODE BEGIN ADC2_Init 0 */
+
+  /* USER CODE END ADC2_Init 0 */
+
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN ADC2_Init 1 */
+
+  /* USER CODE END ADC2_Init 1 */
+
+  /** Common config
+  */
+  hadc2.Instance = ADC2;
+  hadc2.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+  hadc2.Init.Resolution = ADC_RESOLUTION_12B;
+  hadc2.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  hadc2.Init.GainCompensation = 0;
+  hadc2.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc2.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  hadc2.Init.LowPowerAutoWait = DISABLE;
+  hadc2.Init.ContinuousConvMode = ENABLE;
+  hadc2.Init.NbrOfConversion = 1;
+  hadc2.Init.DiscontinuousConvMode = DISABLE;
+  hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc2.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc2.Init.DMAContinuousRequests = ENABLE;
+  hadc2.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
+  hadc2.Init.OversamplingMode = DISABLE;
+  if (HAL_ADC_Init(&hadc2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_13;
+  sConfig.Rank = ADC_REGULAR_RANK_1;
+  sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
+  sConfig.SingleDiff = ADC_SINGLE_ENDED;
+  sConfig.OffsetNumber = ADC_OFFSET_NONE;
+  sConfig.Offset = 0;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN ADC2_Init 2 */
+
+  /* USER CODE END ADC2_Init 2 */
+
+}
+
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.Timing = 0x4052060F;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Analogue filter
+  */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Digital filter
+  */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** I2C Fast mode Plus enable
+  */
+  HAL_I2CEx_EnableFastModePlus(I2C_FASTMODEPLUS_I2C1);
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief I2C2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C2_Init(void)
+{
+
+  /* USER CODE BEGIN I2C2_Init 0 */
+
+  /* USER CODE END I2C2_Init 0 */
+
+  /* USER CODE BEGIN I2C2_Init 1 */
+
+  /* USER CODE END I2C2_Init 1 */
+  hi2c2.Instance = I2C2;
+  hi2c2.Init.Timing = 0x4052060F;
+  hi2c2.Init.OwnAddress1 = 0;
+  hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c2.Init.OwnAddress2 = 0;
+  hi2c2.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Analogue filter
+  */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c2, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Digital filter
+  */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c2, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** I2C Fast mode Plus enable
+  */
+  HAL_I2CEx_EnableFastModePlus(I2C_FASTMODEPLUS_I2C2);
+  /* USER CODE BEGIN I2C2_Init 2 */
+
+  /* USER CODE END I2C2_Init 2 */
+
+}
+
+/**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 34-1;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 99;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM2_Init 2 */
+
+  /* USER CODE END TIM2_Init 2 */
+  HAL_TIM_MspPostInit(&htim2);
+
+}
+
+/**
+  * @brief TIM3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM3_Init(void)
+{
+
+  /* USER CODE BEGIN TIM3_Init 0 */
+
+  /* USER CODE END TIM3_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM3_Init 1 */
+
+  /* USER CODE END TIM3_Init 1 */
+  htim3.Instance = TIM3;
+  htim3.Init.Prescaler = 170-1;
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim3.Init.Period = 9;
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_PWM_Init(&htim3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM3_Init 2 */
+
+  /* USER CODE END TIM3_Init 2 */
+  HAL_TIM_MspPostInit(&htim3);
+
+}
+
+/**
+  * @brief TIM4 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM4_Init(void)
+{
+
+  /* USER CODE BEGIN TIM4_Init 0 */
+
+  /* USER CODE END TIM4_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM4_Init 1 */
+
+  /* USER CODE END TIM4_Init 1 */
+  htim4.Instance = TIM4;
+  htim4.Init.Prescaler = 170-1;
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim4.Init.Period = 999;
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM4_Init 2 */
+
+  /* USER CODE END TIM4_Init 2 */
+
+}
+
+/**
+  * @brief TIM6 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM6_Init(void)
+{
+
+  /* USER CODE BEGIN TIM6_Init 0 */
+
+  /* USER CODE END TIM6_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM6_Init 1 */
+
+  /* USER CODE END TIM6_Init 1 */
+  htim6.Instance = TIM6;
+  htim6.Init.Prescaler = 1700-1;
+  htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim6.Init.Period = 999;
+  htim6.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim6, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM6_Init 2 */
+
+  /* USER CODE END TIM6_Init 2 */
+
+}
+
+/**
+  * @brief TIM7 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM7_Init(void)
+{
+
+  /* USER CODE BEGIN TIM7_Init 0 */
+
+  /* USER CODE END TIM7_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM7_Init 1 */
+
+  /* USER CODE END TIM7_Init 1 */
+  htim7.Instance = TIM7;
+  htim7.Init.Prescaler = 6800-1;
+  htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim7.Init.Period = 999;
+  htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim7) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim7, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM7_Init 2 */
+
+  /* USER CODE END TIM7_Init 2 */
+
+}
+
+/**
+  * @brief TIM16 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM16_Init(void)
+{
+
+  /* USER CODE BEGIN TIM16_Init 0 */
+
+  /* USER CODE END TIM16_Init 0 */
+
+  /* USER CODE BEGIN TIM16_Init 1 */
+
+  /* USER CODE END TIM16_Init 1 */
+  htim16.Instance = TIM16;
+  htim16.Init.Prescaler = 17000-1;
+  htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim16.Init.Period = 65535;
+  htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim16.Init.RepetitionCounter = 0;
+  htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim16) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM16_Init 2 */
+
+  /* USER CODE END TIM16_Init 2 */
+
+}
+
+/**
+  * @brief TIM17 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM17_Init(void)
+{
+
+  /* USER CODE BEGIN TIM17_Init 0 */
+
+  /* USER CODE END TIM17_Init 0 */
+
+  /* USER CODE BEGIN TIM17_Init 1 */
+
+  /* USER CODE END TIM17_Init 1 */
+  htim17.Instance = TIM17;
+  htim17.Init.Prescaler = 17000-1;
+  htim17.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim17.Init.Period = 65535;
+  htim17.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim17.Init.RepetitionCounter = 0;
+  htim17.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim17) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM17_Init 2 */
+
+  /* USER CODE END TIM17_Init 2 */
+
+}
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart1.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_SWAP_INIT;
+  huart1.AdvancedInit.Swap = UART_ADVFEATURE_SWAP_ENABLE;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetTxFifoThreshold(&huart1, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetRxFifoThreshold(&huart1, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_DisableFifoMode(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 115200;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart2.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetTxFifoThreshold(&huart2, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetRxFifoThreshold(&huart2, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_DisableFifoMode(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
+  * @brief USART3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART3_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART3_Init 0 */
+
+  /* USER CODE END USART3_Init 0 */
+
+  /* USER CODE BEGIN USART3_Init 1 */
+
+  /* USER CODE END USART3_Init 1 */
+  huart3.Instance = USART3;
+  huart3.Init.BaudRate = 256000;
+  huart3.Init.WordLength = UART_WORDLENGTH_8B;
+  huart3.Init.StopBits = UART_STOPBITS_1;
+  huart3.Init.Parity = UART_PARITY_NONE;
+  huart3.Init.Mode = UART_MODE_TX_RX;
+  huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart3.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart3.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart3.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  huart3.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetTxFifoThreshold(&huart3, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetRxFifoThreshold(&huart3, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_DisableFifoMode(&huart3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART3_Init 2 */
+
+  /* USER CODE END USART3_Init 2 */
+
+}
+
+/**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMAMUX1_CLK_ENABLE();
+  __HAL_RCC_DMA1_CLK_ENABLE();
+  __HAL_RCC_DMA2_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 3, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+  /* DMA1_Channel2_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel2_IRQn);
+  /* DMA1_Channel3_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel3_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel3_IRQn);
+  /* DMA1_Channel4_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel4_IRQn, 3, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel4_IRQn);
+  /* DMA1_Channel5_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
+  /* DMA2_Channel2_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Channel2_IRQn, 3, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Channel2_IRQn);
+  /* DMA2_Channel3_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Channel3_IRQn, 3, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Channel3_IRQn);
+  /* DMA2_Channel4_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Channel4_IRQn, 3, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Channel4_IRQn);
+
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+
+  /* USER CODE END MX_GPIO_Init_1 */
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOF_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pins : SWITCH1_Pin SWITCH2_Pin SWITCH3_Pin */
+  GPIO_InitStruct.Pin = SWITCH1_Pin|SWITCH2_Pin|SWITCH3_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : LUNA1_SIDE_DATA_READY_Pin */
+  GPIO_InitStruct.Pin = LUNA1_SIDE_DATA_READY_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(LUNA1_SIDE_DATA_READY_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : LUNA2_SIDE_DATA_READY_Pin */
+  GPIO_InitStruct.Pin = LUNA2_SIDE_DATA_READY_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(LUNA2_SIDE_DATA_READY_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : JOY5_Pin */
+  GPIO_InitStruct.Pin = JOY5_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(JOY5_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : JOY4_Pin JOY3_Pin JOY2_Pin */
+  GPIO_InitStruct.Pin = JOY4_Pin|JOY3_Pin|JOY2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : JOY1_Pin */
+  GPIO_InitStruct.Pin = JOY1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(JOY1_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : ACCEL_INTERRUPT_Pin */
+  GPIO_InitStruct.Pin = ACCEL_INTERRUPT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(ACCEL_INTERRUPT_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : START_MOD_DIGITAL_INPUT_Pin */
+  GPIO_InitStruct.Pin = START_MOD_DIGITAL_INPUT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(START_MOD_DIGITAL_INPUT_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI4_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
+
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+
+  /* USER CODE END MX_GPIO_Init_2 */
+}
+
+/* USER CODE BEGIN 4 */
+//=======================================================================================================================================================================
+//=======================================================================================================================================================================
+//=====MISC
+void SORT(uint16_t *array, uint8_t length) {
+    for (int i = 0; i < length - 1; i++) {
+        for (int j = 0; j < length - 1 - i; j++) {
+            if (array[j] > array[j + 1]) {
+                uint16_t temp = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void COOKED(uint8_t error_code)
+//error flag codes less than 200 has priority and HALT
+{
+	  //TODO buzzer?
+	  if(error_code < 200)
+	  {
+		  ERROR_FLAG = error_code;
+		  Error_Handler();
+	  }
+	  else
+	  {
+		  ERROR_FLAG = error_code;
+	  }
+}
+
+void PLAY_FREQ(uint16_t f_hz)
+{
+	f_hz = f_hz * (Settings.ENABLE_BUZZER==0);
+    if (f_hz == 0) {
+        __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0);
+        return;
+    }
+
+    // Stały PSC=169 -> licznik 1 MHz (TIMCLK 170 MHz / (169+1))
+    __HAL_TIM_SET_PRESCALER(&htim3, 169);
+
+    uint32_t arr = 1000000UL / f_hz;            // okres w tickach 1 MHz
+    if (arr == 0) arr = 1;                      // minimalna wartość
+    arr -= 1;                                   // rejestrowo
+
+    __HAL_TIM_DISABLE(&htim3);
+    __HAL_TIM_SET_AUTORELOAD(&htim3, (uint16_t)arr);
+    __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, (uint16_t)(((arr + 1U) >> 1)));
+    __HAL_TIM_SET_COUNTER(&htim3, 0);
+    __HAL_TIM_ENABLE(&htim3);
+    HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+}
+
+void _ssd1306_WriteInTheMiddle(char *text, uint8_t y, uint8_t font)
+{
+	int8_t x;
+	uint8_t textSize = strlen(text);
+
+	if(font == BIG)
+	{
+		x = (int)(128 - textSize*11)/2;
+		if(x < 0)
+		{
+			text="ERR LENGHT";
+			x = 0;
+		}
+		_ssd1306_SetCursor(x, y);
+		ssd1306_WriteString(text, Font_11x18);
+	}
+	else if(font == SMALL) //max 21chars
+	{
+		x = (int)(128 - textSize*6)/2;
+		if(x < 0)
+		{
+			text="ERR LENGHT";
+			x = 0;
+		}
+		_ssd1306_SetCursor(x, y);
+		ssd1306_WriteString(text, Font_6x8);
+	}
+
+}
+
+
+void OLED()
+{
+	static const uint8_t MENU_OPTION_COUNT = (sizeof(MENU_OPTION_LIST) / sizeof((MENU_OPTION_LIST)[0]));
+	#define HOW_FAR_SECOND_COLUMN 60
+	char bufr[10];
+
+	typedef enum {
+		UP,
+		DOWN,
+		APPLY,
+		CANCEL,
+		NOTHING,
+	} state_t;
+	static state_t currentAction = NOTHING;
+	static uint8_t depth = 0;
+
+
+	//controll
+	if(Eva.Interface.Joystick == UP_LEFT)
+	{
+		//
+		currentAction = UP;
+		Eva.Interface.Joystick = BUTTON_REBOUNCE;
+	}
+	else if(Eva.Interface.Joystick == DOWN_LEFT)
+	{
+		currentAction = DOWN;
+		Eva.Interface.Joystick = BUTTON_REBOUNCE;
+	}
+	else if(Eva.Interface.Joystick == UP_RIGHT)
+	{
+		currentAction = APPLY;
+		Eva.Interface.Joystick = BUTTON_REBOUNCE;
+	}
+	else if(Eva.Interface.Joystick == DOWN_RIGHT)
+	{
+		currentAction = CANCEL;
+		Eva.Interface.Joystick = BUTTON_REBOUNCE;
+	}
+
+	if(depth == 0)
+	{
+		if(currentAction == UP)
+		{
+			Eva.Interface.MenuOption = (Eva.Interface.MenuOption - 1 + MENU_OPTION_COUNT) % MENU_OPTION_COUNT;
+			currentAction = NOTHING;
+		}
+		else if(currentAction == DOWN)
+		{
+			Eva.Interface.MenuOption = (Eva.Interface.MenuOption + 1) % MENU_OPTION_COUNT;
+			currentAction = NOTHING;
+		}
+	}
+
+	ssd1306_Clear();
+
+
+
+	//WRITE OPTIONS
+
+	if(depth == 0)
+	{
+		_ssd1306_SetCursor(0, 12);
+		ssd1306_WriteChar('>', Font_6x8);
+	}
+	_ssd1306_SetCursor(7, 2);
+	ssd1306_WriteString(MENU_OPTION_LIST[(Eva.Interface.MenuOption - 1 + MENU_OPTION_COUNT) % MENU_OPTION_COUNT].name, Font_6x8);
+	_ssd1306_SetCursor(7, 12);
+	ssd1306_WriteString(MENU_OPTION_LIST[Eva.Interface.MenuOption].name, Font_6x8);
+	_ssd1306_SetCursor(7, 22);
+	ssd1306_WriteString(MENU_OPTION_LIST[(Eva.Interface.MenuOption + 1) % MENU_OPTION_COUNT].name, Font_6x8);
+
+	//SHOW CURRENT OPTIONs
+	if(MENU_OPTION_LIST[Eva.Interface.MenuOption].id == OPTION_ID_BATTERY)
+	{
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 2);
+		if(Eva.Voltage >= 1000)
+		{
+			ssd1306_WriteChar((Eva.Voltage / 1000) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar((Eva.Voltage / 100) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('.', Font_6x8);
+			ssd1306_WriteChar((Eva.Voltage / 10) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar((Eva.Voltage / 1) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('v', Font_6x8);
+		}
+		else
+		{
+			ssd1306_WriteChar((Eva.Voltage / 100) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('.', Font_6x8);
+			ssd1306_WriteChar((Eva.Voltage / 10) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar((Eva.Voltage / 1) % 10 + '0', Font_6x8);
+			ssd1306_WriteChar('v', Font_6x8);
+
+		}
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 12);
+		ssd1306_WriteChar((Eva.CellVoltage / 100) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar('.', Font_6x8);
+		ssd1306_WriteChar((Eva.CellVoltage / 10) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((Eva.CellVoltage / 1) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar('v', Font_6x8);
+
+		if(depth == 0)
+		{
+			_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 22);
+			ssd1306_WriteString("LiPo:", Font_6x8);
+			ssd1306_WriteChar(Eva.BattType + '0', Font_6x8);
+			ssd1306_WriteChar('s', Font_6x8);
+
+			if(currentAction == APPLY)
+			{
+				depth = 1;
+				currentAction = NOTHING;
+			}
+		}
+		else if(depth == 1)
+		{
+			_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 22);
+			ssd1306_WriteString(">", Font_6x8);
+			ssd1306_WriteString("LiPo:", Font_6x8);
+			ssd1306_WriteChar(Eva.BattType + '0', Font_6x8);
+			ssd1306_WriteChar('s', Font_6x8);
+
+
+			if(currentAction == UP || currentAction == DOWN)
+			{
+				Eva.BattType = (Eva.BattType == 3) ? 4 : 3;
+				currentAction = NOTHING;
+			}
+			else if(currentAction == CANCEL)
+			{
+				depth=0;
+				currentAction = NOTHING;
+			}
+		}
+
+	}
+	else if(MENU_OPTION_LIST[Eva.Interface.MenuOption].id == OPTION_ID_ATTACK_MODE)
+	{
+		static uint8_t option=0;
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 10);
+		if(option == 0 && depth == 1){
+			ssd1306_WriteString(">", Font_6x8);
+		}
+		ssd1306_WriteString("Sumo", Font_6x8);
+		if(Eva.AttackMode != MICROMOUSE)
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 20);
+		if(option == 1 && depth == 1){
+			ssd1306_WriteString(">", Font_6x8);
+		}
+		ssd1306_WriteString("MMouse", Font_6x8);
+		if(Eva.AttackMode == MICROMOUSE)
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+
+
+		if(depth == 0)
+		{
+			if(currentAction == APPLY)
+			{
+				depth = 1;
+				currentAction = NOTHING;
+			}
+		}
+		else if(depth == 1)
+		{
+			if(currentAction == APPLY)
+			{
+				if(option == 0)
+				{
+					Eva.AttackMode = STRAIGHT;
+				}
+				if(option == 1)
+				{
+					Eva.AttackMode = MICROMOUSE;
+					//TFLUNA_HAT_VIA_I2C_INIT();
+				}
+			}
+			else if(currentAction == UP || currentAction == DOWN)
+			{
+				option = !option;
+				currentAction = NOTHING;
+			}
+			else if(currentAction == CANCEL)
+			{
+				depth = 0;
+				currentAction = NOTHING;
+				option = 1;
+			}
+		}
+	}
+	else if(MENU_OPTION_LIST[Eva.Interface.MenuOption].id == OPTION_ID_LUNA_DIST)
+	{
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 2);
+		memset(bufr, 0, sizeof(bufr));
+		itoa(Right.Distance, bufr, 10);
+		ssd1306_WriteString(bufr, Font_6x8);
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 12);
+		memset(bufr, 0, sizeof(bufr));
+		itoa(Left.Distance, bufr, 10);
+		ssd1306_WriteString(bufr, Font_6x8);
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 22);
+		memset(bufr, 0, sizeof(bufr));
+		itoa(MAX_DISTANCE, bufr, 10);
+		ssd1306_WriteString("Max:", Font_6x8);
+		ssd1306_WriteString(bufr, Font_6x8);
+	}
+	else if(MENU_OPTION_LIST[Eva.Interface.MenuOption].id == OPTION_ID_LUNA_AMP)
+	{
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 2);
+		memset(bufr, 0, sizeof(bufr));
+		itoa(Right.LidarAmp, bufr, 10);
+		ssd1306_WriteString(bufr, Font_6x8);
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 12);
+		memset(bufr, 0, sizeof(bufr));
+		itoa(Left.LidarAmp, bufr, 10);
+		ssd1306_WriteString(bufr, Font_6x8);
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 22);
+		memset(bufr, 0, sizeof(bufr));
+		ssd1306_WriteString("Max:", Font_6x8);
+		ssd1306_WriteString("-", Font_6x8);
+	}
+	else if(MENU_OPTION_LIST[Eva.Interface.MenuOption].id == OPTION_ID_LINES)
+	{
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 2);
+		memset(bufr, 0, sizeof(bufr));
+		itoa(Right.RawLine, bufr, 10);
+		ssd1306_WriteString(bufr, Font_6x8);
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 12);
+		memset(bufr, 0, sizeof(bufr));
+		itoa(Left.RawLine, bufr, 10);
+		ssd1306_WriteString(bufr, Font_6x8);
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 22);
+		memset(bufr, 0, sizeof(bufr));
+		itoa(WHITE_LINE_TRESCHOLD, bufr, 10);
+		ssd1306_WriteString("Out:<", Font_6x8);
+		ssd1306_WriteString(bufr, Font_6x8);
+	}
+	else if(MENU_OPTION_LIST[Eva.Interface.MenuOption].id == OPTION_ID_ACCEL)
+	{
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 2);
+		ssd1306_WriteChar(_ARR_UP, Font_6x8);
+		ssd1306_WriteChar(_ARR_DOWN, Font_6x8);
+		ssd1306_WriteChar(':', Font_6x8);
+		int16_t accel_val = Eva.Accel.x;
+		if (accel_val < 0) {
+		    ssd1306_WriteChar('-', Font_6x8);
+		    accel_val = -accel_val; // Zamień na dodatnią do obliczeń (abs)
+		}
+		else {
+		    ssd1306_WriteChar('+', Font_6x8); // Spacja dla wyrównania (zamiast plusa)
+		}
+		ssd1306_WriteChar((accel_val / 1000) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar('.', Font_6x8);
+		ssd1306_WriteChar((accel_val / 100) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 10) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar('g', Font_6x8);
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 12);
+		ssd1306_WriteString("<>:", Font_6x8);
+		accel_val = Eva.Accel.y;
+		if (accel_val < 0) {
+		    ssd1306_WriteChar('-', Font_6x8);
+		    accel_val = -accel_val; // Zamień na dodatnią do obliczeń (abs)
+		}
+		else {
+		    ssd1306_WriteChar('+', Font_6x8); // Spacja dla wyrównania (zamiast plusa)
+		}
+		ssd1306_WriteChar((accel_val / 1000) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar('.', Font_6x8);
+		ssd1306_WriteChar((accel_val / 100) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 10) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar('g', Font_6x8);
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 22);
+		ssd1306_WriteString("UP:", Font_6x8);
+		accel_val = Eva.Accel.z;
+		if (accel_val < 0) {
+		    ssd1306_WriteChar('-', Font_6x8);
+		    accel_val = -accel_val; // Zamień na dodatnią do obliczeń (abs)
+		}
+		else {
+		    ssd1306_WriteChar('+', Font_6x8); // Spacja dla wyrównania (zamiast plusa)
+		}
+		ssd1306_WriteChar((accel_val / 1000) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar('.', Font_6x8);
+		ssd1306_WriteChar((accel_val / 100) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 10) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar('g', Font_6x8);
+	}
+	else if(MENU_OPTION_LIST[Eva.Interface.MenuOption].id == OPTION_ID_GYRO)
+	{
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 2);
+		ssd1306_WriteChar('X', Font_6x8);
+		ssd1306_WriteChar(':', Font_6x8);
+		int16_t accel_val = Eva.Gyro.x / 16.4f;
+		if (accel_val < 0) {
+		    ssd1306_WriteChar('-', Font_6x8);
+		    accel_val = -accel_val; // Zamień na dodatnią do obliczeń (abs)
+		}
+		else {
+		    ssd1306_WriteChar('+', Font_6x8); // Spacja dla wyrównania (zamiast plusa)
+		}
+		ssd1306_WriteChar((accel_val / 1000) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 100) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 10) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 1) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar(_APPLY, Font_6x8);
+		ssd1306_WriteString("/s", Font_6x8);
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 12);
+		ssd1306_WriteString("Y:", Font_6x8);
+		accel_val = Eva.Gyro.y / 16.4f;
+		if (accel_val < 0) {
+		    ssd1306_WriteChar('-', Font_6x8);
+		    accel_val = -accel_val; // Zamień na dodatnią do obliczeń (abs)
+		}
+		else {
+		    ssd1306_WriteChar('+', Font_6x8); // Spacja dla wyrównania (zamiast plusa)
+		}
+		ssd1306_WriteChar((accel_val / 1000) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 100) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 10) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 1) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar(_APPLY, Font_6x8);
+		ssd1306_WriteString("/s", Font_6x8);
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 22);
+		ssd1306_WriteString("Z:", Font_6x8);
+		accel_val = Eva.Gyro.z / 16.4f;
+		if (accel_val < 0) {
+		    ssd1306_WriteChar('-', Font_6x8);
+		    accel_val = -accel_val; // Zamień na dodatnią do obliczeń (abs)
+		}
+		else {
+		    ssd1306_WriteChar('+', Font_6x8); // Spacja dla wyrównania (zamiast plusa)
+		}
+		ssd1306_WriteChar((accel_val / 1000) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 100) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 10) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 1) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar(_APPLY, Font_6x8);
+		ssd1306_WriteString("/s", Font_6x8);
+	}
+	else if(MENU_OPTION_LIST[Eva.Interface.MenuOption].id == OPTION_ID_SET_MOTS)
+	{
+		#define OLED_SETTINGS_MOTOR_STEP 20
+		static int8_t speed;
+
+		if(depth == 0)
+		{
+			_ssd1306_SetCursor(78, 12);
+			ssd1306_WriteString("00", Font_6x8);
+
+			if(currentAction == APPLY)
+			{
+				speed = 0;
+				depth = 1;
+				currentAction = NOTHING;
+			}
+		}
+
+		else if(depth == 1)
+		{
+			_ssd1306_SetCursor(70, 12);
+			ssd1306_WriteString(">", Font_6x8);
+
+			if(speed + OLED_SETTINGS_MOTOR_STEP <= 100)
+			{
+				_ssd1306_SetCursor(78, 2);
+				memset(bufr, 0, sizeof(bufr));
+				itoa((speed+OLED_SETTINGS_MOTOR_STEP), bufr, 10);
+				ssd1306_WriteString(bufr, Font_6x8);
+			}
+
+			_ssd1306_SetCursor(78, 12);
+			memset(bufr, 0, sizeof(bufr));
+			itoa(speed, bufr, 10);
+			ssd1306_WriteString(bufr, Font_6x8);
+
+			if(speed - OLED_SETTINGS_MOTOR_STEP >= -100)
+			{
+				_ssd1306_SetCursor(78, 22);
+				memset(bufr, 0, sizeof(bufr));
+				itoa((speed-OLED_SETTINGS_MOTOR_STEP), bufr, 10);
+				ssd1306_WriteString(bufr, Font_6x8);
+			}
+
+			if(currentAction == UP)
+			{
+				if(speed + OLED_SETTINGS_MOTOR_STEP <= 100)
+				{
+					speed = speed + OLED_SETTINGS_MOTOR_STEP;
+				}
+				currentAction = NOTHING;
+			}
+			else if(currentAction == DOWN)
+			{
+				if(speed - OLED_SETTINGS_MOTOR_STEP >= -100)
+				{
+					speed = speed - OLED_SETTINGS_MOTOR_STEP;
+				}
+				currentAction = NOTHING;
+			}
+			else if(currentAction == CANCEL)
+			{
+				SET_MOTORS(0, 0);
+				speed=0;;
+				depth=0;
+				currentAction = NOTHING;
+			}
+			else
+			{
+				SET_MOTORS(speed, speed);
+			}
+		}
+	}
+	else if(MENU_OPTION_LIST[Eva.Interface.MenuOption].id == OPTION_ID_START_MOD)
+	{
+		#define START_MOD_ID_OPTIONS_START_DELAY_STEP 100
+		static uint8_t option=0;
+
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 2);
+		//Restart
+		if(option == 0 && depth == 1){
+			ssd1306_WriteString(">", Font_6x8);
+		}
+		ssd1306_WriteString("Restart", Font_6x8);
+		ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+
+	    //Started
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 12);
+		if(option == 1 && depth == 1){
+			ssd1306_WriteString(">", Font_6x8);
+		}
+		ssd1306_WriteString("Mod", Font_6x8);
+		if(StartMod.Started || StartMod.StartedViaInterface || StartMod.StartedViaSwitch)
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+
+		ssd1306_WriteString("|Eva", Font_6x8);
+		if(Eva.inBattle)
+			ssd1306_WriteChar(_CHECKBOX_CHECKED, Font_6x8);
+		else
+			ssd1306_WriteChar(_CHECKBOX_EMPTY, Font_6x8);
+
+
+		//Delay
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 22);
+		if(option == 2 && depth >= 1){
+			ssd1306_WriteString(">", Font_6x8);
+		}
+		if(option == 2 && depth == 1)
+		{
+			ssd1306_WriteString("Delay:", Font_6x8);
+		}
+
+		ssd1306_WriteChar(((StartMod.Delay - StartMod.VolatileDelayTimer) / 1000) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar(((StartMod.Delay - StartMod.VolatileDelayTimer) / 100) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar(((StartMod.Delay - StartMod.VolatileDelayTimer) / 10) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar(((StartMod.Delay - StartMod.VolatileDelayTimer) / 1) % 10 + '0', Font_6x8);
+		ssd1306_WriteString("ms", Font_6x8);
+
+
+
+		if(depth == 0)
+		{
+			if(currentAction == APPLY)
+			{
+				depth = 1;
+				currentAction = NOTHING;
+			}
+		}
+		else if(depth >= 1)
+		{
+			SET_MOTORS(0,0);
+			if(currentAction == APPLY)
+			{
+				if(option == 0)
+				{
+					UART_TX[0] = 0x02;
+					UART_TX[1] = 0x00;
+					UART_TX[2] = 0x00;
+					UART_TX[3] = 0x69;
+					HAL_UART_Transmit_DMA(&huart3, UART_TX, 4);
+				}
+				if(option == 1)
+				{
+					StartMod.StartedViaInterface = !StartMod.StartedViaInterface;
+				}
+				if(option == 2)
+				{
+					depth = 2;
+				}
+				currentAction = NOTHING;
+			}
+			else if(currentAction == UP && depth == 1)
+			{
+				option = (option - 1 ) % 3;
+				currentAction = NOTHING;
+			}
+			else if(currentAction == DOWN && depth == 1)
+			{
+				option = (option + 1 ) % 3;
+				currentAction = NOTHING;
+			}
+			else if(currentAction == UP && depth == 2)
+			{
+				StartMod.Delay = StartMod.Delay + 100;
+				currentAction = NOTHING;
+			}
+			else if(currentAction == DOWN && depth == 2)
+			{
+				if(StartMod.Delay - START_MOD_ID_OPTIONS_START_DELAY_STEP >= 0)
+				{
+					StartMod.Delay = StartMod.Delay - START_MOD_ID_OPTIONS_START_DELAY_STEP;
+				}
+				else
+				{
+					StartMod.Delay = 0;
+				}
+				currentAction = NOTHING;
+			}
+			else if(currentAction == CANCEL && depth == 2)
+			{
+				depth = 1;
+				currentAction = NOTHING;
+			}
+			else if(currentAction == CANCEL)
+			{
+				depth = 0;
+				option = 1;
+				currentAction = NOTHING;
+			}
+		}
+
+	}
+	else if(MENU_OPTION_LIST[Eva.Interface.MenuOption].id == OPTION_ID_IMU_PEAK)
+	{
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 2);
+		ssd1306_WriteString("Acc:", Font_6x8);
+		uint16_t accel_val = Eva.Accel.peak;
+		ssd1306_WriteChar((accel_val / 1000) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar('.', Font_6x8);
+		ssd1306_WriteChar((accel_val / 100) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 10) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar('g', Font_6x8);
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 12);
+		ssd1306_WriteString("Gyr:", Font_6x8);
+		accel_val = Eva.Gyro.peak;
+		ssd1306_WriteChar((accel_val / 1000) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 100) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 10) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 1) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar(_APPLY, Font_6x8);
+		ssd1306_WriteString("/s", Font_6x8);
+
+		_ssd1306_SetCursor(HOW_FAR_SECOND_COLUMN, 22);
+		ssd1306_WriteString("Tnow:", Font_6x8);
+		accel_val = Eva.ImuTemp;
+		ssd1306_WriteChar((accel_val / 100) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar((accel_val / 10) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar('.', Font_6x8);
+		ssd1306_WriteChar((accel_val / 1) % 10 + '0', Font_6x8);
+		ssd1306_WriteChar(_APPLY, Font_6x8);
+	}
+
+
+
+
+
+	//WRITE UI
+	_ssd1306_SetCursor(0, 0);
+	ssd1306_WriteChar(_ARR_UP, Font_6x8);
+	_ssd1306_SetCursor(0, 24);
+	ssd1306_WriteChar(_ARR_DOWN, Font_6x8);
+	_ssd1306_SetCursor(121, 0);
+	ssd1306_WriteChar(_APPLY, Font_6x8);
+	_ssd1306_SetCursor(121, 24);
+	ssd1306_WriteChar(_CANCEL, Font_6x8);
+
+	ssd1306_UpdateScreen();
+}
+
+
+void LIDARS_INIT()
+{
+	uint8_t counter=0;
+
+	//LIDARS OFF
+	UART_TX[0] = 0x5A;
+	UART_TX[1] = 0x05;
+	UART_TX[2] = 0x07;
+	UART_TX[3] = 0x00;
+	UART_TX[4] = (UART_TX[0] + UART_TX[1] + UART_TX[2] + UART_TX[3]) % 0x100;
+	while(true)
+	{
+		HAL_UART_Transmit(&huart1, UART_TX, 5, LIDARS_INIT_UART_TIMEOUT);
+		HAL_UART_Receive(&huart1, UART1_RX, 5, LIDARS_INIT_UART_TIMEOUT);
+
+		if(UART1_RX[0] == UART_TX[0] && UART1_RX[1] == UART_TX[1] && UART1_RX[2] == UART_TX[2])
+			break;
+		if(counter >= MAX_RETRIES_LIDARS_INIT)
+			COOKED(LEFT_LIDAR_INIT_ERR1 * (SWITCH_LIDARS==false) + RIGHT_LIDAR_INIT_ERR1 * (SWITCH_LIDARS==true));
+		counter++;
+	}
+	counter=0;
+	while(true)
+	{
+		HAL_UART_Transmit(&huart2, UART_TX, 5, LIDARS_INIT_UART_TIMEOUT);
+		HAL_UART_Receive(&huart2, UART2_RX, 5, LIDARS_INIT_UART_TIMEOUT);
+
+		if(UART2_RX[0] == UART_TX[0] && UART2_RX[1] == UART_TX[1] && UART2_RX[2] == UART_TX[2])
+			break;
+		if(counter >= MAX_RETRIES_LIDARS_INIT)
+			COOKED(LEFT_LIDAR_INIT_ERR1 * (SWITCH_LIDARS==true) + RIGHT_LIDAR_INIT_ERR1 * (SWITCH_LIDARS==false));
+		counter++;
+	}
+	HAL_Delay(50);
+
+
+	//LIDARS SET 250Hz
+	UART_TX[0] = 0x5A;
+	UART_TX[1] = 0x06;
+	UART_TX[2] = 0x03;
+	UART_TX[3] = 0xFA;
+	UART_TX[4] = 0x00;
+	UART_TX[5] = (UART_TX[0] + UART_TX[1] + UART_TX[2] + UART_TX[3]) % 0x100;
+	counter=0;
+	while(true)
+	{
+		HAL_UART_Transmit(&huart1, UART_TX, 6, LIDARS_INIT_UART_TIMEOUT);
+		HAL_UART_Receive(&huart1, UART1_RX, 6, LIDARS_INIT_UART_TIMEOUT);
+
+		if(UART1_RX[0] == UART_TX[0] && UART1_RX[1] == UART_TX[1] && UART1_RX[2] == UART_TX[2])
+			break;
+		if(counter >= MAX_RETRIES_LIDARS_INIT)
+			COOKED(LEFT_LIDAR_INIT_ERR2 * (SWITCH_LIDARS==false) + RIGHT_LIDAR_INIT_ERR2 * (SWITCH_LIDARS==true));
+		counter++;
+	}
+	counter=0;
+	while(true)
+	{
+		HAL_UART_Transmit(&huart2, UART_TX, 6, LIDARS_INIT_UART_TIMEOUT);
+		HAL_UART_Receive(&huart2, UART2_RX, 6, LIDARS_INIT_UART_TIMEOUT);
+
+		if(UART2_RX[0] == UART_TX[0] && UART2_RX[1] == UART_TX[1] && UART2_RX[2] == UART_TX[2])
+			break;
+		if(counter >= MAX_RETRIES_LIDARS_INIT)
+			COOKED(LEFT_LIDAR_INIT_ERR2 * (SWITCH_LIDARS==true) + RIGHT_LIDAR_INIT_ERR2 * (SWITCH_LIDARS==false));
+		counter++;
+	}
+	HAL_Delay(50);
+
+
+
+	//LIDARS ON
+	UART_TX[0] = 0x5A;
+	UART_TX[1] = 0x05;
+	UART_TX[2] = 0x07;
+	UART_TX[3] = 0x01;
+	UART_TX[4] = (UART_TX[0] + UART_TX[1] + UART_TX[2] + UART_TX[3]) % 0x100;
+	counter=0;
+	while(true)
+	{
+		HAL_UART_Transmit(&huart1, UART_TX, 5, LIDARS_INIT_UART_TIMEOUT);
+		HAL_UART_Receive(&huart1, UART1_RX, 5, LIDARS_INIT_UART_TIMEOUT);
+
+		if(UART1_RX[0] == UART_TX[0] && UART1_RX[1] == UART_TX[1] && UART1_RX[2] == UART_TX[2])
+			break;
+		if(counter >= MAX_RETRIES_LIDARS_INIT)
+			COOKED(LEFT_LIDAR_INIT_ERR3 * (SWITCH_LIDARS==false) + RIGHT_LIDAR_INIT_ERR3 * (SWITCH_LIDARS==true));
+		counter++;
+	}
+	counter=0;
+	while(true)
+	{
+		HAL_UART_Transmit(&huart2, UART_TX, 5, LIDARS_INIT_UART_TIMEOUT);
+		HAL_UART_Receive(&huart2, UART2_RX, 5, LIDARS_INIT_UART_TIMEOUT);
+
+		if(UART2_RX[0] == UART_TX[0] && UART2_RX[1] == UART_TX[1] && UART2_RX[2] == UART_TX[2])
+			break;
+		if(counter >= MAX_RETRIES_LIDARS_INIT)
+			COOKED(LEFT_LIDAR_INIT_ERR3 * (SWITCH_LIDARS==true) + RIGHT_LIDAR_INIT_ERR3 * (SWITCH_LIDARS==false));
+		counter++;
+	}
+	HAL_Delay(50);
+
+
+	counter=0;
+	while(true)
+	{
+
+		if(huart1.RxState == HAL_UART_STATE_READY && huart1.gState == HAL_UART_STATE_READY && huart1.ErrorCode == HAL_UART_ERROR_NONE)
+			break;
+		else if(counter >= MAX_RETRIES_LIDARS_INIT)
+			COOKED(LEFT_LIDAR_INIT_ERR4 * (SWITCH_LIDARS==false) + RIGHT_LIDAR_INIT_ERR4 * (SWITCH_LIDARS==true));
+
+		HAL_Delay(LIDARS_INIT_UART_TIMEOUT);
+		counter++;
+	}
+
+	counter=0;
+	while(true)
+	{
+		if(huart2.RxState == HAL_UART_STATE_READY && huart2.gState == HAL_UART_STATE_READY && huart2.ErrorCode == HAL_UART_ERROR_NONE)
+			break;
+		else if(counter >= MAX_RETRIES_LIDARS_INIT)
+			COOKED(LEFT_LIDAR_INIT_ERR4 * (SWITCH_LIDARS==true) + RIGHT_LIDAR_INIT_ERR4 * (SWITCH_LIDARS==false));
+
+		HAL_Delay(LIDARS_INIT_UART_TIMEOUT);
+		counter++;
+	}
+	HAL_Delay(50);
+
+
+	HAL_UART_AbortReceive(&huart1);
+	__HAL_UART_CLEAR_OREFLAG(&huart1);
+	huart1.ErrorCode = HAL_UART_ERROR_NONE;
+	huart1.RxState   = HAL_UART_STATE_READY;
+	if(HAL_UARTEx_ReceiveToIdle_DMA(&huart1, UART1_RX, 9) != HAL_OK)
+		COOKED(LEFT_LIDAR_UART_ERR * (SWITCH_LIDARS==false) + RIGHT_LIDAR_UART_ERR * (SWITCH_LIDARS==true));
+	__HAL_DMA_DISABLE_IT(&hdma_usart1_rx, DMA_IT_HT);
+
+
+	HAL_UART_AbortReceive(&huart2);
+	__HAL_UART_CLEAR_OREFLAG(&huart2);
+	huart2.ErrorCode = HAL_UART_ERROR_NONE;
+	huart2.RxState   = HAL_UART_STATE_READY;
+	if(HAL_UARTEx_ReceiveToIdle_DMA(&huart2, UART2_RX, 9) != HAL_OK)
+		COOKED(LEFT_LIDAR_UART_ERR * (SWITCH_LIDARS==true) + RIGHT_LIDAR_UART_ERR * (SWITCH_LIDARS==false));
+	__HAL_DMA_DISABLE_IT(&hdma_usart2_rx, DMA_IT_HT);
+
+}
+
+void TFLUNA_HAT_VIA_I2C_INIT()
+{
+	uint8_t cmd;
+
+	/*
+	HAL_Delay(50);
+	cmd = 0x02; //SOFT RESET
+	HAL_I2C_Mem_Write(&hi2c1, TFLUNA1_ADDRESS, TFLUNA_ADDR_SOFT_RESET, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&cmd, 1, TFLUNA_INIT_I2C_TIMEOUT);
+*/
+/*
+	HAL_Delay(50);
+	cmd = 0x00; //countinous mode
+	HAL_I2C_Mem_Write(&hi2c1, TFLUNA1_ADDRESS, TFLUNA_ADDR_SET_TRIG_MODE, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&cmd, 1, TFLUNA_INIT_I2C_TIMEOUT);
+
+	HAL_Delay(TFLUNA_INIT_I2C_TIMEOUT); //delay
+*/
+	cmd=0x00;
+
+	if (hi2c1.State != HAL_I2C_STATE_READY) {
+	    HAL_I2C_DeInit(&hi2c1);
+	    HAL_Delay(1);
+	    MX_I2C1_Init();
+	}
+
+	dupa=HAL_I2C_Mem_Read(&hi2c1, TFLUNA1_ADDRESS, 0x00, I2C_MEMADD_SIZE_8BIT, &cmd, 1, TFLUNA_INIT_I2C_TIMEOUT);  // reg 0x00
+
+}
+
+void IMU_INIT()
+{
+	//todo jakies auto calibretion or smth
+
+	uint16_t cmd = BMI323_CMD_SOFT_RESET;
+	HAL_I2C_Mem_Write(&hi2c2, BMI323_ADDR, BMI323_REG_CMD, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&cmd, 2, IMU_INIT_I2C_TIMEOUT);
+	HAL_Delay(50);
+
+	cmd = BMI323_INT_LATCHED;
+	HAL_I2C_Mem_Write(&hi2c2, BMI323_ADDR, BMI323_REG_INT_CONF, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&cmd, 2, IMU_INIT_I2C_TIMEOUT);
+	HAL_Delay(10);
+
+	cmd = BMI323_o_int_setting;
+	HAL_I2C_Mem_Write(&hi2c2, BMI323_ADDR, BMI323_o_int_ctrl, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&cmd, 2, IMU_INIT_I2C_TIMEOUT);
+	HAL_Delay(10);
+
+	cmd = BMI323_data_ready_it;
+	HAL_I2C_Mem_Write(&hi2c2, BMI323_ADDR, BMI323_int_map1, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&cmd, 2, IMU_INIT_I2C_TIMEOUT);
+	HAL_Delay(10);
+
+	cmd = BMI323_acc_conf_my;
+	HAL_I2C_Mem_Write(&hi2c2, BMI323_ADDR, BMI323_acc_conf, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&cmd, 2, IMU_INIT_I2C_TIMEOUT);
+	HAL_Delay(10);
+
+	cmd = BMI323_gyro_conf_my;
+	HAL_I2C_Mem_Write(&hi2c2, BMI323_ADDR, BMI323_gyro_conf, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&cmd, 2, IMU_INIT_I2C_TIMEOUT);
+	HAL_Delay(10);
+
+	HAL_Delay(50);
+	HAL_I2C_Mem_Read(&hi2c2, BMI323_ADDR, 0x03, I2C_MEMADD_SIZE_8BIT, I2C2_Accel_Rx, 24, IMU_INIT_I2C_TIMEOUT);
+}
+
+
+void SET_MOTORS(int8_t l, int8_t r)
+{
+
+	//utils
+	if(Settings.DONT_USE_MOTORS)
+		l = r = 0;
+
+	if (SWITCH_MOTORS)
+	{
+	    int8_t tmp = l;
+	    l = r;
+	    r = tmp;
+	}
+	if(REVERSE_RIGHT_MOTOR)
+	{
+		r = -r;
+	}
+	if(REVERSE_LEFT_MOTOR)
+	{
+		l = -l;
+	}
+
+	r = Acceleration_Compensation_R(r);
+	l = Acceleration_Compensation_L(l);
+	//sets
+	//SET PWMs
+	if(l == 0)
+	{
+		TIM2->CCR1 = 1; //L front
+		TIM2->CCR2 = 1; //L back
+	}
+	else if(l > 0)
+	{
+		l = (uint8_t)(REAL_MIN_PWM_PERCENTAGE + (l * (REAL_MAX_PWM_PERCENTAGE - REAL_MIN_PWM_PERCENTAGE)) / 100);
+		dupa = l;
+		TIM2->CCR1 = l; //L front
+		TIM2->CCR2 = 1; //L back
+	}
+	else
+	{
+		l = (uint8_t)(REAL_MIN_PWM_PERCENTAGE + (-l * (REAL_MAX_PWM_PERCENTAGE - REAL_MIN_PWM_PERCENTAGE)) / 100);
+
+		TIM2->CCR1 = 1; //L front
+		TIM2->CCR2 = l; //L back
+	}
+
+	//SET PWMs
+	if(r == 0)
+	{
+		TIM2->CCR3 = 1; //R front
+		TIM2->CCR4 = 1; //R back
+	}
+	else if(r > 0)
+	{
+		r = (uint8_t)(REAL_MIN_PWM_PERCENTAGE + (r * (REAL_MAX_PWM_PERCENTAGE - REAL_MIN_PWM_PERCENTAGE)) / 100);
+
+		TIM2->CCR3 = r; //R front
+		TIM2->CCR4 = 1; //R back
+	}
+	else
+	{
+		r = (uint8_t)(REAL_MIN_PWM_PERCENTAGE + (-r * (REAL_MAX_PWM_PERCENTAGE - REAL_MIN_PWM_PERCENTAGE)) / 100);
+
+		TIM2->CCR3 = 1; //R front
+		TIM2->CCR4 = r; //R back
+	}
+}
+
+
+void CALCULATE_MOTOR_SPEEDS(int8_t L, int8_t R)
+{
+	//FILTR KOMPLEMENTARNY/KALMANA i CALE WEKTORY PREDKOSCI SE ZROBIMY DO TEGO TODO TODO TODO
+
+	/*
+	#define MOTORS_DECELERATION_ACTIVATON_TRESCHOLD 0.1 (in Gs)
+
+
+	if(Eva.Accel.y > 0.1 * 1000) //we are decelerating (going front rn)
+	{
+		if(L == -100 && R == -100) //and we want to go back very much
+		{
+			Motors.Set.L = 0;
+			Motors.Set.R = 0;
+			return;
+		}
+	}
+
+	else if(Eva.Accel.y < 0.1 * 1000) //we are decelerating (going back rn)
+	{
+		if(L == 100 && R == 100)
+		{
+		 //but really want to go front
+			Motors.Set.L = 0;
+			Motors.Set.R = 0;
+			return;
+		}
+	}
+*/
+	Motors.Set.L = L;
+	Motors.Set.R = R;
+	return;
+}
+
+//=====SENSORS
+void GET_SENSORS()
+{
+	/*
+	//LINE SENSORS
+	//line1
+	uint16_t line1;
+	uint16_t line2;
+	if(ADC_BUFFER[1] <= WHITE_LINE_TRESCHOLD && Settings.LINE_SENSORS_ALWAYS_IN == false)
+		line1 = OUT;
+	else
+		line1 = IN;
+	//line2
+	if(ADC_BUFFER[2] <= WHITE_LINE_TRESCHOLD && Settings.LINE_SENSORS_ALWAYS_IN == false)
+		line2 = OUT;
+	else
+		line2 = IN;
+
+	if(SWITCH_LINE_SENSORS)
+	{
+		Right.Line = line1;
+		Left.Line = line2;
+
+		Right.RawLine = ADC_BUFFER[1];
+		Left.RawLine = ADC_BUFFER[2];
+	}
+	else
+	{
+		Left.Line = line1;
+		Right.Line = line2;
+
+		Left.RawLine = ADC_BUFFER[1];
+		Right.RawLine = ADC_BUFFER[2];
+	}
+*/
+}
+
+//=====ATTACK MODES
+void STRAIGHT_ATTACK()
+{
+	if(Left.Line == OUT && Right.Line == OUT)
+	{
+		Motors.Requested.L = -100;
+		Motors.Requested.R = -100;
+	}
+	else if(Left.Distance <= MAX_DISTANCE && Right.Distance <= MAX_DISTANCE)
+	{
+		//TODO XD
+		if(Left.LidarAmp*2 < Right.LidarAmp)
+		{
+			Motors.Requested.L = 40;
+			Motors.Requested.R = 100;
+		}
+		else if(Left.LidarAmp > Right.LidarAmp*2)
+		{
+			Motors.Requested.L = 100;
+			Motors.Requested.R = 40;
+		}
+		else
+		{
+			Motors.Requested.L = 100;
+			Motors.Requested.R = 100;
+		}
+	}
+	else if(Left.Distance <= MAX_DISTANCE)
+	{
+		Motors.Requested.L = 50;
+		Motors.Requested.R = 75;
+		lastSeen = LEFT;
+	}
+	else if(Right.Distance <= MAX_DISTANCE)
+	{
+		Motors.Requested.L = 75;
+		Motors.Requested.R = 50;
+		lastSeen = RIGHT;
+	}
+	else if(lastSeen == LEFT)
+	{
+		Motors.Requested.L = 0;
+		Motors.Requested.R = 100;
+	}
+	else if(lastSeen == RIGHT)
+	{
+		Motors.Requested.L = 100;
+		Motors.Requested.R = 0;
+	}
+	else
+	{
+		Motors.Requested.L = 100;
+		Motors.Requested.R = -100;
+	}
+}
+
+//=====MAIN FUNCIONTS
+void WATCHDOG()
+{
+
+	//BATERRY
+	static uint16_t bufr[BATTERY_ADC_READOUT_BUFFER_SIZE] = {0};
+	static uint8_t i=0;
+	static uint16_t bat_sum=0;
+	bat_sum = bat_sum - bufr[i] + ADC_BUFFER[0];
+	bufr[i] = ADC_BUFFER[0];
+	i = (i+1) % BATTERY_ADC_READOUT_BUFFER_SIZE;
+
+	Eva.Voltage = (uint16_t)(bat_sum / BATTERY_ADC_READOUT_BUFFER_SIZE * BATTERY_CONST);
+	Eva.CellVoltage = (uint16_t)(Eva.Voltage / Eva.BattType);
+	if (Eva.CellVoltage <= (MIN_BATTERY_VOLTAGE_PER_CELL * 100))
+		COOKED(LOW_BATTERY_VOLTAGE);
+	else if(ERROR_FLAG == LOW_BATTERY_VOLTAGE)
+		ERROR_FLAG = 0;
+
+
+	if(Eva.Interface.Switch3 != !HAL_GPIO_ReadPin(SWITCH1_GPIO_Port, SWITCH1_Pin)) //MICROMOUSE MODE
+	{
+		Eva.AttackMode = MICROMOUSE;
+		NVIC_SystemReset();
+	}
+
+	//INTERACTIVE INTERFACE
+	Eva.Interface.Switch1 = !HAL_GPIO_ReadPin(SWITCH2_GPIO_Port, SWITCH2_Pin);
+	Eva.Interface.Switch2 = !HAL_GPIO_ReadPin(SWITCH3_GPIO_Port, SWITCH3_Pin);
+	Eva.Interface.Switch3 = !HAL_GPIO_ReadPin(SWITCH1_GPIO_Port, SWITCH1_Pin);
+	if(Eva.Interface.Joystick == BUTTON_REBOUNCE && HAL_GPIO_ReadPin(JOY1_GPIO_Port, JOY1_Pin) && HAL_GPIO_ReadPin(JOY2_GPIO_Port, JOY2_Pin) &&
+			HAL_GPIO_ReadPin(JOY5_GPIO_Port, JOY5_Pin) && HAL_GPIO_ReadPin(JOY3_GPIO_Port, JOY3_Pin) && HAL_GPIO_ReadPin(JOY4_GPIO_Port, JOY4_Pin))
+	{
+		Eva.Interface.Joystick = NOTHING;
+	}
+	if(Eva.Interface.Joystick != BUTTON_REBOUNCE)
+	{
+		if(!HAL_GPIO_ReadPin(JOY1_GPIO_Port, JOY1_Pin))
+			Eva.Interface.Joystick = UP_LEFT;
+		else if(!HAL_GPIO_ReadPin(JOY2_GPIO_Port, JOY2_Pin))
+			Eva.Interface.Joystick = UP_RIGHT;
+		else if(!HAL_GPIO_ReadPin(JOY5_GPIO_Port, JOY5_Pin))
+			Eva.Interface.Joystick = DOWN_LEFT;
+		else if(!HAL_GPIO_ReadPin(JOY3_GPIO_Port, JOY3_Pin))
+			Eva.Interface.Joystick = DOWN_RIGHT;
+		else if(!HAL_GPIO_ReadPin(JOY4_GPIO_Port, JOY4_Pin))
+			Eva.Interface.Joystick = CENTER;
+	}
+
+	if(Left.Distance <= INTRO_MIN_DISTANCE_FOR_LAST_SEEN)
+		lastSeen = LEFT;
+	if(Right.Distance <= INTRO_MIN_DISTANCE_FOR_LAST_SEEN)
+			lastSeen = RIGHT;
+}
+
+void GET_START_MOD()
+{
+	StartMod.Started = HAL_GPIO_ReadPin(START_MOD_DIGITAL_INPUT_GPIO_Port, START_MOD_DIGITAL_INPUT_Pin);
+	StartMod.StartedViaSwitch = Eva.Interface.Switch1;
+
+
+	if(StartMod.Delay == 0){
+		if((StartMod.Started && !Settings.IGNORE_START_MODULE) || Settings.ALWAYS_IN_BATTLE == true || StartMod.StartedViaSwitch == true || StartMod.StartedViaInterface == true)
+		{
+			Eva.inBattle = true;
+		}
+		else
+		{
+			SET_MOTORS(0,0);
+			TIM2->CCR1 = 0; //L front
+			TIM2->CCR2 = 0; //L back
+			TIM2->CCR3 = 0; //R front
+			TIM2->CCR4 = 0; //R back
+			Eva.inBattle = false;
+			StartMod.StartedViaInterface = false;
+			StartMod.VolatileDelayTimer = 0;
+		}
+	}
+	else
+	{
+		if(StartMod.Delay != 0 && ((StartMod.Started && !Settings.IGNORE_START_MODULE) || StartMod.StartedViaInterface || StartMod.StartedViaSwitch) && Eva.inBattle == false){
+			if(StartMod.VolatileDelayTimer >= StartMod.Delay)
+			{
+				StartMod.VolatileDelayTimer = 0;
+				Eva.inBattle = true;
+			}
+			else
+			{
+				StartMod.VolatileDelayTimer = StartMod.VolatileDelayTimer + 1;
+			}
+		}
+
+		else if((StartMod.Started == false && !Settings.IGNORE_START_MODULE) && (StartMod.StartedViaInterface == false) && (StartMod.StartedViaSwitch == false))
+		{
+			SET_MOTORS(0,0);
+			TIM2->CCR1 = 0; //L front
+			TIM2->CCR2 = 0; //L back
+			TIM2->CCR3 = 0; //R front
+			TIM2->CCR4 = 0; //R back
+			Eva.inBattle = false;
+			StartMod.StartedViaInterface = false;
+			StartMod.VolatileDelayTimer = 0;
+		}
+	}
+
+
+
+	static uint8_t turned_off = false;
+	if(Eva.inBattle == false && turned_off == false){
+	    SET_MOTORS(0,0);
+	    turned_off = true;
+	}
+
+	if(Eva.inBattle == true){
+	    turned_off = false;
+	}
+}
+
+void BATTLE()
+{
+	if(Eva.AttackMode == STRAIGHT)
+		STRAIGHT_ATTACK();
+	else if(Eva.AttackMode == MICROMOUSE)
+		ARDUINO_MAIN();
+	else
+		STRAIGHT_ATTACK();
+
+	CALCULATE_MOTOR_SPEEDS(Motors.Requested.L, Motors.Requested.R);
+	SET_MOTORS(Motors.Set.L, Motors.Set.R);
+}
+
+//======INTERRUPTS
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+  //TODO windowsDIst1 i windwosdist2 musi by XDDDD
+  uint16_t buffor_Dist[LIDARS_FILTERING_ARRAY_SIZE];
+  uint16_t buffor_Amp[LIDARS_FILTERING_ARRAY_SIZE];
+  uint16_t Dist, Temp, Amp;
+  uint8_t j, k;
+
+	if(huart->Instance == USART1)
+	{
+		for (int i = 1; i < 10; i++)
+		{
+			if (UART1_RX[(i-1)% 9] == 0x59 && UART1_RX[i%9] == 0x59)
+			{
+				//DISTANCE
+				j = (i + 1) % 9;
+				k = (i + 2) % 9;
+				Dist = UART1_RX[j] + (UART1_RX[k] << 8);
+
+
+				//AMPERAGE
+				j = (i + 3) % 9;
+				k = (i + 4) % 9;
+				Amp = UART1_RX[j] + (UART1_RX[k] << 8);
+
+				//TEMPERATURE
+				j = (i + 5) % 9;
+				k = (i + 6) % 9;
+				Temp = UART1_RX[j] + (UART1_RX[k] << 8);
+
+				if(Amp < MIN_AMP_TRESCHOLD)
+				{
+					Dist = 65000;
+				}
+
+				break;
+			}
+		}
+
+	//=====MEDIAN FILTERING
+	static uint16_t window1_Dist[LIDARS_FILTERING_ARRAY_SIZE] = {2000};
+    static uint16_t window1_Amp[LIDARS_FILTERING_ARRAY_SIZE] = {200};
+    static uint8_t idx1_Dist = 0;
+    static uint8_t idx1_Amp = 0;
+
+	//Wstaw nowe wartosci
+	window1_Dist[idx1_Dist] = Dist;
+	window1_Amp[idx1_Amp] = Amp;
+
+	//Przesun indeksy cyklicznie
+	idx1_Dist = (idx1_Dist + 1) % LIDARS_FILTERING_ARRAY_SIZE;
+	idx1_Amp = (idx1_Amp + 1) % LIDARS_FILTERING_ARRAY_SIZE;
+
+    //Kopiuj i sortuj w jednej petli
+    for (int i = 0; i < LIDARS_FILTERING_ARRAY_SIZE; i++) {
+        buffor_Dist[i] = window1_Dist[i];
+        buffor_Amp[i] = window1_Amp[i];
+    }
+
+    //Sortuj osobno
+    SORT(buffor_Dist, LIDARS_FILTERING_ARRAY_SIZE);
+    SORT(buffor_Amp, LIDARS_FILTERING_ARRAY_SIZE);
+
+    //Wyciagnij mediany
+    Dist = buffor_Dist[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE - 1) / 2)];
+    Amp = buffor_Amp[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE - 1) / 2)];
+
+		//Save results
+		if(SWITCH_LIDARS)
+		{
+			Right.Distance = Dist;
+			Right.LidarAmp = Amp;
+			Right.LidarTemp = Temp;
+		}
+		else
+		{
+			Left.Distance = Dist;
+			Left.LidarAmp = Amp;
+			Left.LidarTemp = Temp;
+		}
+	}
+
+
+	if(huart->Instance == USART2)
+	{
+		for (int i = 1; i < 10; i++)
+		{
+			if (UART2_RX[(i-1)%9] == 0x59 && UART2_RX[i%9] == 0x59)
+			{
+				//DISTANCE
+				j = (i + 1) % 9;
+				k = (i + 2) % 9;
+				Dist = UART2_RX[j] + (UART2_RX[k] << 8);
+
+				//AMPERAGE
+				j = (i + 3) % 9;
+				k = (i + 4) % 9;
+				Amp = UART2_RX[j] + (UART2_RX[k] << 8);
+
+				//TEMPERATURE
+				j = (i + 5) % 9;
+				k = (i + 6) % 9;
+				Temp = UART2_RX[j] + (UART2_RX[k] << 8);
+
+				if(Amp < MIN_AMP_TRESCHOLD)
+				{
+					Dist = 65000;
+				}
+
+				break;
+			}
+		}
+
+		//=====MEDIAN FILTERING
+	static uint16_t window2_Dist[LIDARS_FILTERING_ARRAY_SIZE] = {0};
+    static uint16_t window2_Amp[LIDARS_FILTERING_ARRAY_SIZE] = {0};
+    static uint8_t idx2_Dist = 0;
+    static uint8_t idx2_Amp = 0;
+
+
+	//Wstaw nowe wartosci
+	window2_Dist[idx2_Dist] = Dist;
+	window2_Amp[idx2_Amp] = Amp;
+
+	//Przesun indeksy cyklicznie
+	idx2_Dist = (idx2_Dist + 1) % LIDARS_FILTERING_ARRAY_SIZE;
+	idx2_Amp = (idx2_Amp + 1) % LIDARS_FILTERING_ARRAY_SIZE;
+
+
+    //Kopiuj i sortuj w jednej petli
+    for (int i = 0; i < LIDARS_FILTERING_ARRAY_SIZE; i++) {
+        buffor_Dist[i] = window2_Dist[i];
+        buffor_Amp[i] = window2_Amp[i];
+    }
+
+    //Sortuj osobno
+    SORT(buffor_Dist, LIDARS_FILTERING_ARRAY_SIZE);
+    SORT(buffor_Amp, LIDARS_FILTERING_ARRAY_SIZE);
+
+    //Wyciagnij mediany
+    Dist = buffor_Dist[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE - 1) / 2)];
+    Amp = buffor_Amp[(uint8_t)((LIDARS_FILTERING_ARRAY_SIZE - 1) / 2)];
+
+		//Save results
+		if(SWITCH_LIDARS)
+		{
+			Left.Distance = Dist;
+			Left.LidarAmp = Amp;
+			Left.LidarTemp = Temp;
+		}
+		else
+		{
+			Right.Distance = Dist;
+			Right.LidarAmp = Amp;
+			Right.LidarTemp = Temp;
+		}
+	}
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+
+	//START_MOD_COMMUNICATION
+	if(huart->Instance == USART3)
+	{
+		if(UART3_RX[0] == 0x01 && UART3_RX[3] == 0x69)
+		{
+			StartMod.CurrentAddres = UART3_RX[1];
+		}
+
+
+		HAL_UART_Receive_DMA(&huart3, UART3_RX, 4);
+	}
+}
+
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+   if (GPIO_Pin == ACCEL_INTERRUPT_Pin)
+   {
+	   HAL_I2C_Mem_Read_DMA(&hi2c2, BMI323_ADDR, 0x03, I2C_MEMADD_SIZE_8BIT, I2C2_Accel_Rx, 24); //MUSI BYC 30. inaczej nie flaga odczytu nie jest git
+   }
+
+   //if (GPIO_Pin == LUNA1_SIDE_DATA_READY_Pin) //todo
+   else
+   {
+       HAL_I2C_Mem_Read_DMA(&hi2c1, TFLUNA1_ADDRESS, TFLUNA_ADDR_DIST_LOW, I2C_MEMADD_SIZE_8BIT, TFLUNA1_I2C_RX_BUFFER, 2);
+   }
+
+}
+
+
+void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+    if (hi2c == &hi2c2)
+    {
+		int16_t abs_x;
+		int16_t abs_y;
+		int16_t abs_z;
+
+    	//TODO jakas filtracja or smth
+    	//1000 = 1g
+		Eva.Accel.y = 0 - (int16_t)(I2C2_Accel_Rx[2] | (I2C2_Accel_Rx[3] << 8)) * 1000.0f / 2048.0f; //accel x - side to side robot
+		Eva.Accel.x = 0 - (int16_t)(I2C2_Accel_Rx[4] | (I2C2_Accel_Rx[5] << 8)) * 1000.0f / 2048.0f; //accel y - front back robot
+		Eva.Accel.z =     (int16_t)(I2C2_Accel_Rx[6] | (I2C2_Accel_Rx[7] << 8)) * 1000.0f / 2048.0f; //accel z - up down robot
+
+		abs_x = ABS(Eva.Accel.x);
+		abs_y = ABS(Eva.Accel.y);
+		abs_z = ABS(Eva.Accel.z);
+		if (abs_x > Eva.Accel.peak) Eva.Accel.peak = abs_x;
+		if (abs_y > Eva.Accel.peak) Eva.Accel.peak = abs_y;
+		if (abs_z > Eva.Accel.peak) Eva.Accel.peak = abs_z;
+
+
+
+		//16 = 1deg/sek
+		Eva.Gyro.y = 0 + (int16_t)(I2C2_Accel_Rx[8] | (I2C2_Accel_Rx[9] << 8));
+		Eva.Gyro.x = 0 - (int16_t)(I2C2_Accel_Rx[10] | (I2C2_Accel_Rx[11] << 8));
+		Eva.Gyro.z = 0 - (int16_t)(I2C2_Accel_Rx[12] | (I2C2_Accel_Rx[13] << 8));
+
+		abs_x = ABS(Eva.Gyro.x);
+		abs_y = ABS(Eva.Gyro.y);
+		abs_z = ABS(Eva.Gyro.z);
+		if (abs_x > Eva.Gyro.peak) Eva.Gyro.peak = abs_x;
+		if (abs_y > Eva.Gyro.peak) Eva.Gyro.peak = abs_y;
+		if (abs_z > Eva.Gyro.peak) Eva.Gyro.peak = abs_z;
+
+
+		//10 = 1 deg of celcius
+		// + 230
+		Eva.ImuTemp = ((int16_t)(I2C2_Accel_Rx[14] | (I2C2_Accel_Rx[15] << 8)) / 51.2f + 230);
+    }
+
+    if(hi2c == &hi2c1)
+    {
+    	//if(SWITCH_SIDE_LIDARS == false)
+    	if(true)
+    	{
+    		if (HAL_I2C_GetState(&hi2c1) == HAL_I2C_STATE_READY)
+    		{
+    			LeftSide.Distance = (TFLUNA1_I2C_RX_BUFFER[1] << 8) | TFLUNA1_I2C_RX_BUFFER[0];
+    		}
+    	}
+    }
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	  if(htim->Instance == TIM4) //1000Hz battlee
+	  {
+		  GET_SENSORS();
+		  GET_START_MOD();
+		  if(Eva.inBattle == true)
+		  {
+			  BATTLE();
+		  }
+	  }
+
+	  if(htim->Instance == TIM6) //100hz everything else
+	  {
+		   WATCHDOG();
+	  }
+
+	  if(htim->Instance == TIM7) //25hz oled
+	  {
+		  if((Eva.inBattle == false || Settings.ALWAYS_SHOW_OLED == true) && DISABLE_OLED == false && Eva.AttackMode != MICROMOUSE)
+		  {
+			  OLED();
+		  }
+	  }
+}
+
+
+//MICROMOUSE ARDUINO LUBRARY
+void MOTORS(int8_t l, int8_t r)
+{
+	Motors.Requested.L = l;
+	Motors.Requested.R = r;
+}
+uint16_t GET_LEFT_EDGE_DIST()
+{
+	return Left.Distance;
+}
+uint16_t GET_RIGHT_EDGE_DIST()
+{
+	return Right.Distance;
+}
+uint16_t GET_LEFT_FONT_DIST()
+{
+	return Left.Distance;
+}
+uint16_t GET_RIGHT_FONT_DIST()
+{
+	return Right.Distance;
+}
+int16_t GET_GYRO(int8_t option)
+{
+	if(option == XX)
+		return Eva.Gyro.x;
+	else if(option == YY)
+		return Eva.Gyro.y;
+	else if(option == ZZ)
+		return Eva.Gyro.z;
+	else
+		return INT16_MAX;
+}
+int16_t GET_ACCEL(int8_t option)
+{
+	if(option == XX)
+		return Eva.Accel.x;
+	else if(option == YY)
+		return Eva.Accel.y;
+	else if(option == ZZ)
+		return Eva.Accel.z;
+	else
+		return INT16_MAX;
+}
+void HALT(int8_t err)
+{
+	COOKED(err);
+}
+
+int8_t Acceleration_Compensation_L(int8_t Duty)
+{
+    static int16_t current_duty = 0;
+    static int16_t start_duty = 0;
+    static int16_t target_duty = 0;
+    static int16_t ramp_delta = 0;
+    uint16_t t_ms;
+    t_ms = __HAL_TIM_GET_COUNTER(&htim16) / 10;
+
+    if(MAX_MOTOR_ACCELERATION_NOT_DECELERATION_BY_CONTROLLER == 0)
+    {
+        return Duty;
+    }
+    else if (Duty <= current_duty)
+    {
+    	HAL_TIM_Base_Stop(&htim16);
+    	return current_duty = start_duty = target_duty = Duty;
+    }
+    else if(target_duty != Duty)
+    {
+        current_duty = start_duty + (int32_t)ramp_delta * t_ms / MAX_MOTOR_ACCELERATION_NOT_DECELERATION_BY_CONTROLLER;
+
+        start_duty = current_duty;
+        target_duty = Duty;
+        ramp_delta = target_duty - start_duty;
+
+        __HAL_TIM_SET_COUNTER(&htim16, 0);
+        HAL_TIM_Base_Start(&htim16);
+
+        return current_duty;
+    }
+
+    if(t_ms >= MAX_MOTOR_ACCELERATION_NOT_DECELERATION_BY_CONTROLLER)
+    {
+        HAL_TIM_Base_Stop(&htim16);
+        current_duty = target_duty;
+        return current_duty;
+    }
+
+    current_duty = start_duty + (int32_t)ramp_delta * t_ms / MAX_MOTOR_ACCELERATION_NOT_DECELERATION_BY_CONTROLLER;
+
+    return current_duty;
+}
+
+
+int8_t Acceleration_Compensation_R(int8_t Duty)
+{
+    static int16_t current_duty = 0;
+    static int16_t start_duty = 0;
+    static int16_t target_duty = 0;
+    static int16_t ramp_delta = 0;
+    uint16_t t_ms;
+    t_ms = __HAL_TIM_GET_COUNTER(&htim17) / 10;
+
+    if(MAX_MOTOR_ACCELERATION_NOT_DECELERATION_BY_CONTROLLER == 0)
+    {
+        return Duty;
+    }
+    else if (Duty <= current_duty)
+    {
+    	HAL_TIM_Base_Stop(&htim17);
+    	return current_duty = start_duty = target_duty = Duty;
+    }
+    else if(target_duty != Duty)
+    {
+        current_duty = start_duty + (int32_t)ramp_delta * t_ms / MAX_MOTOR_ACCELERATION_NOT_DECELERATION_BY_CONTROLLER;
+
+        start_duty = current_duty;
+        target_duty = Duty;
+        ramp_delta = target_duty - start_duty;
+
+        __HAL_TIM_SET_COUNTER(&htim17, 0);
+        HAL_TIM_Base_Start(&htim17);
+
+        return current_duty;
+    }
+
+    if(t_ms >= MAX_MOTOR_ACCELERATION_NOT_DECELERATION_BY_CONTROLLER)
+    {
+        HAL_TIM_Base_Stop(&htim17);
+        current_duty = target_duty;
+        return current_duty;
+    }
+
+    current_duty = start_duty + (int32_t)ramp_delta * t_ms / MAX_MOTOR_ACCELERATION_NOT_DECELERATION_BY_CONTROLLER;
+
+    return current_duty;
+}
+//
+//=======================================================================================================================================================================
+//=======================================================================================================================================================================
+/* USER CODE END 4 */
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
+	//set mots to 0
+	TIM2->CCR1 = 0; //L front
+	TIM2->CCR2 = 0; //L back
+	TIM2->CCR3 = 0; //R front
+	TIM2->CCR4 = 0; //R back
+
+	char buf[3];
+	itoa(ERROR_FLAG, buf, 10);  // baza 10
+
+	ssd1306_Clear();
+	_ssd1306_WriteInTheMiddle("ERROR", 0, BIG);
+	_ssd1306_WriteInTheMiddle(buf, 16, SMALL);
+	ssd1306_UpdateScreen();
+	HAL_Delay(100);
+  /* User can add his own implementation to report the HAL error return state */
+  __disable_irq();
+  while (1)
+  {
+  }
+  /* USER CODE END Error_Handler_Debug */
+}
+#ifdef USE_FULL_ASSERT
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+void assert_failed(uint8_t *file, uint32_t line)
+{
+  /* USER CODE BEGIN 6 */
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* USER CODE END 6 */
+}
+#endif /* USE_FULL_ASSERT */

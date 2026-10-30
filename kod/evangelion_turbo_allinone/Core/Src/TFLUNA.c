@@ -280,54 +280,61 @@ void TFLUNAs_DMA_CALLBACK(LidarSensors_t *Lunas, UART_HandleTypeDef *huart)
 			return;
 
 
-		for (int i = 1; i < 10; i++)
+		uint8_t valid_frame = 0;
+
+		for (uint8_t i = 1; i < 10; i++)
 		{
-			if (RX[(i-1)% 9] == 0x59 && RX[i%9] == 0x59)
-			{
-				//DISTANCE
-				j = (i + 1) % 9;
-				k = (i + 2) % 9;
-				Current_Dist = RX[j] + (RX[k] << 8);
+		    // Pierwszy bajt nagłówka; bufor może zawinąć się po indeksie 8.
+		    uint8_t start = (i - 1u) % 9u;
 
+		    if (RX[start] == 0x59 &&
+		        RX[(start + 1u) % 9u] == 0x59)
+		    {
+		        uint16_t sum = 0;
 
-				//AMPERAGE
-				j = (i + 3) % 9;
-				k = (i + 4) % 9;
-				Current_Amp = RX[j] + (RX[k] << 8);
+		        // Suma nagłówka, Dist, Amp i Temp — bez checksumy.
+		        for (uint8_t n = 0; n < 8; n++)
+		            sum += RX[(start + n) % 9u];
 
-				//TEMPERATURE
-				j = (i + 5) % 9;
-				k = (i + 6) % 9;
-				Current_Temp = RX[j] + (RX[k] << 8);
+		        // Zła checksumа: odrzuć tę ramkę i szukaj dalej.
+		        if ((uint8_t)sum != RX[(start + 8u) % 9u])
+		            continue;
 
-				if((Current_Dist < MIN_LIDAR_AMP_DIST && Current_Amp > MIN_LIDAR_AMP_DIST_AMP) || Current_Amp > MIN_AMP_TRESCHOLD)
-				{
-					Current_Dist=Current_Dist;
-				}
-				else
-				{
-					Current_Dist = UINT16_MAX;
-				}
+		        Current_Dist =
+		            (uint16_t)RX[(start + 2u) % 9u] |
+		            ((uint16_t)RX[(start + 3u) % 9u] << 8);
 
-				break;
-			}
+		        Current_Amp =
+		            (uint16_t)RX[(start + 4u) % 9u] |
+		            ((uint16_t)RX[(start + 5u) % 9u] << 8);
+
+		        Current_Temp =
+		            (uint16_t)RX[(start + 6u) % 9u] |
+		            ((uint16_t)RX[(start + 7u) % 9u] << 8);
+
+		        valid_frame = 1;
+		        break;
+		    }
 		}
 
-		//=====MEDIAN FILTERING
-		//Wstaw nowe wartosci
-		buffor_Dist[*Dist_indx] = Current_Dist;
-		buffor_Amp[*Amp_indx] = Current_Amp;
-		buffor_Temp[*Temp_indx] = Current_Temp;
+		if (valid_frame == true)
+		{
+			//=====MEDIAN FILTERING
+			//Wstaw nowe wartosci
+			buffor_Dist[*Dist_indx] = Current_Dist;
+			buffor_Amp[*Amp_indx] = Current_Amp;
+			buffor_Temp[*Temp_indx] = Current_Temp;
 
-		//Przesun indeksy cyklicznie
-		*Dist_indx = (*Dist_indx + 1) % Array_Filtering_size;
-		*Amp_indx = (*Amp_indx + 1) % Array_Filtering_size;
-		*Temp_indx = (*Temp_indx + 1) % Array_Filtering_size;
+			//Przesun indeksy cyklicznie
+			*Dist_indx = (*Dist_indx + 1) % Array_Filtering_size;
+			*Amp_indx = (*Amp_indx + 1) % Array_Filtering_size;
+			*Temp_indx = (*Temp_indx + 1) % Array_Filtering_size;
 
-		//Sortuj osobno
-		*Dist = GET_MEDIAN(buffor_Dist, Array_Filtering_size);
-		*Amp = GET_MEDIAN(buffor_Amp, Array_Filtering_size);
-		*Temp = GET_MEDIAN(buffor_Temp, Array_Filtering_size);
+			//Sortuj osobno
+			*Dist = GET_MEDIAN(buffor_Dist, Array_Filtering_size);
+			*Amp = GET_MEDIAN(buffor_Amp, Array_Filtering_size);
+			*Temp = GET_MEDIAN(buffor_Temp, Array_Filtering_size);
+		}
 	}
 }
 

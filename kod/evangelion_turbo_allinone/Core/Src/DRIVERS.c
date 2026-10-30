@@ -12,7 +12,6 @@
 
 uint8_t BUFFER[20];
 
-
 uint8_t DRIVERS_INIT(SPI_HandleTypeDef *hspi)
 {
     const struct {
@@ -75,6 +74,13 @@ Velocity_t SET_MOTORS(int16_t L, int16_t R)
 	Velocity_t M = (Velocity_t){L, R};
 	int16_t magnitude, velocity;
 
+	if(SWITCH_MOTORS)
+	{
+		int16_t temp=M.R;
+		M.R=M.L;
+		M.L=temp;
+	}
+
 	Motors.Requested = M;
 	M = ACCELERATION_COMPENSATION(M);
 	M = CURRENT_COMPENSATION(M);
@@ -89,13 +95,6 @@ Velocity_t SET_MOTORS(int16_t L, int16_t R)
 		M.R = 1000;
 	else if(M.R < -1000)
 		M.R = -1000;
-
-	if(SWITCH_MOTORS)
-	{
-		int16_t temp=M.R;
-		M.R=M.L;
-		M.L=temp;
-	}
 
 	if(REVERSE_RIGHT_MOTOR)
 		M.R = - M.R;
@@ -158,8 +157,11 @@ Velocity_t SET_MOTORS(int16_t L, int16_t R)
 
 static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M)
 {
+	M.L = Acceleration_Time_Compensation_L(M.L);
+	M.R = Acceleration_Time_Compensation_R(M.R);
 	return M;
 }
+
 static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M)
 {
 	if(Motors.DRV_OTW.L == true)
@@ -179,4 +181,91 @@ static Velocity_t CURRENT_COMPENSATION(Velocity_t M)
 }
 
 
+int16_t Acceleration_Time_Compensation_L(int16_t Duty)
+{
+    static int16_t current_duty = 0;
+    static int16_t start_duty = 0;
+    static int16_t target_duty = 0;
+    static int16_t ramp_delta = 0;
+    uint16_t t_ms;
+    t_ms = __HAL_TIM_GET_COUNTER(&htim1) / 10;
 
+    if(MAX_ACCELERATION_MS == 0)
+    {
+        return Duty;
+    }
+    else if (Duty <= current_duty)
+    {
+    	HAL_TIM_Base_Stop(&htim1);
+    	return current_duty = start_duty = target_duty = Duty;
+    }
+    else if(target_duty != Duty)
+    {
+        current_duty = start_duty + (int32_t)ramp_delta * t_ms / MAX_ACCELERATION_MS;
+
+        start_duty = current_duty;
+        target_duty = Duty;
+        ramp_delta = target_duty - start_duty;
+
+        __HAL_TIM_SET_COUNTER(&htim1, 0);
+        HAL_TIM_Base_Start(&htim1);
+
+        return current_duty;
+    }
+
+    if(t_ms >= MAX_ACCELERATION_MS)
+    {
+        HAL_TIM_Base_Stop(&htim1);
+        current_duty = target_duty;
+        return current_duty;
+    }
+
+    current_duty = start_duty + (int32_t)ramp_delta * t_ms / MAX_ACCELERATION_MS;
+
+    return current_duty;
+}
+
+
+int16_t Acceleration_Time_Compensation_R(int16_t Duty)
+{
+    static int16_t current_duty = 0;
+    static int16_t start_duty = 0;
+    static int16_t target_duty = 0;
+    static int16_t ramp_delta = 0;
+    uint16_t t_ms;
+    t_ms = __HAL_TIM_GET_COUNTER(&htim2) / 10;
+
+    if(MAX_ACCELERATION_MS == 0)
+    {
+        return Duty;
+    }
+    else if (Duty <= current_duty)
+    {
+    	HAL_TIM_Base_Stop(&htim2);
+    	return current_duty = start_duty = target_duty = Duty;
+    }
+    else if(target_duty != Duty)
+    {
+        current_duty = start_duty + (int32_t)ramp_delta * t_ms / MAX_ACCELERATION_MS;
+
+        start_duty = current_duty;
+        target_duty = Duty;
+        ramp_delta = target_duty - start_duty;
+
+        __HAL_TIM_SET_COUNTER(&htim2, 0);
+        HAL_TIM_Base_Start(&htim2);
+
+        return current_duty;
+    }
+
+    if(t_ms >= MAX_ACCELERATION_MS)
+    {
+        HAL_TIM_Base_Stop(&htim2);
+        current_duty = target_duty;
+        return current_duty;
+    }
+
+    current_duty = start_duty + (int32_t)ramp_delta * t_ms / MAX_ACCELERATION_MS;
+
+    return current_duty;
+}

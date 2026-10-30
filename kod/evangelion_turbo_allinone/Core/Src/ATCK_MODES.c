@@ -46,7 +46,7 @@ void STRAIGHT_ATTACK()
 	}
 	else if(Lunas.FrontLeft.Dist <= MIN_DISTANCE && Lunas.FrontRight.Dist <= MIN_DISTANCE)
 	{
-		SET_MOTORS(100,100);
+		SET_MOTORS(1000,1000);
 	}
 	else if(Lunas.FrontLeft.Dist <= MAX_DISTANCE && Lunas.FrontRight.Dist <= MAX_DISTANCE)
 	{
@@ -115,7 +115,7 @@ void CURVE_ATTACK() //todo
 	}
 	else if(Lunas.FrontLeft.Dist <= MIN_DISTANCE && Lunas.FrontRight.Dist <= MIN_DISTANCE)
 	{
-		SET_MOTORS(100,100);
+		SET_MOTORS(1000,1000);
 	}
 	else if(Lunas.FrontLeft.Dist <= MAX_DISTANCE && Lunas.FrontRight.Dist <= MAX_DISTANCE)
 	{
@@ -156,7 +156,7 @@ void FOLLOWLINER_ATTACK()
     {
         if(Lines.FrontLeft.Dohyo == OUT && Lines.FrontRight.Dohyo == OUT)
         {
-        	SET_MOTORS(100, -100);
+        	SET_MOTORS(1000, -1000);
         }
         else
         {
@@ -168,7 +168,7 @@ void FOLLOWLINER_ATTACK()
     {
         if(Lines.FrontLeft.Dohyo == OUT && Lines.FrontRight.Dohyo == OUT)
         {
-        	SET_MOTORS(-100, 100);
+        	SET_MOTORS(-1000, 1000);
         }
         else
         {
@@ -187,7 +187,7 @@ void FOLLOWLINER_ATTACK()
     {
         // Przód jest bardziej na zewnątrz niż tył.
         Outside = FOLLOW_LINER_FASTER;
-        Inside  = 10;
+        Inside  = 100;
     }
     else if(Front == IN && Back == OUT)
     {
@@ -243,4 +243,236 @@ void FOLLOW_ATTACKER_ATTACK() //todo
 		FOLLOWLINER_ATTACK();
 	else if(STAGE == ATTACK)
 		CURVE_ATTACK();
+}
+
+
+
+void STRAIGHT_ATTACK_FLAGS(void)
+{
+	static uint16_t ComeBackLinerTimer = UINT16_MAX;
+	static uint16_t GoForwardLineAttention = UINT16_MAX;
+	static uint16_t BackLineOutGoDirection = LEFT;
+
+	if (ComeBackLinerTimer < LINE_COMEBACK_TIME)
+	{
+		ComeBackLinerTimer++;
+		SET_MOTORS(-LINE_COMEBACK_VELOCITY, -LINE_COMEBACK_VELOCITY);
+
+		if (Lines.BackLeft.Dohyo == OUT)
+		{
+			ComeBackLinerTimer = UINT16_MAX;
+			GoForwardLineAttention = 0;
+			BackLineOutGoDirection = RIGHT;
+		}
+		else if (Lines.BackRight.Dohyo == OUT)
+		{
+			ComeBackLinerTimer = UINT16_MAX;
+			GoForwardLineAttention = 0;
+			BackLineOutGoDirection = LEFT;
+		}
+	}
+	else if (GoForwardLineAttention < LINE_COMEBACK_TIME)
+	{
+		GoForwardLineAttention++;
+
+		if (BackLineOutGoDirection == LEFT)
+			SET_MOTORS(LINE_COMEBACK_VELOCITY * 0.8,
+			           LINE_COMEBACK_VELOCITY);
+		else if (BackLineOutGoDirection == RIGHT)
+			SET_MOTORS(LINE_COMEBACK_VELOCITY,
+			           LINE_COMEBACK_VELOCITY * 0.8);
+		else
+			SET_MOTORS(LINE_COMEBACK_VELOCITY,
+			           LINE_COMEBACK_VELOCITY);
+	}
+	else if (Lines.FrontLeft.Dohyo == OUT ||
+	         Lines.FrontRight.Dohyo == OUT)
+	{
+		ComeBackLinerTimer = 0;
+		SET_MOTORS(-LINE_COMEBACK_VELOCITY, -LINE_COMEBACK_VELOCITY);
+	}
+	else if (Lunas.FrontLeft.Dist <= MIN_DISTANCE &&
+	         Lunas.FrontRight.Dist <= MIN_DISTANCE)
+	{
+		SET_MOTORS(1000, 1000);
+	}
+	else if (Lunas.FrontLeft.Dist <= MAX_DISTANCE &&
+	         Lunas.FrontRight.Dist <= MAX_DISTANCE)
+	{
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED,
+		           ATTACK_STRAIGHT_ATTACK_SPEED);
+	}
+	else if (Lunas.FrontLeft.Dist <= MAX_DISTANCE &&
+	         Lunas.FrontRight.Dist > MAX_DISTANCE)
+	{
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED * 0.8,
+		           ATTACK_STRAIGHT_ATTACK_SPEED);
+	}
+	else if (Lunas.FrontLeft.Dist > MAX_DISTANCE &&
+	         Lunas.FrontRight.Dist <= MAX_DISTANCE)
+	{
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED,
+		           ATTACK_STRAIGHT_ATTACK_SPEED * 0.8);
+	}
+	else if (Lunas.BackLeft.Dist <= ATTACK_CHORAGIEWKI_MAX_DISTANCE &&
+	         Lunas.BackRight.Dist <= ATTACK_CHORAGIEWKI_MAX_DISTANCE)
+	{
+		if (Lunas.BackLeft.Dist < Lunas.BackRight.Dist ||
+		    (Lunas.BackLeft.Dist == Lunas.BackRight.Dist &&
+		     lastSeen == LEFT))
+		{
+			lastSeen = LEFT;
+			SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED / 3,
+			            SEARCH_STRAIGHT_ATTACK_SPEED);
+		}
+		else
+		{
+			lastSeen = RIGHT;
+			SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED,
+			           -SEARCH_STRAIGHT_ATTACK_SPEED / 3);
+		}
+	}
+	else if (Lunas.BackLeft.Dist <= ATTACK_CHORAGIEWKI_MAX_DISTANCE)
+	{
+		lastSeen = LEFT;
+		SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED / 3,
+		            SEARCH_STRAIGHT_ATTACK_SPEED);
+	}
+	else if (Lunas.BackRight.Dist <= ATTACK_CHORAGIEWKI_MAX_DISTANCE)
+	{
+		lastSeen = RIGHT;
+		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED,
+		           -SEARCH_STRAIGHT_ATTACK_SPEED / 3);
+	}
+	else if (lastSeen == LEFT)
+	{
+		SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED / 3,
+		            SEARCH_STRAIGHT_ATTACK_SPEED);
+	}
+	else if (lastSeen == RIGHT)
+	{
+		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED,
+		           -SEARCH_STRAIGHT_ATTACK_SPEED / 3);
+	}
+	else
+	{
+		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, 0);
+	}
+}
+
+
+void CURVE_ATTACK_FLAGS(void)
+{
+	static uint16_t ComeBackLinerTimer = UINT16_MAX;
+	static uint16_t GoForwardLineAttention = UINT16_MAX;
+	static uint16_t BackLineOutGoDirection = LEFT;
+
+	if (ComeBackLinerTimer < LINE_COMEBACK_TIME)
+	{
+		ComeBackLinerTimer++;
+		SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED,
+		           -SEARCH_STRAIGHT_ATTACK_SPEED);
+
+		if (Lines.BackLeft.Dohyo == OUT)
+		{
+			ComeBackLinerTimer = UINT16_MAX;
+			GoForwardLineAttention = 0;
+			BackLineOutGoDirection = RIGHT;
+		}
+		else if (Lines.BackRight.Dohyo == OUT)
+		{
+			ComeBackLinerTimer = UINT16_MAX;
+			GoForwardLineAttention = 0;
+			BackLineOutGoDirection = LEFT;
+		}
+	}
+	else if (GoForwardLineAttention < LINE_COMEBACK_TIME)
+	{
+		GoForwardLineAttention++;
+
+		if (BackLineOutGoDirection == LEFT)
+			SET_MOTORS(LINE_COMEBACK_VELOCITY * 0.8,
+			           LINE_COMEBACK_VELOCITY);
+		else if (BackLineOutGoDirection == RIGHT)
+			SET_MOTORS(LINE_COMEBACK_VELOCITY,
+			           LINE_COMEBACK_VELOCITY * 0.8);
+		else
+			SET_MOTORS(LINE_COMEBACK_VELOCITY,
+			           LINE_COMEBACK_VELOCITY);
+	}
+	else if (Lines.FrontLeft.Dohyo == OUT ||
+	         Lines.FrontRight.Dohyo == OUT)
+	{
+		ComeBackLinerTimer = 0;
+		SET_MOTORS(-LINE_COMEBACK_VELOCITY, -LINE_COMEBACK_VELOCITY);
+	}
+	else if (Lunas.FrontLeft.Dist <= MIN_DISTANCE &&
+	         Lunas.FrontRight.Dist <= MIN_DISTANCE)
+	{
+		SET_MOTORS(1000, 1000);
+	}
+	else if (Lunas.FrontLeft.Dist <= MAX_DISTANCE &&
+	         Lunas.FrontRight.Dist <= MAX_DISTANCE)
+	{
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED,
+		           ATTACK_STRAIGHT_ATTACK_SPEED);
+	}
+	else if (Lunas.FrontLeft.Dist <= MAX_DISTANCE &&
+	         Lunas.FrontRight.Dist > MAX_DISTANCE)
+	{
+		lastSeen = LEFT;
+		SET_MOTORS(CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER / 2,
+		           CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER);
+	}
+	else if (Lunas.FrontLeft.Dist > MAX_DISTANCE &&
+	         Lunas.FrontRight.Dist <= MAX_DISTANCE)
+	{
+		lastSeen = RIGHT;
+		SET_MOTORS(CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER,
+		           CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER / 2);
+	}
+	else if (Lunas.BackLeft.Dist <= ATTACK_CHORAGIEWKI_MAX_DISTANCE &&
+	         Lunas.BackRight.Dist <= ATTACK_CHORAGIEWKI_MAX_DISTANCE)
+	{
+		if (Lunas.BackLeft.Dist < Lunas.BackRight.Dist ||
+		    (Lunas.BackLeft.Dist == Lunas.BackRight.Dist &&
+		     lastSeen == LEFT))
+		{
+			lastSeen = LEFT;
+			SET_MOTORS(CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER / 2,
+			           CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER);
+		}
+		else
+		{
+			lastSeen = RIGHT;
+			SET_MOTORS(CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER,
+			           CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER / 2);
+		}
+	}
+	else if (Lunas.BackLeft.Dist <= ATTACK_CHORAGIEWKI_MAX_DISTANCE)
+	{
+		lastSeen = LEFT;
+		SET_MOTORS(CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER / 2,
+		           CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER);
+	}
+	else if (Lunas.BackRight.Dist <= ATTACK_CHORAGIEWKI_MAX_DISTANCE)
+	{
+		lastSeen = RIGHT;
+		SET_MOTORS(CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER,
+		           CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER / 2);
+	}
+	else if (lastSeen == LEFT)
+	{
+		SET_MOTORS(CURVE_ATTACK_SEARCH_SPEED_SLOWER,
+		           CURVE_ATTACK_SEARCH_SPEED_FASTER);
+	}
+	else if (lastSeen == RIGHT)
+	{
+		SET_MOTORS(CURVE_ATTACK_SEARCH_SPEED_FASTER,
+		           CURVE_ATTACK_SEARCH_SPEED_SLOWER);
+	}
+	else
+	{
+		SET_MOTORS(CURVE_ATTACK_SEARCH_SPEED_FASTER, 0);
+	}
 }
