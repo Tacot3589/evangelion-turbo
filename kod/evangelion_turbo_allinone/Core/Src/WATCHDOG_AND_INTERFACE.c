@@ -68,6 +68,11 @@ void WATCHDOG()
 
 		JoystickState = _BUTTON_REBOUNCE;
 	}
+
+	if(Lunas.FrontLeft.Dist <= CLOSE_DISTANCE)
+		lastSeen = LEFT;
+	else if(Lunas.FrontLeft.Dist <= CLOSE_DISTANCE)
+		lastSeen = RIGHT;
 }
 
 void OLED_INFO(void)

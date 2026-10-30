@@ -5,236 +5,242 @@
 
 #include <stdint.h>
 
-/* The TF-Luna driver uses UINT16_MAX when it has no valid distance. */
-static uint8_t LidarDistanceWithin(uint16_t distance, uint16_t limit)
+void STRAIGHT_ATTACK()
 {
-    return (distance != UINT16_MAX) && (distance <= limit);
+	static uint16_t ComeBackLinerTimer=UINT16_MAX;
+	static uint16_t GoForwardLineAttention=UINT16_MAX;
+	static uint16_t BackLineOutGoDirection=LEFT;
+
+
+	if(ComeBackLinerTimer < LINE_COMEBACK_TIME)
+	{
+		ComeBackLinerTimer++;
+		SET_MOTORS(-LINE_COMEBACK_VELOCITY,-LINE_COMEBACK_VELOCITY);
+		if(Lines.BackLeft.Dohyo == OUT)
+		{
+			ComeBackLinerTimer=UINT16_MAX;
+			GoForwardLineAttention = 0;
+			BackLineOutGoDirection = RIGHT;
+		}
+		else if(Lines.BackRight.Dohyo == OUT)
+		{
+			ComeBackLinerTimer=UINT16_MAX;
+			GoForwardLineAttention = 0;
+			BackLineOutGoDirection = LEFT;
+		}
+	}
+	else if(GoForwardLineAttention < LINE_COMEBACK_TIME)
+	{
+		GoForwardLineAttention++;
+		if(BackLineOutGoDirection == LEFT)
+			SET_MOTORS(LINE_COMEBACK_VELOCITY*0.8, LINE_COMEBACK_VELOCITY);
+		else if(BackLineOutGoDirection == RIGHT)//if(BackLineOutGoDirection == LEFT)
+			SET_MOTORS(LINE_COMEBACK_VELOCITY, LINE_COMEBACK_VELOCITY*0.8);
+		else
+			SET_MOTORS(LINE_COMEBACK_VELOCITY, LINE_COMEBACK_VELOCITY);
+	}
+	else if(Lines.FrontLeft.Dohyo == OUT || Lines.FrontRight.Dohyo == OUT)
+	{
+		ComeBackLinerTimer = 0;
+		SET_MOTORS(-LINE_COMEBACK_VELOCITY,-LINE_COMEBACK_VELOCITY);
+	}
+	else if(Lunas.FrontLeft.Dist <= MIN_DISTANCE && Lunas.FrontRight.Dist <= MIN_DISTANCE)
+	{
+		SET_MOTORS(100,100);
+	}
+	else if(Lunas.FrontLeft.Dist <= MAX_DISTANCE && Lunas.FrontRight.Dist <= MAX_DISTANCE)
+	{
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED);
+	}
+	else if(Lunas.FrontLeft.Dist <= MAX_DISTANCE && Lunas.FrontRight.Dist > MAX_DISTANCE)
+	{
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED*0.8, ATTACK_STRAIGHT_ATTACK_SPEED);
+	}
+	else if(Lunas.FrontLeft.Dist > MAX_DISTANCE && Lunas.FrontRight.Dist <= MAX_DISTANCE)
+	{
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED*0.8);
+	}
+	else if(lastSeen == LEFT)
+	{
+		SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED/3, SEARCH_STRAIGHT_ATTACK_SPEED);
+	}
+	else if(lastSeen == RIGHT)
+	{
+		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, -SEARCH_STRAIGHT_ATTACK_SPEED/3);
+	}
+	else
+	{
+		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, 0);
+	}
 }
 
-static int16_t ScaleSpeed90(int16_t speed)
+
+void CURVE_ATTACK() //todo
 {
-    return (int16_t)(((int32_t)speed * 9) / 10);
+	static uint16_t ComeBackLinerTimer=UINT16_MAX;
+	static uint16_t GoForwardLineAttention=UINT16_MAX;
+	static uint16_t BackLineOutGoDirection=LEFT;
+
+	if(ComeBackLinerTimer < LINE_COMEBACK_TIME)
+	{
+		ComeBackLinerTimer++;
+		SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED,-SEARCH_STRAIGHT_ATTACK_SPEED);
+		if(Lines.BackLeft.Dohyo == OUT)
+		{
+			ComeBackLinerTimer=UINT16_MAX;
+			GoForwardLineAttention = 0;
+			BackLineOutGoDirection = RIGHT;
+		}
+		else if(Lines.BackRight.Dohyo == OUT)
+		{
+			ComeBackLinerTimer=UINT16_MAX;
+			GoForwardLineAttention = 0;
+			BackLineOutGoDirection = LEFT;
+		}
+	}
+	else if(GoForwardLineAttention < LINE_COMEBACK_TIME)
+	{
+		GoForwardLineAttention++;
+		if(BackLineOutGoDirection == LEFT)
+			SET_MOTORS(LINE_COMEBACK_VELOCITY*0.8, LINE_COMEBACK_VELOCITY);
+		else if(BackLineOutGoDirection == RIGHT)//if(BackLineOutGoDirection == LEFT)
+			SET_MOTORS(LINE_COMEBACK_VELOCITY, LINE_COMEBACK_VELOCITY*0.8);
+		else
+			SET_MOTORS(LINE_COMEBACK_VELOCITY, LINE_COMEBACK_VELOCITY);
+	}
+	else if(Lines.FrontLeft.Dohyo == OUT || Lines.FrontRight.Dohyo == OUT)
+	{
+		ComeBackLinerTimer = 0;
+		SET_MOTORS(-LINE_COMEBACK_VELOCITY,-LINE_COMEBACK_VELOCITY);
+	}
+	else if(Lunas.FrontLeft.Dist <= MIN_DISTANCE && Lunas.FrontRight.Dist <= MIN_DISTANCE)
+	{
+		SET_MOTORS(100,100);
+	}
+	else if(Lunas.FrontLeft.Dist <= MAX_DISTANCE && Lunas.FrontRight.Dist <= MAX_DISTANCE)
+	{
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED);
+	}
+	else if(Lunas.FrontLeft.Dist <= MAX_DISTANCE && Lunas.FrontRight.Dist > MAX_DISTANCE)
+	{
+		SET_MOTORS(CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER/2, CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER);
+	}
+	else if(Lunas.FrontLeft.Dist > MAX_DISTANCE && Lunas.FrontRight.Dist <= MAX_DISTANCE)
+	{
+		SET_MOTORS(CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER, CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER/2);
+	}
+	else if(lastSeen == LEFT)
+	{
+		SET_MOTORS(CURVE_ATTACK_SEARCH_SPEED_SLOWER, CURVE_ATTACK_SEARCH_SPEED_FASTER);
+	}
+	else if(lastSeen == RIGHT)
+	{
+		SET_MOTORS(CURVE_ATTACK_SEARCH_SPEED_FASTER, CURVE_ATTACK_SEARCH_SPEED_SLOWER);
+	}
+	else
+	{
+		SET_MOTORS(CURVE_ATTACK_SEARCH_SPEED_FASTER, 0);
+	}
 }
 
-void STRAIGHT_ATTACK(void)
+void FOLLOWLINER_ATTACK()
 {
-    static uint16_t comeBackLinerTimer = UINT16_MAX;
-    static uint16_t goForwardLineAttention = UINT16_MAX;
-    static uint8_t backLineOutGoDirection = LEFT;
 
-    if (comeBackLinerTimer < LINE_COMEBACK_TIME)
-    {
-        comeBackLinerTimer++;
-        SET_MOTORS(-LINE_COMEBACK_VELOCITY, -LINE_COMEBACK_VELOCITY);
+    uint8_t Front;
+    uint8_t Back;
 
-        if (Lines.BackLeft.Dohyo == OUT)
-        {
-            comeBackLinerTimer = UINT16_MAX;
-            goForwardLineAttention = 0;
-            backLineOutGoDirection = RIGHT;
-        }
-        else if (Lines.BackRight.Dohyo == OUT)
-        {
-            comeBackLinerTimer = UINT16_MAX;
-            goForwardLineAttention = 0;
-            backLineOutGoDirection = LEFT;
-        }
-    }
-    else if (goForwardLineAttention < LINE_COMEBACK_TIME)
+    int16_t Inside;
+    int16_t Outside;
+
+    if(before_attack_rotation_direction == LEFT)
     {
-        goForwardLineAttention++;
-        if (backLineOutGoDirection == LEFT)
-            SET_MOTORS(ScaleSpeed90(LINE_COMEBACK_VELOCITY), LINE_COMEBACK_VELOCITY);
+        if(Lines.FrontLeft.Dohyo == OUT && Lines.FrontRight.Dohyo == OUT)
+        {
+        	SET_MOTORS(100, -100);
+        }
         else
-            SET_MOTORS(LINE_COMEBACK_VELOCITY, ScaleSpeed90(LINE_COMEBACK_VELOCITY));
-    }
-    else if (Lines.FrontLeft.Dohyo == OUT || Lines.FrontRight.Dohyo == OUT)
-    {
-        comeBackLinerTimer = 0;
-        SET_MOTORS(-LINE_COMEBACK_VELOCITY, -LINE_COMEBACK_VELOCITY);
-    }
-    else if (LidarDistanceWithin(Lunas.FrontLeft.Dist, MIN_DISTANCE) &&
-             LidarDistanceWithin(Lunas.FrontRight.Dist, MIN_DISTANCE))
-    {
-        SET_MOTORS(100, 100);
-    }
-    else if (LidarDistanceWithin(Lunas.FrontLeft.Dist, MAX_DISTANCE) &&
-             LidarDistanceWithin(Lunas.FrontRight.Dist, MAX_DISTANCE))
-    {
-        SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED);
-    }
-    else if (LidarDistanceWithin(Lunas.FrontLeft.Dist, MAX_DISTANCE))
-    {
-        SET_MOTORS(ScaleSpeed90(ATTACK_STRAIGHT_ATTACK_SPEED), ATTACK_STRAIGHT_ATTACK_SPEED);
-    }
-    else if (LidarDistanceWithin(Lunas.FrontRight.Dist, MAX_DISTANCE))
-    {
-        SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, ScaleSpeed90(ATTACK_STRAIGHT_ATTACK_SPEED));
-    }
-    else if (lastSeen == LEFT)
-    {
-        SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED / 3, SEARCH_STRAIGHT_ATTACK_SPEED);
-    }
-    else if (lastSeen == RIGHT)
-    {
-        SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, -SEARCH_STRAIGHT_ATTACK_SPEED / 3);
-    }
-    else
-    {
-        SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, 0);
-    }
-}
-
-void CURVE_ATTACK(void)
-{
-    static uint16_t comeBackLinerTimer = UINT16_MAX;
-    static uint16_t goForwardLineAttention = UINT16_MAX;
-    static uint8_t backLineOutGoDirection = LEFT;
-
-    if (comeBackLinerTimer < LINE_COMEBACK_TIME)
-    {
-        comeBackLinerTimer++;
-        SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED, -SEARCH_STRAIGHT_ATTACK_SPEED);
-
-        if (Lines.BackLeft.Dohyo == OUT)
         {
-            comeBackLinerTimer = UINT16_MAX;
-            goForwardLineAttention = 0;
-            backLineOutGoDirection = RIGHT;
-        }
-        else if (Lines.BackRight.Dohyo == OUT)
-        {
-            comeBackLinerTimer = UINT16_MAX;
-            goForwardLineAttention = 0;
-            backLineOutGoDirection = LEFT;
+            Front = Lines.FrontLeft.Dohyo;
+            Back  = Lines.BackLeft.Dohyo;
         }
     }
-    else if (goForwardLineAttention < LINE_COMEBACK_TIME)
+    else //if(before_attack_rotation_direction == RIGHT)
     {
-        goForwardLineAttention++;
-        if (backLineOutGoDirection == LEFT)
-            SET_MOTORS(ScaleSpeed90(LINE_COMEBACK_VELOCITY), LINE_COMEBACK_VELOCITY);
+        if(Lines.FrontLeft.Dohyo == OUT && Lines.FrontRight.Dohyo == OUT)
+        {
+        	SET_MOTORS(-100, 100);
+        }
         else
-            SET_MOTORS(LINE_COMEBACK_VELOCITY, ScaleSpeed90(LINE_COMEBACK_VELOCITY));
+        {
+            Front = Lines.FrontRight.Dohyo;
+            Back  = Lines.BackRight.Dohyo;
+        }
     }
-    else if (Lines.FrontLeft.Dohyo == OUT || Lines.FrontRight.Dohyo == OUT)
+
+    if(Front == OUT && Back == OUT)
     {
-        comeBackLinerTimer = 0;
-        SET_MOTORS(-LINE_COMEBACK_VELOCITY, -LINE_COMEBACK_VELOCITY);
+        // Cały bok jest na zewnątrz.
+        Outside = FOLLOW_LINER_FASTER;
+        Inside  = FOLLOW_LINER_SLOWER*0.8;
     }
-    else if (LidarDistanceWithin(Lunas.FrontLeft.Dist, MIN_DISTANCE) &&
-             LidarDistanceWithin(Lunas.FrontRight.Dist, MIN_DISTANCE))
+    else if(Front == OUT && Back == IN)
     {
-        SET_MOTORS(100, 100);
+        // Przód jest bardziej na zewnątrz niż tył.
+        Outside = FOLLOW_LINER_FASTER;
+        Inside  = 10;
     }
-    else if (LidarDistanceWithin(Lunas.FrontLeft.Dist, MAX_DISTANCE) &&
-             LidarDistanceWithin(Lunas.FrontRight.Dist, MAX_DISTANCE))
+    else if(Front == IN && Back == OUT)
     {
-        SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED);
+        // Tył jest bardziej na zewnątrz niż przód.
+        // Korekcja musi być przeciwna.
+        Outside = FOLLOW_LINER_SLOWER;
+        Inside  = FOLLOW_LINER_FASTER;
     }
-    else if (LidarDistanceWithin(Lunas.FrontLeft.Dist, MAX_DISTANCE))
+    else // Front == IN && Back == IN
     {
-        SET_MOTORS(CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER / 2,
-                   CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER);
+        // Cały robot uciekł do środka ringu.
+        Outside = FOLLOW_LINER_SLOWER;
+        Inside  = FOLLOW_LINER_FASTER;
     }
-    else if (LidarDistanceWithin(Lunas.FrontRight.Dist, MAX_DISTANCE))
+
+    if(before_attack_rotation_direction == LEFT)
     {
-        SET_MOTORS(CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER,
-                   CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER / 2);
-    }
-    else if (lastSeen == LEFT)
-    {
-        SET_MOTORS(CURVE_ATTACK_SEARCH_SPEED_SLOWER, CURVE_ATTACK_SEARCH_SPEED_FASTER);
-    }
-    else if (lastSeen == RIGHT)
-    {
-        SET_MOTORS(CURVE_ATTACK_SEARCH_SPEED_FASTER, CURVE_ATTACK_SEARCH_SPEED_SLOWER);
+        SET_MOTORS(Outside, Inside);
     }
     else
     {
-        SET_MOTORS(CURVE_ATTACK_SEARCH_SPEED_FASTER, 0);
+        SET_MOTORS(Inside, Outside);
     }
 }
 
-void FOLLOWLINER_ATTACK(void)
+void FOLLOW_ATTACKER_ATTACK() //todo
 {
-    LineState_t front;
-    LineState_t back;
-    int16_t inside;
-    int16_t outside;
 
-    if (Lines.FrontLeft.Dohyo == OUT && Lines.FrontRight.Dohyo == OUT)
-    {
-        SET_MOTORS((lastSeen == LEFT) ? 100 : -100,
-                   (lastSeen == LEFT) ? -100 : 100);
-        return;
-    }
+	typedef enum {
+		FOLLOW_LINE,
+		ATTACK,
+	} Attack_stage_t;
+	static Attack_stage_t STAGE = FOLLOW_LINE;
 
-    /* lastSeen is the existing LEFT/RIGHT direction state in main.c. */
-    if (lastSeen == LEFT)
-    {
-        front = Lines.FrontLeft.Dohyo;
-        back = Lines.BackLeft.Dohyo;
-    }
-    else
-    {
-        front = Lines.FrontRight.Dohyo;
-        back = Lines.BackRight.Dohyo;
-    }
+	if(before_attack_rotation_direction == LEFT)
+	{
+		if(Lunas.BackLeft.Dist <= LIDAR_DIST_FOR_LINE_FOLLOWER_ATCK_PLS_BE_BACK)
+		{
+			STAGE = ATTACK;
+			lastSeen = LEFT;
+		}
+	}
+	else //if(before_attack_rotation_direction == RIGHT)
+	{
+		if(Lunas.BackRight.Dist <= LIDAR_DIST_FOR_LINE_FOLLOWER_ATCK_PLS_BE_BACK)
+		{
+			STAGE = ATTACK;
+			lastSeen = RIGHT;
+		}
+	}
 
-    if (front == OUT && back == OUT)
-    {
-        outside = FOLLOW_LINER_FASTER;
-        inside = ScaleSpeed90(FOLLOW_LINER_SLOWER);
-    }
-    else if (front == OUT && back == IN)
-    {
-        outside = FOLLOW_LINER_FASTER;
-        inside = 10;
-    }
-    else if (front == IN && back == OUT)
-    {
-        outside = FOLLOW_LINER_SLOWER;
-        inside = FOLLOW_LINER_FASTER;
-    }
-    else
-    {
-        outside = FOLLOW_LINER_SLOWER;
-        inside = FOLLOW_LINER_FASTER;
-    }
-
-    if (lastSeen == LEFT)
-        SET_MOTORS(outside, inside);
-    else
-        SET_MOTORS(inside, outside);
-}
-
-void FOLLOW_ATTACKER_ATTACK(void)
-{
-    typedef enum
-    {
-        FOLLOW_LINE,
-        ATTACK
-    } AttackStage_t;
-
-    static AttackStage_t stage = FOLLOW_LINE;
-
-    /* MAX_DISTANCE is the configured valid range for the TF-Luna sensors. */
-    if (lastSeen == LEFT &&
-        LidarDistanceWithin(Lunas.BackLeft.Dist, MAX_DISTANCE))
-    {
-        stage = ATTACK;
-        lastSeen = LEFT;
-    }
-    else if (lastSeen == RIGHT &&
-             LidarDistanceWithin(Lunas.BackRight.Dist, MAX_DISTANCE))
-    {
-        stage = ATTACK;
-        lastSeen = RIGHT;
-    }
-
-    if (stage == FOLLOW_LINE)
-        FOLLOWLINER_ATTACK();
-    else
-        CURVE_ATTACK();
+	if(STAGE == FOLLOW_LINE)
+		FOLLOWLINER_ATTACK();
+	else if(STAGE == ATTACK)
+		CURVE_ATTACK();
 }

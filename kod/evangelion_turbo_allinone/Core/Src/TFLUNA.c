@@ -220,10 +220,10 @@ void TFLUNAs_DMA_CALLBACK(LidarSensors_t *Lunas, UART_HandleTypeDef *huart)
 		{
 			Lunas->FrontRight.Buffer.size = LIDARS_FILTERING_ARRAY_SIZE_FRONT;
 			Array_Filtering_size = LIDARS_FILTERING_ARRAY_SIZE_FRONT;
-			RX = &Lunas->FrontRight.RX;
-			buffor_Dist = &Lunas->FrontRight.Buffer.Dist.Array;
-			buffor_Amp = &Lunas->FrontRight.Buffer.Amp.Array;
-			buffor_Temp = &Lunas->FrontRight.Buffer.Temp.Array;
+			RX = Lunas->FrontRight.RX;
+			buffor_Dist = Lunas->FrontRight.Buffer.Dist.Array;
+			buffor_Amp = Lunas->FrontRight.Buffer.Amp.Array;
+			buffor_Temp = Lunas->FrontRight.Buffer.Temp.Array;
 			Dist = &Lunas->FrontRight.Dist;
 			Temp = &Lunas->FrontRight.Temp;
 			Amp = &Lunas->FrontRight.Amp;
@@ -235,10 +235,10 @@ void TFLUNAs_DMA_CALLBACK(LidarSensors_t *Lunas, UART_HandleTypeDef *huart)
 		{
 			Lunas->FrontLeft.Buffer.size = LIDARS_FILTERING_ARRAY_SIZE_FRONT;
 			Array_Filtering_size = LIDARS_FILTERING_ARRAY_SIZE_FRONT;
-			RX = &Lunas->FrontLeft.RX;
-			buffor_Dist = &Lunas->FrontLeft.Buffer.Dist.Array;
-			buffor_Amp = &Lunas->FrontLeft.Buffer.Amp.Array;
-			buffor_Temp =&Lunas->FrontLeft.Buffer.Temp.Array;
+			RX = Lunas->FrontLeft.RX;
+			buffor_Dist = Lunas->FrontLeft.Buffer.Dist.Array;
+			buffor_Amp = Lunas->FrontLeft.Buffer.Amp.Array;
+			buffor_Temp = Lunas->FrontLeft.Buffer.Temp.Array;
 			Dist = &Lunas->FrontLeft.Dist;
 			Temp = &Lunas->FrontLeft.Temp;
 			Amp = &Lunas->FrontLeft.Amp;
@@ -248,27 +248,27 @@ void TFLUNAs_DMA_CALLBACK(LidarSensors_t *Lunas, UART_HandleTypeDef *huart)
 		}
 		else if(huart->Instance == Lunas->BackRight.huartRX->Instance)
 		{
-			Lunas->BackRight.Buffer.size = LIDARS_FILTERING_ARRAY_SIZE_FRONT;
+			Lunas->BackRight.Buffer.size = LIDARS_FILTERING_ARRAY_SIZE_BACK;
 			Array_Filtering_size = LIDARS_FILTERING_ARRAY_SIZE_BACK;
-			RX = &Lunas->BackRight.RX;
-			buffor_Dist = &Lunas->BackRight.Buffer.Dist.Array;
-			buffor_Amp = &Lunas->BackRight.Buffer.Amp.Array;
-			buffor_Temp =&Lunas->BackRight.Buffer.Temp.Array;
+			RX = Lunas->BackRight.RX;
+			buffor_Dist = Lunas->BackRight.Buffer.Dist.Array;
+			buffor_Amp = Lunas->BackRight.Buffer.Amp.Array;
+			buffor_Temp = Lunas->BackRight.Buffer.Temp.Array;
 			Dist = &Lunas->BackRight.Dist;
 			Temp = &Lunas->BackRight.Temp;
-			Amp =& Lunas->BackRight.Amp;
+			Amp = &Lunas->BackRight.Amp;
 			Dist_indx = &Lunas->BackRight.Buffer.Dist.indx;
 			Temp_indx = &Lunas->BackRight.Buffer.Temp.indx;
 			Amp_indx = &Lunas->BackRight.Buffer.Amp.indx;
 		}
 		else if(huart->Instance == Lunas->BackLeft.huartRX->Instance)
 		{
-			Lunas->BackLeft.Buffer.size = LIDARS_FILTERING_ARRAY_SIZE_FRONT;
+			Lunas->BackLeft.Buffer.size = LIDARS_FILTERING_ARRAY_SIZE_BACK;
 			Array_Filtering_size = LIDARS_FILTERING_ARRAY_SIZE_BACK;
-			RX = &Lunas->BackLeft.RX;
-			buffor_Dist = &Lunas->BackLeft.Buffer.Dist.Array;
-			buffor_Amp = &Lunas->BackLeft.Buffer.Amp.Array;
-			buffor_Temp =&Lunas->BackLeft.Buffer.Temp.Array;
+			RX = Lunas->BackLeft.RX;
+			buffor_Dist = Lunas->BackLeft.Buffer.Dist.Array;
+			buffor_Amp =  Lunas->BackLeft.Buffer.Amp.Array;
+			buffor_Temp = Lunas->BackLeft.Buffer.Temp.Array;
 			Dist = &Lunas->BackLeft.Dist;
 			Temp = &Lunas->BackLeft.Temp;
 			Amp = &Lunas->BackLeft.Amp;

@@ -4,35 +4,42 @@
 #include <stdint.h>
 #include "main.h"
 
-#define GO_TO_LINE_TASK_SPEED                    30
-#define AFTER_TASK_ALIGMENT_SPEED                30
-#define AFTER_TASK_ROTATION_TIME                 50
-#define STARTING_TASK_GO_TIME                    100
+#define GO_TO_LINE_TASK_SPEED 				40
+#define AFTER_TASK_ALIGMENT_SPEED 			30
+#define AFTER_TASK_ROTATION_TIME			50
+#define STARTING_ROAM_TIME					300 //3 cykle xD
+#define STARTING_ROAM_VELOCITY				500
 
-#define SEARCH_STRAIGHT_ATTACK_SPEED             30
-#define ATTACK_STRAIGHT_ATTACK_SPEED             80
+//============================================= STRAIGHT ATTACK
+#define SEARCH_STRAIGHT_ATTACK_SPEED		50
+#define ATTACK_STRAIGHT_ATTACK_SPEED		80
 
+
+//============================================= CURVE ATTACK
 #define CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER 60
-#define CURVE_ATTACK_SEARCH_SPEED_FASTER         50
-#define CURVE_ATTACK_SEARCH_SPEED_SLOWER         25
+#define CURVE_ATTACK_SEARCH_SPEED_FASTER 50
+#define CURVE_ATTACK_SEARCH_SPEED_SLOWER 25
+#define LIDAR_DIST_FOR_LINE_FOLLOWER_ATCK_PLS_BE_BACK 40
 
-#define LINE_COMEBACK_TIME                       300
-#define LINE_COMEBACK_VELOCITY                   30
-
-#define FOLLOW_LINER_FASTER                      40
-#define FOLLOW_LINER_SLOWER                      30
+//============================================= FOLLOW LINER and ATTACKER
+#define FOLLOW_LINER_FASTER 40
+#define FOLLOW_LINER_SLOWER 30
 #define MAX_MOTOR_ACCELERATION_FOR_LINE_FOLLOWING 20
+
+#define LINE_COMEBACK_TIME						300
+#define LINE_COMEBACK_VELOCITY					30
 
 extern LidarSensors_t Lunas;
 extern LinesSensors_t Lines;
 extern Evangelion_t Eva;
 extern MotorsSettingsInfo_t Motors;
 extern uint8_t lastSeen;
+extern uint8_t before_attack_rotation_direction;
 
-void STRAIGHT_ATTACK(void);
-void CURVE_ATTACK(void);
-void FOLLOWLINER_ATTACK(void);
-void FOLLOW_ATTACKER_ATTACK(void);
-void STRAIGHT_SIMPLEST_ATTACK(void);
+void STRAIGHT_ATTACK();
+void CURVE_ATTACK();
+void FOLLOWLINER_ATTACK();
+void FOLLOW_ATTACKER_ATTACK();
+void STRAIGHT_SIMPLEST_ATTACK();
 
 #endif /* ATCK_MODES_H_ */

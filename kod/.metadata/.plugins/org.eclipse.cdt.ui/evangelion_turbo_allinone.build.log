@@ -1,31 +1,10 @@
-00:39:38 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
+13:07:06 **** Incremental Build of configuration Debug for project evangelion_turbo_allinone ****
 make -j8 all 
-arm-none-eabi-gcc -gdwarf-4 "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I"D:/tech/robotyka/robots/evangelion-turbo/kod/evangelion_turbo_allinone/Core/Src" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-In file included from ../Core/Src/main.c:26:
-../Core/Inc/TFLUNA.h:15:16: warning: 'BUFFER_CONTAINS' declared 'static' but never defined [-Wunused-function]
-   15 | static uint8_t BUFFER_CONTAINS(uint8_t *buffer, uint8_t *pattern, uint8_t pattern_size); //todo , uint8_t pattern_size
-      |                ^~~~~~~~~~~~~~~
-In file included from ../Core/Src/main.c:30:
-../Core/Inc/DRIVERS.h:16:19: warning: 'ACCELERATION_COMPENSATION' declared 'static' but never defined [-Wunused-function]
-   16 | static Velocity_t ACCELERATION_COMPENSATION(Velocity_t M);
-      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
-../Core/Inc/DRIVERS.h:17:19: warning: 'TEMPERATURE_COMPENSATION' declared 'static' but never defined [-Wunused-function]
-   17 | static Velocity_t TEMPERATURE_COMPENSATION(Velocity_t M);
-      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
-../Core/Inc/DRIVERS.h:18:19: warning: 'CURRENT_COMPENSATION' declared 'static' but never defined [-Wunused-function]
-   18 | static Velocity_t CURRENT_COMPENSATION(Velocity_t M);
-      |                   ^~~~~~~~~~~~~~~~~~~~
-arm-none-eabi-gcc -gdwarf-4 -o "evangelion_turbo_allinone.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\tech\robotyka\robots\evangelion-turbo\kod\evangelion_turbo_allinone\STM32G431CBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="evangelion_turbo_allinone.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: evangelion_turbo_allinone.elf
- 
 arm-none-eabi-size  evangelion_turbo_allinone.elf 
-arm-none-eabi-objdump -h -S evangelion_turbo_allinone.elf  > "evangelion_turbo_allinone.list"
    text	   data	    bss	    dec	    hex	filename
-  72440	    128	   6352	  78920	  13448	evangelion_turbo_allinone.elf
+  72204	    128	   6360	  78692	  13364	evangelion_turbo_allinone.elf
 Finished building: default.size.stdout
  
-Finished building: evangelion_turbo_allinone.list
- 
 
-00:39:40 Build Finished. 0 errors, 4 warnings. (took 1s.651ms)
+13:07:07 Build Finished. 0 errors, 0 warnings. (took 267ms)
 

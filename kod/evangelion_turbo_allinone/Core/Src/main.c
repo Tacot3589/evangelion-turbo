@@ -111,6 +111,7 @@ IMUInfo_t IMU;
 
 
 uint8_t lastSeen = LEFT;
+uint8_t before_attack_rotation_direction;
 
 volatile uint16_t ADC1_BUFFER[6];
 volatile uint16_t ADC2_BUFFER[6];
@@ -1376,17 +1377,28 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if (htim->Instance == TIM15) //1kHz
 	{
 		ADC_REDOUT_INFO_GETTHEMALL(&Eva, &Motors, &Lines, ADC1_BUFFER, ADC2_BUFFER);
+		static uint8_t changedRotationDirection=false;
 		Eva.InBattle = StartModule_Started();
+		if(Eva.InBattle && changedRotationDirection == false)
+		{
+			changedRotationDirection = true;
+			before_attack_rotation_direction = lastSeen;
+		}
+		if(Eva.InBattle == false)
+		{
+			changedRotationDirection = false;
+		}
+
 		if(Eva.InBattle)
 		{
 			if(Eva.AttackMode == STRAIGHT)
 				STRAIGHT_ATTACK();
 			else if(Eva.AttackMode == CURVE)
-				CURVE_ATTACK();
+				CURVE_ATTACK(lastSeen);
 			else if(Eva.AttackMode == FOLLOW_LINER)
-				FOLLOWLINER_ATTACK();
+				FOLLOWLINER_ATTACK(lastSeen);
 			else if(Eva.AttackMode == FOLLOW_ATTACKER)
-				FOLLOW_ATTACKER_ATTACK();
+				FOLLOW_ATTACKER_ATTACK(lastSeen);
 		}
 	}
 	if (htim->Instance == TIM16) //100Hz

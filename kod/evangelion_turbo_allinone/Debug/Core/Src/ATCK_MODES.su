@@ -1,6 +1,4 @@
-../Core/Src/ATCK_MODES.c:9:16:LidarDistanceWithin	16	static
-../Core/Src/ATCK_MODES.c:14:16:ScaleSpeed90	16	static
-../Core/Src/ATCK_MODES.c:19:6:STRAIGHT_ATTACK	8	static
-../Core/Src/ATCK_MODES.c:88:6:CURVE_ATTACK	8	static
-../Core/Src/ATCK_MODES.c:159:6:FOLLOWLINER_ATTACK	16	static
-../Core/Src/ATCK_MODES.c:212:6:FOLLOW_ATTACKER_ATTACK	8	static
+../Core/Src/ATCK_MODES.c:8:6:STRAIGHT_ATTACK	8	static
+../Core/Src/ATCK_MODES.c:78:6:CURVE_ATTACK	8	static
+../Core/Src/ATCK_MODES.c:146:6:FOLLOWLINER_ATTACK	16	static
+../Core/Src/ATCK_MODES.c:216:6:FOLLOW_ATTACKER_ATTACK	8	static

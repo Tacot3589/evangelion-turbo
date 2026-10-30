@@ -48,7 +48,6 @@ typedef enum {
 #define BLINK_FAST	5
 #define TICK		6
 
-
 //======================================= PUBLIC FUNCTIONS
 uint8_t StartModule_Started(void);
 uint8_t StartModule_Startup(void);

@@ -1,0 +1,244 @@
+#include "ATCK_MODES.h"
+#include "DRIVERS.h"
+#include "MY_INCLUDES.h"
+#include "TFLUNA.h"
+
+#include <stdint.h>
+
+void STRAIGHT_ATTACK()
+{
+	static uint16_t ComeBackLinerTimer=UINT16_MAX;
+	static uint16_t GoForwardLineAttention=UINT16_MAX;
+	static uint16_t BackLineOutGoDirection=LEFT;
+
+
+	if(ComeBackLinerTimer < LINE_COMEBACK_TIME)
+	{
+		ComeBackLinerTimer++;
+		SET_MOTORS(-LINE_COMEBACK_VELOCITY,-LINE_COMEBACK_VELOCITY);
+		if(Lines.BackLeft.Dohyo == OUT)
+		{
+			ComeBackLinerTimer=UINT16_MAX;
+			GoForwardLineAttention = 0;
+			BackLineOutGoDirection = RIGHT;
+		}
+		else if(Lines.BackRight.Dohyo == OUT)
+		{
+			ComeBackLinerTimer=UINT16_MAX;
+			GoForwardLineAttention = 0;
+			BackLineOutGoDirection = LEFT;
+		}
+	}
+	else if(GoForwardLineAttention < LINE_COMEBACK_TIME)
+	{
+		GoForwardLineAttention++;
+		if(BackLineOutGoDirection == LEFT)
+			SET_MOTORS(LINE_COMEBACK_VELOCITY*0.8, LINE_COMEBACK_VELOCITY);
+		else if(BackLineOutGoDirection == RIGHT)//if(BackLineOutGoDirection == LEFT)
+			SET_MOTORS(LINE_COMEBACK_VELOCITY, LINE_COMEBACK_VELOCITY*0.8);
+		else
+			SET_MOTORS(LINE_COMEBACK_VELOCITY, LINE_COMEBACK_VELOCITY);
+	}
+	else if(Lines.FrontLeft.Dohyo == OUT || Lines.FrontRight.Dohyo == OUT)
+	{
+		ComeBackLinerTimer = 0;
+		SET_MOTORS(-LINE_COMEBACK_VELOCITY,-LINE_COMEBACK_VELOCITY);
+	}
+	else if(Lunas.FrontLeft.Dist <= MIN_DISTANCE && Lunas.FrontRight.Dist <= MIN_DISTANCE)
+	{
+		SET_MOTORS(100,100);
+	}
+	else if(Lunas.FrontLeft.Dist <= MAX_DISTANCE && Lunas.FrontRight.Dist <= MAX_DISTANCE)
+	{
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED);
+	}
+	else if(Lunas.FrontLeft.Dist <= MAX_DISTANCE && Lunas.FrontRight.Dist > MAX_DISTANCE)
+	{
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED*0.8, ATTACK_STRAIGHT_ATTACK_SPEED);
+	}
+	else if(Lunas.FrontLeft.Dist > MAX_DISTANCE && Lunas.FrontRight.Dist <= MAX_DISTANCE)
+	{
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED*0.8);
+	}
+	else if(lastSeen == LEFT)
+	{
+		SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED/3, SEARCH_STRAIGHT_ATTACK_SPEED);
+	}
+	else if(lastSeen == RIGHT)
+	{
+		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, -SEARCH_STRAIGHT_ATTACK_SPEED/3);
+	}
+	else
+	{
+		SET_MOTORS(SEARCH_STRAIGHT_ATTACK_SPEED, 0);
+	}
+}
+
+
+void CURVE_ATTACK() //todo
+{
+	static uint16_t ComeBackLinerTimer=UINT16_MAX;
+	static uint16_t GoForwardLineAttention=UINT16_MAX;
+	static uint16_t BackLineOutGoDirection=LEFT;
+
+	if(ComeBackLinerTimer < LINE_COMEBACK_TIME)
+	{
+		ComeBackLinerTimer++;
+		SET_MOTORS(-SEARCH_STRAIGHT_ATTACK_SPEED,-SEARCH_STRAIGHT_ATTACK_SPEED);
+		if(Lines.BackLeft.Dohyo == OUT)
+		{
+			ComeBackLinerTimer=UINT16_MAX;
+			GoForwardLineAttention = 0;
+			BackLineOutGoDirection = RIGHT;
+		}
+		else if(Lines.BackRight.Dohyo == OUT)
+		{
+			ComeBackLinerTimer=UINT16_MAX;
+			GoForwardLineAttention = 0;
+			BackLineOutGoDirection = LEFT;
+		}
+	}
+	else if(GoForwardLineAttention < LINE_COMEBACK_TIME)
+	{
+		GoForwardLineAttention++;
+		if(BackLineOutGoDirection == LEFT)
+			SET_MOTORS(LINE_COMEBACK_VELOCITY*0.9, LINE_COMEBACK_VELOCITY);
+		else //if(BackLineOutGoDirection == LEFT)
+			SET_MOTORS(LINE_COMEBACK_VELOCITY, LINE_COMEBACK_VELOCITY*0.9);
+	}
+	else if(Lines.FrontLeft.Dohyo == OUT || Lines.FrontRight.Dohyo == OUT)
+	{
+		ComeBackLinerTimer = 0;
+		SET_MOTORS(-LINE_COMEBACK_VELOCITY,-LINE_COMEBACK_VELOCITY);
+	}
+	else if(Lunas.FrontLeft.Dist <= MIN_DISTANCE && Lunas.FrontRight.Dist <= MIN_DISTANCE)
+	{
+		SET_MOTORS(100,100);
+	}
+	else if(Lunas.FrontLeft.Dist <= MAX_DISTANCE && Lunas.FrontRight.Dist <= MAX_DISTANCE)
+	{
+		SET_MOTORS(ATTACK_STRAIGHT_ATTACK_SPEED, ATTACK_STRAIGHT_ATTACK_SPEED);
+	}
+	else if(Lunas.FrontLeft.Dist <= MAX_DISTANCE && Lunas.FrontRight.Dist > MAX_DISTANCE)
+	{
+		SET_MOTORS(CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER/2, CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER);
+	}
+	else if(Lunas.FrontLeft.Dist > MAX_DISTANCE && Lunas.FrontRight.Dist <= MAX_DISTANCE)
+	{
+		SET_MOTORS(CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER, CURVE_ATTACK_ONE_SEE_ATTACK_SPEED_FASTER/2);
+	}
+	else if(lastSeen == LEFT)
+	{
+		SET_MOTORS(CURVE_ATTACK_SEARCH_SPEED_SLOWER, CURVE_ATTACK_SEARCH_SPEED_FASTER);
+	}
+	else if(lastSeen == RIGHT)
+	{
+		SET_MOTORS(CURVE_ATTACK_SEARCH_SPEED_FASTER, CURVE_ATTACK_SEARCH_SPEED_SLOWER);
+	}
+	else
+	{
+		SET_MOTORS(CURVE_ATTACK_SEARCH_SPEED_FASTER, 0);
+	}
+}
+
+void FOLLOWLINER_ATTACK()
+{
+
+    uint8_t Front;
+    uint8_t Back;
+
+    int16_t Inside;
+    int16_t Outside;
+
+    if(before_attack_rotation_direction == LEFT)
+    {
+        if(Lines.FrontLeft.Dohyo == OUT && Lines.FrontRight.Dohyo == OUT)
+        {
+        	SET_MOTORS(100, -100);
+        }
+        else
+        {
+            Front = Lines.FrontLeft.Dohyo;
+            Back  = Lines.BackLeft.Dohyo;
+        }
+    }
+    else //if(before_attack_rotation_direction == RIGHT)
+    {
+        if(Lines.FrontLeft.Dohyo == OUT && Lines.FrontRight.Dohyo == OUT)
+        {
+        	SET_MOTORS(-100, 100);
+        }
+        else
+        {
+            Front = Lines.FrontRight.Dohyo;
+            Back  = Lines.BackRight.Dohyo;
+        }
+    }
+
+    if(Front == OUT && Back == OUT)
+    {
+        // Cały bok jest na zewnątrz.
+        Outside = FOLLOW_LINER_FASTER;
+        Inside  = FOLLOW_LINER_SLOWER*0.8;
+    }
+    else if(Front == OUT && Back == IN)
+    {
+        // Przód jest bardziej na zewnątrz niż tył.
+        Outside = FOLLOW_LINER_FASTER;
+        Inside  = 10;
+    }
+    else if(Front == IN && Back == OUT)
+    {
+        // Tył jest bardziej na zewnątrz niż przód.
+        // Korekcja musi być przeciwna.
+        Outside = FOLLOW_LINER_SLOWER;
+        Inside  = FOLLOW_LINER_FASTER;
+    }
+    else // Front == IN && Back == IN
+    {
+        // Cały robot uciekł do środka ringu.
+        Outside = FOLLOW_LINER_SLOWER;
+        Inside  = FOLLOW_LINER_FASTER;
+    }
+
+    if(before_attack_rotation_direction == LEFT)
+    {
+        SET_MOTORS(Outside, Inside);
+    }
+    else
+    {
+        SET_MOTORS(Inside, Outside);
+    }
+}
+
+void FOLLOW_ATTACKER_ATTACK() //todo
+{
+
+	typedef enum {
+		FOLLOW_LINE,
+		ATTACK,
+	} Attack_stage_t;
+	static Attack_stage_t STAGE = FOLLOW_LINE;
+
+	if(before_attack_rotation_direction == LEFT)
+	{
+		if(Lunas.BackLeft.Dist <= LIDAR_DIST_FOR_LINE_FOLLOWER_ATCK_PLS_BE_BACK)
+		{
+			STAGE = ATTACK;
+			lastSeen = LEFT;
+		}
+	}
+	else //if(before_attack_rotation_direction == RIGHT)
+	{
+		if(Lunas.BackRight.Dist <= LIDAR_DIST_FOR_LINE_FOLLOWER_ATCK_PLS_BE_BACK)
+		{
+			STAGE = ATTACK;
+			lastSeen = RIGHT;
+		}
+	}
+
+	if(STAGE == FOLLOW_LINE)
+		FOLLOWLINER_ATTACK();
+	else if(STAGE == ATTACK)
+		CURVE_ATTACK();
+}

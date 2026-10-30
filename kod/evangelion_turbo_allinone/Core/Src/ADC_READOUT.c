@@ -25,7 +25,7 @@ void ADC_REDOUT_INFO_GETTHEMALL(Evangelion_t *Eva, MotorsSettingsInfo_t *Motors,
 	else
 	    Lines->FrontLeft.B = IN;
 
-	if (Lines->FrontLeft.A == OUT && Lines->FrontLeft.B == OUT)
+	if (Lines->FrontLeft.A == OUT && Lines->FrontLeft.B == OUT && DEFAULT_SETTING_LINE_SENSORS_ALWAYS_IN == false)
 	    Lines->FrontLeft.Dohyo = OUT;
 	else
 	    Lines->FrontLeft.Dohyo = IN;
@@ -43,7 +43,7 @@ void ADC_REDOUT_INFO_GETTHEMALL(Evangelion_t *Eva, MotorsSettingsInfo_t *Motors,
 	else
 	    Lines->FrontRight.B = IN;
 
-	if (Lines->FrontRight.A == OUT && Lines->FrontRight.B == OUT)
+	if (Lines->FrontRight.A == OUT && Lines->FrontRight.B == OUT && DEFAULT_SETTING_LINE_SENSORS_ALWAYS_IN == false)
 	    Lines->FrontRight.Dohyo = OUT;
 	else
 	    Lines->FrontRight.Dohyo = IN;
@@ -61,7 +61,7 @@ void ADC_REDOUT_INFO_GETTHEMALL(Evangelion_t *Eva, MotorsSettingsInfo_t *Motors,
 	else
 	    Lines->BackLeft.B = IN;
 
-	if (Lines->BackLeft.A == OUT && Lines->BackLeft.B == OUT)
+	if (Lines->BackLeft.A == OUT && Lines->BackLeft.B == OUT && DEFAULT_SETTING_LINE_SENSORS_ALWAYS_IN == false)
 	    Lines->BackLeft.Dohyo = OUT;
 	else
 	    Lines->BackLeft.Dohyo = IN;
@@ -79,7 +79,7 @@ void ADC_REDOUT_INFO_GETTHEMALL(Evangelion_t *Eva, MotorsSettingsInfo_t *Motors,
 	else
 	    Lines->BackRight.B = IN;
 
-	if (Lines->BackRight.A == OUT && Lines->BackRight.B == OUT)
+	if (Lines->BackRight.A == OUT && Lines->BackRight.B == OUT && DEFAULT_SETTING_LINE_SENSORS_ALWAYS_IN == false)
 	    Lines->BackRight.Dohyo = OUT;
 	else
 	    Lines->BackRight.Dohyo = IN;
